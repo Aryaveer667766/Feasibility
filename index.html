@@ -72,6 +72,16 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #FF1744;
         }
+
+        /* Modal Transitions */
+        #phone-modal {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        #modal-content {
+            transform: scale(0.95);
+            transition: transform 0.3s ease-in-out;
+        }
     </style>
 </head>
 <body class="background-wrapper">
@@ -234,7 +244,7 @@
                         <li class="flex items-start"><span class="text-[#C44DFF] mr-3 mt-1">✔</span> Weekly insights</li>
                     </ul>
                     <p class="text-center text-gray-500 italic mt-auto mb-6">👉 For small businesses testing social media.</p>
-                    <a href="mailto:feasibilitymedia@gmail.com?subject=Inquiry%20about%20the%20Starter%20Plan&body=Hi%20Feasibility%20Team,%0D%0A%0D%0AI'm%20interested%20in%20learning%20more%20about%20the%20Starter%20Plan.%0D%0A%0D%0AThanks!" class="w-full block text-center border border-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg transition-all duration-300 hover:bg-gray-900 hover:text-white">Choose Plan</a>
+                    <button data-plan="Starter" class="w-full block text-center border border-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg transition-all duration-300 hover:bg-gray-900 hover:text-white">Choose Plan</button>
                 </div>
 
                 <!-- Plan 2: Growth (Highlighted) -->
@@ -250,7 +260,7 @@
                         <li class="flex items-start"><span class="text-[#C44DFF] mr-3 mt-1">✔</span> Weekly insights</li>
                     </ul>
                     <p class="text-center text-gray-400 italic mt-auto mb-6">👉 Best value, built for consistent growth.</p>
-                    <a href="mailto:feasibilitymedia@gmail.com?subject=Inquiry%20about%20the%20Growth%20Plan&body=Hi%20Feasibility%20Team,%0D%0A%0D%0AI'm%20interested%20in%20learning%20more%20about%20the%20Growth%20Plan.%0D%0A%0D%0AThanks!" class="w-full block text-center bg-gradient-to-r from-[#C44DFF] to-[#FF1744] text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105">Choose Plan</a>
+                    <button data-plan="Growth" class="w-full block text-center bg-gradient-to-r from-[#C44DFF] to-[#FF1744] text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105">Choose Plan</button>
                 </div>
 
                 <!-- Plan 3: Pro -->
@@ -266,7 +276,7 @@
                         <li class="flex items-start"><span class="text-[#FF1744] mr-3 mt-1">✔</span> Quarterly strategy deep-dive</li>
                     </ul>
                     <p class="text-center text-gray-500 italic mt-auto mb-6">👉 For brands serious about scaling fast.</p>
-                    <a href="mailto:feasibilitymedia@gmail.com?subject=Inquiry%20about%20the%20Pro%20Plan&body=Hi%20Feasibility%20Team,%0D%0A%0D%0AI'm%20interested%20in%20learning%20more%20about%20the%20Pro%20Plan.%0D%0A%0D%0AThanks!" class="w-full block text-center border border-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg transition-all duration-300 hover:bg-gray-900 hover:text-white">Choose Plan</a>
+                    <button data-plan="Pro" class="w-full block text-center border border-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg transition-all duration-300 hover:bg-gray-900 hover:text-white">Choose Plan</button>
                 </div>
             </div>
 
@@ -332,26 +342,13 @@
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Let's Create Something Legendary.</h2>
                     <p class="text-gray-600 mt-4 mb-8 text-lg">Your brand has a story waiting to be told. We're here to help you tell it to the world. Drop us a message, and let’s start building your future today.</p>
                     <div class="flex space-x-6 items-center">
-                        <!-- 
-                          ACTION REQUIRED: Replace '910000000000' with your actual WhatsApp number, including the country code but no '+' or spaces.
-                          For example: 919876543210
-                        -->
                         <a href="https://wa.me/917633823121" target="_blank" rel="noopener noreferrer" class="bg-green-500 text-white font-bold py-3 px-6 rounded-lg flex items-center space-x-2 hover:bg-green-600 transition-colors duration-300">
                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.886-.001 2.267.651 4.383 1.89 6.191l.496 1.254-.952 3.445 3.542-.93z"/></svg>
                            <span>WhatsApp Us</span>
                         </a>
-                        <!-- 
-                          ACTION REQUIRED: Replace '#' with your actual Instagram profile link.
-                        -->
                         <a href="#" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-900 transition-colors duration-300">@feasibility.social</a>
                     </div>
                 </div>
-                <!-- 
-                  ACTION REQUIRED: 
-                  1. Go to formspree.io and create a free account.
-                  2. Create a new form and get your unique endpoint URL.
-                  3. Replace 'https://formspree.io/f/YOUR_UNIQUE_ID' with your actual URL.
-                -->
                 <form action="https://formspree.io/f/mandalko" method="POST" class="space-y-6">
                     <div>
                         <label for="name" class="sr-only">Your Name</label>
@@ -377,6 +374,38 @@
             <p>&copy; 2025 Feasibility. Engineering the Future of Social.</p>
         </div>
     </footer>
+
+    <!-- Phone Number Modal -->
+    <div id="phone-modal" class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div id="modal-content" class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full">
+            <!-- Form View -->
+            <div id="modal-form-view">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-2xl font-bold text-gray-900">One Step Away...</h3>
+                    <button id="modal-close-button" class="text-gray-400 hover:text-gray-800 text-3xl leading-none">&times;</button>
+                </div>
+                <p class="text-gray-600 mb-6">Enter your phone number, and our team will contact you shortly to get started.</p>
+                <form id="phone-form">
+                    <input type="hidden" id="plan-input" name="plan">
+                    <div>
+                        <label for="phone" class="sr-only">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Your Phone Number" required class="w-full bg-gray-100 border border-gray-300 rounded-lg p-4 focus:outline-none focus:border-[#C44DFF] transition-colors duration-300 text-gray-800 placeholder-gray-500">
+                    </div>
+                    <button type="submit" id="phone-submit-button" class="mt-6 w-full bg-gradient-to-r from-[#C44DFF] to-[#FF1744] text-white font-bold py-3 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105">
+                        Get a Call Back
+                    </button>
+                </form>
+            </div>
+            <!-- Success View -->
+            <div id="modal-success-view" class="hidden text-center">
+                 <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-12 h-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                 </div>
+                <h3 class="text-2xl font-bold text-gray-900">Thank You!</h3>
+                <p class="text-gray-600 mt-2">Sit back and relax. Our team will contact you shortly!</p>
+            </div>
+        </div>
+    </div>
 
 
     <script>
@@ -427,6 +456,99 @@
             });
         });
 
+        // --- Pricing Modal Logic ---
+        const planButtons = document.querySelectorAll('[data-plan]');
+        const phoneModal = document.getElementById('phone-modal');
+        const modalContent = document.getElementById('modal-content');
+        const modalCloseButton = document.getElementById('modal-close-button');
+        const phoneForm = document.getElementById('phone-form');
+        const planInput = document.getElementById('plan-input');
+        const phoneInput = document.getElementById('phone');
+        const modalFormView = document.getElementById('modal-form-view');
+        const modalSuccessView = document.getElementById('modal-success-view');
+        const phoneSubmitButton = document.getElementById('phone-submit-button');
+
+        function openModal(planName) {
+            planInput.value = planName;
+            phoneModal.classList.remove('hidden');
+            setTimeout(() => {
+                phoneModal.style.opacity = '1';
+                modalContent.style.transform = 'scale(1)';
+            }, 10);
+        }
+
+        function closeModal() {
+            phoneModal.style.opacity = '0';
+            modalContent.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                phoneModal.classList.add('hidden');
+                // Reset modal to initial state
+                phoneForm.reset();
+                modalFormView.classList.remove('hidden');
+                modalSuccessView.classList.add('hidden');
+                phoneSubmitButton.disabled = false;
+                phoneSubmitButton.textContent = 'Get a Call Back';
+            }, 300);
+        }
+
+        planButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const plan = button.getAttribute('data-plan');
+                openModal(plan);
+            });
+        });
+
+        modalCloseButton.addEventListener('click', closeModal);
+        phoneModal.addEventListener('click', (e) => {
+            if (e.target === phoneModal) {
+                closeModal();
+            }
+        });
+
+        phoneForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            phoneSubmitButton.disabled = true;
+            phoneSubmitButton.textContent = 'Sending...';
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Add a custom message for context in the email body
+            data.message = `New lead for the ${data.plan} plan. Please contact them at phone number: ${data.phone}.`;
+
+            fetch('https://formspree.io/f/mandalko', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    modalFormView.classList.add('hidden');
+                    modalSuccessView.classList.remove('hidden');
+                    setTimeout(closeModal, 4000); // Auto-close modal after 4 seconds
+                } else {
+                    response.json().then(data => {
+                        if (Object.hasOwn(data, 'errors')) {
+                           alert(data["errors"].map(error => error["message"]).join(", "));
+                        } else {
+                           alert('Oops! There was a problem submitting your request.');
+                        }
+                    }).catch(() => {
+                        alert('Oops! There was an unknown problem.');
+                    });
+                    // Reset button on error
+                    phoneSubmitButton.disabled = false;
+                    phoneSubmitButton.textContent = 'Get a Call Back';
+                }
+            }).catch(error => {
+                alert('Oops! There was a problem connecting to the server.');
+                 // Reset button on error
+                phoneSubmitButton.disabled = false;
+                phoneSubmitButton.textContent = 'Get a Call Back';
+            });
+        });
     </script>
 </body>
 </html>
