@@ -384,14 +384,18 @@
                     <h3 class="text-2xl font-bold text-gray-900">One Step Away...</h3>
                     <button id="modal-close-button" class="text-gray-400 hover:text-gray-800 text-3xl leading-none">&times;</button>
                 </div>
-                <p class="text-gray-600 mb-6">Enter your phone number, and our team will contact you shortly to get started.</p>
-                <form id="phone-form">
+                <p class="text-gray-600 mb-6">Enter your details, and our team will contact you shortly to get started.</p>
+                <form id="phone-form" class="space-y-4">
                     <input type="hidden" id="plan-input" name="plan">
+                    <div>
+                        <label for="modal-name" class="sr-only">Your Name</label>
+                        <input type="text" id="modal-name" name="name" placeholder="Your Name" required class="w-full bg-gray-100 border border-gray-300 rounded-lg p-4 focus:outline-none focus:border-[#C44DFF] transition-colors duration-300 text-gray-800 placeholder-gray-500">
+                    </div>
                     <div>
                         <label for="phone" class="sr-only">Phone Number</label>
                         <input type="tel" id="phone" name="phone" placeholder="Your Phone Number" required class="w-full bg-gray-100 border border-gray-300 rounded-lg p-4 focus:outline-none focus:border-[#C44DFF] transition-colors duration-300 text-gray-800 placeholder-gray-500">
                     </div>
-                    <button type="submit" id="phone-submit-button" class="mt-6 w-full bg-gradient-to-r from-[#C44DFF] to-[#FF1744] text-white font-bold py-3 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105">
+                    <button type="submit" id="phone-submit-button" class="!mt-6 w-full bg-gradient-to-r from-[#C44DFF] to-[#FF1744] text-white font-bold py-3 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105">
                         Get a Call Back
                     </button>
                 </form>
@@ -514,7 +518,7 @@
             const data = Object.fromEntries(formData.entries());
             
             // Add a custom message for context in the email body
-            data.message = `New lead for the ${data.plan} plan. Please contact them at phone number: ${data.phone}.`;
+            data.message = `New lead for the ${data.plan} plan. Name: ${data.name}. Please contact them at phone number: ${data.phone}.`;
 
             fetch('https://formspree.io/f/mandalko', {
                 method: 'POST',
