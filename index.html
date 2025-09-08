@@ -17,33 +17,34 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #000000;
-            color: #FFFFFF; /* Changed to pure white for max contrast */
+            background-color: #FFFFFF; /* Changed to white */
+            color: #1a202c; /* Changed to dark text */
         }
 
-        /* --- Custom Neon Glow Effects --- */
-        .neon-purple-shadow {
-            text-shadow: 0 0 5px rgba(196, 77, 255, 0.7), 0 0 10px rgba(196, 77, 255, 0.5), 0 0 15px rgba(196, 77, 255, 0.3);
+        /* --- Custom Neon Glow Effects for Light BG --- */
+        .neon-text-purple {
+            color: #C44DFF;
+            text-shadow: 0 0 8px rgba(196, 77, 255, 0.6);
         }
-        .neon-red-shadow {
-            text-shadow: 0 0 5px rgba(255, 23, 68, 0.7), 0 0 10px rgba(255, 23, 68, 0.5), 0 0 15px rgba(255, 23, 68, 0.3);
+        .neon-text-red {
+            color: #FF1744;
+            text-shadow: 0 0 8px rgba(255, 23, 68, 0.6);
         }
         .neon-purple-border {
             border-color: #C44DFF;
-            box-shadow: 0 0 8px rgba(196, 77, 255, 0.6), inset 0 0 8px rgba(196, 77, 255, 0.5);
+            box-shadow: 0 0 8px rgba(196, 77, 255, 0.6);
         }
         .neon-red-border {
             border-color: #FF1744;
-            box-shadow: 0 0 8px rgba(255, 23, 68, 0.6), inset 0 0 8px rgba(255, 23, 68, 0.5);
+            box-shadow: 0 0 8px rgba(255, 23, 68, 0.6);
         }
 
-        /* --- Background Gradient & Shapes --- */
+        /* --- Background Gradient & Shapes for Light BG --- */
         .background-wrapper {
             position: relative;
             overflow-x: hidden; /* Fix: Allows vertical scrolling */
-            background: radial-gradient(circle at 15% 20%, rgba(196, 77, 255, 0.1), transparent 30%),
-                        radial-gradient(circle at 85% 80%, rgba(255, 23, 68, 0.1), transparent 30%);
-            transition: background .3s ease-in-out;
+            background: radial-gradient(circle at 15% 20%, rgba(196, 77, 255, 0.08), transparent 30%),
+                        radial-gradient(circle at 85% 80%, rgba(255, 23, 68, 0.08), transparent 30%);
         }
 
         /* --- Animation Classes --- */
@@ -57,12 +58,12 @@
             transform: translateY(0);
         }
         
-        /* Custom scrollbar */
+        /* Custom scrollbar for Light BG */
         ::-webkit-scrollbar {
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #111;
+            background: #f1f1f1;
         }
         ::-webkit-scrollbar-thumb {
             background: #C44DFF;
@@ -71,37 +72,33 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #FF1744;
         }
-        
-        footer p {
-            color: #9ca3af; /* Brighter color for footer text */
-        }
     </style>
 </head>
 <body class="background-wrapper">
 
     <!-- Header -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-black/50 backdrop-blur-sm">
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-gray-200/50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold tracking-wider">Feasibility</a>
+            <a href="#" class="text-2xl font-bold tracking-wider text-gray-900">Feasibility</a>
             <div class="flex items-center">
-                <div class="hidden md:flex space-x-8 items-center">
+                <div class="hidden md:flex space-x-8 items-center text-gray-800">
                     <a href="#about" class="hover:text-[#C44DFF] transition-colors duration-300">About</a>
                     <a href="#services" class="hover:text-[#C44DFF] transition-colors duration-300">Services</a>
                     <a href="#portfolio" class="hover:text-[#C44DFF] transition-colors duration-300">Portfolio</a>
                     <a href="#pricing" class="hover:text-[#C44DFF] transition-colors duration-300">Pricing</a>
                     <a href="#contact" class="bg-[#C44DFF] hover:bg-[#FF1744] text-white font-bold py-2 px-5 rounded-lg transition-all duration-300 transform hover:scale-105">Let's Grow</a>
                 </div>
-                <button id="mobile-menu-button" class="md:hidden focus:outline-none ml-4">
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none ml-4 text-gray-800">
                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                </button>
             </div>
         </nav>
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 space-y-2">
-            <a href="#about" class="block hover:text-[#C44DFF] transition-colors duration-300">About</a>
-            <a href="#services" class="block hover:text-[#C44DFF] transition-colors duration-300">Services</a>
-            <a href="#portfolio" class="block hover:text-[#C44DFF] transition-colors duration-300">Portfolio</a>
-            <a href="#pricing" class="block hover:text-[#C44DFF] transition-colors duration-300">Pricing</a>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 space-y-2 bg-white/95">
+            <a href="#about" class="block hover:text-[#C44DFF] transition-colors duration-300 text-gray-800">About</a>
+            <a href="#services" class="block hover:text-[#C44DFF] transition-colors duration-300 text-gray-800">Services</a>
+            <a href="#portfolio" class="block hover:text-[#C44DFF] transition-colors duration-300 text-gray-800">Portfolio</a>
+            <a href="#pricing" class="block hover:text-[#C44DFF] transition-colors duration-300 text-gray-800">Pricing</a>
             <a href="#contact" class="block bg-[#C44DFF] hover:bg-[#FF1744] text-white font-bold py-2 px-5 rounded-lg transition-all duration-300 text-center mt-2">Let's Grow</a>
         </div>
     </header>
@@ -111,11 +108,11 @@
         <!-- Hero Section -->
         <section id="hero" class="min-h-screen flex flex-col justify-center items-center text-center pt-20">
             <div class="max-w-4xl scroll-reveal">
-                <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight">
-                    From <span class="text-[#C44DFF] neon-purple-shadow">scrolls</span> to <span class="text-[#FF1744] neon-red-shadow">sales</span> 🚀
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight text-gray-800">
+                    <span class="text-gray-300">From</span> <span class="neon-text-purple">scrolls</span> <span class="text-gray-300">to</span> <span class="neon-text-red">sales</span> 🚀
                 </h1>
-                <p class="mt-6 text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-                    Feasibility helps brands grow faster through social media management, content creation, and viral strategies.
+                <p class="mt-6 text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+                    We engineer virality, craft scroll-stopping content, and transform your brand's digital presence into a revenue-generating powerhouse.
                 </p>
                 <a href="#contact" class="mt-10 inline-block bg-gradient-to-r from-[#C44DFF] to-[#FF1744] text-white font-bold py-4 px-10 rounded-lg text-lg transition-all duration-300 transform hover:scale-110 hover:shadow-2xl">
                     Let’s Grow
@@ -127,9 +124,9 @@
         <section id="about" class="py-24">
             <div class="grid md:grid-cols-2 gap-12 items-center scroll-reveal">
                 <div class="text-center md:text-left">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Impossible to Ignore.</h2>
-                    <p class="text-gray-300 text-lg">
-                        We’re a new-age digital agency that combines creativity and strategy to make brands impossible to ignore. We don't just follow trends, we create them. Our team lives and breathes social media, turning fleeting moments into lasting brand impact.
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Impossible to Ignore.</h2>
+                    <p class="text-gray-600 text-lg">
+                        Born from the digital frontier, Feasibility is a collective of creative minds, data wizards, and social strategists. We see the internet not as a platform, but as a culture. We don't chase trends; we set them. Our mission is to fuse art with analytics, turning fleeting online moments into iconic brand legacies.
                     </p>
                 </div>
                 <div class="flex justify-center items-center">
@@ -149,41 +146,41 @@
         <!-- Services Section -->
         <section id="services" class="py-24">
             <div class="text-center mb-12 scroll-reveal">
-                <h2 class="text-3xl md:text-4xl font-bold">What We Do</h2>
-                <p class="text-gray-400 mt-2">Our expertise, your growth.</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Your Growth Toolkit</h2>
+                <p class="text-gray-500 mt-2">Tailored strategies to dominate the digital landscape.</p>
             </div>
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <!-- Service Card 1 -->
-                <div class="bg-gray-900/50 p-8 rounded-2xl border border-gray-800 hover:border-[#C44DFF] transition-all duration-300 transform hover:-translate-y-2 scroll-reveal">
+                <div class="bg-white p-8 rounded-2xl border border-gray-200 hover:border-[#C44DFF] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal">
                     <div class="bg-[#C44DFF]/10 text-[#C44DFF] w-16 h-16 rounded-xl flex items-center justify-center mb-6">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                     </div>
-                    <h3 class="text-xl font-bold mb-2">Social Media Management</h3>
-                    <p class="text-gray-400">Full-service management to build and maintain a powerful online presence.</p>
+                    <h3 class="text-xl font-bold mb-2 text-gray-900">Social Media Management</h3>
+                    <p class="text-gray-500">End-to-end channel management that builds communities and amplifies your brand voice 24/7.</p>
                 </div>
                 <!-- Service Card 2 -->
-                <div class="bg-gray-900/50 p-8 rounded-2xl border border-gray-800 hover:border-[#C44DFF] transition-all duration-300 transform hover:-translate-y-2 scroll-reveal" style="transition-delay: 100ms;">
+                <div class="bg-white p-8 rounded-2xl border border-gray-200 hover:border-[#C44DFF] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal" style="transition-delay: 100ms;">
                     <div class="bg-[#C44DFF]/10 text-[#C44DFF] w-16 h-16 rounded-xl flex items-center justify-center mb-6">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                     </div>
-                    <h3 class="text-xl font-bold mb-2">Content Creation</h3>
-                    <p class="text-gray-400">Engaging Reels, Posts, and Stories crafted to stop the scroll.</p>
+                    <h3 class="text-xl font-bold mb-2 text-gray-900">Content Creation</h3>
+                    <p class="text-gray-500">High-impact visual storytelling. We produce stunning Reels, Posts, and Stories designed to captivate.</p>
                 </div>
                 <!-- Service Card 3 -->
-                <div class="bg-gray-900/50 p-8 rounded-2xl border border-gray-800 hover:border-[#FF1744] transition-all duration-300 transform hover:-translate-y-2 scroll-reveal" style="transition-delay: 200ms;">
+                <div class="bg-white p-8 rounded-2xl border border-gray-200 hover:border-[#FF1744] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal" style="transition-delay: 200ms;">
                     <div class="bg-[#FF1744]/10 text-[#FF1744] w-16 h-16 rounded-xl flex items-center justify-center mb-6">
                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
                     </div>
-                    <h3 class="text-xl font-bold mb-2">Growth & Engagement</h3>
-                    <p class="text-gray-400">Proven strategies to grow your audience and boost interaction.</p>
+                    <h3 class="text-xl font-bold mb-2 text-gray-900">Growth & Engagement</h3>
+                    <p class="text-gray-500">Data-driven tactics to accelerate follower growth and foster authentic audience connections.</p>
                 </div>
                 <!-- Service Card 4 -->
-                <div class="bg-gray-900/50 p-8 rounded-2xl border border-gray-800 hover:border-[#FF1744] transition-all duration-300 transform hover:-translate-y-2 scroll-reveal" style="transition-delay: 300ms;">
+                <div class="bg-white p-8 rounded-2xl border border-gray-200 hover:border-[#FF1744] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal" style="transition-delay: 300ms;">
                     <div class="bg-[#FF1744]/10 text-[#FF1744] w-16 h-16 rounded-xl flex items-center justify-center mb-6">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                     </div>
-                    <h3 class="text-xl font-bold mb-2">Paid Ads</h3>
-                    <p class="text-gray-400">Targeted ad campaigns that convert clicks into customers.</p>
+                    <h3 class="text-xl font-bold mb-2 text-gray-900">Paid Ads</h3>
+                    <p class="text-gray-500">Precision-targeted ad campaigns that maximize ROI and turn clicks into loyal customers.</p>
                 </div>
             </div>
         </section>
@@ -191,28 +188,28 @@
         <!-- Portfolio Section -->
         <section id="portfolio" class="py-24">
             <div class="text-center mb-12 scroll-reveal">
-                <h2 class="text-3xl md:text-4xl font-bold">Our Work</h2>
-                <p class="text-gray-400 mt-2">Results that speak for themselves.</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Proof in the Pixels</h2>
+                <p class="text-gray-500 mt-2">We don't just promise growth, we deliver it. Check out our success stories.</p>
             </div>
             <div class="grid md:grid-cols-3 gap-4 md:gap-6">
                 <div class="group relative overflow-hidden rounded-2xl aspect-square scroll-reveal">
-                    <img src="https://placehold.co/600x600/1a1a1a/ffffff?text=Project+1" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Portfolio Image 1">
+                    <img src="https://placehold.co/600x600/e0e0e0/333333?text=Project+1" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Portfolio Image 1">
                     <div class="absolute inset-0 bg-black/70 flex flex-col justify-center items-center text-center p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <h3 class="text-xl font-bold">@StreetwearBrand</h3>
+                        <h3 class="text-xl font-bold text-white">@StreetwearBrand</h3>
                         <p class="mt-2 text-3xl font-bold text-[#C44DFF]">+300% Engagement</p>
                     </div>
                 </div>
                  <div class="group relative overflow-hidden rounded-2xl aspect-square scroll-reveal" style="transition-delay: 100ms;">
-                    <img src="https://placehold.co/600x600/2b2b2b/ffffff?text=Project+2" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Portfolio Image 2">
+                    <img src="https://placehold.co/600x600/d4d4d4/333333?text=Project+2" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Portfolio Image 2">
                     <div class="absolute inset-0 bg-black/70 flex flex-col justify-center items-center text-center p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <h3 class="text-xl font-bold">@FoodieCafe</h3>
+                        <h3 class="text-xl font-bold text-white">@FoodieCafe</h3>
                         <p class="mt-2 text-3xl font-bold text-[#C44DFF]">+50k Followers</p>
                     </div>
                 </div>
                  <div class="group relative overflow-hidden rounded-2xl aspect-square scroll-reveal" style="transition-delay: 200ms;">
-                    <img src="https://placehold.co/600x600/1c1c1c/ffffff?text=Project+3" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Portfolio Image 3">
+                    <img src="https://placehold.co/600x600/cccccc/333333?text=Project+3" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Portfolio Image 3">
                     <div class="absolute inset-0 bg-black/70 flex flex-col justify-center items-center text-center p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <h3 class="text-xl font-bold">@TechStartup</h3>
+                        <h3 class="text-xl font-bold text-white">@TechStartup</h3>
                         <p class="mt-2 text-3xl font-bold text-[#FF1744]">+1M Viral Reach</p>
                     </div>
                 </div>
@@ -222,26 +219,26 @@
         <!-- Pricing Section -->
         <section id="pricing" class="py-24">
             <div class="text-center mb-12 scroll-reveal">
-                <h2 class="text-3xl md:text-4xl font-bold">Find Your Plan</h2>
-                <p class="text-gray-400 mt-2">Simple pricing for serious growth.</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Pricing That Scales With You</h2>
+                <p class="text-gray-500 mt-2">Transparent plans for every stage of your brand's journey.</p>
             </div>
             <div class="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto items-start">
                 <!-- Plan 1: Starter -->
-                <div class="bg-gray-900/50 p-8 rounded-2xl border border-gray-800 flex flex-col scroll-reveal h-full">
-                    <h3 class="text-2xl font-bold text-center">Starter</h3>
-                    <p class="text-center text-4xl font-extrabold my-6">₹5,000<span class="text-lg font-medium text-gray-400">/month</span></p>
-                    <ul class="space-y-3 text-gray-300 flex-grow mb-6">
+                <div class="bg-white p-8 rounded-2xl border border-gray-200 flex flex-col scroll-reveal h-full">
+                    <h3 class="text-2xl font-bold text-center text-gray-900">Starter</h3>
+                    <p class="text-center text-4xl font-extrabold my-6 text-gray-900">₹5,000<span class="text-lg font-medium text-gray-500">/month</span></p>
+                    <ul class="space-y-3 text-gray-600 flex-grow mb-6">
                         <li class="flex items-start"><span class="text-[#C44DFF] mr-3 mt-1">✔</span> <span><strong>8 posts/month</strong> & <strong>2 reels/month</strong></span></li>
                         <li class="flex items-start"><span class="text-[#C44DFF] mr-3 mt-1">✔</span> Captions + hashtags</li>
                         <li class="flex items-start"><span class="text-[#C44DFF] mr-3 mt-1">✔</span> Basic scheduling</li>
                         <li class="flex items-start"><span class="text-[#C44DFF] mr-3 mt-1">✔</span> Weekly insights</li>
                     </ul>
-                    <p class="text-center text-gray-400 italic mt-auto mb-6">👉 For small businesses testing social media.</p>
-                    <button class="w-full border border-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 hover:bg-white hover:text-black">Choose Plan</button>
+                    <p class="text-center text-gray-500 italic mt-auto mb-6">👉 For small businesses testing social media.</p>
+                    <button class="w-full border border-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg transition-all duration-300 hover:bg-gray-900 hover:text-white">Choose Plan</button>
                 </div>
 
                 <!-- Plan 2: Growth (Highlighted) -->
-                <div class="bg-gray-900 p-8 rounded-2xl border-2 neon-purple-border flex flex-col transform lg:scale-105 scroll-reveal h-full" style="transition-delay: 100ms;">
+                <div class="bg-gray-900 p-8 rounded-2xl border-2 neon-purple-border flex flex-col transform lg:scale-105 scroll-reveal h-full text-white" style="transition-delay: 100ms;">
                      <p class="text-center font-bold bg-gradient-to-r from-[#C44DFF] to-[#FF1744] text-white py-1 px-4 rounded-full -mt-12 mx-auto">Most Popular</p>
                     <h3 class="text-2xl font-bold text-center mt-4">Growth</h3>
                     <p class="text-center text-4xl font-extrabold my-6">₹10,000<span class="text-lg font-medium text-gray-400">/month</span></p>
@@ -257,10 +254,10 @@
                 </div>
 
                 <!-- Plan 3: Pro -->
-                <div class="bg-gray-900/50 p-8 rounded-2xl border border-gray-800 flex flex-col scroll-reveal h-full" style="transition-delay: 200ms;">
-                    <h3 class="text-2xl font-bold text-center">Pro</h3>
-                    <p class="text-center text-4xl font-extrabold my-6">₹20,000<span class="text-lg font-medium text-gray-400">/month</span></p>
-                    <ul class="space-y-3 text-gray-300 flex-grow mb-6">
+                <div class="bg-white p-8 rounded-2xl border border-gray-200 flex flex-col scroll-reveal h-full" style="transition-delay: 200ms;">
+                    <h3 class="text-2xl font-bold text-center text-gray-900">Pro</h3>
+                    <p class="text-center text-4xl font-extrabold my-6 text-gray-900">₹20,000<span class="text-lg font-medium text-gray-500">/month</span></p>
+                    <ul class="space-y-3 text-gray-600 flex-grow mb-6">
                         <li class="flex items-start"><span class="text-[#FF1744] mr-3 mt-1">✔</span> <span><strong>20 posts</strong> & <strong>10 reels/month</strong></span></li>
                         <li class="flex items-start"><span class="text-[#FF1744] mr-3 mt-1">✔</span> 5 story sets/week</li>
                         <li class="flex items-start"><span class="text-[#FF1744] mr-3 mt-1">✔</span> UGC coordination</li>
@@ -268,60 +265,60 @@
                         <li class="flex items-start"><span class="text-[#FF1744] mr-3 mt-1">✔</span> Priority support & PDF reports</li>
                         <li class="flex items-start"><span class="text-[#FF1744] mr-3 mt-1">✔</span> Quarterly strategy deep-dive</li>
                     </ul>
-                    <p class="text-center text-gray-400 italic mt-auto mb-6">👉 For brands serious about scaling fast.</p>
-                    <button class="w-full border border-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 hover:bg-white hover:text-black">Choose Plan</button>
+                    <p class="text-center text-gray-500 italic mt-auto mb-6">👉 For brands serious about scaling fast.</p>
+                    <button class="w-full border border-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg transition-all duration-300 hover:bg-gray-900 hover:text-white">Choose Plan</button>
                 </div>
             </div>
 
             <!-- Add-ons Section -->
             <div class="text-center mt-20 mb-8 scroll-reveal">
-                <h2 class="text-3xl md:text-4xl font-bold">Flexible Add-ons</h2>
-                <p class="text-gray-400 mt-2">Customize your plan with these extras.</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">A La Carte Services</h2>
+                <p class="text-gray-500 mt-2">Enhance your package with these powerful extras.</p>
             </div>
             <div class="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center scroll-reveal">
-                <div class="bg-gray-900/50 p-6 rounded-2xl border border-gray-800">
-                    <h4 class="font-bold text-lg">Logo</h4>
+                <div class="bg-white p-6 rounded-2xl border border-gray-200">
+                    <h4 class="font-bold text-lg text-gray-900">Logo</h4>
                     <p class="text-2xl font-bold text-[#C44DFF]">₹3k</p>
                 </div>
-                 <div class="bg-gray-900/50 p-6 rounded-2xl border border-gray-800">
-                    <h4 class="font-bold text-lg">Menu/Flyer</h4>
+                 <div class="bg-white p-6 rounded-2xl border border-gray-200">
+                    <h4 class="font-bold text-lg text-gray-900">Menu/Flyer</h4>
                     <p class="text-2xl font-bold text-[#C44DFF]">₹2k</p>
                 </div>
-                 <div class="bg-gray-900/50 p-6 rounded-2xl border border-gray-800">
-                    <h4 class="font-bold text-lg">Highlight Covers</h4>
+                 <div class="bg-white p-6 rounded-2xl border border-gray-200">
+                    <h4 class="font-bold text-lg text-gray-900">Highlight Covers</h4>
                     <p class="text-2xl font-bold text-[#C44DFF]">₹1k</p>
                 </div>
-                <div class="bg-gray-900/50 p-6 rounded-2xl border-2 neon-red-border col-span-2 md:col-span-1">
-                    <h4 class="font-bold text-lg">Design Pack</h4>
+                <div class="bg-white p-6 rounded-2xl border-2 neon-red-border col-span-2 md:col-span-1">
+                    <h4 class="font-bold text-lg text-gray-900">Design Pack</h4>
                     <p class="text-2xl font-bold text-[#FF1744]">₹4,500</p>
                 </div>
             </div>
-            <p class="text-center text-gray-400 mt-6 scroll-reveal"><strong>Basic photoshoot:</strong> Available on request.</p>
+            <p class="text-center text-gray-500 mt-6 scroll-reveal"><strong>Basic photoshoot:</strong> Available on request.</p>
         </section>
 
         <!-- Testimonials Section -->
         <section id="testimonials" class="py-24">
             <div class="text-center mb-12 scroll-reveal">
-                <h2 class="text-3xl md:text-4xl font-bold">What Our Clients Say</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Don't Just Take Our Word For It</h2>
             </div>
             <div class="grid md:grid-cols-2 gap-8">
-                <div class="bg-gray-900/50 p-8 rounded-2xl border border-gray-800 scroll-reveal">
-                    <p class="text-gray-300 italic">"Feasibility transformed our social media presence. Our engagement has never been higher, and we're finally reaching the right audience. Truly game-changing!"</p>
+                <div class="bg-white p-8 rounded-2xl border border-gray-200 scroll-reveal">
+                    <p class="text-gray-600 italic">"Feasibility transformed our social media presence. Our engagement has never been higher, and we're finally reaching the right audience. Truly game-changing!"</p>
                     <div class="flex items-center mt-6">
-                        <img src="https://placehold.co/50x50/333333/ffffff?text=A" class="w-12 h-12 rounded-full" alt="Client 1">
+                        <img src="https://placehold.co/50x50/e0e0e0/333333?text=A" class="w-12 h-12 rounded-full" alt="Client 1">
                         <div class="ml-4">
-                            <p class="font-bold">Anna B.</p>
-                            <p class="text-sm text-gray-400">CEO, StreetwearBrand</p>
+                            <p class="font-bold text-gray-900">Anna B.</p>
+                            <p class="text-sm text-gray-500">CEO, StreetwearBrand</p>
                         </div>
                     </div>
                 </div>
-                 <div class="bg-gray-900/50 p-8 rounded-2xl border border-gray-800 scroll-reveal" style="transition-delay: 100ms;">
-                    <p class="text-gray-300 italic">"The content they create is top-notch. They understood our brand voice perfectly and delivered results faster than we expected. Highly recommend!"</p>
+                 <div class="bg-white p-8 rounded-2xl border border-gray-200 scroll-reveal" style="transition-delay: 100ms;">
+                    <p class="text-gray-600 italic">"The content they create is top-notch. They understood our brand voice perfectly and delivered results faster than we expected. Highly recommend!"</p>
                     <div class="flex items-center mt-6">
-                        <img src="https://placehold.co/50x50/444444/ffffff?text=M" class="w-12 h-12 rounded-full" alt="Client 2">
+                        <img src="https://placehold.co/50x50/d4d4d4/333333?text=M" class="w-12 h-12 rounded-full" alt="Client 2">
                         <div class="ml-4">
-                            <p class="font-bold">Mark C.</p>
-                            <p class="text-sm text-gray-400">Founder, FoodieCafe</p>
+                            <p class="font-bold text-gray-900">Mark C.</p>
+                            <p class="text-sm text-gray-500">Founder, FoodieCafe</p>
                         </div>
                     </div>
                 </div>
@@ -332,20 +329,20 @@
         <section id="contact" class="py-24">
              <div class="grid md:grid-cols-2 gap-12 items-center scroll-reveal">
                 <div>
-                    <h2 class="text-3xl md:text-4xl font-bold">Ready to Grow?</h2>
-                    <p class="text-gray-300 mt-4 mb-8 text-lg">Let's talk about your brand's future. Drop us a message, and we'll get back to you within 24 hours.</p>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Let's Create Something Legendary.</h2>
+                    <p class="text-gray-600 mt-4 mb-8 text-lg">Your brand has a story waiting to be told. We're here to help you tell it to the world. Drop us a message, and let’s start building your future today.</p>
                     <div class="flex space-x-6 items-center">
                         <a href="#" class="bg-green-500 text-white font-bold py-3 px-6 rounded-lg flex items-center space-x-2 hover:bg-green-600 transition-colors duration-300">
                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.886-.001 2.267.651 4.383 1.89 6.191l.496 1.254-.952 3.445 3.542-.93z"/></svg>
                            <span>WhatsApp Us</span>
                         </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">@feasibility.social</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-900 transition-colors duration-300">@feasibility.social</a>
                     </div>
                 </div>
                 <form class="space-y-6">
-                    <input type="text" placeholder="Your Name" class="w-full bg-gray-900/50 border border-gray-700 rounded-lg p-4 focus:outline-none focus:border-[#C44DFF] transition-colors duration-300">
-                    <input type="email" placeholder="Your Email" class="w-full bg-gray-900/50 border border-gray-700 rounded-lg p-4 focus:outline-none focus:border-[#C44DFF] transition-colors duration-300">
-                    <textarea placeholder="Tell us about your project..." rows="4" class="w-full bg-gray-900/50 border border-gray-700 rounded-lg p-4 focus:outline-none focus:border-[#C44DFF] transition-colors duration-300"></textarea>
+                    <input type="text" placeholder="Your Name" class="w-full bg-gray-100 border border-gray-300 rounded-lg p-4 focus:outline-none focus:border-[#C44DFF] transition-colors duration-300 text-gray-800 placeholder-gray-500">
+                    <input type="email" placeholder="Your Email" class="w-full bg-gray-100 border border-gray-300 rounded-lg p-4 focus:outline-none focus:border-[#C44DFF] transition-colors duration-300 text-gray-800 placeholder-gray-500">
+                    <textarea placeholder="Tell us about your project..." rows="4" class="w-full bg-gray-100 border border-gray-300 rounded-lg p-4 focus:outline-none focus:border-[#C44DFF] transition-colors duration-300 text-gray-800 placeholder-gray-500"></textarea>
                     <button type="submit" class="w-full bg-gradient-to-r from-[#C44DFF] to-[#FF1744] text-white font-bold py-4 px-10 rounded-lg text-lg transition-all duration-300 transform hover:scale-105">Send Message</button>
                 </form>
              </div>
@@ -353,9 +350,9 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-gray-800 mt-16">
+    <footer class="border-t border-gray-200 mt-16">
         <div class="container mx-auto px-6 py-6 text-center text-gray-500">
-            <p>&copy; 2025 Feasibility. All rights reserved.</p>
+            <p>&copy; 2025 Feasibility. Engineering the Future of Social.</p>
         </div>
     </footer>
 
@@ -411,5 +408,4 @@
     </script>
 </body>
 </html>
-
 
