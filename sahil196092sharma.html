@@ -189,7 +189,13 @@
                                     <i data-lucide="pen-tool" class="w-6 h-6"></i>
                                 </div>
                                 <div>
-                                    <h2 class="text-xl lg:text-2xl font-semibold text-white">Freelancer Logo Design Project</h2>
+                                    <div class="flex items-center gap-3">
+                                        <h2 class="text-xl lg:text-2xl font-semibold text-white">Freelancer Logo Design Project</h2>
+                                        <!-- NEW: Top Match Badge -->
+                                        <span class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg shadow-emerald-500/20 flex items-center">
+                                            <i data-lucide="sparkles" class="w-3 h-3 mr-1"></i> Top Match
+                                        </span>
+                                    </div>
                                     <div class="flex flex-wrap items-center gap-2 mt-2 text-sm">
                                         <span class="bg-slate-700 text-slate-300 px-2 py-0.5 rounded border border-slate-600">Graphic Design</span>
                                         <span class="bg-slate-700 text-slate-300 px-2 py-0.5 rounded border border-slate-600">Branding</span>
@@ -203,6 +209,39 @@
                                 <div id="timer-container" class="flex items-center justify-center md:inline-flex px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/50 text-amber-400 font-mono font-medium text-sm animate-glow-pulse transition-all duration-300 w-full md:w-auto">
                                     <i data-lucide="clock" class="w-4 h-4 mr-2 animate-pulse"></i>
                                     <span id="countdown">Loading...</span>
+                                </div>
+                                <!-- NEW: Client Activity Indicator -->
+                                <div class="absolute -bottom-6 right-0 text-xs text-emerald-400 font-medium flex items-center justify-end w-full mt-1">
+                                    <span class="relative flex h-2 w-2 mr-2">
+                                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                      <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                    </span>
+                                    Client viewed 12m ago
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- NEW: AI Insights & Reaction Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <!-- Existing Client Reaction -->
+                            <div class="bg-gradient-to-r from-blue-600/10 to-transparent border-l-4 border-blue-500 p-4 rounded-r-lg flex items-center group hover:bg-blue-600/20 transition-colors cursor-default">
+                                <div class="bg-blue-500 rounded-full p-1.5 mr-3 shrink-0 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform">
+                                    <i data-lucide="thumbs-up" class="w-4 h-4 text-white fill-white"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-white">Client Reaction</p>
+                                    <p class="text-xs text-blue-200">Owner liked your proposal.</p>
+                                </div>
+                            </div>
+
+                            <!-- NEW: AI Competitive Analysis -->
+                            <div class="bg-gradient-to-r from-emerald-600/10 to-transparent border-l-4 border-emerald-500 p-4 rounded-r-lg flex items-center group hover:bg-emerald-600/20 transition-colors cursor-default">
+                                <div class="bg-emerald-500 rounded-full p-1.5 mr-3 shrink-0 shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
+                                    <i data-lucide="trending-up" class="w-4 h-4 text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-white">High Win Probability</p>
+                                    <p class="text-xs text-emerald-200">Your bid is <span class="font-bold">15% more competitive</span> than average.</p>
                                 </div>
                             </div>
                         </div>
@@ -276,9 +315,6 @@
                         </div>
 
                     </div>
-                </div>
-
-                
                 </div>
 
             </div>
@@ -390,8 +426,9 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-400 mb-1">Delivery Time</label>
                     <select class="w-full bg-slate-800 border border-slate-700 rounded-lg py-2.5 px-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option selected>2 Days</option>
                         <option>3 Days</option>
-                        <option selected>7 Days</option>
+                        <option>7 Days</option>
                         <option>14 Days</option>
                         <option>30 Days</option>
                     </select>
@@ -417,7 +454,7 @@
                 id: "BID-8829-XJ",
                 price: 250,
                 status: "Active", // 'Active' or 'Withdrawn'
-                delivery: "7 Days"
+                delivery: "2 Days"
             }
         };
 
