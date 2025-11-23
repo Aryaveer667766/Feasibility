@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freelancer Dashboard - Sahil Sharma</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Toastify for notifications -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        slate: {
+                            850: '#151e2e', // Custom dark shade
+                            900: '#0f172a',
+                        }
+                    },
+                    animation: {
+                        'glow-pulse': 'glowPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.3s ease-out',
+                    },
+                    keyframes: {
+                        glowPulse: {
+                            '0%, 100%': { boxShadow: '0 0 5px #fbbf24, 0 0 10px #fbbf24' }, // Amber glow
+                            '50%': { boxShadow: '0 0 2px #fbbf24, 0 0 5px #fbbf24' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glass-modal {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+    </style>
+</head>
+<body class="text-gray-300 antialiased min-h-screen flex overflow-hidden">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-20 lg:w-72 bg-slate-900 border-r border-slate-800 flex flex-col hidden md:flex transition-all duration-300">
+        <div class="h-16 flex items-center justify-center lg:justify-start lg:px-6 border-b border-slate-800 shrink-0">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mr-0 lg:mr-3">
+                <i data-lucide="briefcase" class="text-white w-5 h-5"></i>
+            </div>
+            <span class="text-white font-bold text-xl hidden lg:block">WorkSphere</span>
+        </div>
+        
+        <nav class="flex-1 py-6 space-y-2 px-3 overflow-y-auto">
+            <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center px-3 py-3 bg-blue-600/10 text-blue-400 rounded-lg group transition-all">
+                <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3"></i>
+                <span class="hidden lg:block font-medium">Dashboard</span>
+            </button>
+            <button onclick="switchTab('browse')" id="nav-browse" class="w-full flex items-center px-3 py-3 text-gray-400 hover:bg-slate-800 hover:text-white rounded-lg transition-all group">
+                <i data-lucide="search" class="w-5 h-5 mr-3"></i>
+                <span class="hidden lg:block font-medium">Browse Projects</span>
+            </button>
+            <button onclick="switchTab('messages')" id="nav-messages" class="w-full flex items-center px-3 py-3 text-gray-400 hover:bg-slate-800 hover:text-white rounded-lg transition-all group">
+                <i data-lucide="message-square" class="w-5 h-5 mr-3"></i>
+                <span class="hidden lg:block font-medium">Messages</span>
+                <span class="hidden lg:flex ml-auto bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">3</span>
+            </button>
+            <button onclick="switchTab('finances')" id="nav-finances" class="w-full flex items-center px-3 py-3 text-gray-400 hover:bg-slate-800 hover:text-white rounded-lg transition-all group">
+                <i data-lucide="credit-card" class="w-5 h-5 mr-3"></i>
+                <span class="hidden lg:block font-medium">Finances</span>
+            </button>
+        </nav>
+
+        <!-- Wallet Widget (Sidebar) -->
+        <div class="px-4 pb-4 hidden lg:block">
+            <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 p-4 rounded-xl shadow-lg relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-16 h-16 bg-emerald-500/10 rounded-full blur-xl -mr-4 -mt-4"></div>
+                
+                <div class="flex justify-between items-start mb-2">
+                    <p class="text-xs text-gray-400 font-semibold uppercase tracking-wider">Wallet Balance</p>
+                    <i data-lucide="wallet" class="w-4 h-4 text-emerald-400"></i>
+                </div>
+                <p class="text-2xl font-bold text-white tracking-tight">$ <span id="sidebar-wallet-amount">0</span></p>
+                
+                <button onclick="addFunds()" class="mt-3 w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition-colors flex items-center justify-center gap-2">
+                    <i data-lucide="plus" class="w-3 h-3"></i> Add Funds
+                </button>
+            </div>
+        </div>
+
+        <div class="p-4 border-t border-slate-800 shrink-0">
+            <div class="flex items-center">
+                <img src="https://ui-avatars.com/api/?name=Sahil+Sharma&background=3b82f6&color=fff" alt="User" class="w-10 h-10 rounded-full border-2 border-slate-700">
+                <div class="ml-3 hidden lg:block">
+                    <p class="text-sm font-medium text-white">Sahil Sharma</p>
+                    <p class="text-xs text-gray-500">Junior Associate</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col relative overflow-y-auto h-screen bg-slate-900" id="main-container">
+        
+        <!-- Mobile Header -->
+        <header class="h-16 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 flex items-center justify-between px-4 sticky top-0 z-20 md:hidden">
+            <div class="flex items-center gap-3">
+                <span class="text-white font-bold text-lg">WorkSphere</span>
+                <div class="bg-slate-800 px-2 py-1 rounded text-xs font-mono text-emerald-400 border border-slate-700">
+                    $<span id="mobile-wallet-amount">0</span>
+                </div>
+            </div>
+            <img src="https://ui-avatars.com/api/?name=Sahil+Sharma&background=3b82f6&color=fff" alt="User" class="w-8 h-8 rounded-full">
+        </header>
+
+        <!-- DASHBOARD VIEW -->
+        <div id="view-dashboard" class="p-4 lg:p-10 max-w-7xl mx-auto w-full animate-fade-in">
+            
+            <!-- Greeting Section -->
+            <div class="mb-8">
+                <h1 class="text-3xl lg:text-4xl font-bold text-white tracking-tight">
+                    <span id="greeting-text">Hello</span>, Sahil Sharma.
+                </h1>
+                <p class="text-gray-400 mt-2">Here is the status of your active bids.</p>
+            </div>
+
+            <!-- Active Bids Section -->
+            <div class="grid grid-cols-1 gap-6">
+                
+                <!-- The Specific Project Card -->
+                <div id="project-card" class="glass-panel rounded-2xl p-1 border border-blue-500/30 relative overflow-hidden transition-all duration-300">
+                    <!-- Glow Background -->
+                    <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-blue-500/10 blur-3xl"></div>
+
+                    <div class="bg-slate-850/90 rounded-xl p-6 lg:p-8 h-full relative z-10">
+                        
+                        <!-- Card Header -->
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-indigo-500/20 p-3 rounded-lg border border-indigo-500/30 text-indigo-400 shrink-0">
+                                    <i data-lucide="pen-tool" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl lg:text-2xl font-semibold text-white">Freelancer Logo Design Project</h2>
+                                    <div class="flex flex-wrap items-center gap-2 mt-2 text-sm">
+                                        <span class="bg-slate-700 text-slate-300 px-2 py-0.5 rounded border border-slate-600">Graphic Design</span>
+                                        <span class="bg-slate-700 text-slate-300 px-2 py-0.5 rounded border border-slate-600">Branding</span>
+                                        <span class="text-gray-500 flex items-center"><i data-lucide="map-pin" class="w-3 h-3 mr-1"></i> Remote</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Live Timer -->
+                            <div class="md:ml-auto relative shrink-0">
+                                <div id="timer-container" class="inline-flex items-center px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/50 text-amber-400 font-mono font-medium text-sm animate-glow-pulse transition-all duration-300">
+                                    <i data-lucide="clock" class="w-4 h-4 mr-2 animate-pulse"></i>
+                                    <span id="countdown">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="border-slate-700/50 mb-6">
+
+                        <!-- Bid Details -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+                            
+                            <!-- Price Display -->
+                            <div class="col-span-1 bg-slate-800/50 p-5 rounded-xl border border-slate-700/50 flex flex-col justify-center hover:bg-slate-800/70 transition-colors">
+                                <p class="text-sm text-gray-400 font-medium mb-1">Your Proposed Price</p>
+                                <div class="flex items-baseline text-emerald-400">
+                                    <span class="text-2xl font-medium mr-1">$</span>
+                                    <span id="display-price" class="text-5xl font-bold tracking-tight">250</span>
+                                    <span class="text-lg text-gray-500 ml-2">USD</span>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">For full project completion</p>
+                            </div>
+
+                            <!-- Project Stats -->
+                            <div class="col-span-1 md:col-span-2 grid grid-cols-2 gap-4">
+                                <div class="space-y-4">
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Client Rating</p>
+                                        <div class="flex items-center mt-1">
+                                            <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400"></i>
+                                            <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400 ml-1"></i>
+                                            <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400 ml-1"></i>
+                                            <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400 ml-1"></i>
+                                            <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400 ml-1"></i>
+                                            <span class="text-white ml-2 font-medium">5.0</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Delivery Time</p>
+                                        <p class="text-white mt-1 font-medium">7 Days</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-4">
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Proposal Status</p>
+                                        <div class="flex items-center mt-1" id="status-container">
+                                            <!-- Status injected via JS -->
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Proposal ID</p>
+                                        <p class="text-white mt-1 font-mono text-sm">BID-8829-XJ</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="mt-8 flex flex-wrap gap-4" id="action-buttons">
+                            <button onclick="openEditModal()" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-lg transition-colors shadow-lg shadow-blue-600/20 flex items-center gap-2">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i> Edit Proposal
+                            </button>
+                            <button onclick="withdrawBid()" class="px-6 py-2.5 bg-transparent border border-slate-600 text-gray-300 hover:text-white hover:border-red-500 hover:text-red-400 hover:bg-red-500/10 font-medium rounded-lg transition-all flex items-center gap-2">
+                                <i data-lucide="x-circle" class="w-4 h-4"></i> Withdraw Bid
+                            </button>
+                        </div>
+                        
+                        <!-- Withdrawn Message (Hidden by default) -->
+                        <div id="withdrawn-msg" class="mt-8 hidden">
+                            <div class="bg-red-500/10 border border-red-500/20 text-red-200 px-4 py-3 rounded-lg flex items-center">
+                                <i data-lucide="alert-circle" class="w-5 h-5 mr-2 text-red-500"></i>
+                                You have withdrawn this proposal. You can no longer edit it.
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Mock Other Project -->
+                <div class="glass-panel rounded-xl p-6 border border-slate-800 opacity-60 hover:opacity-80 transition-opacity cursor-pointer">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center space-x-4">
+                             <div class="bg-slate-700 p-2 rounded-lg text-gray-400">
+                                <i data-lucide="code" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-300">React Dashboard Optimization</h3>
+                                <p class="text-sm text-gray-500">Bid submitted 2 days ago</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xl font-bold text-gray-400">$850 <span class="text-sm font-normal text-gray-600">USD</span></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- PLACEHOLDER VIEW (Other Tabs) -->
+        <div id="view-placeholder" class="hidden flex-1 flex flex-col items-center justify-center p-10 text-center animate-fade-in">
+            <div class="bg-slate-800/50 p-8 rounded-full mb-6 border border-slate-700">
+                <i id="placeholder-icon" data-lucide="hammer" class="w-12 h-12 text-gray-500"></i>
+            </div>
+            <h2 id="placeholder-title" class="text-2xl font-bold text-white mb-2">Section Title</h2>
+            <p class="text-gray-400 max-w-md">Access to this module is currently restricted for new accounts. Please complete your onboarding checklist to unlock full system access.</p>
+            <button onclick="switchTab('dashboard')" class="mt-8 px-6 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white rounded-lg transition-colors">
+                Return to Dashboard
+            </button>
+        </div>
+
+    </main>
+
+    <!-- EDIT MODAL -->
+    <div id="edit-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity" onclick="closeEditModal()"></div>
+        
+        <!-- Modal Content -->
+        <div class="glass-modal relative w-full max-w-md rounded-2xl border border-slate-700 shadow-2xl p-6 transform transition-all scale-100">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-white">Edit Proposal</h3>
+                <button onclick="closeEditModal()" class="text-gray-400 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-1">Bid Amount (USD)</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                        <input type="number" id="edit-price-input" class="w-full bg-slate-800 border border-slate-700 rounded-lg py-2.5 pl-8 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-600" placeholder="0.00">
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Includes Freelancer fee.</p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-1">Delivery Time</label>
+                    <select class="w-full bg-slate-800 border border-slate-700 rounded-lg py-2.5 px-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option>3 Days</option>
+                        <option selected>7 Days</option>
+                        <option>14 Days</option>
+                        <option>30 Days</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex gap-3 mt-8">
+                <button onclick="closeEditModal()" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-gray-300 font-medium rounded-lg transition-colors">
+                    Cancel
+                </button>
+                <button onclick="saveProposal()" class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-lg transition-colors shadow-lg shadow-blue-600/20">
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- APP STATE MANAGEMENT ---
+        const defaultState = {
+            wallet: 0,
+            currentBid: {
+                id: "BID-8829-XJ",
+                price: 250,
+                status: "Active", // 'Active' or 'Withdrawn'
+                delivery: "7 Days"
+            }
+        };
+
+        let appState = JSON.parse(localStorage.getItem('freelancer_dashboard_state')) || defaultState;
+
+        function saveState() {
+            localStorage.setItem('freelancer_dashboard_state', JSON.stringify(appState));
+        }
+
+        // --- DOM ELEMENTS & RENDERING ---
+        function render() {
+            // 1. Wallet
+            document.getElementById('sidebar-wallet-amount').textContent = appState.wallet.toLocaleString();
+            document.getElementById('mobile-wallet-amount').textContent = appState.wallet.toLocaleString();
+
+            // 2. Bid Price
+            document.getElementById('display-price').textContent = appState.currentBid.price;
+            document.getElementById('edit-price-input').value = appState.currentBid.price;
+
+            // 3. Bid Status
+            const statusContainer = document.getElementById('status-container');
+            const card = document.getElementById('project-card');
+            const actionButtons = document.getElementById('action-buttons');
+            const withdrawnMsg = document.getElementById('withdrawn-msg');
+
+            if (appState.currentBid.status === 'Active') {
+                // Active UI
+                statusContainer.innerHTML = `
+                    <span class="relative flex h-3 w-3 mr-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+                    </span>
+                    <p class="text-white font-medium">Active & Viewed</p>
+                `;
+                card.classList.remove('border-red-500/30');
+                card.classList.add('border-blue-500/30');
+                actionButtons.style.display = 'flex';
+                withdrawnMsg.style.display = 'none';
+            } else {
+                // Withdrawn UI
+                statusContainer.innerHTML = `
+                    <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                    <p class="text-red-400 font-medium">Withdrawn</p>
+                `;
+                card.classList.remove('border-blue-500/30');
+                card.classList.add('border-red-500/30');
+                actionButtons.style.display = 'none'; // Hide buttons
+                withdrawnMsg.style.display = 'flex'; // Show msg
+            }
+        }
+
+        // --- INTERACTION LOGIC ---
+
+        // 1. Wallet Logic
+        function addFunds() {
+            // Simulate simple addition
+            const amount = 100; 
+            appState.wallet += amount;
+            saveState();
+            render();
+            
+            Toastify({
+                text: `Success! Added $${amount} to wallet.`,
+                duration: 3000,
+                gravity: "top", 
+                position: "right", 
+                style: { background: "#059669" },
+            }).showToast();
+        }
+
+        // 2. Edit Modal Logic
+        function openEditModal() {
+            document.getElementById('edit-modal').classList.remove('hidden');
+            document.getElementById('edit-modal').classList.add('flex');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.add('hidden');
+            document.getElementById('edit-modal').classList.remove('flex');
+        }
+
+        function saveProposal() {
+            const newPrice = parseInt(document.getElementById('edit-price-input').value);
+            
+            if (newPrice < 5) {
+                alert("Minimum bid is $5");
+                return;
+            }
+
+            appState.currentBid.price = newPrice;
+            saveState();
+            render();
+            closeEditModal();
+
+            Toastify({
+                text: "Proposal updated successfully!",
+                duration: 3000,
+                gravity: "top", 
+                position: "right", 
+                style: { background: "#2563eb" },
+            }).showToast();
+        }
+
+        // 3. Withdraw Logic
+        function withdrawBid() {
+            if(confirm("Are you sure you want to withdraw your bid? You cannot undo this action.")) {
+                appState.currentBid.status = 'Withdrawn';
+                saveState();
+                render();
+
+                Toastify({
+                    text: "Bid withdrawn.",
+                    duration: 3000,
+                    gravity: "top", 
+                    position: "right", 
+                    style: { background: "#dc2626" },
+                }).showToast();
+            }
+        }
+
+        // 4. Navigation Logic (Mock)
+        function switchTab(tabName) {
+            // Update Sidebar Active States
+            const buttons = ['dashboard', 'browse', 'messages', 'finances'];
+            buttons.forEach(btn => {
+                const el = document.getElementById(`nav-${btn}`);
+                if(btn === tabName) {
+                    el.classList.remove('text-gray-400', 'hover:bg-slate-800');
+                    el.classList.add('bg-blue-600/10', 'text-blue-400');
+                } else {
+                    el.classList.add('text-gray-400', 'hover:bg-slate-800');
+                    el.classList.remove('bg-blue-600/10', 'text-blue-400');
+                }
+            });
+
+            // Toggle View
+            const dashView = document.getElementById('view-dashboard');
+            const placeView = document.getElementById('view-placeholder');
+            const placeTitle = document.getElementById('placeholder-title');
+            const placeIcon = document.getElementById('placeholder-icon');
+
+            if(tabName === 'dashboard') {
+                dashView.classList.remove('hidden');
+                placeView.classList.add('hidden');
+            } else {
+                dashView.classList.add('hidden');
+                placeView.classList.remove('hidden');
+                placeView.classList.add('flex');
+                
+                // Dynamic content for placeholder
+                const titles = {
+                    'browse': 'Browse Projects',
+                    'messages': 'Messages',
+                    'finances': 'Financial Overview'
+                };
+                const icons = {
+                    'browse': 'search',
+                    'messages': 'message-square',
+                    'finances': 'credit-card'
+                }
+                
+                placeTitle.textContent = titles[tabName];
+                placeIcon.setAttribute('data-lucide', icons[tabName]);
+                lucide.createIcons();
+            }
+        }
+
+
+        // --- TIMING LOGIC ---
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            const greetingElement = document.getElementById('greeting-text');
+            let greeting;
+            if (hour >= 5 && hour < 12) greeting = "Good Morning";
+            else if (hour >= 12 && hour < 18) greeting = "Good Afternoon";
+            else greeting = "Good Evening";
+            greetingElement.textContent = greeting;
+        }
+
+        function startCountdown() {
+            // Fixed end date logic relative to current time if not stored, 
+            // but for simplicity let's just do 6 days from "now" every reload 
+            // unless we want strict persistence. 
+            // Let's keep the visual effect of 6 days moving.
+            
+            const now = new Date();
+            const endDate = new Date(now.getTime() + (6 * 24 * 60 * 60 * 1000)); 
+            const timerElement = document.getElementById('countdown');
+            const timerContainer = document.getElementById('timer-container');
+
+            function updateTimer() {
+                const currentTime = new Date().getTime();
+                const distance = endDate - currentTime;
+
+                if (appState.currentBid.status === 'Withdrawn') {
+                    timerElement.textContent = "---";
+                    timerContainer.classList.remove('animate-glow-pulse');
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                timerElement.textContent = `Ends in ${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }
+
+            setInterval(updateTimer, 1000);
+            updateTimer();
+        }
+
+        // --- INIT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            render();
+            updateGreeting();
+            startCountdown();
+        });
+
+    </script>
+</body>
+</html>
