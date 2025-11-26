@@ -518,8 +518,6 @@
     import { getDatabase, ref, set, onValue, update } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
     // --- FIREBASE SETUP ---
-    // setLogLevel is for Firestore, not needed for RTDB but keeping for general debug clarity if other Firebase services were used
-    // setLogLevel('Debug'); 
     
     // Global Configuration
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -527,7 +525,31 @@
     // Invalid chars in RTDB: . # $ [ ] /
     const sanitizedAppId = appId.replace(/[.#$[\]/]/g, '_'); 
     
-    const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+    // Define the mock key constant
+    const MOCK_API_KEY = "MOCK_API_KEY";
+
+    let firebaseConfig = { 
+        // Fallback config to prevent crash when the environment variables are not injected
+        apiKey: MOCK_API_KEY,
+        authDomain: "mock-domain.firebaseapp.com",
+        databaseURL: "https://mock-db-url.firebaseio.com",
+        projectId: "mock-project-id",
+        storageBucket: "mock-bucket.appspot.com",
+        messagingSenderId: "123456789012",
+        appId: "1:123456789012:web:1234567890abcdef",
+        measurementId: "G-MOCKMEASUREMENT"
+    };
+
+    // Attempt to load provided config; if it exists and is valid, it overwrites the mock config
+    try {
+        const injectedConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        if (Object.keys(injectedConfig).length > 0 && injectedConfig.databaseURL) {
+            firebaseConfig = injectedConfig;
+        }
+    } catch (e) {
+        console.error("Error parsing injected Firebase config, using mock fallback.", e);
+    }
+    
     const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
     
     let dbRTDB; // Realtime Database instance
@@ -588,9 +610,14 @@
 
     // --- FIREBASE INITIALIZATION & AUTH ---
     async function initializeFirebase() {
-        if (!firebaseConfig || Object.keys(firebaseConfig).length === 0) {
-            Toastify({ text: "Firebase configuration is missing.", duration: 5000, style: { background: "#dc2626" } }).showToast();
-            return;
+        const isMockConfig = firebaseConfig.apiKey === MOCK_API_KEY;
+
+        if (isMockConfig) {
+             Toastify({ 
+                text: "Using mock Firebase config. Skipping Authentication.", 
+                duration: 5000, 
+                style: { background: "#f59e0b" } 
+            }).showToast();
         }
 
         try {
@@ -598,25 +625,39 @@
             dbRTDB = getDatabase(app); // Initialize Realtime DB
             auth = getAuth(app);
 
-            // Authentication logic
-            if (initialAuthToken) {
-                await signInWithCustomToken(auth, initialAuthToken);
+            if (!isMockConfig) {
+                // Only attempt sign-in if a real API key is present
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
             } else {
-                await signInAnonymously(auth);
+                // If using mock config, simulate successful auth change to start data listener
+                // In a real environment, onAuthStateChanged would handle this.
+                // Here, we manually trigger the data setup.
+                userId = "mock_user_id";
+                setupDataListener();
             }
 
+            // Set up listener for real config scenarios
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     userId = user.uid;
-                    setupDataListener();
-                } else {
+                    if (!isMockConfig) {
+                        setupDataListener();
+                    }
+                } else if (!isMockConfig) {
                     console.log("User signed out or anonymous.");
                 }
             });
 
         } catch (error) {
             console.error("Firebase Initialization Error:", error);
-            Toastify({ text: `Failed to initialize Firebase: ${error.message}`, duration: 5000, style: { background: "#dc2626" } }).showToast();
+            // Only show auth error if it's not the expected mock key failure
+            if (!isMockConfig) {
+                Toastify({ text: `Failed to initialize Firebase: ${error.message}`, duration: 5000, style: { background: "#dc2626" } }).showToast();
+            }
         }
     }
 
