@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feasibility | Scale Your Channel</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter & Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f0f0f; /* YouTube Dark Background */
+            color: #f1f1f1;
+            overflow-x: hidden;
+            padding-top: 40px;
+        }
+
+        h1, h2, h3, .font-heading {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* --- Creator Accents --- */
+        .text-yt-red {
+            color: #FF0000;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+        }
+        .text-neon-blue {
+            color: #3EA6FF; /* YouTube Blue */
+            text-shadow: 0 0 10px rgba(62, 166, 255, 0.4);
+        }
+        
+        .bg-creator-gradient {
+            background: linear-gradient(135deg, #FF0000 0%, #cc0000 100%);
+        }
+        
+        /* Floating Icons Animation */
+        .float-icon {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        /* Scroll Reveal */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #181818;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FF0000;
+            border-radius: 10px;
+        }
+
+        /* Price Strike & Badge */
+        .price-cut {
+            text-decoration: line-through;
+            color: #606060;
+            font-size: 1rem;
+            margin-right: 0.5rem;
+        }
+        .pulse-badge {
+            animation: pulse-red 2s infinite;
+        }
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
+        }
+
+        /* Abstract Background */
+        .bg-grid-pattern {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* FAQ & Modal */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary ~ * { animation: slideDown 0.3s ease-in-out; }
+        @keyframes slideDown {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .modal { opacity: 0; pointer-events: none; transition: all 0.3s; }
+        .modal.active { opacity: 1; pointer-events: auto; }
+        .modal-content { transform: scale(0.95); transition: transform 0.3s; }
+        .modal.active .modal-content { transform: scale(1); }
+    </style>
+</head>
+<body class="bg-grid-pattern relative">
+
+    <!-- Countdown Timer -->
+    <div id="countdown-bar" class="fixed top-0 left-0 right-0 bg-[#FF0000] text-white z-[60] py-2 px-4 flex justify-center items-center text-sm font-bold shadow-lg">
+        <span class="mr-2">🔴 LIVE OFFER:</span>
+        <span class="mr-4 hidden md:inline opacity-90">Creator slots filling fast for 2025!</span>
+        <div class="flex space-x-2 font-mono bg-black/20 px-2 rounded">
+            <span id="timer-hours">00</span>h :
+            <span id="timer-minutes">00</span>m :
+            <span id="timer-seconds">00</span>s
+        </div>
+        <a href="#pricing" class="ml-4 bg-white text-[#FF0000] hover:bg-gray-100 text-xs font-black py-1 px-3 rounded uppercase transition-colors">Book Slot</a>
+    </div>
+    
+    <!-- Header -->
+    <header class="fixed top-10 left-0 right-0 z-50 bg-[#0f0f0f]/90 backdrop-blur-md border-b border-gray-800 transition-all duration-300">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-black tracking-tighter text-white flex items-center gap-2">
+                <span class="text-[#FF0000] text-3xl">▶</span> Feasibility
+            </a>
+            <div class="flex items-center">
+                <div class="hidden md:flex space-x-8 items-center text-gray-300 text-sm font-semibold uppercase tracking-wide">
+                    <a href="#services" class="hover:text-white transition-colors">Services</a>
+                    <a href="#portfolio" class="hover:text-white transition-colors">Edits</a>
+                    <a href="#pricing" class="hover:text-[#FF0000] transition-colors">Pricing</a>
+                    <a href="#contact" class="bg-[#FF0000] hover:bg-red-700 text-white py-2 px-6 rounded-full transition-all transform hover:scale-105 shadow-[0_0_15px_rgba(255,0,0,0.5)]">Start Creating</a>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none ml-4 text-white">
+                   <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 space-y-4 bg-[#1f1f1f] border-t border-gray-800 absolute w-full">
+            <a href="#services" class="block text-gray-300 hover:text-white">Services</a>
+            <a href="#portfolio" class="block text-gray-300 hover:text-white">Portfolio</a>
+            <a href="#pricing" class="block text-[#FF0000] font-bold">Pricing</a>
+            <a href="#contact" class="block bg-[#FF0000] text-white py-3 px-5 rounded text-center font-bold">Start Creating</a>
+        </div>
+    </header>
+
+    <main class="relative z-10 pt-10">
+
+        <!-- Hero Section -->
+        <section id="hero" class="min-h-screen flex flex-col justify-center items-center text-center pt-20 relative overflow-hidden">
+            <!-- Floating Background Elements -->
+            <div class="absolute top-1/4 left-10 text-6xl opacity-20 float-icon" style="animation-delay: 0s;">▶️</div>
+            <div class="absolute bottom-1/4 right-10 text-6xl opacity-20 float-icon" style="animation-delay: 1s;">👍</div>
+            <div class="absolute top-1/3 right-1/4 text-4xl opacity-10 float-icon text-[#FF0000]" style="animation-delay: 2s;">● REC</div>
+
+            <div class="max-w-5xl px-6 scroll-reveal z-10">
+                <div class="inline-block border border-[#FF0000] bg-[#FF0000]/10 text-[#FF0000] px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-6 animate-pulse">
+                    For YouTubers & Influencers
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl lg:text-9xl font-black leading-tight text-white mb-6">
+                    STOP <span class="text-gray-500 line-through decoration-red-500 decoration-4">EDITING.</span><br>
+                    START <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#FF0000] to-orange-500">GROWING.</span>
+                </h1>
+                
+                <p class="text-lg md:text-2xl text-gray-400 max-w-3xl mx-auto mb-10 font-light">
+                    We handle the <strong>Thumbnails</strong>, <strong>Editing</strong>, and <strong>Analytics</strong>. 
+                    You handle the fame. Join top creators scaling to 1M+ subscribers.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#pricing" class="bg-[#FF0000] hover:bg-red-700 text-white font-bold py-4 px-12 rounded-full text-lg transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(255,0,0,0.4)]">
+                        See Creator Plans
+                    </a>
+                    <a href="#portfolio" class="bg-transparent border border-gray-600 hover:border-white text-white font-bold py-4 px-12 rounded-full text-lg transition-all">
+                        View Portfolio
+                    </a>
+                </div>
+                
+                <!-- Stats Strip -->
+                <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-gray-800 pt-8 text-gray-500">
+                    <div>
+                        <div class="text-3xl font-black text-white">50M+</div>
+                        <div class="text-xs uppercase tracking-wide">Views Generated</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-black text-white">4.8%</div>
+                        <div class="text-xs uppercase tracking-wide">Avg CTR Increase</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-black text-white">200+</div>
+                        <div class="text-xs uppercase tracking-wide">Channels Scaled</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-black text-white">24h</div>
+                        <div class="text-xs uppercase tracking-wide">Turnaround Time</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trusted By Section -->
+        <section class="py-12 border-y border-gray-800 bg-[#181818] scroll-reveal">
+            <div class="container mx-auto px-6">
+                <p class="text-center text-sm font-bold text-gray-500 uppercase tracking-widest mb-8">Trusted by Creators like</p>
+                <div class="flex flex-wrap justify-center items-center gap-10 md:gap-20 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                    <!-- Realistic Creator Names -->
+                    <div class="flex items-center gap-2 text-xl font-bold text-white"><span class="text-red-500">●</span> Gadget Guru</div>
+                    <div class="flex items-center gap-2 text-xl font-bold text-white"><span class="text-blue-500">●</span> Fact Finder</div>
+                    <div class="flex items-center gap-2 text-xl font-bold text-white"><span class="text-green-500">●</span> News Now</div>
+                    <div class="flex items-center gap-2 text-xl font-bold text-white"><span class="text-purple-500">●</span> Gamer Pro</div>
+                    <div class="flex items-center gap-2 text-xl font-bold text-white"><span class="text-yellow-500">●</span> Stream King</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-24 relative">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 scroll-reveal">
+                    <h2 class="text-4xl md:text-5xl font-black text-white mb-4">The Viral Toolkit 🧰</h2>
+                    <p class="text-gray-400">Everything you need to dominate the algorithm.</p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Card 1 -->
+                    <div class="bg-[#1f1f1f] p-8 rounded-2xl border border-gray-800 hover:border-[#FF0000] transition-all hover:-translate-y-2 group scroll-reveal">
+                        <div class="w-14 h-14 bg-[#FF0000]/10 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:bg-[#FF0000] group-hover:text-white transition-colors">✂️</div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Retention Editing</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">We cut the fluff. Fast-paced editing, J-cuts, SFX, and motion graphics designed to keep Average View Duration (AVD) high.</p>
+                    </div>
+                    
+                    <!-- Card 2 -->
+                    <div class="bg-[#1f1f1f] p-8 rounded-2xl border border-gray-800 hover:border-[#FF0000] transition-all hover:-translate-y-2 group scroll-reveal" style="transition-delay: 100ms;">
+                        <div class="w-14 h-14 bg-[#FF0000]/10 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:bg-[#FF0000] group-hover:text-white transition-colors">🖼️</div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Clickbait Thumbnails</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Thumbnails that demand clicks. We use psychology, contrast, and emotions to boost your CTR instantly.</p>
+                    </div>
+                    
+                    <!-- Card 3 -->
+                    <div class="bg-[#1f1f1f] p-8 rounded-2xl border border-gray-800 hover:border-[#FF0000] transition-all hover:-translate-y-2 group scroll-reveal" style="transition-delay: 200ms;">
+                        <div class="w-14 h-14 bg-[#FF0000]/10 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:bg-[#FF0000] group-hover:text-white transition-colors">📱</div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Shorts Repurposing</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Turn 1 long video into 10 viral Shorts/Reels. We identify the viral hooks and format them for vertical explosion.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio/Testimonials -->
+        <section id="portfolio" class="py-24 bg-[#181818]">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-12 scroll-reveal">
+                    <div>
+                        <h2 class="text-4xl md:text-5xl font-black text-white">Creator Wins 🏆</h2>
+                        <p class="text-gray-400 mt-2">Real numbers from real channels.</p>
+                    </div>
+                    <a href="#pricing" class="text-[#FF0000] font-bold hover:underline mt-4 md:mt-0">Join the leaderboard &rarr;</a>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Case Study 1 -->
+                    <div class="relative group rounded-xl overflow-hidden scroll-reveal">
+                        <img src="https://placehold.co/600x400/111/333?text=Gaming+Thumbnail" class="w-full h-64 object-cover opacity-80 group-hover:opacity-100 transition-opacity" alt="Gaming">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-8 h-8 bg-red-500 rounded-full"></div>
+                                <span class="font-bold text-white">Apex Shooters</span>
+                            </div>
+                            <p class="text-green-400 font-bold text-2xl">+400k Subs</p>
+                            <p class="text-gray-400 text-xs">In 3 Months • Gaming Niche</p>
+                        </div>
+                    </div>
+
+                    <!-- Case Study 2 -->
+                    <div class="relative group rounded-xl overflow-hidden scroll-reveal" style="transition-delay: 100ms;">
+                        <img src="https://placehold.co/600x400/111/333?text=Vlog+Thumbnail" class="w-full h-64 object-cover opacity-80 group-hover:opacity-100 transition-opacity" alt="Vlog">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-8 h-8 bg-yellow-500 rounded-full"></div>
+                                <span class="font-bold text-white">Daily Life Vlogs</span>
+                            </div>
+                            <p class="text-green-400 font-bold text-2xl">2.5M Views</p>
+                            <p class="text-gray-400 text-xs">Single Video • Retention Edit</p>
+                        </div>
+                    </div>
+
+                    <!-- Case Study 3 -->
+                    <div class="relative group rounded-xl overflow-hidden scroll-reveal" style="transition-delay: 200ms;">
+                        <img src="https://placehold.co/600x400/111/333?text=Tech+Thumbnail" class="w-full h-64 object-cover opacity-80 group-hover:opacity-100 transition-opacity" alt="Tech">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-8 h-8 bg-blue-500 rounded-full"></div>
+                                <span class="font-bold text-white">Tech Insights</span>
+                            </div>
+                            <p class="text-green-400 font-bold text-2xl">3x Ad Revenue</p>
+                            <p class="text-gray-400 text-xs">Via Shorts Monetization</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="py-24 relative">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-[#FF0000] rounded-full blur-[150px] opacity-10 -z-10"></div>
+            
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 scroll-reveal">
+                    <span class="text-[#FF0000] font-bold tracking-widest uppercase mb-2 block">Invest in your channel</span>
+                    <h2 class="text-4xl md:text-6xl font-black text-white mb-6">Creator Packages</h2>
+                    
+                    <!-- Satisfaction Badge -->
+                    <div class="inline-flex items-center bg-gray-800 border border-gray-700 rounded-full px-4 py-2">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span class="text-gray-300 text-sm font-bold">100% Satisfaction or Re-Edit Free</span>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto items-start">
+                    <!-- Tier 1 -->
+                    <div class="bg-[#1f1f1f] border border-gray-800 rounded-3xl p-8 hover:border-gray-600 transition-all scroll-reveal">
+                        <h3 class="text-xl font-bold text-gray-400 uppercase tracking-widest">Starter</h3>
+                        <div class="my-6">
+                            <span class="price-cut">₹9,000</span>
+                            <span class="text-4xl font-black text-white">₹5,000</span>
+                            <span class="text-gray-500">/mo</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-6 pb-6 border-b border-gray-800">Perfect for consistent uploads without the burnout.</p>
+                        <ul class="space-y-4 mb-8 text-gray-300 text-sm">
+                            <li class="flex gap-3"><span class="text-[#FF0000]">✔</span> 4 Long Form Videos (10m)</li>
+                            <li class="flex gap-3"><span class="text-[#FF0000]">✔</span> 4 Standard Thumbnails</li>
+                            <li class="flex gap-3"><span class="text-[#FF0000]">✔</span> Basic Color & Audio</li>
+                            <li class="flex gap-3"><span class="text-[#FF0000]">✔</span> 48h Turnaround</li>
+                        </ul>
+                        <button onclick="openModal('Starter')" class="w-full py-4 rounded-xl font-bold border border-gray-600 hover:bg-white hover:text-black transition-all">Select Plan</button>
+                    </div>
+
+                    <!-- Tier 2 (Highlighted) -->
+                    <div class="bg-[#1f1f1f] border-2 border-[#FF0000] rounded-3xl p-8 transform md:-translate-y-4 relative shadow-[0_0_30px_rgba(255,0,0,0.15)] scroll-reveal" style="transition-delay: 100ms;">
+                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#FF0000] text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Most Popular</div>
+                        <h3 class="text-xl font-bold text-[#FF0000] uppercase tracking-widest">Growth</h3>
+                        <div class="my-6">
+                            <span class="price-cut">₹18,000</span>
+                            <span class="text-5xl font-black text-white">₹10,000</span>
+                            <span class="text-gray-500">/mo</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-6 pb-6 border-b border-gray-800">Designed to trigger the algorithm and boost retention.</p>
+                        <ul class="space-y-4 mb-8 text-white text-sm font-medium">
+                            <li class="flex gap-3"><span class="text-[#FF0000]">✔</span> <strong>8 Long Form Videos</strong></li>
+                            <li class="flex gap-3"><span class="text-[#FF0000]">✔</span> 8 High-CTR Thumbnails</li>
+                            <li class="flex gap-3"><span class="text-[#FF0000]">✔</span> <strong>8 Shorts Repurposed</strong></li>
+                            <li class="flex gap-3"><span class="text-[#FF0000]">✔</span> Advanced SFX & Motion GFX</li>
+                            <li class="flex gap-3"><span class="text-[#FF0000]">✔</span> SEO Title & Tags</li>
+                        </ul>
+                        <button onclick="openModal('Growth')" class="w-full py-4 rounded-xl font-bold bg-[#FF0000] hover:bg-red-700 text-white transition-all shadow-lg">Start Growing</button>
+                    </div>
+
+                    <!-- Tier 3 -->
+                    <div class="bg-[#1f1f1f] border border-gray-800 rounded-3xl p-8 hover:border-gray-600 transition-all scroll-reveal" style="transition-delay: 200ms;">
+                        <h3 class="text-xl font-bold text-gray-400 uppercase tracking-widest">Empire</h3>
+                        <div class="my-6">
+                            <span class="price-cut">₹40,000</span>
+                            <span class="text-4xl font-black text-white">₹25,000</span>
+                            <span class="text-lg text-gray-500">/mo</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-6 pb-6 border-b border-gray-800">Full channel automation for serious creators.</p>
+                        <ul class="space-y-4 mb-8 text-gray-300 text-sm">
+                            <li class="flex gap-3"><span class="text-[#FF0000]">✔</span> 12 Videos + Unlimited Shorts</li>
+                            <li class="flex gap-3"><span class="text-[#FF0000]">✔</span> Unlimited Thumbnails (A/B)</li>
+                            <li class="flex gap-3"><span class="text-[#FF0000]">✔</span> Dedicated Senior Editor</li>
+                            <li class="flex gap-3"><span class="text-[#FF0000]">✔</span> Script Polishing</li>
+                            <li class="flex gap-3"><span class="text-[#FF0000]">✔</span> Community Tab Management</li>
+                        </ul>
+                        <button onclick="openModal('Empire')" class="w-full py-4 rounded-xl font-bold border border-gray-600 hover:bg-white hover:text-black transition-all">Select Plan</button>
+                    </div>
+                </div>
+                
+                <!-- Addon -->
+                <div class="mt-12 text-center">
+                    <p class="text-gray-500">Need just thumbnails? <a href="#contact" class="text-white underline decoration-red-500">Get a pack for ₹3,000</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-24 bg-[#181818] border-t border-gray-800">
+            <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center scroll-reveal">
+                <div>
+                    <h2 class="text-4xl font-black text-white mb-6">Ready to hit 1 Million? 🚀</h2>
+                    <p class="text-gray-400 mb-8">Fill out the form, and let's discuss your content strategy. We usually reply within 2 hours.</p>
+                    
+                    <a href="https://wa.me/919431366776" class="inline-flex items-center gap-3 text-green-400 font-bold text-lg hover:text-green-300 transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.886-.001 2.267.651 4.383 1.89 6.191l.496 1.254-.952 3.445 3.542-.93z"/></svg>
+                        Chat on WhatsApp
+                    </a>
+                </div>
+                
+                <form id="contact-form" action="https://formspree.io/f/mandalko" method="POST" class="bg-[#1f1f1f] p-8 rounded-3xl border border-gray-800">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-500 text-sm font-bold mb-2">Channel Name</label>
+                            <input type="text" name="channel" placeholder="@YourChannel" class="w-full bg-black border border-gray-700 rounded-lg p-4 text-white focus:border-[#FF0000] focus:outline-none transition-colors" required>
+                        </div>
+                        <div>
+                            <label class="block text-gray-500 text-sm font-bold mb-2">Mobile Number</label>
+                            <input type="tel" name="mobile" placeholder="+91..." class="w-full bg-black border border-gray-700 rounded-lg p-4 text-white focus:border-[#FF0000] focus:outline-none transition-colors" required>
+                        </div>
+                        <div>
+                            <label class="block text-gray-500 text-sm font-bold mb-2">Goal</label>
+                            <select name="goal" class="w-full bg-black border border-gray-700 rounded-lg p-4 text-white focus:border-[#FF0000] focus:outline-none transition-colors">
+                                <option>Increase Subscribers</option>
+                                <option>Better Video Editing</option>
+                                <option>Shorts Management</option>
+                                <option>Full Channel Management</option>
+                            </select>
+                        </div>
+                        <button type="submit" id="contact-submit-btn" class="w-full bg-[#FF0000] hover:bg-red-700 text-white font-bold py-4 rounded-lg transition-all mt-4">Send Request</button>
+                    </div>
+                </form>
+                
+                <!-- Success State -->
+                <div id="contact-success" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm">
+                    <div class="text-center">
+                        <div class="text-6xl mb-4">🎉</div>
+                        <h3 class="text-3xl font-bold text-white mb-2">Request Sent!</h3>
+                        <p class="text-gray-400">Time to create something viral.</p>
+                        <button id="reset-form-btn" class="mt-6 text-[#FF0000] underline">Close</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-[#0f0f0f] border-t border-gray-800 text-center">
+        <p class="text-gray-600 text-sm">&copy; 2025 Feasibility. Built for Creators.</p>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/919431366776" target="_blank" class="fixed bottom-6 right-6 z-50 bg-[#25D366] p-4 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center">
+        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.886-.001 2.267.651 4.383 1.89 6.191l.496 1.254-.952 3.445 3.542-.93z"/></svg>
+    </a>
+
+    <!-- Modal for Pricing -->
+    <div id="phone-modal" class="hidden fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 modal">
+        <div id="modal-content" class="bg-[#1f1f1f] border border-gray-700 rounded-2xl p-8 max-w-sm w-full modal-content">
+            <div class="flex justify-between items-start mb-6">
+                <h3 class="text-2xl font-bold text-white">Lock Plan 🔒</h3>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-white text-2xl">&times;</button>
+            </div>
+            <form id="phone-form" class="space-y-4">
+                <input type="hidden" id="plan-input" name="plan">
+                <input type="text" name="name" placeholder="Channel Name" class="w-full bg-black border border-gray-700 rounded-lg p-4 text-white focus:border-[#FF0000] focus:outline-none" required>
+                <input type="tel" name="phone" placeholder="WhatsApp Number" class="w-full bg-black border border-gray-700 rounded-lg p-4 text-white focus:border-[#FF0000] focus:outline-none" required>
+                <button type="submit" id="phone-submit-button" class="w-full bg-[#FF0000] hover:bg-red-700 text-white font-bold py-4 rounded-lg transition-all mt-2">Secure Spot</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Exit Popup -->
+    <div id="exit-popup" class="hidden fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 modal">
+        <div class="bg-[#1f1f1f] border-2 border-[#FF0000] rounded-2xl p-8 max-w-md w-full modal-content text-center relative">
+            <button onclick="closeExitPopup()" class="absolute top-4 right-4 text-gray-500 hover:text-white">&times;</button>
+            <div class="text-5xl mb-4">🎁</div>
+            <h3 class="text-2xl font-bold text-white mb-2">Wait! Free Audit?</h3>
+            <p class="text-gray-400 text-sm mb-6">Before you go, let us send you 3 custom tips to improve your channel retention for FREE.</p>
+            <form id="exit-form" action="https://formspree.io/f/mandalko" method="POST" class="space-y-3">
+                <input type="tel" name="phone" placeholder="Enter Mobile Number" class="w-full bg-black border border-gray-700 rounded-lg p-3 text-white focus:border-[#FF0000] focus:outline-none" required>
+                <button type="submit" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-gray-200">Send Me Tips</button>
+            </form>
+            <button onclick="closeExitPopup()" class="mt-4 text-xs text-gray-600 underline">No thanks, I hate growth.</button>
+        </div>
+    </div>
+
+    <script>
+        // Scroll Reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+        // Timer
+        const countdownDate = new Date().getTime() + (2 * 24 * 60 * 60 * 1000);
+        setInterval(() => {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById("timer-hours").innerText = h < 10 ? "0" + h : h;
+            document.getElementById("timer-minutes").innerText = m < 10 ? "0" + m : m;
+            document.getElementById("timer-seconds").innerText = s < 10 ? "0" + s : s;
+        }, 1000);
+
+        // Modals
+        function openModal(plan) {
+            document.getElementById('plan-input').value = plan;
+            document.getElementById('phone-modal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('phone-modal').classList.add('active'), 10);
+        }
+        function closeModal() {
+            document.getElementById('phone-modal').classList.remove('active');
+            setTimeout(() => document.getElementById('phone-modal').classList.add('hidden'), 300);
+        }
+
+        // Exit Intent
+        let exitShown = false;
+        function showExitPopup() {
+            if (!exitShown && !sessionStorage.getItem('exitShown')) {
+                document.getElementById('exit-popup').classList.remove('hidden');
+                setTimeout(() => document.getElementById('exit-popup').classList.add('active'), 10);
+                exitShown = true;
+                sessionStorage.setItem('exitShown', 'true');
+            }
+        }
+        function closeExitPopup() {
+            document.getElementById('exit-popup').classList.remove('active');
+            setTimeout(() => document.getElementById('exit-popup').classList.add('hidden'), 300);
+        }
+        document.addEventListener('mouseleave', (e) => { if(e.clientY <= 0) showExitPopup(); });
+        setTimeout(showExitPopup, 20000);
+
+        // Form Handling
+        const handleForm = (formId, btnId, successId = null) => {
+            const form = document.getElementById(formId);
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const btn = document.getElementById(btnId);
+                btn.disabled = true;
+                btn.innerText = "Sending...";
+                
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+                
+                fetch(form.action, {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
+                }).then(response => {
+                    if (response.ok) {
+                        if (successId) {
+                            document.getElementById(successId).classList.remove('hidden');
+                        } else {
+                            // Close modal if it's the modal form
+                            closeModal();
+                            alert("Request received! We'll call you shortly.");
+                        }
+                    } else {
+                        alert("Error sending. Please try WhatsApp.");
+                        btn.disabled = false;
+                        btn.innerText = "Try Again";
+                    }
+                });
+            });
+        };
+
+        handleForm('contact-form', 'contact-submit-btn', 'contact-success');
+        handleForm('phone-form', 'phone-submit-button');
+        handleForm('exit-form', 'exit-submit-btn'); // Note: Added minimal handler
+
+        document.getElementById('reset-form-btn')?.addEventListener('click', () => {
+            document.getElementById('contact-success').classList.add('hidden');
+            document.getElementById('contact-form').reset();
+            document.getElementById('contact-submit-btn').disabled = false;
+            document.getElementById('contact-submit-btn').innerText = "Send Request";
+        });
+        
+        // Mobile Menu
+        const menuBtn = document.getElementById('mobile-menu-button');
+        const menu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
