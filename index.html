@@ -17,11 +17,11 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #FFFFFF; /* Changed to white */
-            color: #1a202c; /* Changed to dark text */
+            background-color: #FFFFFF;
+            color: #1a202c;
         }
 
-        /* --- Custom Neon Glow Effects for Light BG --- */
+        /* --- Custom Neon Glow Effects --- */
         .neon-text-purple {
             color: #C44DFF;
             text-shadow: 0 0 8px rgba(196, 77, 255, 0.6);
@@ -39,10 +39,10 @@
             box-shadow: 0 0 8px rgba(255, 23, 68, 0.6);
         }
 
-        /* --- Background Gradient & Shapes for Light BG --- */
+        /* --- Background Gradient & Shapes --- */
         .background-wrapper {
             position: relative;
-            overflow-x: hidden; /* Fix: Allows vertical scrolling */
+            overflow-x: hidden;
             background: radial-gradient(circle at 15% 20%, rgba(196, 77, 255, 0.08), transparent 30%),
                         radial-gradient(circle at 85% 80%, rgba(255, 23, 68, 0.08), transparent 30%);
         }
@@ -58,7 +58,7 @@
             transform: translateY(0);
         }
         
-        /* Custom scrollbar for Light BG */
+        /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -82,6 +82,44 @@
             transform: scale(0.95);
             transition: transform 0.3s ease-in-out;
         }
+
+        /* --- Success Checkmark Animation CSS --- */
+        .checkmark-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: #22c55e; /* Green-500 */
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+        @keyframes stroke {
+            100% { stroke-dashoffset: 0; }
+        }
+        .success-container {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .success-container.active {
+            display: flex;
+            opacity: 1;
+        }
+        .form-container {
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .form-container.hidden-fade {
+            opacity: 0;
+            pointer-events: none;
+            display: none; 
+        }
     </style>
 </head>
 <body class="background-wrapper">
@@ -100,7 +138,7 @@
                 </div>
                 <button id="mobile-menu-button" class="md:hidden focus:outline-none ml-4 text-gray-800">
                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-               </button>
+                </button>
             </div>
         </nav>
         <!-- Mobile Menu -->
@@ -179,7 +217,7 @@
                 <!-- Service Card 3 -->
                 <div class="bg-white p-8 rounded-2xl border border-gray-200 hover:border-[#FF1744] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal" style="transition-delay: 200ms;">
                     <div class="bg-[#FF1744]/10 text-[#FF1744] w-16 h-16 rounded-xl flex items-center justify-center mb-6">
-                       <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
                     </div>
                     <h3 class="text-xl font-bold mb-2 text-gray-900">Growth & Engagement</h3>
                     <p class="text-gray-500">Data-driven tactics to accelerate follower growth and foster authentic audience connections.</p>
@@ -349,21 +387,40 @@
                         <a href="https://www.instagram.com/feasibility.media/" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-gray-900 transition-colors duration-300">@feasibility.media</a>
                     </div>
                 </div>
-                <form action="https://formspree.io/f/mandalko" method="POST" class="space-y-6">
-                    <div>
-                        <label for="name" class="sr-only">Your Name</label>
-                        <input type="text" id="name" name="name" placeholder="Your Name" required class="w-full bg-gray-100 border border-gray-300 rounded-lg p-4 focus:outline-none focus:border-[#C44DFF] transition-colors duration-300 text-gray-800 placeholder-gray-500">
+                
+                <!-- Main Form Wrapper -->
+                <div class="relative min-h-[400px]">
+                    <!-- The Form -->
+                    <form id="contact-form" action="https://formspree.io/f/mandalko" method="POST" class="space-y-6 form-container">
+                        <div>
+                            <label for="name" class="sr-only">Your Name</label>
+                            <input type="text" id="name" name="name" placeholder="Your Name" required class="w-full bg-gray-100 border border-gray-300 rounded-lg p-4 focus:outline-none focus:border-[#C44DFF] transition-colors duration-300 text-gray-800 placeholder-gray-500">
+                        </div>
+                        <div>
+                            <label for="mobile" class="sr-only">Mobile Number</label>
+                            <!-- Changed from Email to Mobile Number -->
+                            <input type="tel" id="mobile" name="mobile" placeholder="Mobile Number" required class="w-full bg-gray-100 border border-gray-300 rounded-lg p-4 focus:outline-none focus:border-[#C44DFF] transition-colors duration-300 text-gray-800 placeholder-gray-500">
+                        </div>
+                        <div>
+                            <label for="message" class="sr-only">Your Message</label>
+                            <textarea id="message" name="message" placeholder="Tell us about your project..." rows="4" required class="w-full bg-gray-100 border border-gray-300 rounded-lg p-4 focus:outline-none focus:border-[#C44DFF] transition-colors duration-300 text-gray-800 placeholder-gray-500"></textarea>
+                        </div>
+                        <button type="submit" id="contact-submit-btn" class="w-full bg-gradient-to-r from-[#C44DFF] to-[#FF1744] text-white font-bold py-4 px-10 rounded-lg text-lg transition-all duration-300 transform hover:scale-105">Send Message</button>
+                    </form>
+
+                    <!-- Success Animation Container -->
+                    <div id="contact-success" class="absolute inset-0 flex-col items-center justify-center success-container">
+                        <div class="w-24 h-24 mb-6">
+                            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                                <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-3xl font-bold text-gray-900 mb-2">Message Sent!</h3>
+                        <p class="text-gray-500 text-lg">We'll be in touch soon.</p>
+                        <button id="reset-form-btn" class="mt-8 text-[#C44DFF] font-semibold hover:text-[#FF1744] transition-colors">Send another message</button>
                     </div>
-                    <div>
-                        <label for="email" class="sr-only">Your Email</label>
-                        <input type="email" id="email" name="email" placeholder="Your Email" required class="w-full bg-gray-100 border border-gray-300 rounded-lg p-4 focus:outline-none focus:border-[#C44DFF] transition-colors duration-300 text-gray-800 placeholder-gray-500">
-                    </div>
-                    <div>
-                        <label for="message" class="sr-only">Your Message</label>
-                        <textarea id="message" name="message" placeholder="Tell us about your project..." rows="4" required class="w-full bg-gray-100 border border-gray-300 rounded-lg p-4 focus:outline-none focus:border-[#C44DFF] transition-colors duration-300 text-gray-800 placeholder-gray-500"></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-gradient-to-r from-[#C44DFF] to-[#FF1744] text-white font-bold py-4 px-10 rounded-lg text-lg transition-all duration-300 transform hover:scale-105">Send Message</button>
-                </form>
+                </div>
              </div>
         </section>
     </main>
@@ -375,7 +432,7 @@
         </div>
     </footer>
 
-    <!-- Phone Number Modal -->
+    <!-- Phone Number Modal (Pricing) -->
     <div id="phone-modal" class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
         <div id="modal-content" class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full">
             <!-- Form View -->
@@ -459,6 +516,59 @@
                 mobileMenu.classList.add('hidden');
             });
         });
+
+        // --- Main Contact Form with Animation ---
+        const contactForm = document.getElementById('contact-form');
+        const contactSuccess = document.getElementById('contact-success');
+        const contactSubmitBtn = document.getElementById('contact-submit-btn');
+        const resetFormBtn = document.getElementById('reset-form-btn');
+
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                contactSubmitBtn.textContent = 'Sending...';
+                contactSubmitBtn.disabled = true;
+
+                const formData = new FormData(this);
+                const data = Object.fromEntries(formData.entries());
+
+                fetch(this.action, {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        // Success Animation Trigger
+                        contactForm.classList.add('hidden-fade');
+                        setTimeout(() => {
+                           contactSuccess.classList.add('active');
+                        }, 500); 
+                    } else {
+                        alert('Oops! There was a problem submitting your form.');
+                        contactSubmitBtn.textContent = 'Send Message';
+                        contactSubmitBtn.disabled = false;
+                    }
+                }).catch(error => {
+                    alert('Oops! There was a problem submitting your form.');
+                    contactSubmitBtn.textContent = 'Send Message';
+                    contactSubmitBtn.disabled = false;
+                });
+            });
+
+            // Reset logic if they want to send another message
+            resetFormBtn.addEventListener('click', () => {
+                contactSuccess.classList.remove('active');
+                contactForm.reset();
+                setTimeout(() => {
+                    contactForm.classList.remove('hidden-fade');
+                    contactSubmitBtn.textContent = 'Send Message';
+                    contactSubmitBtn.disabled = false;
+                }, 500);
+            });
+        }
 
         // --- Pricing Modal Logic ---
         const planButtons = document.querySelectorAll('[data-plan]');
@@ -556,4 +666,3 @@
     </script>
 </body>
 </html>
-
