@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feasibility Education | Grow Your Classroom</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts: Merriweather (Trust/Academic), Inter (Modern/Clean) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Merriweather:ital,wght@0,300;0,700;0,900;1,300&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        body {
+            background-color: #0f172a; /* Slate 900 */
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .serif-font {
+            font-family: 'Merriweather', serif;
+        }
+
+        /* --- Academic Gold Gradient --- */
+        .text-gold {
+            background: linear-gradient(to right, #fbbf24, #d97706);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .border-gold {
+            border-color: #d97706;
+        }
+
+        /* --- Network Background Animation --- */
+        #network-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.2;
+        }
+
+        /* --- Glassmorphism --- */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* --- Scroll Reveal --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- Network Canvas -->
+    <canvas id="network-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 top-0 bg-[#0f172a]/90 backdrop-blur-lg border-b border-slate-700">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <svg class="w-8 h-8 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                <span class="serif-font font-bold text-xl text-white tracking-tight">Feasibility <span class="text-amber-500 italic">Edu</span></span>
+            </div>
+            
+            <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-300">
+                <a href="#method" class="hover:text-amber-400 transition-colors">Why You're Stuck</a>
+                <a href="#portfolio" class="hover:text-amber-400 transition-colors">Success Stories</a>
+                <a href="#pricing" class="hover:text-amber-400 transition-colors">Tutor Plans</a>
+                <a href="#contact" class="px-5 py-2 border border-amber-500/50 rounded text-amber-500 hover:bg-amber-500 hover:text-slate-900 transition-all">Start Growing</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center px-6 pt-20">
+        <div class="max-w-4xl text-center z-10 reveal">
+            <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs font-semibold text-amber-400 mb-8 uppercase tracking-widest">
+                <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                For Tutors Who Are Tired of 50 Views
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 leading-tight">
+                Stop Teaching to <br>
+                <span class="serif-font italic text-gold">Empty Seats.</span>
+            </h1>
+            
+            <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+                You have the knowledge. You put in the hustle. But the algorithm is ignoring you. We turn your <strong>Zoom-style lectures</strong> into <strong>high-retention content</strong> that students actually want to watch.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-5 justify-center">
+                <a href="#pricing" class="bg-amber-600 hover:bg-amber-700 text-white font-semibold py-4 px-8 rounded shadow-lg shadow-amber-900/20 transition-all transform hover:scale-105">
+                    Fix My Channel
+                </a>
+                <a href="#portfolio" class="bg-slate-800 hover:bg-slate-700 text-white font-medium py-4 px-8 rounded border border-slate-700 transition-all">
+                    See The Difference
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Method (Pain Points) -->
+    <section id="method" class="py-24 bg-slate-900 relative">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <h2 class="text-4xl font-bold text-white mb-6 serif-font">Why Your Channel Isn't Growing</h2>
+                    <p class="text-slate-400 mb-6 text-lg">
+                        It's not because you're a bad teacher. It's because YouTube isn't a classroom—it's a stage.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 rounded bg-red-900/30 flex items-center justify-center text-red-500 text-xl font-bold shrink-0">✖</div>
+                            <div>
+                                <h3 class="text-white font-bold text-lg">The "Lecture" Problem</h3>
+                                <p class="text-slate-500 text-sm">Long, unedited recordings of you talking at a screen kill retention instantly. We add pattern interrupts to keep them watching.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 rounded bg-red-900/30 flex items-center justify-center text-red-500 text-xl font-bold shrink-0">✖</div>
+                            <div>
+                                <h3 class="text-white font-bold text-lg">Boring Thumbnails</h3>
+                                <p class="text-slate-500 text-sm">If your thumbnail looks like a textbook cover, no one clicks. We design packaging that sparks curiosity.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 rounded bg-green-900/30 flex items-center justify-center text-green-500 text-xl font-bold shrink-0">✓</div>
+                            <div>
+                                <h3 class="text-white font-bold text-lg">The Fix</h3>
+                                <p class="text-slate-500 text-sm">We take your raw teaching footage and polish it into professional, "Edutainment" style content.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative reveal delay-200">
+                    <div class="absolute inset-0 bg-amber-500 blur-[80px] opacity-10"></div>
+                    <div class="glass-card p-4 rounded-xl relative z-10 transform rotate-2 hover:rotate-0 transition-all duration-500 border-2 border-slate-700">
+                        <!-- Before/After Representation -->
+                        <div class="space-y-4">
+                            <div class="bg-slate-800 p-4 rounded text-center opacity-50 border border-red-500/30">
+                                <p class="text-red-400 text-xs uppercase font-bold mb-1">Before Us</p>
+                                <p class="text-slate-300 text-sm">"Lecture 4: Thermodynamics Part 2"</p>
+                                <p class="text-xs text-slate-500 mt-2">43 Views • 2:10 Avg View Duration</p>
+                            </div>
+                            <div class="bg-slate-800 p-4 rounded text-center border border-green-500/50 shadow-lg">
+                                <p class="text-green-400 text-xs uppercase font-bold mb-1">With Feasibility</p>
+                                <p class="text-white font-bold text-lg">"The Physics Engine That Runs The Universe"</p>
+                                <p class="text-xs text-slate-400 mt-2">12k Views • 8:45 Avg View Duration</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="py-24 bg-[#0f172a]">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-white serif-font">We Do The Heavy Lifting</h2>
+                <p class="text-slate-400 mt-2">You focus on teaching. We focus on the tech.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="glass-card p-8 rounded-xl hover:border-amber-500/50 transition-all group reveal">
+                    <div class="text-4xl mb-4 text-amber-500 opacity-80 group-hover:scale-110 transition-transform duration-300">✂️</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Lecture Trimming</h3>
+                    <p class="text-slate-400 text-sm">We cut out the "umms," "ahhs," and awkward pauses to make you sound like a confident expert.</p>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="glass-card p-8 rounded-xl hover:border-amber-500/50 transition-all group reveal delay-100">
+                    <div class="text-4xl mb-4 text-amber-500 opacity-80 group-hover:scale-110 transition-transform duration-300">🖍️</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Visual Aids</h3>
+                    <p class="text-slate-400 text-sm">We add text pop-ups, diagrams, and stock footage so your students can <em>see</em> what you're teaching.</p>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="glass-card p-8 rounded-xl hover:border-amber-500/50 transition-all group reveal delay-200">
+                    <div class="text-4xl mb-4 text-amber-500 opacity-80 group-hover:scale-110 transition-transform duration-300">🚀</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Packaging</h3>
+                    <p class="text-slate-400 text-sm">We write the Titles, design the Thumbnails, and fix the SEO Tags to help new students find you.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="py-24 bg-slate-900 border-t border-slate-800">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-5xl font-bold text-white serif-font">Tutor Packages</h2>
+                <p class="text-slate-400 mt-4">Affordable plans to jumpstart your educational career.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Tier 1 -->
+                <div class="glass-card p-8 rounded-xl border-t-4 border-slate-600 reveal">
+                    <h3 class="serif-font text-2xl text-white">The Classroom</h3>
+                    <div class="my-6">
+                        <span class="text-4xl font-bold text-white">₹5,000</span>
+                        <span class="text-sm text-slate-500">/mo</span>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-6">For tutors just starting out.</p>
+                    <ul class="space-y-3 text-sm text-slate-300 mb-8">
+                        <li class="flex gap-2"><span>✓</span> 4 Edited Lessons</li>
+                        <li class="flex gap-2"><span>✓</span> Silence Removal</li>
+                        <li class="flex gap-2"><span>✓</span> Basic Text Overlays</li>
+                        <li class="flex gap-2"><span>✓</span> 4 Standard Thumbnails</li>
+                    </ul>
+                    <a href="#contact" class="block text-center py-3 border border-slate-600 rounded text-white hover:bg-slate-700 transition-colors">Get Started</a>
+                </div>
+
+                <!-- Tier 2 -->
+                <div class="glass-card p-8 rounded-xl border-t-4 border-amber-500 relative transform lg:-translate-y-4 shadow-2xl shadow-amber-900/20 reveal delay-100">
+                    <div class="absolute top-0 right-0 bg-amber-500 text-slate-900 text-xs font-bold px-3 py-1 rounded-bl-lg">BEST VALUE</div>
+                    <h3 class="serif-font text-2xl text-white">The Academy</h3>
+                    <div class="my-6">
+                        <span class="text-4xl font-bold text-white">₹10,000</span>
+                        <span class="text-sm text-slate-500">/mo</span>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-6">For serious growth & retention.</p>
+                    <ul class="space-y-3 text-sm text-white font-medium mb-8">
+                        <li class="flex gap-2"><span class="text-amber-500">✓</span> <strong>Unlimited Edited Lessons</strong></li>
+                        <li class="flex gap-2"><span class="text-amber-500">✓</span> <strong>Unlimited Stock Footage</strong></li>
+                        <li class="flex gap-2"><span class="text-amber-500">✓</span> Unlimited High-CTR Thumbnails</li>
+                        <li class="flex gap-2"><span class="text-amber-500">✓</span> Unlimited YouTube Shorts (Repurposed)</li>
+                        <li class="flex gap-2"><span class="text-amber-500">✓</span> SEO Title Strategy</li>
+                    </ul>
+                    <a href="#contact" class="block text-center py-3 bg-amber-600 rounded text-white hover:bg-amber-700 transition-colors font-bold">Grow Now</a>
+                </div>
+
+                <!-- Tier 3 -->
+                <div class="glass-card p-8 rounded-xl border-t-4 border-slate-600 reveal delay-200">
+                    <h3 class="serif-font text-2xl text-white">The Professor</h3>
+                    <div class="my-6">
+                        <span class="text-4xl font-bold text-white">₹25,000</span>
+                        <span class="text-sm text-slate-500">/mo</span>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-6">For full course creation & branding.</p>
+                    <ul class="space-y-3 text-sm text-slate-300 mb-8">
+                        <li class="flex gap-2"><span>✓</span> Full Course Editing</li>
+                        <li class="flex gap-2"><span>✓</span> Paid Ad Management</li>
+                        <li class="flex gap-2"><span>✓</span> Website/LMS Setup</li>
+                        <li class="flex gap-2"><span>✓</span> Personal Branding Kit</li>
+                    </ul>
+                    <a href="#contact" class="block text-center py-3 border border-slate-600 rounded text-white hover:bg-slate-700 transition-colors">Talk to Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials (Scrolling) -->
+    <section id="portfolio" class="py-20 bg-[#0f172a] overflow-hidden border-y border-slate-800">
+        <div class="container mx-auto px-6 mb-10 text-center">
+            <p class="text-amber-500 text-xs font-bold tracking-widest uppercase">Trusted By Tutors Like You</p>
+        </div>
+        <div class="flex justify-center gap-12 flex-wrap opacity-80 grayscale hover:grayscale-0 transition-all duration-500">
+            <!-- Relatable Tutor Names -->
+            <div class="text-xl font-bold font-serif text-slate-300">Maths with Rahul</div>
+            <div class="text-xl font-bold font-serif text-slate-300">Biology Simplified</div>
+            <div class="text-xl font-bold font-serif text-slate-300">Commerce Baba</div>
+            <div class="text-xl font-bold font-serif text-slate-300">Coding for All</div>
+            <div class="text-xl font-bold font-serif text-slate-300">Physics Galaxy</div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="py-24 bg-slate-900">
+        <div class="container mx-auto px-6 max-w-2xl reveal">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-white serif-font">Fill Your Classroom</h2>
+                <p class="text-slate-400 mt-2">Tell us what you teach. We'll help you reach more students.</p>
+            </div>
+            
+            <form action="https://formspree.io/f/mandalko" method="POST" class="space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Your Name</label>
+                        <input type="text" name="channel" class="w-full bg-slate-800 border border-slate-700 rounded p-3 text-white focus:border-amber-500 focus:outline-none transition-colors" placeholder="e.g. Rahul Sir">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">WhatsApp Number</label>
+                        <input type="tel" name="contact" class="w-full bg-slate-800 border border-slate-700 rounded p-3 text-white focus:border-amber-500 focus:outline-none transition-colors">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2">What do you teach?</label>
+                    <select name="niche" class="w-full bg-slate-800 border border-slate-700 rounded p-3 text-white focus:border-amber-500 focus:outline-none transition-colors">
+                        <option>School Subjects (Maths/Science)</option>
+                        <option>Competitive Exams (JEE/NEET/UPSC)</option>
+                        <option>Coding / Tech Skills</option>
+                        <option>Finance / Trading</option>
+                        <option>English / Languages</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Biggest Struggle?</label>
+                    <select name="struggle" class="w-full bg-slate-800 border border-slate-700 rounded p-3 text-white focus:border-amber-500 focus:outline-none transition-colors">
+                        <option>Not getting views</option>
+                        <option>Editing takes too long</option>
+                        <option>Don't know how to make thumbnails</option>
+                        <option>Need more students/leads</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-4 rounded shadow-lg transition-all">
+                    Get Free Channel Audit
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 text-center text-slate-600 text-xs bg-[#0f172a]">
+        <p>&copy; 2025 Feasibility Media. <a href="index.html" class="hover:text-amber-500 underline">Main Site</a></p>
+    </footer>
+
+    <!-- Network Animation Script -->
+    <script>
+        const canvas = document.getElementById('network-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(251, 191, 36, 0.5)'; // Amber color
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 150) {
+                        ctx.strokeStyle = `rgba(251, 191, 36, ${0.1 - dist/1500})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Scroll Reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
