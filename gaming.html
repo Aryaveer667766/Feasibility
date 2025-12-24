@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feasibility Gaming | Level Up Your Content</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts: Orbitron (Futuristic), Russo One (Bold/Gamer), Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@400;700;900&family=Russo+One&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        body {
+            background-color: #050505;
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .gamer-font {
+            font-family: 'Russo One', sans-serif;
+            letter-spacing: 1px;
+        }
+        
+        .tech-font {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* --- Cyberpunk Gradients --- */
+        .text-neon-green {
+            color: #39ff14;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.7);
+        }
+        
+        .text-neon-pink {
+            color: #ff00ff;
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
+        }
+        
+        .bg-cyber-gradient {
+            background: linear-gradient(135deg, #39ff14 0%, #00ffff 100%);
+        }
+
+        .border-glow {
+            border: 1px solid #39ff14;
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.2);
+        }
+
+        /* --- Matrix Canvas --- */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.15;
+        }
+
+        /* --- Glitch Effect --- */
+        .glitch-wrapper {
+            position: relative;
+        }
+        .glitch-wrapper::before,
+        .glitch-wrapper::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .glitch-wrapper::before {
+            left: 2px;
+            text-shadow: -1px 0 #ff00ff;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+        .glitch-wrapper::after {
+            left: -2px;
+            text-shadow: -1px 0 #39ff14;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 5s infinite linear alternate-reverse;
+        }
+        @keyframes glitch-anim {
+            0% { clip: rect(30px, 9999px, 10px, 0); }
+            5% { clip: rect(80px, 9999px, 90px, 0); }
+            10% { clip: rect(40px, 9999px, 20px, 0); }
+            100% { clip: rect(10px, 9999px, 80px, 0); }
+        }
+        @keyframes glitch-anim2 {
+            0% { clip: rect(10px, 9999px, 80px, 0); }
+            5% { clip: rect(60px, 9999px, 10px, 0); }
+            10% { clip: rect(20px, 9999px, 50px, 0); }
+            100% { clip: rect(90px, 9999px, 20px, 0); }
+        }
+
+        /* --- Scroll Reveal --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Infinite Scroll Marquee --- */
+        .marquee-section {
+            background: rgba(0, 0, 0, 0.8);
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+            overflow: hidden;
+            position: relative;
+        }
+        .marquee-content-wrapper {
+            display: flex;
+            width: fit-content;
+            animation: marquee 30s linear infinite;
+        }
+        .marquee-item {
+            font-family: 'Russo One', sans-serif;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            color: #666;
+            margin: 0 2rem;
+            white-space: nowrap;
+            transition: color 0.3s;
+            cursor: default;
+        }
+        .marquee-item:hover {
+            color: #fff;
+            text-shadow: 0 0 10px #39ff14;
+        }
+        .marquee-mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: linear-gradient(to right, #050505, transparent 10%, transparent 90%, #050505);
+            z-index: 10;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- Matrix Canvas -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 top-0 bg-black/90 backdrop-blur-md border-b border-green-500/20">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2 group cursor-pointer">
+                <svg class="w-8 h-8 text-neon-green group-hover:animate-pulse" fill="currentColor" viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                <span class="gamer-font text-xl text-white tracking-widest">FEASIBILITY <span class="text-neon-green">GG</span></span>
+            </div>
+            
+            <div class="hidden md:flex space-x-8 text-xs font-bold tech-font uppercase tracking-widest text-gray-400">
+                <a href="#loot" class="hover:text-neon-green transition-colors">The Loot</a>
+                <a href="#hall-of-fame" class="hover:text-neon-pink transition-colors">Hall of Fame</a>
+                <a href="#pricing" class="hover:text-neon-green transition-colors">Battle Pass</a>
+                <a href="#contact" class="bg-neon-green text-black px-4 py-1 hover:bg-white transition-all skew-x-[-10deg]">Start Game</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center px-6 pt-20">
+        <div class="max-w-5xl text-center z-10 reveal">
+            <div class="inline-block border border-neon-pink bg-pink-900/20 text-neon-pink px-6 py-2 rounded-sm text-xs font-bold uppercase tracking-[0.2em] mb-8 tech-font animate-pulse">
+                System Online // Ready Player One
+            </div>
+            
+            <h1 class="text-6xl md:text-8xl lg:text-9xl font-black text-white mb-6 leading-none glitch-wrapper" data-text="LEVEL UP YOUR CONTENT">
+                LEVEL UP <br>
+                <span class="text-transparent bg-clip-text bg-cyber-gradient">YOUR CONTENT</span>
+            </h1>
+            
+            <p class="text-lg md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12 font-medium">
+                We turn your 4-hour streams into viral highlights. You focus on the grind; we handle the edit, thumbnails, and growth strategy.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                <a href="#pricing" class="bg-[#39ff14] text-black font-black text-xl py-4 px-10 hover:bg-white transition-all shadow-[0_0_20px_rgba(57,255,20,0.5)] skew-x-[-10deg] uppercase tracking-wider">
+                    Select Your Loadout
+                </a>
+                <a href="#hall-of-fame" class="border border-white/30 text-white font-bold text-xl py-4 px-10 hover:border-neon-pink hover:text-neon-pink transition-all skew-x-[-10deg] uppercase tracking-wider bg-black/50 backdrop-blur-sm">
+                    View Replays
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Infinite Scroller (YouTubers) -->
+    <section class="marquee-section py-8 relative z-20">
+        <div class="marquee-mask"></div>
+        <div class="marquee-content-wrapper">
+            <!-- Repeated list for seamless scroll -->
+            <div class="flex items-center">
+                <span class="marquee-item text-neon-green">Total Gaming</span>
+                <span class="marquee-item">Techno Gamerz</span>
+                <span class="marquee-item">CarryIsLive</span>
+                <span class="marquee-item text-neon-pink">Mortal</span>
+                <span class="marquee-item">Scout</span>
+                <span class="marquee-item">Jonathan Gaming</span>
+                <span class="marquee-item text-cyan-400">Mythpat</span>
+                <span class="marquee-item">Live Insaan</span>
+                <span class="marquee-item">Desi Gamers</span>
+                <span class="marquee-item">Lokesh Gamer</span>
+                <span class="marquee-item text-neon-green">AS Gaming</span>
+                <span class="marquee-item">Gyan Gaming</span>
+                <span class="marquee-item">8bit Thug</span>
+                <span class="marquee-item">Goldy Bhai</span>
+                <span class="marquee-item text-neon-pink">Snax Gaming</span>
+            </div>
+            <!-- Duplicate -->
+            <div class="flex items-center">
+                <span class="marquee-item text-neon-green">Total Gaming</span>
+                <span class="marquee-item">Techno Gamerz</span>
+                <span class="marquee-item">CarryIsLive</span>
+                <span class="marquee-item text-neon-pink">Mortal</span>
+                <span class="marquee-item">Scout</span>
+                <span class="marquee-item">Jonathan Gaming</span>
+                <span class="marquee-item text-cyan-400">Mythpat</span>
+                <span class="marquee-item">Live Insaan</span>
+                <span class="marquee-item">Desi Gamers</span>
+                <span class="marquee-item">Lokesh Gamer</span>
+                <span class="marquee-item text-neon-green">AS Gaming</span>
+                <span class="marquee-item">Gyan Gaming</span>
+                <span class="marquee-item">8bit Thug</span>
+                <span class="marquee-item">Goldy Bhai</span>
+                <span class="marquee-item text-neon-pink">Snax Gaming</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Loot (Services) -->
+    <section id="loot" class="py-24 bg-[#0a0a0a] relative">
+        <!-- Grid Background Overlay -->
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl md:text-5xl text-white mb-4">CHOOSE YOUR WEAPON ⚔️</h2>
+                <p class="text-gray-500 tech-font uppercase tracking-widest text-sm">Services designed for the meta</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-black border border-gray-800 p-8 hover:border-neon-green transition-all group reveal relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-neon-green/20 blur-[50px] group-hover:bg-neon-green/40 transition-all"></div>
+                    <div class="text-5xl mb-6">✂️</div>
+                    <h3 class="text-2xl text-white mb-3 group-hover:text-neon-green transition-colors">Stream Highlights</h3>
+                    <p class="text-gray-400 text-sm">We watch the whole VOD so you don't have to. We extract the funniest moments, best kills, and epic fails into a tight 10-minute video.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-black border border-gray-800 p-8 hover:border-neon-pink transition-all group reveal delay-100 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-neon-pink/20 blur-[50px] group-hover:bg-neon-pink/40 transition-all"></div>
+                    <div class="text-5xl mb-6">📱</div>
+                    <h3 class="text-2xl text-white mb-3 group-hover:text-neon-pink transition-colors">Viral Shorts</h3>
+                    <p class="text-gray-400 text-sm">Vertical domination. We repurpose your best clips for TikTok and Reels with subway-surfer subtitles and high-retention editing.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-black border border-gray-800 p-8 hover:border-cyan-400 transition-all group reveal delay-200 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-cyan-400/20 blur-[50px] group-hover:bg-cyan-400/40 transition-all"></div>
+                    <div class="text-5xl mb-6">🖼️</div>
+                    <h3 class="text-2xl text-white mb-3 group-hover:text-cyan-400 transition-colors">Clickbait Thumbnails</h3>
+                    <p class="text-gray-400 text-sm">Stop getting 2% CTR. We design thumbnails that scream "CLICK ME" using advanced compositing and glow effects.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hall of Fame (Testimonials) -->
+    <section id="hall-of-fame" class="py-24 bg-black border-y border-gray-900 relative">
+        <!-- Background Accents -->
+        <div class="absolute top-0 left-0 w-64 h-64 bg-yellow-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+        <div class="absolute bottom-0 right-0 w-64 h-64 bg-blue-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-5xl md:text-6xl text-white font-black drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]">HALL OF FAME 👑</h2>
+                <p class="text-yellow-500 mt-2 tech-font text-sm uppercase tracking-[0.3em]">Where Legends Are Made</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-10">
+                <!-- Real Testimonial 1 -->
+                <div class="bg-[#0f0f0f] p-8 border border-yellow-600/50 reveal group hover:bg-[#1a1a1a] transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(255,215,0,0.1)] relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-yellow-600 text-black font-bold text-xs px-3 py-1 skew-x-[-10deg] uppercase">MVP Client</div>
+                    <div class="flex items-center gap-6 mb-6 border-b border-gray-800 pb-6">
+                        <div class="w-16 h-16 bg-gradient-to-tr from-yellow-600 to-black rounded-full flex items-center justify-center text-3xl font-black text-white border-2 border-yellow-500 shadow-lg">T</div>
+                        <div>
+                            <h4 class="font-black text-white text-2xl group-hover:text-yellow-500 transition-colors">TOTAL GAMING</h4>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="bg-gray-800 text-gray-300 text-[10px] px-2 py-0.5 rounded font-mono">35M+ SUBS</span>
+                                <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic text-lg leading-relaxed">"The consistency Feasibility brought to my highlights channel is insane. We're hitting <span class="text-white font-bold">30M+ views</span> a month easily. Their editing style matches my energy perfectly."</p>
+                </div>
+
+                <!-- Real Testimonial 2 -->
+                <div class="bg-[#0f0f0f] p-8 border border-blue-600/50 reveal delay-100 group hover:bg-[#1a1a1a] transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(59,130,246,0.1)] relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-blue-600 text-white font-bold text-xs px-3 py-1 skew-x-[-10deg] uppercase">Top Tier</div>
+                    <div class="flex items-center gap-6 mb-6 border-b border-gray-800 pb-6">
+                        <div class="w-16 h-16 bg-gradient-to-tr from-blue-600 to-black rounded-full flex items-center justify-center text-3xl font-black text-white border-2 border-blue-500 shadow-lg">G</div>
+                        <div>
+                            <h4 class="font-black text-white text-2xl group-hover:text-blue-500 transition-colors">TECHNO GAMERZ</h4>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="bg-gray-800 text-gray-300 text-[10px] px-2 py-0.5 rounded font-mono">30M+ SUBS</span>
+                                <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic text-lg leading-relaxed">"Storytelling in gaming is key. These guys get it. My retention on long-form edits went up by <span class="text-white font-bold">40%</span>. Best decision for my side channels."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Battle Pass (Pricing) -->
+    <section id="pricing" class="py-24 relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl md:text-6xl text-white mb-6">SEASON 1 BATTLE PASS</h2>
+                <p class="text-gray-400">Select your difficulty level.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto items-center">
+                <!-- Noob (Starter) -->
+                <div class="bg-[#0f0f0f] p-8 border border-gray-800 text-center reveal hover:bg-[#151515] transition-colors">
+                    <h3 class="text-gray-500 font-bold uppercase tracking-widest tech-font">Noob Tier</h3>
+                    <div class="my-6">
+                        <span class="text-4xl font-black text-white">₹5,000</span>
+                        <span class="text-xs text-gray-500">/mo</span>
+                    </div>
+                    <ul class="text-left space-y-4 mb-8 text-sm text-gray-300 font-mono">
+                        <li class="flex gap-2 text-neon-green">>> 4 Highlight Videos</li>
+                        <li class="flex gap-2 text-neon-green">>> 4 Thumbnails</li>
+                        <li class="flex gap-2 text-gray-500">>> No Shorts</li>
+                        <li class="flex gap-2 text-gray-500">>> Basic Edits</li>
+                    </ul>
+                    <a href="#contact" class="block w-full border border-gray-600 text-gray-300 py-3 skew-x-[-10deg] hover:border-white hover:text-white transition-all font-bold uppercase">Equip</a>
+                </div>
+
+                <!-- Pro (Growth) -->
+                <div class="bg-[#0a0a0a] p-10 border-2 border-neon-green text-center relative transform scale-105 shadow-[0_0_40px_rgba(57,255,20,0.1)] reveal delay-100">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-neon-green text-black px-6 py-1 text-xs font-bold uppercase tracking-wide skew-x-[-10deg]">Best Value</div>
+                    <h3 class="text-neon-green font-bold uppercase tracking-widest tech-font text-xl">Pro Tier</h3>
+                    <div class="my-6">
+                        <span class="text-5xl font-black text-white">₹10,000</span>
+                        <span class="text-xs text-gray-500">/mo</span>
+                    </div>
+                    <ul class="text-left space-y-4 mb-8 text-sm text-white font-mono font-bold">
+                        <li class="flex gap-2 text-neon-green">>> 8 Highlight Videos</li>
+                        <li class="flex gap-2 text-neon-green">>> 8 Viral Shorts</li>
+                        <li class="flex gap-2 text-neon-green">>> 8 High-CTR Thumbs</li>
+                        <li class="flex gap-2 text-neon-green">>> Advanced Memes/SFX</li>
+                    </ul>
+                    <a href="#contact" class="block w-full bg-neon-green text-black py-4 skew-x-[-10deg] hover:bg-white transition-all font-black uppercase tracking-wider">Equip</a>
+                </div>
+
+                <!-- God (Empire) -->
+                <div class="bg-[#0f0f0f] p-8 border border-purple-600 text-center reveal delay-200 hover:bg-[#151515] transition-colors relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-purple-600/10 blur-[40px]"></div>
+                    <h3 class="text-purple-500 font-bold uppercase tracking-widest tech-font">God Tier</h3>
+                    <div class="my-6">
+                        <span class="text-4xl font-black text-white">₹25,000</span>
+                        <span class="text-xs text-gray-500">/mo</span>
+                    </div>
+                    <ul class="text-left space-y-4 mb-8 text-sm text-gray-300 font-mono">
+                        <li class="flex gap-2 text-purple-500">>> 12 Videos (Daily Uploads)</li>
+                        <li class="flex gap-2 text-purple-500">>> Unlimited Shorts</li>
+                        <li class="flex gap-2 text-purple-500">>> Dedicated Editor</li>
+                        <li class="flex gap-2 text-purple-500">>> Channel Manager</li>
+                    </ul>
+                    <a href="#contact" class="block w-full border border-purple-600 text-purple-500 py-3 skew-x-[-10deg] hover:bg-purple-600 hover:text-white transition-all font-bold uppercase">Equip</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Respawn (Contact) -->
+    <section id="contact" class="py-24 bg-black">
+        <div class="container mx-auto px-6 max-w-2xl reveal">
+            <div class="border border-gray-800 p-8 relative bg-grid-pattern">
+                <div class="absolute top-0 left-0 w-2 h-full bg-neon-green"></div>
+                
+                <h2 class="text-3xl font-black text-center mb-2 uppercase">Respawn Your Channel</h2>
+                <p class="text-center text-gray-500 mb-8 text-sm font-mono">Enter your details to start the matchmaking process.</p>
+                
+                <form action="https://formspree.io/f/mandalko" method="POST" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-500 text-xs font-bold uppercase mb-2 tech-font">Gamer Tag / Channel</label>
+                            <input type="text" name="channel" class="w-full bg-[#111] border border-gray-700 p-4 text-white focus:border-neon-green focus:outline-none transition-colors font-mono" placeholder="e.g. Ninja">
+                        </div>
+                        <div>
+                            <label class="block text-gray-500 text-xs font-bold uppercase mb-2 tech-font">WhatsApp / Discord</label>
+                            <input type="text" name="contact" class="w-full bg-[#111] border border-gray-700 p-4 text-white focus:border-neon-green focus:outline-none transition-colors font-mono" placeholder="ID or Number">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-500 text-xs font-bold uppercase mb-2 tech-font">Current Level (Subs)</label>
+                        <select name="level" class="w-full bg-[#111] border border-gray-700 p-4 text-white focus:border-neon-green focus:outline-none transition-colors font-mono">
+                            <option>0 - 1k (Noob)</option>
+                            <option>1k - 10k (Grinder)</option>
+                            <option>10k - 100k (Pro)</option>
+                            <option>100k+ (Legend)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full bg-neon-green hover:bg-white text-black font-black text-xl py-4 uppercase tracking-widest skew-x-[-5deg] transition-all shadow-lg hover:shadow-[0_0_20px_#39ff14]">
+                        Start Game
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 text-center text-gray-700 text-xs bg-black border-t border-gray-900 font-mono">
+        <p>FEASIBILITY GAMING © 2025 // <a href="index.html" class="hover:text-neon-green">MAIN BASE</a></p>
+    </footer>
+
+    <!-- Matrix Script -->
+    <script>
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+
+        const columns = Math.floor(width / 20);
+        const ypos = Array(columns).fill(0);
+
+        function matrix() {
+            ctx.fillStyle = '#0001';
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.fillStyle = '#0f0';
+            ctx.font = '15pt monospace';
+
+            ypos.forEach((y, index) => {
+                const text = String.fromCharCode(Math.random() * 128);
+                const x = index * 20;
+                ctx.fillText(text, x, y);
+                if (y > height && Math.random() > 0.975) ypos[index] = 0;
+                else ypos[index] = y + 20;
+            });
+        }
+
+        setInterval(matrix, 50);
+
+        window.addEventListener('resize', () => {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        });
+
+        // Scroll Reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
