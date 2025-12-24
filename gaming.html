@@ -5,15 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feasibility Gaming | Level Up Your Content</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Fonts: Orbitron (Futuristic), Russo One (Bold/Gamer), Inter (Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@400;700;900&family=Russo+One&display=swap" rel="stylesheet">
     
-    <!-- Custom Styles -->
     <style>
         body {
             background-color: #050505;
@@ -31,10 +28,15 @@
             font-family: 'Orbitron', sans-serif;
         }
 
-        /* --- Cyberpunk Gradients --- */
+        /* --- Cyberpunk Gradients & Colors --- */
         .text-neon-green {
             color: #39ff14;
             text-shadow: 0 0 10px rgba(57, 255, 20, 0.7);
+        }
+
+        /* ADDED THIS CLASS TO FIX THE BUTTONS */
+        .bg-neon-green {
+            background-color: #39ff14;
         }
         
         .text-neon-pink {
@@ -157,10 +159,8 @@
 </head>
 <body class="relative">
 
-    <!-- Matrix Canvas -->
     <canvas id="matrix-canvas"></canvas>
 
-    <!-- Navigation -->
     <nav class="fixed w-full z-50 top-0 bg-black/90 backdrop-blur-md border-b border-green-500/20">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-2 group cursor-pointer">
@@ -177,7 +177,6 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section class="relative h-screen flex items-center justify-center px-6 pt-20">
         <div class="max-w-5xl text-center z-10 reveal">
             <div class="inline-block border border-neon-pink bg-pink-900/20 text-neon-pink px-6 py-2 rounded-sm text-xs font-bold uppercase tracking-[0.2em] mb-8 tech-font animate-pulse">
@@ -204,11 +203,9 @@
         </div>
     </section>
 
-    <!-- Infinite Scroller (YouTubers) -->
     <section class="marquee-section py-8 relative z-20">
         <div class="marquee-mask"></div>
         <div class="marquee-content-wrapper">
-            <!-- Repeated list for seamless scroll -->
             <div class="flex items-center">
                 <span class="marquee-item text-neon-green">Total Gaming</span>
                 <span class="marquee-item">Techno Gamerz</span>
@@ -226,7 +223,6 @@
                 <span class="marquee-item">Goldy Bhai</span>
                 <span class="marquee-item text-neon-pink">Snax Gaming</span>
             </div>
-            <!-- Duplicate -->
             <div class="flex items-center">
                 <span class="marquee-item text-neon-green">Total Gaming</span>
                 <span class="marquee-item">Techno Gamerz</span>
@@ -247,9 +243,7 @@
         </div>
     </section>
 
-    <!-- The Loot (Services) -->
     <section id="loot" class="py-24 bg-[#0a0a0a] relative">
-        <!-- Grid Background Overlay -->
         <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
 
         <div class="container mx-auto px-6 relative z-10">
@@ -259,7 +253,6 @@
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- Card 1 -->
                 <div class="bg-black border border-gray-800 p-8 hover:border-neon-green transition-all group reveal relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-20 h-20 bg-neon-green/20 blur-[50px] group-hover:bg-neon-green/40 transition-all"></div>
                     <div class="text-5xl mb-6">✂️</div>
@@ -267,7 +260,6 @@
                     <p class="text-gray-400 text-sm">We watch the whole VOD so you don't have to. We extract the funniest moments, best kills, and epic fails into a tight 10-minute video.</p>
                 </div>
 
-                <!-- Card 2 -->
                 <div class="bg-black border border-gray-800 p-8 hover:border-neon-pink transition-all group reveal delay-100 relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-20 h-20 bg-neon-pink/20 blur-[50px] group-hover:bg-neon-pink/40 transition-all"></div>
                     <div class="text-5xl mb-6">📱</div>
@@ -275,7 +267,6 @@
                     <p class="text-gray-400 text-sm">Vertical domination. We repurpose your best clips for TikTok and Reels with subway-surfer subtitles and high-retention editing.</p>
                 </div>
 
-                <!-- Card 3 -->
                 <div class="bg-black border border-gray-800 p-8 hover:border-cyan-400 transition-all group reveal delay-200 relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-20 h-20 bg-cyan-400/20 blur-[50px] group-hover:bg-cyan-400/40 transition-all"></div>
                     <div class="text-5xl mb-6">🖼️</div>
@@ -286,9 +277,7 @@
         </div>
     </section>
 
-    <!-- Hall of Fame (Testimonials) -->
     <section id="hall-of-fame" class="py-24 bg-black border-y border-gray-900 relative">
-        <!-- Background Accents -->
         <div class="absolute top-0 left-0 w-64 h-64 bg-yellow-500/10 blur-[100px] rounded-full pointer-events-none"></div>
         <div class="absolute bottom-0 right-0 w-64 h-64 bg-blue-500/10 blur-[100px] rounded-full pointer-events-none"></div>
 
@@ -299,7 +288,6 @@
             </div>
 
             <div class="grid md:grid-cols-2 gap-10">
-                <!-- Real Testimonial 1 -->
                 <div class="bg-[#0f0f0f] p-8 border border-yellow-600/50 reveal group hover:bg-[#1a1a1a] transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(255,215,0,0.1)] relative overflow-hidden">
                     <div class="absolute top-0 right-0 bg-yellow-600 text-black font-bold text-xs px-3 py-1 skew-x-[-10deg] uppercase">MVP Client</div>
                     <div class="flex items-center gap-6 mb-6 border-b border-gray-800 pb-6">
@@ -315,7 +303,6 @@
                     <p class="text-gray-300 italic text-lg leading-relaxed">"The consistency Feasibility brought to my highlights channel is insane. We're hitting <span class="text-white font-bold">30M+ views</span> a month easily. Their editing style matches my energy perfectly."</p>
                 </div>
 
-                <!-- Real Testimonial 2 -->
                 <div class="bg-[#0f0f0f] p-8 border border-blue-600/50 reveal delay-100 group hover:bg-[#1a1a1a] transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(59,130,246,0.1)] relative overflow-hidden">
                     <div class="absolute top-0 right-0 bg-blue-600 text-white font-bold text-xs px-3 py-1 skew-x-[-10deg] uppercase">Top Tier</div>
                     <div class="flex items-center gap-6 mb-6 border-b border-gray-800 pb-6">
@@ -334,7 +321,6 @@
         </div>
     </section>
 
-    <!-- Battle Pass (Pricing) -->
     <section id="pricing" class="py-24 relative overflow-hidden">
         <div class="container mx-auto px-6 relative z-10">
             <div class="text-center mb-16 reveal">
@@ -343,7 +329,6 @@
             </div>
 
             <div class="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto items-center">
-                <!-- Noob (Starter) -->
                 <div class="bg-[#0f0f0f] p-8 border border-gray-800 text-center reveal hover:bg-[#151515] transition-colors">
                     <h3 class="text-gray-500 font-bold uppercase tracking-widest tech-font">Noob Tier</h3>
                     <div class="my-6">
@@ -356,10 +341,9 @@
                         <li class="flex gap-2 text-gray-500">>> No Shorts</li>
                         <li class="flex gap-2 text-gray-500">>> Basic Edits</li>
                     </ul>
-                    <a href="#contact" class="block w-full border border-gray-600 text-gray-300 py-3 skew-x-[-10deg] hover:border-white hover:text-white transition-all font-bold uppercase">Equip</a>
+                    <a href="#contact" class="block w-full bg-gray-800 border border-gray-600 text-gray-300 py-3 skew-x-[-10deg] hover:border-white hover:text-white hover:bg-black transition-all font-bold uppercase">Equip</a>
                 </div>
 
-                <!-- Pro (Growth) -->
                 <div class="bg-[#0a0a0a] p-10 border-2 border-neon-green text-center relative transform scale-105 shadow-[0_0_40px_rgba(57,255,20,0.1)] reveal delay-100">
                     <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-neon-green text-black px-6 py-1 text-xs font-bold uppercase tracking-wide skew-x-[-10deg]">Best Value</div>
                     <h3 class="text-neon-green font-bold uppercase tracking-widest tech-font text-xl">Pro Tier</h3>
@@ -376,7 +360,6 @@
                     <a href="#contact" class="block w-full bg-neon-green text-black py-4 skew-x-[-10deg] hover:bg-white transition-all font-black uppercase tracking-wider">Equip</a>
                 </div>
 
-                <!-- God (Empire) -->
                 <div class="bg-[#0f0f0f] p-8 border border-purple-600 text-center reveal delay-200 hover:bg-[#151515] transition-colors relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-purple-600/10 blur-[40px]"></div>
                     <h3 class="text-purple-500 font-bold uppercase tracking-widest tech-font">God Tier</h3>
@@ -390,13 +373,12 @@
                         <li class="flex gap-2 text-purple-500">>> Dedicated Editor</li>
                         <li class="flex gap-2 text-purple-500">>> Channel Manager</li>
                     </ul>
-                    <a href="#contact" class="block w-full border border-purple-600 text-purple-500 py-3 skew-x-[-10deg] hover:bg-purple-600 hover:text-white transition-all font-bold uppercase">Equip</a>
+                    <a href="#contact" class="block w-full bg-purple-900/20 border border-purple-600 text-purple-500 py-3 skew-x-[-10deg] hover:bg-purple-600 hover:text-white transition-all font-bold uppercase">Equip</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Respawn (Contact) -->
     <section id="contact" class="py-24 bg-black">
         <div class="container mx-auto px-6 max-w-2xl reveal">
             <div class="border border-gray-800 p-8 relative bg-grid-pattern">
@@ -433,12 +415,10 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="py-8 text-center text-gray-700 text-xs bg-black border-t border-gray-900 font-mono">
         <p>FEASIBILITY GAMING © 2025 // <a href="index.html" class="hover:text-neon-green">MAIN BASE</a></p>
     </footer>
 
-    <!-- Matrix Script -->
     <script>
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
