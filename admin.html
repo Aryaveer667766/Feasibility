@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feasibility Media | Internal Dashboard</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+
+<style>
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:#0f172a;
+  color:#e2e8f0;
+}
+.font-mono{font-family:'JetBrains Mono',monospace}
+.glass{
+  background:rgba(30,41,59,.85);
+  backdrop-filter:blur(12px);
+}
+input,textarea{
+  background:#020617;
+  border:1px solid #1e293b;
+  color:white;
+  padding:.6rem;
+  border-radius:.4rem;
+}
+</style>
+</head>
+
+<body class="min-h-screen flex">
+
+<!-- SIDEBAR -->
+<aside class="w-64 bg-[#0B1120] border-r border-slate-800 p-6">
+  <h1 class="text-white font-bold text-lg mb-10">Feasibility Internal</h1>
+
+  <div class="border-t border-slate-800 pt-4">
+    <p id="editor-name" class="font-semibold">—</p>
+    <p id="editor-role" class="text-xs text-slate-500">—</p>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="flex-1 p-10 overflow-y-auto">
+
+<h1 class="text-3xl font-bold mb-1">Workspace</h1>
+<p class="text-slate-400 mb-8" id="current-date"></p>
+
+<!-- LIVE VIEW -->
+<div class="glass p-8 rounded-xl mb-8">
+  <p class="text-amber-400 font-mono text-sm mb-2">
+    Status: <span id="status-text">—</span>
+  </p>
+  <h2 class="text-2xl font-bold mb-3">Current Assignment</h2>
+  <p class="text-slate-400 mb-6" id="status-message">—</p>
+
+  <div class="w-full bg-slate-800 h-2 rounded">
+    <div id="progress-bar" class="bg-amber-500 h-2" style="width:0%"></div>
+  </div>
+</div>
+
+<!-- DETAILS -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+  <div class="glass p-6 rounded-xl">
+    <p class="text-xs text-slate-400">Client</p>
+    <p id="client" class="font-semibold">—</p>
+  </div>
+  <div class="glass p-6 rounded-xl">
+    <p class="text-xs text-slate-400">Type</p>
+    <p id="type" class="font-semibold">—</p>
+  </div>
+  <div class="glass p-6 rounded-xl">
+    <p class="text-xs text-slate-400">Deadline</p>
+    <p id="deadline" class="font-semibold">—</p>
+  </div>
+</div>
+
+<!-- ADMIN PANEL (ALWAYS ON) -->
+<div class="glass p-8 rounded-xl">
+  <h3 class="text-xl font-bold mb-6 text-purple-400">Admin Control Panel</h3>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <input id="a-editor" placeholder="Editor Name">
+    <input id="a-role" placeholder="Editor Role">
+    <input id="a-status" placeholder="Status">
+    <input id="a-client" placeholder="Client">
+    <input id="a-type" placeholder="Type">
+    <input id="a-deadline" placeholder="Deadline">
+    <input id="a-progress" type="number" placeholder="Progress %">
+    <textarea id="a-message" placeholder="Status Message"></textarea>
+  </div>
+
+  <button onclick="saveData()"
+    class="mt-6 bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded font-semibold">
+    Save Changes
+  </button>
+</div>
+
+</main>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getFirestore, doc, onSnapshot, updateDoc } from
+"https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDnKHTghSxW7fi6bp_UGBhR6Nx4paAtO4U",
+  authDomain: "my-babys-place.firebaseapp.com",
+  projectId: "my-babys-place",
+  storageBucket: "my-babys-place.firebasestorage.app",
+  messagingSenderId: "276027805309",
+  appId: "1:276027805309:web:7997b78ccf2c5004126b14"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const ref = doc(db, "dashboard", "current");
+
+// LIVE SYNC
+onSnapshot(ref, snap => {
+  if(!snap.exists()) return;
+  const d = snap.data();
+
+  editorName.textContent = d.editor;
+  editorRole.textContent = d.role;
+  statusText.textContent = d.status;
+  statusMessage.textContent = d.message;
+  progressBar.style.width = d.progress + "%";
+  client.textContent = d.client;
+  type.textContent = d.type;
+  deadline.textContent = d.deadline;
+
+  aEditor.value = d.editor;
+  aRole.value = d.role;
+  aStatus.value = d.status;
+  aClient.value = d.client;
+  aType.value = d.type;
+  aDeadline.value = d.deadline;
+  aProgress.value = d.progress;
+  aMessage.value = d.message;
+});
+
+// SAVE
+window.saveData = async () => {
+  await updateDoc(ref,{
+    editor: aEditor.value,
+    role: aRole.value,
+    status: aStatus.value,
+    client: aClient.value,
+    type: aType.value,
+    deadline: aDeadline.value,
+    progress: Number(aProgress.value),
+    message: aMessage.value
+  });
+  alert("Updated successfully");
+};
+
+// DATE
+currentDate.textContent =
+  new Date().toLocaleDateString("en-IN",
+  {weekday:"long",day:"numeric",month:"long",year:"numeric"});
+</script>
+
+</body>
+</html>
