@@ -202,6 +202,18 @@
                 </div>
             </div>
 
+            <!-- Section 3: Strategic Vision (Interactive Cards) -->
+            <div class="glass-panel p-8 rounded-2xl relative overflow-hidden">
+                <span class="absolute -top-4 -right-4 text-9xl font-bold text-white/5 pointer-events-none">3</span>
+                
+                <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-3 relative z-10">
+                    <span class="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center text-sm">3</span>
+                    Strategic Vision
+                </h3>
+                
+                <div class="space-y-6 relative z-10">
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Primary Objective (Select One)</label>
                         
                         <!-- Hidden Input stores the value -->
                         <input type="hidden" name="primary_goal" id="primary_goal_input" required>
@@ -243,23 +255,6 @@
                         <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Any "Hard No's"?</label>
                         <textarea name="restrictions" rows="2" class="w-full rounded-xl px-4 py-3" placeholder="e.g. No usage of red color, no slang, etc."></textarea>
                     </div>
-                </div>
-            </div>
-
-            <!-- NEW: Kickoff Call Section (Replaced Calendly with Built-in Modal) -->
-            <div class="glass-panel p-8 rounded-2xl relative overflow-hidden bg-gradient-to-r from-slate-900 to-slate-800 border-l-4 border-l-purple-500">
-                <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div>
-                        <h3 class="text-lg font-bold text-white mb-2">Book Your Strategy Kickoff</h3>
-                        <p class="text-sm text-slate-400">Request a 30-min onboarding call with our Creative Director.</p>
-                    </div>
-                    <button type="button" onclick="openCallModal()" class="px-6 py-3 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-all flex items-center gap-2 whitespace-nowrap shadow-lg hover:-translate-y-1">
-                        <i class="fa-regular fa-calendar-check"></i> Request Call
-                    </button>
-                </div>
-                <div class="mt-4 flex items-center gap-2">
-                    <input type="checkbox" name="call_requested" id="call-check" class="w-4 h-4 rounded border-slate-500 text-purple-600 bg-slate-700 cursor-pointer pointer-events-none" readonly>
-                    <label for="call-check" class="text-xs text-slate-400">Call request confirmed.</label>
                 </div>
             </div>
 
@@ -331,46 +326,6 @@
         </form>
     </main>
 
-    <!-- CALL REQUEST MODAL (NEW) -->
-    <div id="call-modal" class="fixed inset-0 z-[60] hidden">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity opacity-0" id="call-backdrop" onclick="closeCallModal()"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-md bg-[#0f172a] border border-white/10 rounded-2xl shadow-2xl flex flex-col transition-all scale-95 opacity-0" id="call-content">
-            <div class="p-6 border-b border-white/10 flex justify-between items-center bg-[#1e293b]/50 rounded-t-2xl">
-                <h3 class="text-lg font-bold text-white heading-font">Request Strategy Call</h3>
-                <button onclick="closeCallModal()" class="text-slate-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 p-2 rounded-full w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            
-            <div class="p-6">
-                <form id="call-booking-form" action="https://formspree.io/f/mandalko" method="POST" class="space-y-4">
-                    <input type="hidden" name="_subject" value="STRATEGY CALL REQUEST">
-                    
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Preferred Date</label>
-                        <input type="date" name="preferred_date" required class="w-full rounded-xl px-4 py-2 text-sm">
-                    </div>
-                    
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Preferred Time Slot</label>
-                        <select name="preferred_time" class="w-full rounded-xl px-4 py-2 text-sm">
-                            <option value="Morning (10AM - 1PM IST)">Morning (10AM - 1PM IST)</option>
-                            <option value="Afternoon (2PM - 5PM IST)">Afternoon (2PM - 5PM IST)</option>
-                            <option value="Evening (6PM - 8PM IST)">Evening (6PM - 8PM IST)</option>
-                        </select>
-                    </div>
-
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Specific Agenda / Questions</label>
-                        <textarea name="agenda" rows="2" class="w-full rounded-xl px-4 py-2 text-sm" placeholder="What do you want to focus on?"></textarea>
-                    </div>
-
-                    <button type="submit" id="call-submit-btn" class="w-full py-3 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl shadow-lg transition-all mt-2">
-                        Send Request
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <!-- Terms Modal -->
     <div id="terms-modal" class="fixed inset-0 z-[60] hidden">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity opacity-0" id="modal-backdrop" onclick="closeTermsModal()"></div>
@@ -438,65 +393,6 @@
             document.getElementById('terms-check').checked = true;
             closeTermsModal();
         }
-
-        // --- CALL MODAL LOGIC ---
-        const callModal = document.getElementById('call-modal');
-        const callBackdrop = document.getElementById('call-backdrop');
-        const callContent = document.getElementById('call-content');
-
-        function openCallModal() {
-            callModal.classList.remove('hidden');
-            setTimeout(() => {
-                callBackdrop.classList.remove('opacity-0');
-                callContent.classList.remove('scale-95', 'opacity-0');
-                callContent.classList.add('scale-100', 'opacity-100');
-            }, 10);
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeCallModal() {
-            callBackdrop.classList.add('opacity-0');
-            callContent.classList.remove('scale-100', 'opacity-100');
-            callContent.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                callModal.classList.add('hidden');
-                document.body.style.overflow = '';
-            }, 300);
-        }
-
-        // Call Booking Submission
-        const callForm = document.getElementById('call-booking-form');
-        const callSubmitBtn = document.getElementById('call-submit-btn');
-
-        callForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const originalText = callSubmitBtn.innerHTML;
-            callSubmitBtn.innerHTML = 'Sending...';
-            callSubmitBtn.disabled = true;
-
-            fetch(callForm.action, {
-                method: 'POST',
-                body: new FormData(callForm),
-                headers: { 'Accept': 'application/json' }
-            }).then(response => {
-                if (response.ok) {
-                    alert("Call Request Sent!");
-                    document.getElementById('call-check').checked = true; // Auto-check the visual box
-                    closeCallModal();
-                    callSubmitBtn.innerHTML = originalText;
-                    callSubmitBtn.disabled = false;
-                    callForm.reset();
-                } else {
-                    alert("Error submitting request.");
-                    callSubmitBtn.innerHTML = originalText;
-                    callSubmitBtn.disabled = false;
-                }
-            }).catch(error => {
-                alert("Network error.");
-                callSubmitBtn.innerHTML = originalText;
-                callSubmitBtn.disabled = false;
-            });
-        });
 
         // --- MAIN SUBMISSION LOGIC ---
         const form = document.getElementById('onboarding-form');
