@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Manager CRM | Feasibility Media</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+            background-attachment: fixed;
+            background-size: cover;
+            overflow: hidden;
+        }
+
+        .heading-font { font-family: 'Poppins', sans-serif; }
+        .mono-font { font-family: 'JetBrains Mono', monospace; }
+
+        /* Glassmorphism */
+        .glass-sidebar {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        /* Forms & Inputs */
+        input, select, textarea {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #E11D48;
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 0 0 2px rgba(225, 29, 72, 0.2);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #E11D48; }
+
+        /* Tab Navigation */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .nav-link.active {
+            background: linear-gradient(90deg, rgba(225, 29, 72, 0.15) 0%, transparent 100%);
+            border-left: 3px solid #E11D48;
+            color: #f43f5e;
+        }
+        .nav-link { border-left: 3px solid transparent; }
+        
+        /* Table Styles */
+        tbody tr:hover { background-color: rgba(255,255,255,0.02); }
+    </style>
+</head>
+<body class="h-screen w-full relative">
+
+    <!-- ================= LOGIN SCREEN ================= -->
+    <div id="login-screen" class="absolute inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-[#0f172a]/80">
+        <div class="glass-card p-8 md:p-12 w-full max-w-md relative overflow-hidden shadow-2xl">
+            <!-- Glow accents -->
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-red-600/30 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-600/30 rounded-full blur-2xl pointer-events-none"></div>
+
+            <div class="text-center mb-8 relative z-10">
+                <div class="w-12 h-12 mx-auto bg-gradient-to-br from-red-600 to-rose-500 text-white flex items-center justify-center rounded-xl text-xl font-black shadow-lg shadow-red-500/20 mb-4">F</div>
+                <h2 class="text-2xl font-bold text-white heading-font">Manager Portal</h2>
+                <p class="text-sm text-slate-400 mt-1">Authorized personnel only.</p>
+            </div>
+
+            <form id="login-form" class="space-y-5 relative z-10">
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Email Address</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-slate-500"></i>
+                        <input type="email" id="login-email" required class="w-full rounded-xl pl-11 pr-4 py-3 text-sm" placeholder="manager@feasibilitymedia.in">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Password</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-500"></i>
+                        <input type="password" id="login-password" required class="w-full rounded-xl pl-11 pr-4 py-3 text-sm" placeholder="••••••••">
+                    </div>
+                </div>
+                <div id="login-error" class="hidden text-red-400 text-xs font-bold text-center bg-red-500/10 py-2 rounded border border-red-500/20">
+                    Invalid credentials. Please try again.
+                </div>
+                <button type="submit" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-xl shadow-lg shadow-red-900/20 transition-all flex items-center justify-center gap-2 mt-4">
+                    Secure Login <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= MAIN APP SCREEN (Hidden until login) ================= -->
+    <div id="app-screen" class="hidden h-screen flex w-full">
+        <!-- Sidebar -->
+        <aside class="w-64 glass-sidebar h-full flex flex-col hidden md:flex z-20">
+            <div class="p-6 border-b border-white/5">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-red-600 to-rose-500 text-white flex items-center justify-center rounded-lg text-sm font-black shadow-lg shadow-red-500/20">F</div>
+                    <div class="flex flex-col leading-none">
+                        <span class="text-white font-bold tracking-tight">Feasibility</span>
+                        <span class="text-[10px] text-red-400 font-bold uppercase tracking-widest">Sales CRM</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 pb-4 border-b border-white/5">
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <div class="w-10 h-10 rounded-full border-2 border-slate-700 bg-slate-800 flex items-center justify-center text-white font-bold">AP</div>
+                        <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#0f172a] rounded-full"></div>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-white leading-tight">Abhinav Pathak</p>
+                        <p class="text-[10px] text-slate-400 uppercase tracking-wider">Head of Sales</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="flex-1 py-4 space-y-1 overflow-y-auto">
+                <a href="#" onclick="switchTab('dashboard', this)" class="nav-link active flex items-center gap-3 px-6 py-3 text-slate-400 hover:text-white transition-colors font-medium">
+                    <i class="fa-solid fa-chart-pie w-5"></i> Pipeline Overview
+                </a>
+                <a href="#" onclick="switchTab('leads', this)" class="nav-link flex items-center gap-3 px-6 py-3 text-slate-400 hover:text-white transition-colors font-medium">
+                    <i class="fa-solid fa-list-check w-5"></i> Manage Leads
+                </a>
+                <a href="#" onclick="switchTab('add-lead', this)" class="nav-link flex items-center gap-3 px-6 py-3 text-slate-400 hover:text-white transition-colors font-medium">
+                    <i class="fa-solid fa-user-plus w-5"></i> Add New Lead
+                </a>
+                <a href="#" onclick="switchTab('team', this)" class="nav-link flex items-center gap-3 px-6 py-3 text-slate-400 hover:text-white transition-colors font-medium">
+                    <i class="fa-solid fa-users-rays w-5"></i> Team Directory
+                </a>
+            </nav>
+
+            <div class="mt-auto">
+                <a href="#" onclick="switchTab('settings', this)" class="nav-link flex items-center gap-3 px-6 py-3 text-slate-400 hover:text-white transition-colors font-medium border-t border-white/5">
+                    <i class="fa-solid fa-gear w-5"></i> Settings
+                </a>
+                <div class="p-6 border-t border-white/5 text-xs text-slate-500">
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="w-2 h-2 rounded-full bg-slate-500 animate-pulse" id="db-indicator"></div>
+                        <span id="db-status">Waiting for login...</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-900 via-[#0a0f1a] to-[#0a0f1a] relative">
+            
+            <!-- Header -->
+            <header class="px-8 py-5 flex justify-between items-center z-10 border-b border-white/5 bg-slate-900/50 backdrop-blur-md">
+                <div>
+                    <h1 id="page-title" class="text-xl font-bold text-white heading-font">Pipeline Overview</h1>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <button onclick="logout()" class="text-slate-400 hover:text-white text-sm font-medium transition-colors mr-4">
+                        <i class="fa-solid fa-power-off mr-1"></i> Logout
+                    </button>
+                    <button onclick="switchTab('add-lead', document.querySelectorAll('.nav-link')[2])" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-lg shadow-red-900/20 transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> New Lead
+                    </button>
+                </div>
+            </header>
+
+            <!-- Scrollable Area -->
+            <div class="flex-1 overflow-y-auto p-8 z-10">
+                
+                <!-- ================= TAB: DASHBOARD ================= -->
+                <div id="tab-dashboard" class="tab-content active space-y-8">
+                    
+                    <!-- KPI Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="glass-card p-6 border-t-2 border-red-500">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Total Pipeline Value</p>
+                            <h3 id="kpi-pipeline" class="text-3xl font-bold text-white mono-font">₹0</h3>
+                        </div>
+                        <div class="glass-card p-6 border-t-2 border-emerald-500">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Total Closed Won</p>
+                            <h3 id="kpi-won-value" class="text-3xl font-bold text-emerald-400 mono-font">₹0</h3>
+                        </div>
+                        <div class="glass-card p-6">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Active Leads</p>
+                            <h3 id="kpi-active-leads" class="text-3xl font-bold text-white mono-font">0</h3>
+                        </div>
+                        <div class="glass-card p-6">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Deals Won</p>
+                            <h3 id="kpi-won-count" class="text-3xl font-bold text-white mono-font">0</h3>
+                        </div>
+                    </div>
+
+                    <!-- Recent Leads Preview -->
+                    <div class="glass-card p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-lg font-bold text-white heading-font">Recent Activity</h3>
+                            <button onclick="switchTab('leads', document.querySelectorAll('.nav-link')[1])" class="text-sm text-red-400 hover:text-red-300 font-bold transition-colors">View All Leads &rarr;</button>
+                        </div>
+                        
+                        <div id="recent-leads-container" class="space-y-3">
+                            <!-- Populated by JS -->
+                            <p class="text-slate-500 text-sm italic">Loading data...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= TAB: MANAGE LEADS ================= -->
+                <div id="tab-leads" class="tab-content">
+                    <div class="glass-card p-6 flex flex-col h-full min-h-[600px]">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-lg font-bold text-white heading-font">Master Lead Directory</h3>
+                            <button onclick="exportToCSV()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-lg text-sm text-white font-medium transition-colors flex items-center gap-2">
+                                <i class="fa-solid fa-download"></i> Export CSV
+                            </button>
+                        </div>
+
+                        <div class="overflow-x-auto flex-1">
+                            <table class="w-full text-left border-collapse whitespace-nowrap">
+                                <thead>
+                                    <tr class="text-xs font-bold text-slate-500 uppercase border-b border-white/10">
+                                        <th class="pb-3 px-4">Brand / Company</th>
+                                        <th class="pb-3 px-4">Contact Person</th>
+                                        <th class="pb-3 px-4">Est. Value (₹)</th>
+                                        <th class="pb-3 px-4">Assigned Rep</th>
+                                        <th class="pb-3 px-4">Status</th>
+                                        <th class="pb-3 px-4 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="leads-table-body" class="text-sm text-slate-300">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                            <div id="empty-leads-msg" class="hidden text-center py-12">
+                                <i class="fa-solid fa-folder-open text-4xl text-slate-600 mb-4"></i>
+                                <p class="text-slate-400">No leads found in the database.</p>
+                                <button onclick="switchTab('add-lead', document.querySelectorAll('.nav-link')[2])" class="mt-4 text-red-400 font-bold hover:underline">Add your first lead</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= TAB: ADD NEW LEAD ================= -->
+                <div id="tab-add-lead" class="tab-content">
+                    <div class="max-w-3xl mx-auto glass-card p-8">
+                        <h3 class="text-2xl font-bold text-white heading-font mb-2">Create New Lead</h3>
+                        <p class="text-sm text-slate-400 mb-8">Enter the prospect details. This will immediately update the master pipeline and CEO dashboard.</p>
+                        
+                        <form id="form-add-lead" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Company Name -->
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Brand / Company Name *</label>
+                                    <input type="text" id="ld-company" required class="w-full rounded-xl px-4 py-3 text-sm" placeholder="e.g. PhysicsWallah">
+                                </div>
+                                
+                                <!-- Contact Person -->
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Contact Person</label>
+                                    <input type="text" id="ld-contact" class="w-full rounded-xl px-4 py-3 text-sm" placeholder="e.g. Alakh Pandey">
+                                </div>
+
+                                <!-- Phone/WhatsApp -->
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Phone / WhatsApp *</label>
+                                    <input type="tel" id="ld-phone" required class="w-full rounded-xl px-4 py-3 text-sm" placeholder="+91...">
+                                </div>
+
+                                <!-- Deal Value -->
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Estimated Deal Value (₹) *</label>
+                                    <input type="number" id="ld-value" required min="0" class="w-full rounded-xl px-4 py-3 text-sm mono-font" placeholder="50000">
+                                </div>
+
+                                <!-- Assigned Sales Rep -->
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Assign To (Sales Rep Name)</label>
+                                    <input type="text" id="ld-rep" class="w-full rounded-xl px-4 py-3 text-sm" placeholder="e.g. Rahul Kumar">
+                                </div>
+
+                                <!-- Status -->
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Initial Status</label>
+                                    <select id="ld-status" class="w-full rounded-xl px-4 py-3 text-sm cursor-pointer appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyBmaWxsPSJub25lIiBzdHJva2U9IiM5NGEzYjgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIgZD0iTTE5IDlsLTcgNy03LTciPjwvcGF0aD48L3N2Zz4=')] bg-no-repeat bg-[length:16px] bg-[position:calc(100%-16px)_center]">
+                                        <option value="New Lead">New Lead</option>
+                                        <option value="Contacted">Contacted</option>
+                                        <option value="Meeting Set">Meeting Set</option>
+                                        <option value="Proposal Sent">Proposal Sent</option>
+                                        <option value="Closed Won">Closed Won</option>
+                                        <option value="Closed Lost">Closed Lost</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Notes -->
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Notes / Background</label>
+                                <textarea id="ld-notes" rows="3" class="w-full rounded-xl px-4 py-3 text-sm resize-none" placeholder="Where did this lead come from? What are their needs?"></textarea>
+                            </div>
+
+                            <div class="pt-4 border-t border-white/10 flex justify-end">
+                                <button type="submit" id="btn-submit-lead" class="bg-red-600 hover:bg-red-500 text-white px-8 py-3 rounded-xl font-bold transition-all flex items-center gap-2">
+                                    <i class="fa-solid fa-paper-plane"></i> Save Lead to Pipeline
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- ================= TAB: TEAM DIRECTORY ================= -->
+                <div id="tab-team" class="tab-content">
+                    <div class="glass-card p-6 flex flex-col h-full">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-lg font-bold text-white heading-font">Sales Representative Roster</h3>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse whitespace-nowrap">
+                                <thead>
+                                    <tr class="text-xs font-bold text-slate-500 uppercase border-b border-white/10">
+                                        <th class="pb-3 px-4">Agent Name</th>
+                                        <th class="pb-3 px-4">Territory / Niche</th>
+                                        <th class="pb-3 px-4">Monthly Target (₹)</th>
+                                        <th class="pb-3 px-4">Current Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm text-slate-300">
+                                    <tr class="border-b border-white/5">
+                                        <td class="py-4 px-4 font-bold text-white flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs">H</div>
+                                            Agent Hunter
+                                        </td>
+                                        <td class="py-4 px-4 text-slate-400">Creators & YouTubers</td>
+                                        <td class="py-4 px-4 mono-font text-emerald-400">₹10,00,000</td>
+                                        <td class="py-4 px-4"><span class="px-2 py-1 rounded text-[10px] font-bold bg-green-500/20 text-green-400">Active</span></td>
+                                    </tr>
+                                    <tr class="border-b border-white/5">
+                                        <td class="py-4 px-4 font-bold text-white flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs">SS</div>
+                                            Sahil S.
+                                        </td>
+                                        <td class="py-4 px-4 text-slate-400">D2C E-commerce</td>
+                                        <td class="py-4 px-4 mono-font text-emerald-400">₹8,00,000</td>
+                                        <td class="py-4 px-4"><span class="px-2 py-1 rounded text-[10px] font-bold bg-green-500/20 text-green-400">Active</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-4 px-4 font-bold text-white flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs">NK</div>
+                                            Neha K.
+                                        </td>
+                                        <td class="py-4 px-4 text-slate-400">EdTech & Courses</td>
+                                        <td class="py-4 px-4 mono-font text-emerald-400">₹6,00,000</td>
+                                        <td class="py-4 px-4"><span class="px-2 py-1 rounded text-[10px] font-bold bg-slate-500/20 text-slate-400">On Leave</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= TAB: SETTINGS ================= -->
+                <div id="tab-settings" class="tab-content">
+                    <div class="max-w-2xl mx-auto glass-card p-8">
+                        <h3 class="text-2xl font-bold text-white heading-font mb-6">Account Settings</h3>
+                        
+                        <form id="form-password" class="space-y-6">
+                            <div class="bg-slate-800/50 p-6 rounded-xl border border-white/5 space-y-4">
+                                <h4 class="text-sm font-bold text-white mb-2">Change Password</h4>
+                                
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">New Password</label>
+                                    <input type="password" id="set-new-pwd" required class="w-full rounded-lg px-4 py-3 text-sm" placeholder="Enter new password">
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Confirm New Password</label>
+                                    <input type="password" id="set-confirm-pwd" required class="w-full rounded-lg px-4 py-3 text-sm" placeholder="Confirm new password">
+                                </div>
+                                
+                                <button type="submit" class="bg-slate-700 hover:bg-slate-600 text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-all mt-2">
+                                    Update Password
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-emerald-600 text-white px-6 py-3 rounded-lg shadow-xl font-bold text-sm transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-2 pointer-events-none">
+        <i class="fa-solid fa-check-circle"></i> <span id="toast-msg">Action Successful</span>
+    </div>
+
+    <!-- JS Logic & Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- AUTHENTICATION WALL LOGIC ---
+        const TARGET_EMAIL = "Pathakabhinav302@gmail.com";
+        const DEFAULT_PWD = "Abhinav@feasibilitymedia";
+        
+        // Get password from local storage or use default
+        let currentPwd = localStorage.getItem('manager_pwd') || DEFAULT_PWD;
+
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById('login-email').value.trim();
+            const pwdInput = document.getElementById('login-password').value.trim();
+            const errorDiv = document.getElementById('login-error');
+
+            if (emailInput.toLowerCase() === TARGET_EMAIL.toLowerCase() && pwdInput === currentPwd) {
+                // Success
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('app-screen').classList.remove('hidden');
+                initializeAppConnections(); // Start Firebase only after login
+            } else {
+                // Fail
+                errorDiv.classList.remove('hidden');
+            }
+        });
+
+        window.logout = function() {
+            document.getElementById('app-screen').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('login-password').value = "";
+            document.getElementById('login-error').classList.add('hidden');
+        };
+
+        // --- SETTINGS (Change Password) ---
+        document.getElementById('form-password').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const p1 = document.getElementById('set-new-pwd').value;
+            const p2 = document.getElementById('set-confirm-pwd').value;
+
+            if (p1 !== p2) {
+                showToast("Passwords do not match", true);
+                return;
+            }
+            if (p1.length < 6) {
+                showToast("Password must be at least 6 characters", true);
+                return;
+            }
+
+            currentPwd = p1;
+            localStorage.setItem('manager_pwd', currentPwd);
+            document.getElementById('form-password').reset();
+            showToast("Password updated successfully!");
+        });
+
+        // --- UI: Tab Switching & Toast ---
+        window.switchTab = function(tabId, element) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            if(element) element.classList.add('active');
+
+            const titles = {
+                'dashboard': 'Pipeline Overview',
+                'leads': 'Manage Leads',
+                'add-lead': 'Add New Lead',
+                'team': 'Team Directory',
+                'settings': 'Account Settings'
+            };
+            document.getElementById('page-title').innerText = titles[tabId];
+        };
+
+        window.showToast = function(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.className = `fixed bottom-6 right-6 text-white px-6 py-3 rounded-lg shadow-xl font-bold text-sm transform translate-y-0 opacity-100 transition-all duration-300 z-50 flex items-center gap-2 ${isError ? 'bg-red-600' : 'bg-emerald-600'}`;
+            document.getElementById('toast-msg').innerText = msg;
+            
+            setTimeout(() => {
+                toast.classList.replace('translate-y-0', 'translate-y-20');
+                toast.classList.replace('opacity-100', 'opacity-0');
+            }, 3000);
+        };
+
+        // --- FIREBASE LOGIC (Wrapped in function to call after login) ---
+        let allLeads = [];
+        let leadsCollectionRef = null;
+
+        function initializeAppConnections() {
+            try {
+                const firebaseConfig = JSON.parse(__firebase_config);
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                
+                const app = initializeApp(firebaseConfig);
+                const auth = getAuth(app);
+                const db = getFirestore(app);
+
+                const initAuth = async () => {
+                    try {
+                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                            await signInWithCustomToken(auth, __initial_auth_token);
+                        } else {
+                            await signInAnonymously(auth);
+                        }
+                        
+                        document.getElementById('db-status').innerText = "Connected Securely";
+                        document.getElementById('db-indicator').classList.replace('bg-slate-500', 'bg-green-500');
+
+                        leadsCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'crm_leads');
+                        startDataListener();
+
+                    } catch (error) {
+                        console.error("Auth Error:", error);
+                        document.getElementById('db-status').innerText = "Auth Failed";
+                        document.getElementById('db-indicator').classList.replace('bg-slate-500', 'bg-red-500');
+                    }
+                };
+                initAuth();
+
+                function startDataListener() {
+                    onSnapshot(leadsCollectionRef, (snapshot) => {
+                        allLeads = [];
+                        snapshot.forEach((doc) => {
+                            allLeads.push({ id: doc.id, ...doc.data() });
+                        });
+                        
+                        allLeads.sort((a, b) => b.timestamp - a.timestamp);
+                        renderDashboard();
+                        renderLeadsTable();
+                    }, (error) => {
+                        console.error("Snapshot Error:", error);
+                    });
+                }
+
+                // Render Dashboard
+                function renderDashboard() {
+                    let totalPipeline = 0;
+                    let wonValue = 0;
+                    let activeCount = 0;
+                    let wonCount = 0;
+
+                    allLeads.forEach(lead => {
+                        const val = Number(lead.value) || 0;
+                        if (lead.status === 'Closed Won') {
+                            wonValue += val;
+                            wonCount++;
+                        } else if (lead.status !== 'Closed Lost') {
+                            totalPipeline += val;
+                            activeCount++;
+                        }
+                    });
+
+                    document.getElementById('kpi-pipeline').innerText = "₹" + totalPipeline.toLocaleString('en-IN');
+                    document.getElementById('kpi-won-value').innerText = "₹" + wonValue.toLocaleString('en-IN');
+                    document.getElementById('kpi-active-leads').innerText = activeCount;
+                    document.getElementById('kpi-won-count').innerText = wonCount;
+
+                    const recentContainer = document.getElementById('recent-leads-container');
+                    recentContainer.innerHTML = "";
+                    
+                    if(allLeads.length === 0) {
+                        recentContainer.innerHTML = '<p class="text-slate-500 text-sm italic">No leads in pipeline yet.</p>';
+                        return;
+                    }
+
+                    const topLeads = allLeads.slice(0, 5);
+                    topLeads.forEach(lead => {
+                        const statusColor = getStatusColor(lead.status);
+                        recentContainer.innerHTML += `
+                            <div class="flex justify-between items-center bg-slate-800/30 p-3 rounded-lg border border-white/5">
+                                <div>
+                                    <p class="text-sm font-bold text-white">${lead.company}</p>
+                                    <p class="text-[10px] text-slate-400">Rep: ${lead.rep || 'Unassigned'}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xs font-mono font-bold text-white mb-1">₹${Number(lead.value).toLocaleString('en-IN')}</p>
+                                    <span class="text-[10px] px-2 py-0.5 rounded border ${statusColor.classes}">${lead.status}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                // Render Leads Table
+                function renderLeadsTable() {
+                    const tbody = document.getElementById('leads-table-body');
+                    const emptyMsg = document.getElementById('empty-leads-msg');
+                    tbody.innerHTML = "";
+
+                    if(allLeads.length === 0) {
+                        emptyMsg.classList.remove('hidden');
+                        return;
+                    } else {
+                        emptyMsg.classList.add('hidden');
+                    }
+
+                    allLeads.forEach(lead => {
+                        const statusColor = getStatusColor(lead.status);
+                        
+                        const tr = document.createElement('tr');
+                        tr.className = "border-b border-white/5";
+                        tr.innerHTML = `
+                            <td class="py-4 px-4">
+                                <p class="font-bold text-white text-sm">${lead.company}</p>
+                                <p class="text-[10px] text-slate-500 truncate max-w-[150px]" title="${lead.notes}">${lead.notes || 'No notes'}</p>
+                            </td>
+                            <td class="py-4 px-4 text-sm text-slate-300">
+                                <p>${lead.contact || '--'}</p>
+                                <p class="text-[10px] text-slate-400">${lead.phone}</p>
+                            </td>
+                            <td class="py-4 px-4 mono-font text-white font-bold">₹${Number(lead.value).toLocaleString('en-IN')}</td>
+                            <td class="py-4 px-4 text-sm text-slate-300">${lead.rep || '<span class="text-slate-600 italic">Unassigned</span>'}</td>
+                            <td class="py-4 px-4">
+                                <select onchange="updateLeadStatus('${lead.id}', this.value)" class="bg-transparent border border-white/10 rounded px-2 py-1 text-xs font-bold ${statusColor.text} focus:outline-none cursor-pointer appearance-none">
+                                    ${generateStatusOptions(lead.status)}
+                                </select>
+                            </td>
+                            <td class="py-4 px-4 text-right">
+                                <button onclick="deleteLead('${lead.id}')" class="text-slate-500 hover:text-red-400 p-2 transition-colors" title="Delete Lead">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+
+                // ADD LEAD
+                document.getElementById('form-add-lead').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    if(!leadsCollectionRef) return showToast("Not connected to database", true);
+
+                    const btn = document.getElementById('btn-submit-lead');
+                    const origText = btn.innerHTML;
+                    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+                    btn.disabled = true;
+
+                    const newLead = {
+                        company: document.getElementById('ld-company').value.trim(),
+                        contact: document.getElementById('ld-contact').value.trim(),
+                        phone: document.getElementById('ld-phone').value.trim(),
+                        value: Number(document.getElementById('ld-value').value),
+                        rep: document.getElementById('ld-rep').value.trim(),
+                        status: document.getElementById('ld-status').value,
+                        notes: document.getElementById('ld-notes').value.trim(),
+                        timestamp: Date.now()
+                    };
+
+                    try {
+                        await addDoc(leadsCollectionRef, newLead);
+                        showToast("Lead added successfully!");
+                        document.getElementById('form-add-lead').reset();
+                        switchTab('leads', document.querySelectorAll('.nav-link')[1]);
+                    } catch (error) {
+                        console.error("Add error:", error);
+                        showToast("Error adding lead", true);
+                    } finally {
+                        btn.innerHTML = origText;
+                        btn.disabled = false;
+                    }
+                });
+
+                // GLOBAL ACTIONS
+                window.updateLeadStatus = async function(id, newStatus) {
+                    try {
+                        const leadDoc = doc(leadsCollectionRef, id);
+                        await updateDoc(leadDoc, { status: newStatus });
+                        showToast("Status updated");
+                    } catch(e) {
+                        console.error("Update error:", e);
+                        showToast("Error updating status", true);
+                    }
+                }
+
+                window.deleteLead = async function(id) {
+                    if(confirm("Are you sure you want to delete this lead? This cannot be undone.")) {
+                        try {
+                            await deleteDoc(doc(leadsCollectionRef, id));
+                            showToast("Lead deleted");
+                        } catch(e) {
+                            console.error("Delete error:", e);
+                            showToast("Error deleting lead", true);
+                        }
+                    }
+                }
+
+                window.exportToCSV = function() {
+                    if(allLeads.length === 0) return showToast("No data to export", true);
+                    
+                    let csv = "Company,Contact,Phone,Value,Rep,Status,Notes\n";
+                    allLeads.forEach(l => {
+                        const company = `"${(l.company||'').replace(/"/g, '""')}"`;
+                        const contact = `"${(l.contact||'').replace(/"/g, '""')}"`;
+                        const notes = `"${(l.notes||'').replace(/"/g, '""')}"`;
+                        csv += `${company},${contact},${l.phone},${l.value},${l.rep},${l.status},${notes}\n`;
+                    });
+
+                    const blob = new Blob([csv], { type: 'text/csv' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.setAttribute('hidden', '');
+                    a.setAttribute('href', url);
+                    a.setAttribute('download', 'feasibility_leads.csv');
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    showToast("Export downloaded");
+                }
+
+                // HELPERS
+                function getStatusColor(status) {
+                    switch(status) {
+                        case 'New Lead': return { classes: 'bg-blue-500/20 text-blue-400 border-blue-500/30', text: 'text-blue-400' };
+                        case 'Contacted': return { classes: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30', text: 'text-yellow-400' };
+                        case 'Meeting Set': return { classes: 'bg-purple-500/20 text-purple-400 border-purple-500/30', text: 'text-purple-400' };
+                        case 'Proposal Sent': return { classes: 'bg-orange-500/20 text-orange-400 border-orange-500/30', text: 'text-orange-400' };
+                        case 'Closed Won': return { classes: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30', text: 'text-emerald-400' };
+                        case 'Closed Lost': return { classes: 'bg-red-500/20 text-red-400 border-red-500/30', text: 'text-red-400' };
+                        default: return { classes: 'bg-slate-500/20 text-slate-400 border-slate-500/30', text: 'text-slate-400' };
+                    }
+                }
+
+                function generateStatusOptions(currentStatus) {
+                    const statuses = ['New Lead', 'Contacted', 'Meeting Set', 'Proposal Sent', 'Closed Won', 'Closed Lost'];
+                    return statuses.map(s => `<option value="${s}" ${s === currentStatus ? 'selected' : ''} class="bg-slate-800 text-white">${s}</option>`).join('');
+                }
+
+            } catch (error) {
+                console.error("Critical Setup Error:", error);
+            }
+        }
+    </script>
+</body>
+</html>
