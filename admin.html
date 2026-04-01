@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Control | Feasibility Media</title>
+    <title>Executive Dashboard | Feasibility Media</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -17,396 +15,520 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #0f172a;
             color: #e2e8f0;
-            background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+            background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(38, 92%, 20%, 1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(225,39%,20%,1) 0, transparent 50%);
             background-attachment: fixed;
             background-size: cover;
-            padding-bottom: 80px; /* Space for FAB on mobile */
-        }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
-        
-        /* Glassmorphism */
-        .glass-header {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.4);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
 
-        /* Inputs */
+        .heading-font { font-family: 'Poppins', sans-serif; }
+        .mono-font { font-family: 'JetBrains Mono', monospace; }
+
+        .glass-sidebar {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        
         input, select, textarea {
             background: rgba(15, 23, 42, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
             transition: all 0.3s ease;
         }
-        input:focus, select:focus, textarea:focus {
+        input:focus {
             outline: none;
-            border-color: #8b5cf6; /* Purple-500 */
+            border-color: #f59e0b;
             background: rgba(15, 23, 42, 0.9);
-            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
         }
 
-        /* Checkbox */
-        input[type="checkbox"] {
-            appearance: none;
-            background-color: rgba(255, 255, 255, 0.1);
-            margin: 0;
-            font: inherit;
-            color: currentColor;
-            width: 1.25em;
-            height: 1.25em;
-            border: 1px solid currentColor;
-            border-radius: 0.25em;
-            display: grid;
-            place-content: center;
-            transition: 0.2s all;
-        }
-        input[type="checkbox"]::before {
-            content: "";
-            width: 0.65em;
-            height: 0.65em;
-            transform: scale(0);
-            transition: 120ms transform ease-in-out;
-            box-shadow: inset 1em 1em white;
-            transform-origin: center;
-            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
-        }
-        input[type="checkbox"]:checked::before {
-            transform: scale(1);
-        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #f59e0b; }
 
-        /* Status Dot Pulse */
-        @keyframes pulse-green {
-            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
-            70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .nav-link.active {
+            background: linear-gradient(90deg, rgba(245, 158, 11, 0.15) 0%, transparent 100%);
+            border-left: 3px solid #f59e0b;
+            color: #fbbf24;
         }
-        .status-dot-active {
-            width: 8px; height: 8px;
-            background-color: #22c55e;
-            border-radius: 50%;
-            animation: pulse-green 2s infinite;
-        }
+        .nav-link { border-left: 3px solid transparent; }
+        tbody tr:hover { background-color: rgba(255,255,255,0.02); }
     </style>
 </head>
-<body class="min-h-screen text-slate-300">
+<body class="h-screen w-full relative">
 
-    <!-- Sticky Header -->
-    <header class="fixed top-0 w-full z-50 glass-header px-6 py-4 flex justify-between items-center shadow-lg shadow-black/20">
-        <div class="flex items-center gap-3">
-            <div class="w-9 h-9 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center font-bold text-white shadow-md">A</div>
-            <div>
-                <h1 class="text-lg font-bold text-white leading-tight">Admin<span class="hidden sm:inline"> Control</span></h1>
-                <div class="flex items-center gap-2">
-                    <div id="status-indicator" class="w-2 h-2 rounded-full bg-slate-500"></div>
-                    <p class="text-[10px] text-slate-400 font-mono uppercase tracking-wider" id="connection-status">Connecting...</p>
-                </div>
+    <div id="login-screen" class="absolute inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-[#0f172a]/90">
+        <div class="glass-card p-8 md:p-12 w-full max-w-md relative overflow-hidden shadow-2xl border border-amber-500/20">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/20 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-blue-600/20 rounded-full blur-2xl pointer-events-none"></div>
+
+            <div class="text-center mb-8 relative z-10">
+                <div class="w-14 h-14 mx-auto bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center rounded-xl text-2xl font-black shadow-lg shadow-amber-500/20 mb-4 border border-amber-400/30">FM</div>
+                <h2 class="text-2xl font-bold text-white heading-font">CEO Intelligence</h2>
+                <p class="text-sm text-slate-400 mt-1">Executive Access Only.</p>
             </div>
+
+            <form id="login-form" class="space-y-5 relative z-10">
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Executive Email</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-slate-500"></i>
+                        <input type="email" id="login-email" required class="w-full rounded-xl pl-11 pr-4 py-3 text-sm focus:border-amber-500" placeholder="aryaveer@feasibilitymedia.in">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Master Password</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-500"></i>
+                        <input type="password" id="login-password" required class="w-full rounded-xl pl-11 pr-4 py-3 text-sm focus:border-amber-500" placeholder="••••••••">
+                    </div>
+                </div>
+                <div id="login-error" class="hidden text-red-400 text-xs font-bold text-center bg-red-500/10 py-2 rounded border border-red-500/20">
+                    Access Denied. Invalid credentials.
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-amber-600 to-orange-500 hover:from-amber-500 hover:to-orange-400 text-white font-bold py-3 rounded-xl shadow-lg shadow-amber-900/20 transition-all flex items-center justify-center gap-2 mt-4">
+                    Authenticate <i class="fa-solid fa-fingerprint"></i>
+                </button>
+            </form>
         </div>
-        
-        <!-- Desktop Save Button -->
-        <button onclick="saveAll()" class="hidden md:flex px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-bold text-sm shadow-lg shadow-blue-900/20 transition-all items-center gap-2 border border-blue-400/20">
-            <i class="fa-solid fa-floppy-disk"></i> Save Changes
-        </button>
-    </header>
-
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 pt-24 pb-12">
-        
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <!-- COLUMN 1: Project Details -->
-            <div class="lg:col-span-2 space-y-6">
-                
-                <!-- Project Info Card -->
-                <div class="glass-panel p-6 rounded-2xl">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
-                            <i class="fa-solid fa-file-pen text-purple-400"></i> Project Details
-                        </h3>
-                        <span class="text-[10px] text-slate-500 bg-slate-800 px-2 py-1 rounded">ID: current</span>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div class="space-y-1">
-                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Client Name</label>
-                            <input type="text" id="inp-client" class="w-full rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/20 placeholder-slate-600" placeholder="e.g. Nike">
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Format Type</label>
-                            <input type="text" id="inp-type" class="w-full rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/20" placeholder="e.g. Reel (9:16)">
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Deadline</label>
-                            <input type="text" id="inp-deadline" class="w-full rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/20" placeholder="e.g. Monday, 5 PM">
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Priority</label>
-                            <div class="relative">
-                                <select id="inp-priority" class="w-full rounded-xl px-4 py-3 text-sm appearance-none focus:ring-2 focus:ring-purple-500/20 cursor-pointer">
-                                    <option value="Normal">Normal Priority</option>
-                                    <option value="High">High Priority</option>
-                                    <option value="Urgent">🚨 Urgent</option>
-                                </select>
-                                <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-slate-400">
-                                    <i class="fa-solid fa-chevron-down text-xs"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="md:col-span-2 space-y-1">
-                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Status Message (For Editor)</label>
-                            <textarea id="inp-message" rows="2" class="w-full rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/20 resize-none" placeholder="Enter instructions for the editor..."></textarea>
-                        </div>
-                        <div class="md:col-span-2 space-y-1">
-                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Assets Folder Link</label>
-                            <div class="relative">
-                                <i class="fa-solid fa-link absolute left-4 top-3.5 text-slate-500"></i>
-                                <input type="text" id="inp-assets" class="w-full rounded-xl pl-10 pr-4 py-3 text-sm text-blue-300 font-mono focus:ring-2 focus:ring-purple-500/20" placeholder="https://drive.google.com/...">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Workflow State -->
-                <div class="glass-panel p-6 rounded-2xl">
-                    <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-list-check text-blue-400"></i> Workflow State
-                    </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-1">
-                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Current Status</label>
-                            <div class="relative">
-                                <select id="inp-status" class="w-full rounded-xl px-4 py-3 text-sm font-bold bg-slate-800/50 appearance-none border border-slate-700">
-                                    <option value="Pending">Pending</option>
-                                    <option value="In Progress">In Progress</option>
-                                    <option value="Under Review">Under Review</option>
-                                    <option value="Approved">Approved</option>
-                                    <option value="Paid">Paid</option>
-                                </select>
-                                <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-slate-400">
-                                    <i class="fa-solid fa-sort text-xs"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Progress %</label>
-                            <div class="flex items-center gap-3">
-                                <input type="range" id="inp-progress-slider" min="0" max="100" class="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500" oninput="document.getElementById('inp-progress').value = this.value">
-                                <input type="number" id="inp-progress" class="w-16 rounded-lg px-2 py-2 text-sm text-center font-mono bg-slate-800 border-slate-700" min="0" max="100" oninput="document.getElementById('inp-progress-slider').value = this.value">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- COLUMN 2: Review & Money -->
-            <div class="space-y-6 pb-20 md:pb-0">
-                
-                <!-- Financials -->
-                <div class="glass-panel p-6 rounded-2xl relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl text-emerald-500"><i class="fa-solid fa-money-bill-wave"></i></div>
-                    <h3 class="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-wallet"></i> Wallet Manager
-                    </h3>
-                    <div class="space-y-2">
-                        <label class="text-[11px] font-bold text-emerald-500/70 uppercase tracking-wider">Editor Balance (₹)</label>
-                        <div class="relative">
-                            <span class="absolute left-4 top-3 text-emerald-500 font-bold">₹</span>
-                            <input type="number" id="inp-wallet" class="w-full rounded-xl pl-8 pr-4 py-3 text-xl font-bold font-mono bg-emerald-900/10 border-emerald-500/30 text-emerald-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Submission Review -->
-                <div class="glass-panel p-6 rounded-2xl">
-                    <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-eye text-amber-400"></i> Review Submission
-                    </h3>
-                    
-                    <div class="bg-slate-900/80 rounded-xl p-4 mb-6 border border-slate-700/50">
-                        <label class="block text-[10px] text-slate-500 uppercase font-bold mb-1">Latest Link:</label>
-                        <a id="display-submission" href="#" target="_blank" class="text-blue-400 hover:underline text-sm truncate block bg-black/20 p-2 rounded border border-white/5">No submission yet</a>
-                    </div>
-
-                    <div class="space-y-4">
-                        <!-- Revisions Toggle -->
-                        <div class="p-3 bg-red-500/5 border border-red-500/20 rounded-xl transition-all hover:bg-red-500/10">
-                            <div class="flex items-center gap-3 mb-2">
-                                <input type="checkbox" id="inp-revisions" class="text-red-500 focus:ring-red-500 border-red-500/50 cursor-pointer">
-                                <label for="inp-revisions" class="text-sm font-bold text-red-300 cursor-pointer">Revisions Required</label>
-                            </div>
-                            <textarea id="inp-rev-notes" rows="2" placeholder="Describe fixes needed..." class="w-full rounded-lg px-3 py-2 text-xs border-red-500/20 focus:border-red-500 bg-black/20 text-red-100 placeholder-red-500/30"></textarea>
-                        </div>
-
-                        <!-- Approval Toggle -->
-                        <div class="flex items-center gap-3 p-4 bg-green-500/5 border border-green-500/20 rounded-xl transition-all hover:bg-green-500/10 cursor-pointer" onclick="document.getElementById('inp-approved').click()">
-                            <input type="checkbox" id="inp-approved" class="text-green-500 focus:ring-green-500 border-green-500/50 cursor-pointer" onclick="event.stopPropagation()">
-                            <div>
-                                <label for="inp-approved" class="text-sm font-bold text-green-300 cursor-pointer">Client Approved</label>
-                                <p class="text-[10px] text-green-500/60 mt-0.5">Unlocks "Claim Reward" for editor.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Reset Zone -->
-                <div class="glass-panel p-6 rounded-2xl border border-red-500/10">
-                    <h3 class="text-xs font-bold uppercase tracking-widest text-red-400 mb-4">Danger Zone</h3>
-                    <button onclick="resetProject()" class="w-full py-3 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-rotate-left"></i> Reset Project Data
-                    </button>
-                </div>
-
-            </div>
-        </div>
-    </main>
-
-    <!-- Mobile Floating Action Button -->
-    <div class="fixed bottom-6 right-6 z-50 md:hidden">
-        <button onclick="saveAll()" class="w-14 h-14 bg-blue-600 rounded-full shadow-xl shadow-blue-600/40 text-white flex items-center justify-center text-xl active:scale-95 transition-transform border border-white/20">
-            <i class="fa-solid fa-floppy-disk"></i>
-        </button>
     </div>
 
-    <!-- Firebase Logic -->
+    <div id="app-screen" class="hidden h-screen flex w-full">
+        <aside class="w-64 glass-sidebar h-full flex flex-col hidden md:flex z-20">
+            <div class="p-6 border-b border-white/5">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center rounded-lg text-sm font-black shadow-lg shadow-amber-500/20">FM</div>
+                    <div class="flex flex-col leading-none">
+                        <span class="text-white font-bold tracking-tight">Feasibility</span>
+                        <span class="text-[10px] text-amber-500 font-bold uppercase tracking-widest">Executive Board</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 pb-4 border-b border-white/5 bg-slate-800/20">
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <img src="https://ui-avatars.com/api/?name=Aryaveer+Mishra&background=f59e0b&color=fff&bold=true" class="w-10 h-10 rounded-full border-2 border-slate-700" alt="Aryaveer Mishra">
+                        <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#0f172a] rounded-full"></div>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-white leading-tight">Aryaveer Mishra</p>
+                        <p class="text-[10px] text-slate-400 uppercase tracking-wider">Founder & CEO</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="flex-1 py-4 space-y-1 overflow-y-auto">
+                <a href="#" onclick="switchTab('dashboard', this)" class="nav-link active flex items-center gap-3 px-6 py-3 text-slate-400 hover:text-white transition-colors font-medium">
+                    <i class="fa-solid fa-chart-line w-5"></i> Executive Summary
+                </a>
+                <a href="#" onclick="switchTab('pipeline', this)" class="nav-link flex items-center gap-3 px-6 py-3 text-slate-400 hover:text-white transition-colors font-medium">
+                    <i class="fa-solid fa-database w-5"></i> Master Pipeline
+                </a>
+                <a href="#" onclick="switchTab('team', this)" class="nav-link flex items-center gap-3 px-6 py-3 text-slate-400 hover:text-white transition-colors font-medium">
+                    <i class="fa-solid fa-trophy w-5"></i> Team Performance
+                </a>
+            </nav>
+
+            <div class="mt-auto p-6 border-t border-white/5 text-xs text-slate-500">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-2 h-2 rounded-full bg-slate-500 animate-pulse" id="db-indicator"></div>
+                    <span id="db-status">Awaiting Connection...</span>
+                </div>
+                <p class="text-[9px] uppercase tracking-wider opacity-50">Syncing with Sales CRM</p>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+            
+            <header class="px-8 py-5 flex justify-between items-center z-10 border-b border-white/5 bg-slate-900/50 backdrop-blur-md">
+                <div>
+                    <h1 id="page-title" class="text-xl font-bold text-white heading-font">Executive Summary</h1>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <button onclick="logout()" class="text-slate-400 hover:text-white text-sm font-medium transition-colors flex items-center gap-2 bg-slate-800 px-4 py-2 rounded-lg border border-white/10">
+                        <i class="fa-solid fa-power-off"></i> Sign Out
+                    </button>
+                </div>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-8 z-10">
+                
+                <div id="tab-dashboard" class="tab-content active space-y-8">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="glass-card p-6 border-l-4 border-amber-500 relative overflow-hidden">
+                            <i class="fa-solid fa-money-bill-trend-up absolute right-[-10px] bottom-[-10px] text-7xl text-amber-500/10"></i>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Total Revenue (Closed Won)</p>
+                            <h3 id="ceo-total-revenue" class="text-4xl font-black text-amber-400 mono-font">₹0</h3>
+                        </div>
+                        <div class="glass-card p-6 border-l-4 border-blue-500 relative overflow-hidden">
+                            <i class="fa-solid fa-funnel-dollar absolute right-[-10px] bottom-[-10px] text-7xl text-blue-500/10"></i>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Active Pipeline Value</p>
+                            <h3 id="ceo-active-pipeline" class="text-4xl font-black text-white mono-font">₹0</h3>
+                        </div>
+                        <div class="glass-card p-6 border-l-4 border-emerald-500 relative overflow-hidden">
+                            <i class="fa-solid fa-bolt absolute right-[-10px] bottom-[-10px] text-7xl text-emerald-500/10"></i>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Company Win Rate</p>
+                            <h3 id="ceo-win-rate" class="text-4xl font-black text-white mono-font">0%</h3>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        
+                        <div class="lg:col-span-2 glass-card p-6">
+                            <h3 class="text-lg font-bold text-white heading-font mb-6"><i class="fa-solid fa-chart-pie mr-2 text-amber-500"></i> Pipeline Health (Active Deals)</h3>
+                            <div id="status-bars-container" class="space-y-4">
+                                <p class="text-slate-500 text-sm italic">Crunching data...</p>
+                            </div>
+                        </div>
+
+                        <div class="glass-card p-6">
+                            <h3 class="text-lg font-bold text-white heading-font mb-6"><i class="fa-solid fa-crown mr-2 text-amber-500"></i> Recent Deal Wins</h3>
+                            <div id="recent-wins-container" class="space-y-3">
+                                <p class="text-slate-500 text-sm italic">Waiting for closures...</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="tab-pipeline" class="tab-content">
+                    <div class="glass-card p-6 flex flex-col h-full min-h-[600px]">
+                        <div class="flex justify-between items-center mb-6">
+                            <div>
+                                <h3 class="text-lg font-bold text-white heading-font">Global Organization Pipeline</h3>
+                                <p class="text-xs text-slate-400 mt-1">Live sync from Sales CRM</p>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto flex-1">
+                            <table class="w-full text-left border-collapse whitespace-nowrap">
+                                <thead>
+                                    <tr class="text-xs font-bold text-slate-500 uppercase border-b border-white/10 bg-slate-800/50">
+                                        <th class="py-3 px-4 rounded-tl-lg">Company</th>
+                                        <th class="py-3 px-4">Est. Value (₹)</th>
+                                        <th class="py-3 px-4">Sales Rep</th>
+                                        <th class="py-3 px-4">Current Status</th>
+                                        <th class="py-3 px-4 rounded-tr-lg">Date Added</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ceo-leads-body" class="text-sm text-slate-300">
+                                    </tbody>
+                            </table>
+                            <div id="ceo-empty-msg" class="hidden text-center py-12">
+                                <i class="fa-solid fa-wind text-4xl text-slate-600 mb-4"></i>
+                                <p class="text-slate-400">No data found in the organization's CRM.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-team" class="tab-content">
+                    <div class="glass-card p-6 min-h-[600px]">
+                        <h3 class="text-lg font-bold text-white heading-font mb-6"><i class="fa-solid fa-ranking-star mr-2 text-amber-500"></i> Sales Rep Leaderboard</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8" id="top-performers-cards">
+                            </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse whitespace-nowrap">
+                                <thead>
+                                    <tr class="text-xs font-bold text-slate-500 uppercase border-b border-white/10 bg-slate-800/50">
+                                        <th class="py-3 px-4 rounded-tl-lg">Rep Name</th>
+                                        <th class="py-3 px-4">Active Leads</th>
+                                        <th class="py-3 px-4">Pipeline Working (₹)</th>
+                                        <th class="py-3 px-4">Deals Won</th>
+                                        <th class="py-3 px-4 text-emerald-400 rounded-tr-lg">Total Revenue Brought (₹)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ceo-team-body" class="text-sm text-slate-300">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, doc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Config
-        const firebaseConfig = {
-            apiKey: "AIzaSyDnKHTghSxW7fi6bp_UGBhR6Nx4paAtO4U",
-            authDomain: "my-babys-place.firebaseapp.com",
-            projectId: "my-babys-place",
-            storageBucket: "my-babys-place.firebasestorage.app",
-            messagingSenderId: "276027805309",
-            appId: "1:276027805309:web:7997b78ccf2c5004126b14",
-            measurementId: "G-SX1LQK3CD8"
-        };
+        // ==========================================
+        // 1. AUTHENTICATION WALL
+        // ==========================================
+        const CEO_EMAIL = "aryaveer@feasibilitymedia.in";
+        const CEO_PWD = "admin123";
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const docRef = doc(db, "dashboard", "current");
-
-        // --- 1. READ DATA (Real-time) ---
-        onSnapshot(docRef, (docSnap) => {
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                
-                // Update Header Status
-                const statusEl = document.getElementById("connection-status");
-                const statusDot = document.getElementById("status-indicator");
-                statusEl.textContent = "Connected";
-                statusEl.classList.add("text-green-400");
-                statusDot.classList.add("status-dot-active");
-
-                // Populate Fields (Only if not focused to prevent overwriting)
-                if(document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA") {
-                    document.getElementById("inp-client").value = data.client || "";
-                    document.getElementById("inp-type").value = data.type || "";
-                    document.getElementById("inp-deadline").value = data.deadline || "";
-                    document.getElementById("inp-priority").value = data.priority || "Normal";
-                    document.getElementById("inp-message").value = data.message || "";
-                    document.getElementById("inp-assets").value = data.assets_link || "#";
-                    
-                    document.getElementById("inp-status").value = data.status || "Pending";
-                    document.getElementById("inp-progress").value = data.progress || 0;
-                    document.getElementById("inp-progress-slider").value = data.progress || 0; // Sync slider
-                    document.getElementById("inp-wallet").value = data.wallet || 0;
-                    
-                    // Review Section
-                    const subLink = document.getElementById("display-submission");
-                    if (data.submission_link && data.submission_link.length > 5) {
-                        subLink.textContent = data.submission_link;
-                        subLink.href = data.submission_link;
-                        subLink.classList.remove("text-slate-500", "italic", "bg-black/20");
-                        subLink.classList.add("text-blue-400", "bg-blue-900/20", "border-blue-500/30");
-                    } else {
-                        subLink.textContent = "No submission yet";
-                        subLink.removeAttribute("href");
-                        subLink.className = "text-slate-500 italic text-sm block bg-black/20 p-2 rounded border border-white/5";
-                    }
-
-                    document.getElementById("inp-revisions").checked = data.revisions_required || false;
-                    document.getElementById("inp-rev-notes").value = data.revision_notes || "";
-                    document.getElementById("inp-approved").checked = data.client_approved || false;
-                }
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById('login-email').value.trim();
+            const pwdInput = document.getElementById('login-password').value.trim();
+            
+            if (emailInput.toLowerCase() === CEO_EMAIL.toLowerCase() && pwdInput === CEO_PWD) {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('app-screen').classList.remove('hidden');
+                initializeFirebase(); 
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
             }
-        }, (error) => {
-            console.error("Auth Error:", error);
-            document.getElementById("connection-status").textContent = "Error";
-            document.getElementById("status-indicator").classList.replace("bg-slate-500", "bg-red-500");
         });
 
-        // --- 2. SAVE CHANGES ---
-        window.saveAll = async function() {
-            // Target both mobile and desktop buttons for feedback
-            const btns = document.querySelectorAll("button[onclick='saveAll()']");
-            btns.forEach(btn => {
-                const originalHtml = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-                setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-check"></i>', 500);
-                setTimeout(() => btn.innerHTML = originalHtml, 2000);
+        window.logout = () => {
+            document.getElementById('app-screen').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('login-password').value = "";
+        };
+
+        // UI Tab Switcher
+        window.switchTab = (tabId, element) => {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            if(element) element.classList.add('active');
+
+            const titles = {
+                'dashboard': 'Executive Summary',
+                'pipeline': 'Global Organization Pipeline',
+                'team': 'Team Performance & Leaderboard'
+            };
+            document.getElementById('page-title').innerText = titles[tabId];
+        };
+
+        // ==========================================
+        // 2. FIREBASE CONNECTION (Read-Only)
+        // ==========================================
+        let globalLeads = [];
+
+        function initializeFirebase() {
+            const firebaseConfig = {
+                apiKey: "AIzaSyAAgcIprurHXdo9tztkqVzLsIzJCWhqWwc",
+                authDomain: "feasibility-44ca4.firebaseapp.com",
+                databaseURL: "https://feasibility-44ca4-default-rtdb.asia-southeast1.firebasedatabase.app",
+                projectId: "feasibility-44ca4",
+                storageBucket: "feasibility-44ca4.firebasestorage.app",
+                messagingSenderId: "166006393145",
+                appId: "1:166006393145:web:6bb64d5ee1a0578a7200e8",
+                measurementId: "G-BVE4SPNZQR"
+            };
+
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
+
+            signInAnonymously(auth).then(() => {
+                document.getElementById('db-status').innerText = "Live Sync Active";
+                document.getElementById('db-status').classList.replace('text-slate-500', 'text-amber-400');
+                document.getElementById('db-indicator').classList.replace('bg-slate-500', 'bg-amber-400');
+
+                const leadsRef = collection(db, 'sales_leads');
+                onSnapshot(leadsRef, (snapshot) => {
+                    globalLeads = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    globalLeads.sort((a, b) => b.timestamp - a.timestamp);
+                    renderCEOAnalytics();
+                }, (error) => {
+                    console.error("Firestore Error:", error);
+                    document.getElementById('db-status').innerText = "Connection Blocked (Rules)";
+                    document.getElementById('db-indicator').classList.replace('bg-amber-400', 'bg-red-500');
+                });
+            }).catch(e => {
+                console.error("Auth Error:", e);
+                document.getElementById('db-status').innerText = "Auth Failed";
+            });
+        }
+
+        // ==========================================
+        // 3. DATA PROCESSING & RENDERING
+        // ==========================================
+        function renderCEOAnalytics() {
+            // A. Compute Global KPIs
+            let totalRevenue = 0, pipelineValue = 0;
+            let totalDeals = 0, wonDeals = 0, lostDeals = 0;
+            
+            // For Pipeline Status Breakdown
+            const statusCounts = { 'New Lead': 0, 'Contacted': 0, 'Meeting Set': 0, 'Proposal Sent': 0 };
+            const statusValues = { 'New Lead': 0, 'Contacted': 0, 'Meeting Set': 0, 'Proposal Sent': 0 };
+
+            // For Rep Leaderboard
+            const repStats = {};
+
+            globalLeads.forEach(lead => {
+                const val = Number(lead.value) || 0;
+                const repName = lead.rep ? lead.rep : 'Unassigned';
+
+                // Initialize Rep Object
+                if(!repStats[repName]) {
+                    repStats[repName] = { name: repName, wonVal: 0, pipelineVal: 0, wonCount: 0, activeCount: 0 };
+                }
+
+                totalDeals++;
+
+                if (lead.status === 'Closed Won') {
+                    totalRevenue += val;
+                    wonDeals++;
+                    repStats[repName].wonVal += val;
+                    repStats[repName].wonCount++;
+                } else if (lead.status === 'Closed Lost') {
+                    lostDeals++;
+                } else {
+                    // Active Deals
+                    pipelineValue += val;
+                    repStats[repName].pipelineVal += val;
+                    repStats[repName].activeCount++;
+                    
+                    if(statusCounts[lead.status] !== undefined) {
+                        statusCounts[lead.status]++;
+                        statusValues[lead.status] += val;
+                    }
+                }
             });
 
-            try {
-                await updateDoc(docRef, {
-                    client: document.getElementById("inp-client").value,
-                    type: document.getElementById("inp-type").value,
-                    deadline: document.getElementById("inp-deadline").value,
-                    priority: document.getElementById("inp-priority").value,
-                    message: document.getElementById("inp-message").value,
-                    assets_link: document.getElementById("inp-assets").value,
-                    
-                    status: document.getElementById("inp-status").value,
-                    progress: parseInt(document.getElementById("inp-progress").value),
-                    wallet: parseInt(document.getElementById("inp-wallet").value),
-                    
-                    revisions_required: document.getElementById("inp-revisions").checked,
-                    revision_notes: document.getElementById("inp-rev-notes").value,
-                    client_approved: document.getElementById("inp-approved").checked,
-                    
-                    // Logic: If setting status to Pending, usually reset submission flags
-                    // BUT for admin flexibility, we save exactly what is on screen
-                });
-            } catch(e) {
-                console.error("Save failed:", e);
-                alert("Save failed. Check console.");
-            }
-        };
+            // Update Top Level Cards
+            document.getElementById('ceo-total-revenue').innerText = "₹" + totalRevenue.toLocaleString('en-IN');
+            document.getElementById('ceo-active-pipeline').innerText = "₹" + pipelineValue.toLocaleString('en-IN');
+            
+            // Win Rate (Won / (Won + Lost))
+            const resolvedDeals = wonDeals + lostDeals;
+            const winRate = resolvedDeals === 0 ? 0 : Math.round((wonDeals / resolvedDeals) * 100);
+            document.getElementById('ceo-win-rate').innerText = winRate + "%";
 
-        // --- 3. RESET PROJECT ---
-        window.resetProject = async function() {
-            if(!confirm("⚠️ RESET WARNING:\n\nThis will clear all progress, links, and status for a NEW project.\n\nWallet balance will be PRESERVED.")) return;
+            // B. Render Pipeline Status Breakdown (Bars)
+            const statusHtml = Object.keys(statusCounts).map(status => {
+                const count = statusCounts[status];
+                const val = statusValues[status];
+                // Math to calculate bar width relative to total active deals
+                const activeTotal = (totalDeals - wonDeals - lostDeals) || 1; 
+                const percentage = Math.round((count / activeTotal) * 100) || 0;
+                
+                let colorClass = 'bg-blue-500';
+                if(status === 'Contacted') colorClass = 'bg-yellow-500';
+                if(status === 'Meeting Set') colorClass = 'bg-purple-500';
+                if(status === 'Proposal Sent') colorClass = 'bg-orange-500';
 
-            try {
-                await updateDoc(docRef, {
-                    client: "New Client",
-                    type: "Reel (Short Form)",
-                    deadline: "TBD",
-                    status: "Pending",
-                    message: "Project initialized. Waiting for raw footage.",
-                    progress: 0,
-                    submission_link: "",
-                    revisions_required: false,
-                    revision_notes: "",
-                    client_approved: false,
-                    payment_claimed: false, 
-                    assets_link: "#",
-                    enable_submission: false,
-                    activity_log: [{ text: "Project reset by Admin", timestamp: new Date().toISOString() }]
-                });
-                alert("Project reset successfully.");
-            } catch(e) {
-                console.error("Reset failed:", e);
+                return `
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="font-bold text-slate-300">${status} (${count})</span>
+                            <span class="mono-font text-slate-400">₹${val.toLocaleString('en-IN')}</span>
+                        </div>
+                        <div class="w-full bg-slate-800 rounded-full h-2">
+                            <div class="${colorClass} h-2 rounded-full" style="width: ${percentage}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('status-bars-container').innerHTML = statusHtml || '<p class="text-slate-500 text-sm">No active deals.</p>';
+
+            // C. Render Recent Deal Wins
+            const wonArray = globalLeads.filter(l => l.status === 'Closed Won');
+            const recentWins = wonArray.slice(0, 4); // Get top 4 most recent
+            
+            const winsHtml = recentWins.length === 0 ? '<p class="text-slate-500 text-sm italic">No closed deals yet.</p>' : recentWins.map(lead => `
+                <div class="flex justify-between items-center bg-emerald-500/10 p-3 rounded-lg border border-emerald-500/20">
+                    <div>
+                        <p class="text-sm font-bold text-white">${lead.company}</p>
+                        <p class="text-[10px] text-slate-400">Closed by: ${lead.rep || 'Unknown'}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm font-black text-emerald-400 mono-font">+₹${Number(lead.value).toLocaleString('en-IN')}</p>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('recent-wins-container').innerHTML = winsHtml;
+
+            // D. Render Master Pipeline Table
+            const tbody = document.getElementById('ceo-leads-body');
+            const emptyMsg = document.getElementById('ceo-empty-msg');
+            
+            if(globalLeads.length === 0) {
+                tbody.innerHTML = "";
+                emptyMsg.classList.remove('hidden');
+            } else {
+                emptyMsg.classList.add('hidden');
+                tbody.innerHTML = globalLeads.map(lead => {
+                    const dateStr = lead.timestamp ? new Date(lead.timestamp).toLocaleDateString() : '--';
+                    let statusBadge = `<span class="px-2 py-1 rounded bg-slate-700 text-slate-300 text-[10px] font-bold">${lead.status}</span>`;
+                    
+                    if(lead.status === 'Closed Won') statusBadge = `<span class="px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold">Closed Won</span>`;
+                    if(lead.status === 'Closed Lost') statusBadge = `<span class="px-2 py-1 rounded bg-red-500/20 text-red-400 border border-red-500/30 text-[10px] font-bold">Closed Lost</span>`;
+
+                    return `
+                        <tr class="border-b border-white/5 hover:bg-slate-800/30">
+                            <td class="py-3 px-4">
+                                <p class="font-bold text-white text-sm">${lead.company}</p>
+                                <p class="text-[10px] text-slate-500">${lead.contact || ''}</p>
+                            </td>
+                            <td class="py-3 px-4 mono-font text-white font-bold">₹${Number(lead.value).toLocaleString('en-IN')}</td>
+                            <td class="py-3 px-4 text-sm text-slate-300">${lead.rep || '--'}</td>
+                            <td class="py-3 px-4">${statusBadge}</td>
+                            <td class="py-3 px-4 text-xs text-slate-400">${dateStr}</td>
+                        </tr>
+                    `;
+                }).join('');
             }
-        };
+
+            // E. Render Team Leaderboard
+            const repArray = Object.values(repStats).sort((a, b) => b.wonVal - a.wonVal); // Sort by Revenue Won
+            
+            // Leaderboard Table
+            document.getElementById('ceo-team-body').innerHTML = repArray.map(rep => `
+                <tr class="border-b border-white/5 hover:bg-slate-800/30">
+                    <td class="py-3 px-4 font-bold text-white flex items-center gap-2">
+                        <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-500 flex items-center justify-center text-[10px]">${rep.name.charAt(0)}</div>
+                        ${rep.name}
+                    </td>
+                    <td class="py-3 px-4 text-sm text-slate-300">${rep.activeCount}</td>
+                    <td class="py-3 px-4 text-sm text-slate-300 mono-font">₹${rep.pipelineVal.toLocaleString('en-IN')}</td>
+                    <td class="py-3 px-4 text-sm text-slate-300">${rep.wonCount}</td>
+                    <td class="py-3 px-4 text-sm font-black text-emerald-400 mono-font">₹${rep.wonVal.toLocaleString('en-IN')}</td>
+                </tr>
+            `).join('');
+
+            // Top Performers Cards (Top 3)
+            const topCardsContainer = document.getElementById('top-performers-cards');
+            const top3 = repArray.slice(0, 3);
+            
+            if (top3.length === 0 || top3[0].wonVal === 0) {
+                topCardsContainer.innerHTML = '';
+            } else {
+                topCardsContainer.innerHTML = top3.map((rep, index) => {
+                    let medal = 'fa-medal text-amber-600'; // default bronze
+                    if (index === 0) medal = 'fa-trophy text-yellow-400'; // Gold
+                    if (index === 1) medal = 'fa-medal text-slate-300'; // Silver
+
+                    return `
+                        <div class="bg-slate-800/50 p-5 rounded-xl border border-white/5 flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center shadow-inner">
+                                <i class="fa-solid ${medal} text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-400 uppercase tracking-wider">Rank #${index + 1}</p>
+                                <p class="font-bold text-white">${rep.name}</p>
+                                <p class="text-sm text-emerald-400 font-bold mono-font">₹${rep.wonVal.toLocaleString('en-IN')}</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
     </script>
 </body>
 </html>
