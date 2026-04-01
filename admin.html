@@ -43,7 +43,7 @@
             color: white;
             transition: all 0.3s ease;
         }
-        input:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: #f59e0b;
             background: rgba(15, 23, 42, 0.9);
@@ -70,8 +70,8 @@
 </head>
 <body class="h-screen w-full relative">
 
-    <div id="login-screen" class="absolute inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-[#0f172a]/90">
-        <div class="glass-card p-8 md:p-12 w-full max-w-md relative overflow-hidden shadow-2xl border border-amber-500/20">
+    <div id="login-screen" class="absolute inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-[#0f172a]/90 p-4">
+        <div class="glass-card p-6 md:p-12 w-full max-w-md relative overflow-hidden shadow-2xl border border-amber-500/20">
             <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/20 rounded-full blur-2xl pointer-events-none"></div>
             <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-blue-600/20 rounded-full blur-2xl pointer-events-none"></div>
 
@@ -107,8 +107,11 @@
     </div>
 
     <div id="app-screen" class="hidden h-screen flex w-full">
-        <aside class="w-64 glass-sidebar h-full flex flex-col hidden md:flex z-20">
-            <div class="p-6 border-b border-white/5">
+        
+        <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-40 hidden md:hidden transition-opacity" onclick="toggleSidebar()"></div>
+
+        <aside id="sidebar" class="w-64 glass-sidebar h-full flex flex-col fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out z-50">
+            <div class="p-6 border-b border-white/5 flex justify-between items-center">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center rounded-lg text-sm font-black shadow-lg shadow-amber-500/20">FM</div>
                     <div class="flex flex-col leading-none">
@@ -116,17 +119,20 @@
                         <span class="text-[10px] text-amber-500 font-bold uppercase tracking-widest">Executive Board</span>
                     </div>
                 </div>
+                <button class="md:hidden text-slate-400 hover:text-white" onclick="toggleSidebar()">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
             </div>
 
             <div class="p-6 pb-4 border-b border-white/5 bg-slate-800/20">
                 <div class="flex items-center gap-3">
                     <div class="relative">
-                        <img src="https://ui-avatars.com/api/?name=Aryaveer+Mishra&background=f59e0b&color=fff&bold=true" class="w-10 h-10 rounded-full border-2 border-slate-700" alt="Aryaveer Mishra">
-                        <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#0f172a] rounded-full"></div>
+                        <img src="https://ui-avatars.com/api/?name=Aryaveer+Mishra&background=f59e0b&color=fff&bold=true" class="w-10 h-10 rounded-full border-2 border-amber-500/50" alt="Aryaveer Mishra">
+                        <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#0f172a] rounded-full shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
                     </div>
                     <div>
-                        <p class="text-sm font-bold text-white leading-tight">Aryaveer Mishra</p>
-                        <p class="text-[10px] text-slate-400 uppercase tracking-wider">Founder & CEO</p>
+                        <p class="text-sm font-bold text-white leading-tight flex items-center gap-1">Aryaveer M. <i class="fa-solid fa-circle-check text-blue-400 text-[10px]"></i></p>
+                        <p class="text-[10px] text-amber-500 uppercase tracking-wider font-bold">Final Boss / CEO</p>
                     </div>
                 </div>
             </div>
@@ -154,51 +160,62 @@
 
         <main class="flex-1 flex flex-col h-full overflow-hidden relative">
             
-            <header class="px-8 py-5 flex justify-between items-center z-10 border-b border-white/5 bg-slate-900/50 backdrop-blur-md">
-                <div>
-                    <h1 id="page-title" class="text-xl font-bold text-white heading-font">Executive Summary</h1>
+            <header class="px-4 md:px-8 py-4 md:py-5 flex justify-between items-center z-10 border-b border-white/5 bg-slate-900/50 backdrop-blur-md">
+                <div class="flex items-center gap-3">
+                    <button class="md:hidden text-slate-300 hover:text-white text-xl focus:outline-none" onclick="toggleSidebar()">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <h1 id="page-title" class="text-lg md:text-xl font-bold text-white heading-font">Executive Summary</h1>
                 </div>
                 
                 <div class="flex items-center gap-4">
-                    <button onclick="logout()" class="text-slate-400 hover:text-white text-sm font-medium transition-colors flex items-center gap-2 bg-slate-800 px-4 py-2 rounded-lg border border-white/10">
-                        <i class="fa-solid fa-power-off"></i> Sign Out
+                    <button onclick="exportToCSV()" class="hidden md:flex text-slate-400 hover:text-white text-sm font-medium transition-colors items-center gap-2 px-3 py-1.5 rounded-lg border border-white/5 hover:border-white/20">
+                        <i class="fa-solid fa-file-csv"></i> Download Report
+                    </button>
+                    <button onclick="logout()" class="text-amber-500 hover:text-white text-sm font-bold transition-colors flex items-center gap-2 bg-amber-500/10 hover:bg-amber-500/20 px-4 py-2 rounded-lg border border-amber-500/20">
+                        <i class="fa-solid fa-power-off"></i> <span class="hidden sm:inline">Sign Out</span>
                     </button>
                 </div>
             </header>
 
-            <div class="flex-1 overflow-y-auto p-8 z-10">
+            <div class="flex-1 overflow-y-auto p-4 md:p-8 z-10">
                 
-                <div id="tab-dashboard" class="tab-content active space-y-8">
+                <div id="tab-dashboard" class="tab-content active space-y-6 md:space-y-8">
                     
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="glass-card p-6 border-l-4 border-amber-500 relative overflow-hidden">
-                            <i class="fa-solid fa-money-bill-trend-up absolute right-[-10px] bottom-[-10px] text-7xl text-amber-500/10"></i>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Total Revenue (Closed Won)</p>
-                            <h3 id="ceo-total-revenue" class="text-4xl font-black text-amber-400 mono-font">₹0</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                        <div class="glass-card p-5 md:p-6 border-l-4 border-amber-500 relative overflow-hidden group">
+                            <i class="fa-solid fa-money-bill-trend-up absolute right-[-10px] bottom-[-10px] text-6xl md:text-7xl text-amber-500/10 group-hover:scale-110 transition-transform"></i>
+                            <p class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Total Revenue (Won)</p>
+                            <h3 id="ceo-total-revenue" class="text-2xl md:text-3xl lg:text-4xl font-black text-amber-400 mono-font truncate">₹0</h3>
                         </div>
-                        <div class="glass-card p-6 border-l-4 border-blue-500 relative overflow-hidden">
-                            <i class="fa-solid fa-funnel-dollar absolute right-[-10px] bottom-[-10px] text-7xl text-blue-500/10"></i>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Active Pipeline Value</p>
-                            <h3 id="ceo-active-pipeline" class="text-4xl font-black text-white mono-font">₹0</h3>
+                        <div class="glass-card p-5 md:p-6 border-l-4 border-blue-500 relative overflow-hidden group">
+                            <i class="fa-solid fa-funnel-dollar absolute right-[-10px] bottom-[-10px] text-6xl md:text-7xl text-blue-500/10 group-hover:scale-110 transition-transform"></i>
+                            <p class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Active Pipeline</p>
+                            <h3 id="ceo-active-pipeline" class="text-2xl md:text-3xl lg:text-4xl font-black text-white mono-font truncate">₹0</h3>
                         </div>
-                        <div class="glass-card p-6 border-l-4 border-emerald-500 relative overflow-hidden">
-                            <i class="fa-solid fa-bolt absolute right-[-10px] bottom-[-10px] text-7xl text-emerald-500/10"></i>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Company Win Rate</p>
-                            <h3 id="ceo-win-rate" class="text-4xl font-black text-white mono-font">0%</h3>
+                        <div class="glass-card p-5 md:p-6 border-l-4 border-purple-500 relative overflow-hidden group">
+                            <i class="fa-solid fa-chart-line absolute right-[-10px] bottom-[-10px] text-6xl md:text-7xl text-purple-500/10 group-hover:scale-110 transition-transform"></i>
+                            <p class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Weighted Forecast <i class="fa-solid fa-circle-info text-slate-500 ml-1" title="Calculated based on stage probability"></i></p>
+                            <h3 id="ceo-weighted-forecast" class="text-2xl md:text-3xl lg:text-4xl font-black text-purple-400 mono-font truncate">₹0</h3>
+                        </div>
+                        <div class="glass-card p-5 md:p-6 border-l-4 border-emerald-500 relative overflow-hidden group">
+                            <i class="fa-solid fa-bolt absolute right-[-10px] bottom-[-10px] text-6xl md:text-7xl text-emerald-500/10 group-hover:scale-110 transition-transform"></i>
+                            <p class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Global Win Rate</p>
+                            <h3 id="ceo-win-rate" class="text-2xl md:text-3xl lg:text-4xl font-black text-white mono-font truncate">0%</h3>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
                         
-                        <div class="lg:col-span-2 glass-card p-6">
-                            <h3 class="text-lg font-bold text-white heading-font mb-6"><i class="fa-solid fa-chart-pie mr-2 text-amber-500"></i> Pipeline Health (Active Deals)</h3>
+                        <div class="lg:col-span-2 glass-card p-5 md:p-6">
+                            <h3 class="text-base md:text-lg font-bold text-white heading-font mb-6"><i class="fa-solid fa-chart-pie mr-2 text-amber-500"></i> Pipeline Health (Active Deals)</h3>
                             <div id="status-bars-container" class="space-y-4">
                                 <p class="text-slate-500 text-sm italic">Crunching data...</p>
                             </div>
                         </div>
 
-                        <div class="glass-card p-6">
-                            <h3 class="text-lg font-bold text-white heading-font mb-6"><i class="fa-solid fa-crown mr-2 text-amber-500"></i> Recent Deal Wins</h3>
+                        <div class="glass-card p-5 md:p-6">
+                            <h3 class="text-base md:text-lg font-bold text-white heading-font mb-6"><i class="fa-solid fa-crown mr-2 text-amber-500"></i> Recent Deal Wins</h3>
                             <div id="recent-wins-container" class="space-y-3">
                                 <p class="text-slate-500 text-sm italic">Waiting for closures...</p>
                             </div>
@@ -208,23 +225,29 @@
                 </div>
 
                 <div id="tab-pipeline" class="tab-content">
-                    <div class="glass-card p-6 flex flex-col h-full min-h-[600px]">
-                        <div class="flex justify-between items-center mb-6">
+                    <div class="glass-card p-4 md:p-6 flex flex-col h-full min-h-[600px]">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                             <div>
-                                <h3 class="text-lg font-bold text-white heading-font">Global Organization Pipeline</h3>
-                                <p class="text-xs text-slate-400 mt-1">Live sync from Sales CRM</p>
+                                <h3 class="text-lg font-bold text-white heading-font flex items-center gap-2">Global Organization Pipeline <span class="bg-red-500/20 text-red-400 border border-red-500/30 text-[10px] px-2 py-0.5 rounded animate-pulse">GOD MODE</span></h3>
+                                <p class="text-xs text-slate-400 mt-1">Full executive override privileges enabled.</p>
+                            </div>
+                            
+                            <div class="relative w-full sm:w-64">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500"></i>
+                                <input type="text" id="pipeline-search" class="w-full bg-slate-900/50 border border-white/10 rounded-lg pl-9 pr-4 py-2 text-sm text-white focus:border-amber-500 transition-colors" placeholder="Search company, rep, or status...">
                             </div>
                         </div>
 
-                        <div class="overflow-x-auto flex-1">
-                            <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <div class="overflow-x-auto flex-1 rounded-lg border border-white/5">
+                            <table class="w-full text-left border-collapse whitespace-nowrap min-w-[800px]">
                                 <thead>
-                                    <tr class="text-xs font-bold text-slate-500 uppercase border-b border-white/10 bg-slate-800/50">
-                                        <th class="py-3 px-4 rounded-tl-lg">Company</th>
-                                        <th class="py-3 px-4">Est. Value (₹)</th>
+                                    <tr class="text-[10px] md:text-xs font-bold text-slate-500 uppercase border-b border-white/10 bg-slate-800/50">
+                                        <th class="py-3 px-4">Company / Lead</th>
+                                        <th class="py-3 px-4">Value (₹)</th>
                                         <th class="py-3 px-4">Sales Rep</th>
-                                        <th class="py-3 px-4">Current Status</th>
-                                        <th class="py-3 px-4 rounded-tr-lg">Date Added</th>
+                                        <th class="py-3 px-4">Date Added</th>
+                                        <th class="py-3 px-4 text-amber-500">Executive Override</th>
+                                        <th class="py-3 px-4 text-right text-red-400">Terminate</th>
                                     </tr>
                                 </thead>
                                 <tbody id="ceo-leads-body" class="text-sm text-slate-300">
@@ -239,21 +262,21 @@
                 </div>
 
                 <div id="tab-team" class="tab-content">
-                    <div class="glass-card p-6 min-h-[600px]">
+                    <div class="glass-card p-4 md:p-6 min-h-[600px]">
                         <h3 class="text-lg font-bold text-white heading-font mb-6"><i class="fa-solid fa-ranking-star mr-2 text-amber-500"></i> Sales Rep Leaderboard</h3>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8" id="top-performers-cards">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8" id="top-performers-cards">
                             </div>
 
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <div class="overflow-x-auto rounded-lg border border-white/5">
+                            <table class="w-full text-left border-collapse whitespace-nowrap min-w-[600px]">
                                 <thead>
-                                    <tr class="text-xs font-bold text-slate-500 uppercase border-b border-white/10 bg-slate-800/50">
-                                        <th class="py-3 px-4 rounded-tl-lg">Rep Name</th>
+                                    <tr class="text-[10px] md:text-xs font-bold text-slate-500 uppercase border-b border-white/10 bg-slate-800/50">
+                                        <th class="py-3 px-4">Rep Name</th>
                                         <th class="py-3 px-4">Active Leads</th>
                                         <th class="py-3 px-4">Pipeline Working (₹)</th>
                                         <th class="py-3 px-4">Deals Won</th>
-                                        <th class="py-3 px-4 text-emerald-400 rounded-tr-lg">Total Revenue Brought (₹)</th>
+                                        <th class="py-3 px-4 text-emerald-400">Total Revenue Brought (₹)</th>
                                     </tr>
                                 </thead>
                                 <tbody id="ceo-team-body" class="text-sm text-slate-300">
@@ -267,16 +290,22 @@
         </main>
     </div>
 
+    <div id="toast" class="fixed bottom-6 right-6 bg-emerald-600 text-white px-5 py-3 rounded-lg shadow-xl font-bold text-xs md:text-sm transform translate-y-24 opacity-0 transition-all duration-300 z-[70] flex items-center gap-2 pointer-events-none">
+        <i class="fa-solid fa-check-circle" id="toast-icon"></i> <span id="toast-msg">Action Successful</span>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // ==========================================
-        // 1. AUTHENTICATION WALL
+        // 1. AUTHENTICATION & UI SETUP
         // ==========================================
         const CEO_EMAIL = "aryaveer@feasibilitymedia.in";
         const CEO_PWD = "admin123";
+        let globalLeads = [];
+        let db; // Global DB reference for God Mode
 
         document.getElementById('login-form').addEventListener('submit', (e) => {
             e.preventDefault();
@@ -298,7 +327,14 @@
             document.getElementById('login-password').value = "";
         };
 
-        // UI Tab Switcher
+        window.toggleSidebar = () => {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            if (sidebar.classList.contains('-translate-x-full')) overlay.classList.add('hidden');
+            else overlay.classList.remove('hidden');
+        };
+
         window.switchTab = (tabId, element) => {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
@@ -311,13 +347,36 @@
                 'team': 'Team Performance & Leaderboard'
             };
             document.getElementById('page-title').innerText = titles[tabId];
+
+            if (window.innerWidth < 768) {
+                const sidebar = document.getElementById('sidebar');
+                if (!sidebar.classList.contains('-translate-x-full')) toggleSidebar();
+            }
         };
 
-        // ==========================================
-        // 2. FIREBASE CONNECTION (Read-Only)
-        // ==========================================
-        let globalLeads = [];
+        window.showToast = (msg, type = 'success') => {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toast-icon');
+            
+            toast.className = `fixed bottom-6 right-6 text-white px-5 py-3 rounded-lg shadow-xl font-bold text-xs md:text-sm transform translate-y-0 opacity-100 transition-all duration-300 z-[70] flex items-center gap-2 ${type === 'error' ? 'bg-red-600' : type === 'warning' ? 'bg-amber-500' : 'bg-emerald-600'}`;
+            
+            icon.className = type === 'error' ? 'fa-solid fa-circle-exclamation' : type === 'warning' ? 'fa-solid fa-triangle-exclamation' : 'fa-solid fa-check-circle';
+            document.getElementById('toast-msg').innerText = msg;
+            
+            setTimeout(() => {
+                toast.classList.replace('translate-y-0', 'translate-y-24');
+                toast.classList.replace('opacity-100', 'opacity-0');
+            }, 3000);
+        };
 
+        // Search Listener
+        document.getElementById('pipeline-search').addEventListener('input', () => {
+            renderCEOAnalytics();
+        });
+
+        // ==========================================
+        // 2. FIREBASE CONNECTION & GOD MODE ACTIONS
+        // ==========================================
         function initializeFirebase() {
             const firebaseConfig = {
                 apiKey: "AIzaSyAAgcIprurHXdo9tztkqVzLsIzJCWhqWwc",
@@ -326,16 +385,15 @@
                 projectId: "feasibility-44ca4",
                 storageBucket: "feasibility-44ca4.firebasestorage.app",
                 messagingSenderId: "166006393145",
-                appId: "1:166006393145:web:6bb64d5ee1a0578a7200e8",
-                measurementId: "G-BVE4SPNZQR"
+                appId: "1:166006393145:web:6bb64d5ee1a0578a7200e8"
             };
 
             const app = initializeApp(firebaseConfig);
             const auth = getAuth(app);
-            const db = getFirestore(app);
+            db = getFirestore(app);
 
             signInAnonymously(auth).then(() => {
-                document.getElementById('db-status').innerText = "Live Sync Active";
+                document.getElementById('db-status').innerText = "Live Sync & God Mode Active";
                 document.getElementById('db-status').classList.replace('text-slate-500', 'text-amber-400');
                 document.getElementById('db-indicator').classList.replace('bg-slate-500', 'bg-amber-400');
 
@@ -344,10 +402,6 @@
                     globalLeads = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                     globalLeads.sort((a, b) => b.timestamp - a.timestamp);
                     renderCEOAnalytics();
-                }, (error) => {
-                    console.error("Firestore Error:", error);
-                    document.getElementById('db-status').innerText = "Connection Blocked (Rules)";
-                    document.getElementById('db-indicator').classList.replace('bg-amber-400', 'bg-red-500');
                 });
             }).catch(e => {
                 console.error("Auth Error:", e);
@@ -355,30 +409,77 @@
             });
         }
 
+        // God Mode: Update Status
+        window.godModeUpdateStatus = async (id, newStatus) => {
+            try {
+                await updateDoc(doc(db, 'sales_leads', id), { status: newStatus });
+                showToast(`Lead status overridden to ${newStatus}`, 'warning');
+            } catch(e) {
+                console.error("Update Error:", e);
+                showToast("Failed to override status", 'error');
+            }
+        };
+
+        // God Mode: Delete Lead
+        window.godModeDeleteLead = async (id) => {
+            if(confirm("FINAL BOSS ACTION: Are you absolutely sure you want to permanently delete this lead? This overrides the sales team.")) {
+                try {
+                    await deleteDoc(doc(db, 'sales_leads', id));
+                    showToast("Lead permanently terminated.", 'error');
+                } catch(e) {
+                    console.error("Delete Error:", e);
+                    showToast("Failed to delete lead", 'error');
+                }
+            }
+        };
+
+        // Export CSV Function
+        window.exportToCSV = () => {
+            if(globalLeads.length === 0) return showToast("No data to export", 'error');
+            let csv = "Company,Contact,Phone,Value,Rep,Status,Notes\n";
+            globalLeads.forEach(l => {
+                const company = `"${(l.company||'').replace(/"/g, '""')}"`;
+                const contact = `"${(l.contact||'').replace(/"/g, '""')}"`;
+                const notes = `"${(l.notes||'').replace(/"/g, '""')}"`;
+                csv += `${company},${contact},${l.phone || ''},${l.value},${l.rep},${l.status},${notes}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('hidden', '');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'Executive_Pipeline_Report.csv');
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showToast("Report Generated Successfully");
+        };
+
         // ==========================================
         // 3. DATA PROCESSING & RENDERING
         // ==========================================
         function renderCEOAnalytics() {
-            // A. Compute Global KPIs
-            let totalRevenue = 0, pipelineValue = 0;
+            let totalRevenue = 0, pipelineValue = 0, weightedForecast = 0;
             let totalDeals = 0, wonDeals = 0, lostDeals = 0;
             
-            // For Pipeline Status Breakdown
             const statusCounts = { 'New Lead': 0, 'Contacted': 0, 'Meeting Set': 0, 'Proposal Sent': 0 };
             const statusValues = { 'New Lead': 0, 'Contacted': 0, 'Meeting Set': 0, 'Proposal Sent': 0 };
-
-            // For Rep Leaderboard
             const repStats = {};
 
+            // Search Term filter
+            const searchTerm = document.getElementById('pipeline-search').value.toLowerCase();
+            const filteredLeads = globalLeads.filter(l => 
+                (l.company || '').toLowerCase().includes(searchTerm) || 
+                (l.rep || '').toLowerCase().includes(searchTerm) ||
+                (l.status || '').toLowerCase().includes(searchTerm)
+            );
+
+            // Calculate global stats (always based on ALL leads, not filtered ones)
             globalLeads.forEach(lead => {
                 const val = Number(lead.value) || 0;
-                const repName = lead.rep ? lead.rep : 'Unassigned';
+                const repName = lead.rep || 'Unassigned';
 
-                // Initialize Rep Object
-                if(!repStats[repName]) {
-                    repStats[repName] = { name: repName, wonVal: 0, pipelineVal: 0, wonCount: 0, activeCount: 0 };
-                }
-
+                if(!repStats[repName]) repStats[repName] = { name: repName, wonVal: 0, pipelineVal: 0, wonCount: 0, activeCount: 0 };
                 totalDeals++;
 
                 if (lead.status === 'Closed Won') {
@@ -389,7 +490,6 @@
                 } else if (lead.status === 'Closed Lost') {
                     lostDeals++;
                 } else {
-                    // Active Deals
                     pipelineValue += val;
                     repStats[repName].pipelineVal += val;
                     repStats[repName].activeCount++;
@@ -397,6 +497,12 @@
                     if(statusCounts[lead.status] !== undefined) {
                         statusCounts[lead.status]++;
                         statusValues[lead.status] += val;
+                        
+                        // Weighted Forecast Logic
+                        if(lead.status === 'Proposal Sent') weightedForecast += (val * 0.60); // 60% probability
+                        if(lead.status === 'Meeting Set') weightedForecast += (val * 0.30); // 30% probability
+                        if(lead.status === 'Contacted') weightedForecast += (val * 0.10); // 10% probability
+                        if(lead.status === 'New Lead') weightedForecast += (val * 0.05); // 5% probability
                     }
                 }
             });
@@ -404,18 +510,17 @@
             // Update Top Level Cards
             document.getElementById('ceo-total-revenue').innerText = "₹" + totalRevenue.toLocaleString('en-IN');
             document.getElementById('ceo-active-pipeline').innerText = "₹" + pipelineValue.toLocaleString('en-IN');
+            document.getElementById('ceo-weighted-forecast').innerText = "₹" + Math.round(weightedForecast).toLocaleString('en-IN');
             
-            // Win Rate (Won / (Won + Lost))
             const resolvedDeals = wonDeals + lostDeals;
             const winRate = resolvedDeals === 0 ? 0 : Math.round((wonDeals / resolvedDeals) * 100);
             document.getElementById('ceo-win-rate').innerText = winRate + "%";
 
-            // B. Render Pipeline Status Breakdown (Bars)
+            // Render Pipeline Status Breakdown (Bars)
+            const activeTotal = (totalDeals - wonDeals - lostDeals) || 1; 
             const statusHtml = Object.keys(statusCounts).map(status => {
                 const count = statusCounts[status];
                 const val = statusValues[status];
-                // Math to calculate bar width relative to total active deals
-                const activeTotal = (totalDeals - wonDeals - lostDeals) || 1; 
                 const percentage = Math.round((count / activeTotal) * 100) || 0;
                 
                 let colorClass = 'bg-blue-500';
@@ -437,11 +542,9 @@
             }).join('');
             document.getElementById('status-bars-container').innerHTML = statusHtml || '<p class="text-slate-500 text-sm">No active deals.</p>';
 
-            // C. Render Recent Deal Wins
-            const wonArray = globalLeads.filter(l => l.status === 'Closed Won');
-            const recentWins = wonArray.slice(0, 4); // Get top 4 most recent
-            
-            const winsHtml = recentWins.length === 0 ? '<p class="text-slate-500 text-sm italic">No closed deals yet.</p>' : recentWins.map(lead => `
+            // Render Recent Deal Wins
+            const recentWins = globalLeads.filter(l => l.status === 'Closed Won').slice(0, 4);
+            document.getElementById('recent-wins-container').innerHTML = recentWins.length === 0 ? '<p class="text-slate-500 text-sm italic">No closed deals yet.</p>' : recentWins.map(lead => `
                 <div class="flex justify-between items-center bg-emerald-500/10 p-3 rounded-lg border border-emerald-500/20">
                     <div>
                         <p class="text-sm font-bold text-white">${lead.company}</p>
@@ -452,43 +555,55 @@
                     </div>
                 </div>
             `).join('');
-            document.getElementById('recent-wins-container').innerHTML = winsHtml;
 
-            // D. Render Master Pipeline Table
+            // Render Master Pipeline Table (with God Mode Actions & Filtering)
             const tbody = document.getElementById('ceo-leads-body');
             const emptyMsg = document.getElementById('ceo-empty-msg');
             
-            if(globalLeads.length === 0) {
+            if(filteredLeads.length === 0) {
                 tbody.innerHTML = "";
                 emptyMsg.classList.remove('hidden');
             } else {
                 emptyMsg.classList.add('hidden');
-                tbody.innerHTML = globalLeads.map(lead => {
+                tbody.innerHTML = filteredLeads.map(lead => {
                     const dateStr = lead.timestamp ? new Date(lead.timestamp).toLocaleDateString() : '--';
-                    let statusBadge = `<span class="px-2 py-1 rounded bg-slate-700 text-slate-300 text-[10px] font-bold">${lead.status}</span>`;
                     
-                    if(lead.status === 'Closed Won') statusBadge = `<span class="px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold">Closed Won</span>`;
-                    if(lead.status === 'Closed Lost') statusBadge = `<span class="px-2 py-1 rounded bg-red-500/20 text-red-400 border border-red-500/30 text-[10px] font-bold">Closed Lost</span>`;
+                    const statuses = ['New Lead', 'Contacted', 'Meeting Set', 'Proposal Sent', 'Closed Won', 'Closed Lost'];
+                    const statusOptions = statuses.map(s => `<option value="${s}" ${lead.status === s ? 'selected' : ''}>${s}</option>`).join('');
+
+                    let rowBorder = "border-white/5";
+                    if(lead.status === 'Closed Won') rowBorder = "border-emerald-500/20 bg-emerald-900/10";
+                    if(lead.status === 'Closed Lost') rowBorder = "border-red-500/20 bg-red-900/10";
 
                     return `
-                        <tr class="border-b border-white/5 hover:bg-slate-800/30">
+                        <tr class="border-b ${rowBorder} hover:bg-slate-800/30 transition-colors">
                             <td class="py-3 px-4">
                                 <p class="font-bold text-white text-sm">${lead.company}</p>
-                                <p class="text-[10px] text-slate-500">${lead.contact || ''}</p>
+                                <p class="text-[10px] text-slate-500">${lead.contact || '--'} <span class="mx-1">•</span> ${lead.phone || '--'}</p>
                             </td>
                             <td class="py-3 px-4 mono-font text-white font-bold">₹${Number(lead.value).toLocaleString('en-IN')}</td>
-                            <td class="py-3 px-4 text-sm text-slate-300">${lead.rep || '--'}</td>
-                            <td class="py-3 px-4">${statusBadge}</td>
+                            <td class="py-3 px-4 text-sm text-slate-300 flex items-center gap-2 mt-1">
+                                <div class="w-5 h-5 rounded-full bg-slate-700 flex items-center justify-center text-[10px] font-bold">${(lead.rep || 'U').charAt(0)}</div>
+                                ${lead.rep || 'Unassigned'}
+                            </td>
                             <td class="py-3 px-4 text-xs text-slate-400">${dateStr}</td>
+                            <td class="py-3 px-4">
+                                <select onchange="godModeUpdateStatus('${lead.id}', this.value)" class="bg-amber-900/20 text-amber-400 border border-amber-500/30 rounded px-2 py-1.5 text-xs font-bold focus:outline-none cursor-pointer appearance-none">
+                                    ${statusOptions}
+                                </select>
+                            </td>
+                            <td class="py-3 px-4 text-right">
+                                <button onclick="godModeDeleteLead('${lead.id}')" class="text-slate-600 hover:text-red-500 p-2 transition-colors" title="Terminate Lead">
+                                    <i class="fa-solid fa-skull"></i>
+                                </button>
+                            </td>
                         </tr>
                     `;
                 }).join('');
             }
 
-            // E. Render Team Leaderboard
-            const repArray = Object.values(repStats).sort((a, b) => b.wonVal - a.wonVal); // Sort by Revenue Won
-            
-            // Leaderboard Table
+            // Render Team Leaderboard
+            const repArray = Object.values(repStats).sort((a, b) => b.wonVal - a.wonVal);
             document.getElementById('ceo-team-body').innerHTML = repArray.map(rep => `
                 <tr class="border-b border-white/5 hover:bg-slate-800/30">
                     <td class="py-3 px-4 font-bold text-white flex items-center gap-2">
@@ -502,27 +617,26 @@
                 </tr>
             `).join('');
 
-            // Top Performers Cards (Top 3)
+            // Top Performers Cards
             const topCardsContainer = document.getElementById('top-performers-cards');
             const top3 = repArray.slice(0, 3);
-            
             if (top3.length === 0 || top3[0].wonVal === 0) {
                 topCardsContainer.innerHTML = '';
             } else {
                 topCardsContainer.innerHTML = top3.map((rep, index) => {
-                    let medal = 'fa-medal text-amber-600'; // default bronze
-                    if (index === 0) medal = 'fa-trophy text-yellow-400'; // Gold
-                    if (index === 1) medal = 'fa-medal text-slate-300'; // Silver
+                    let medal = 'fa-medal text-amber-700'; 
+                    if (index === 0) medal = 'fa-trophy text-yellow-400 drop-shadow-[0_0_5px_rgba(250,204,21,0.5)]'; 
+                    if (index === 1) medal = 'fa-medal text-slate-300'; 
 
                     return `
-                        <div class="bg-slate-800/50 p-5 rounded-xl border border-white/5 flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center shadow-inner">
-                                <i class="fa-solid ${medal} text-xl"></i>
+                        <div class="bg-slate-800/50 p-4 md:p-5 rounded-xl border border-white/5 flex items-center gap-4">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-slate-900 flex items-center justify-center shadow-inner">
+                                <i class="fa-solid ${medal} text-lg md:text-xl"></i>
                             </div>
                             <div>
-                                <p class="text-xs text-slate-400 uppercase tracking-wider">Rank #${index + 1}</p>
-                                <p class="font-bold text-white">${rep.name}</p>
-                                <p class="text-sm text-emerald-400 font-bold mono-font">₹${rep.wonVal.toLocaleString('en-IN')}</p>
+                                <p class="text-[10px] text-slate-400 uppercase tracking-wider">Rank #${index + 1}</p>
+                                <p class="font-bold text-white text-sm md:text-base">${rep.name}</p>
+                                <p class="text-xs md:text-sm text-emerald-400 font-bold mono-font">₹${rep.wonVal.toLocaleString('en-IN')}</p>
                             </div>
                         </div>
                     `;
