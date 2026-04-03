@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feasibility Media | The Growth Agency</title>
+    
+    <link rel="canonical" href="https://feasibilitymedia.in/">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='black'/><text x='50' y='68' font-family='serif' font-weight='900' font-size='50' text-anchor='middle' fill='white'>F</text></svg>">
+    <meta name="description" content="Feasibility Media is the premier growth agency for brands & creators. We offer video editing, paid ads, and digital strategy to scale your business.">
+
+    <!-- Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "MarketingAgency",
+          "@id": "https://feasibilitymedia.in/#organization",
+          "name": "Feasibility Media",
+          "url": "https://feasibilitymedia.in",
+          "logo": "https://placehold.co/500x500/000000/ffffff?text=F",
+          "telephone": "+91-9431366776"
+        }
+      ]
+    }
+    </script>
+
+    <!-- UI Essentials -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Bricolage+Grotesque:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        :root {
+            --brand-primary: #9333EA;
+            --brand-secondary: #E11D48;
+            --dark-bg: #030712;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--dark-bg);
+            color: #f9fafb;
+            overflow-x: hidden;
+        }
+
+        .heading-font { font-family: 'Bricolage Grotesque', sans-serif; }
+
+        /* Cinematic Noise Overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Custom Mesh Gradient */
+        .mesh-gradient {
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(147, 51, 234, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(225, 29, 72, 0.08) 0px, transparent 50%);
+        }
+
+        /* Animated Gradient Text */
+        .text-gradient-animated {
+            background: linear-gradient(to right, #ffffff, #9333EA, #E11D48, #ffffff);
+            background-size: 300% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 6s linear infinite;
+        }
+        @keyframes shine {
+            to { background-position: 300% center; }
+        }
+
+        /* Smooth Reveal Animation */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Glassmorphism */
+        .glass-nav {
+            background: rgba(3, 7, 18, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -20px rgba(147, 51, 234, 0.15);
+        }
+
+        /* Floating Dock Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating-dock { 
+            animation: float 6s ease-in-out infinite;
+            animation-delay: 1s; /* Enters smoothly */
+        }
+
+        /* Pricing Toggle */
+        .price-cut { text-decoration: line-through; opacity: 0.4; font-size: 0.8em; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--dark-bg); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+
+        /* Form Input Focus Glow */
+        input:focus, textarea:focus {
+            box-shadow: 0 0 0 1px rgba(147, 51, 234, 0.5), 0 0 20px 0 rgba(147, 51, 234, 0.1);
+        }
+    </style>
+</head>
+<body class="mesh-gradient">
+    <!-- Noise Texture Overlay -->
+    <div class="noise-overlay"></div>
+
+    <!-- Flash Offer Ticker -->
+    <div id="countdown-bar" class="fixed top-0 left-0 right-0 bg-white text-black z-[100] py-2 px-6 flex justify-center items-center text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase">
+        <span class="text-rose-600 mr-2">● EXCLUSIVE OFFER:</span>
+        <span class="mr-4 hidden md:inline">2026 Strategy Slots Opening</span>
+        <div class="flex space-x-2 bg-gray-100 px-3 py-1 rounded-full text-black">
+            <span id="timer-hours">00</span>:
+            <span id="timer-minutes">00</span>:
+            <span id="timer-seconds">00</span>
+        </div>
+        <a href="#pricing" class="ml-6 border-b border-black hover:text-rose-600 hover:border-rose-600 transition-all">Secure Spot</a>
+    </div>
+
+    <!-- Floating Dock Navigation -->
+    <div class="fixed bottom-8 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+        <nav class="glass-nav rounded-2xl px-4 py-3 flex items-center gap-2 md:gap-6 shadow-2xl floating-dock pointer-events-auto">
+            <a href="#hero" class="p-2 hover:bg-white/10 rounded-xl transition-colors text-white/70 hover:text-white" title="Home">
+                <i class="ph ph-house text-xl"></i>
+            </a>
+            <div class="w-px h-4 bg-white/10"></div>
+            <a href="#divisions" class="text-xs font-semibold px-2 py-1 text-white/70 hover:text-white transition-colors uppercase tracking-widest">Divisions</a>
+            <a href="#services" class="text-xs font-semibold px-2 py-1 text-white/70 hover:text-white transition-colors uppercase tracking-widest">Services</a>
+            <a href="#pricing" class="text-xs font-semibold px-2 py-1 text-white/70 hover:text-white transition-colors uppercase tracking-widest">Pricing</a>
+            <div class="w-px h-4 bg-white/10"></div>
+            <a href="#contact" class="bg-white text-black text-xs font-bold px-5 py-2.5 rounded-xl hover:bg-purple-600 hover:text-white transition-all uppercase tracking-widest">Inquire</a>
+        </nav>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center pt-20 px-6 text-center overflow-hidden">
+        <!-- Background Glows -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-purple-600/10 rounded-full blur-[150px] pointer-events-none animate-pulse" style="animation-duration: 8s;"></div>
+        
+        <div class="max-w-5xl scroll-reveal relative z-10">
+            <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full glass-card text-[10px] font-bold text-white/70 mb-8 uppercase tracking-[0.3em] border border-white/10">
+                <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping"></span>
+                The Ultimate Growth Ecosystem
+            </div>
+            
+            <h1 class="text-6xl md:text-8xl lg:text-9xl font-extrabold tracking-tighter heading-font mb-8 leading-[0.9]">
+                SCALE <br>
+                <span class="text-gradient-animated">BEYOND LIMITS.</span>
+            </h1>
+            
+            <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed font-light mb-12">
+                The last agency you will ever hire. We replace your entire content, design, and marketing teams with one ruthless, end-to-end growth engine.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <a href="#divisions" class="group relative px-8 py-4 bg-white text-black font-bold rounded-2xl overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:shadow-[0_0_60px_rgba(255,255,255,0.4)]">
+                    <span class="relative z-10 flex items-center gap-2">Explore the Ecosystem <i class="ph ph-arrow-right font-bold group-hover:translate-x-1 transition-transform"></i></span>
+                </a>
+                <a href="#contact" class="text-sm font-bold text-white/50 hover:text-white transition-colors flex items-center gap-2 uppercase tracking-widest group">
+                    Book Discovery Call 
+                    <i class="ph ph-arrow-up-right text-lg group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-28 flex flex-col items-center gap-3 text-[10px] tracking-[0.4em] opacity-30 uppercase font-bold">
+            Scroll
+            <div class="w-px h-16 bg-gradient-to-b from-white to-transparent"></div>
+        </div>
+    </section>
+
+    <!-- Stats Bento Grid -->
+    <section id="stats" class="py-24 px-6 scroll-reveal relative z-10">
+        <div class="container mx-auto max-w-7xl">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Large Stat -->
+                <div class="md:col-span-2 glass-card rounded-3xl p-10 md:p-12 flex flex-col justify-between group">
+                    <div class="flex justify-between items-start mb-12">
+                        <span class="text-xs font-bold text-white/40 uppercase tracking-widest flex items-center gap-2"><i class="ph ph-globe text-lg"></i> Global Reach</span>
+                        <div class="w-10 h-10 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center">
+                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-7xl md:text-8xl font-bold heading-font mb-2 tracking-tighter">
+                            <span class="counter" data-target="320">0</span>M+
+                        </div>
+                        <p class="text-gray-400 font-medium max-w-sm">Impressions generated for our elite partners across all major platforms.</p>
+                    </div>
+                </div>
+
+                <!-- Small Stat 1 -->
+                <div class="glass-card rounded-3xl p-10 flex flex-col justify-between group">
+                    <span class="text-xs font-bold text-white/40 uppercase tracking-widest flex items-center gap-2"><i class="ph ph-users-three text-lg"></i> Active Channels</span>
+                    <div>
+                        <div class="text-5xl font-bold heading-font mb-2 group-hover:text-purple-400 transition-colors">
+                            <span class="counter" data-target="312">0</span>+
+                        </div>
+                        <p class="text-xs text-gray-500 leading-relaxed">Across YouTube, TikTok & Instagram Reels.</p>
+                    </div>
+                </div>
+
+                <!-- Small Stat 2 -->
+                <div class="glass-card rounded-3xl p-10 flex flex-col justify-between group">
+                    <span class="text-xs font-bold text-rose-500/60 uppercase tracking-widest flex items-center gap-2"><i class="ph ph-trend-up text-lg"></i> Sales Driven</span>
+                    <div>
+                        <div class="text-5xl font-bold heading-font text-rose-500 mb-2 group-hover:text-rose-400 transition-colors">
+                            ₹<span class="counter" data-target="12">0</span>Cr+
+                        </div>
+                        <p class="text-xs text-gray-500 leading-relaxed">Direct attribution from organic and paid campaigns.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Divisions: The Domain Chooser -->
+    <section id="divisions" class="py-24 px-6 bg-black/40 relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/5 to-transparent pointer-events-none"></div>
+        <div class="container mx-auto max-w-7xl relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+                <div class="max-w-2xl scroll-reveal">
+                    <span class="text-purple-500 font-bold uppercase tracking-[0.3em] text-[10px] flex items-center gap-2"><i class="ph ph-target text-lg"></i> The Ultimate Partner</span>
+                    <h2 class="text-5xl md:text-7xl font-extrabold heading-font mt-4 leading-[0.9]">THE LAST <br>AGENCY.</h2>
+                </div>
+                <p class="text-gray-400 text-sm max-w-sm scroll-reveal delay-100">Why manage 5 different freelancers when you can plug into a single, high-leverage growth infrastructure? We handle everything.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Creator Card -->
+                <a href="#" class="group glass-card rounded-[2rem] p-12 overflow-hidden relative block">
+                    <div class="absolute -right-20 -top-20 w-80 h-80 bg-rose-600/10 rounded-full blur-[80px] group-hover:bg-rose-600/20 transition-all duration-500"></div>
+                    <div class="relative z-10">
+                        <i class="ph-light ph-aperture text-6xl text-rose-500 mb-8 block group-hover:scale-110 transition-transform duration-500 transform origin-left"></i>
+                        <h3 class="text-4xl font-bold heading-font mb-4 text-white">Creator Hub</h3>
+                        <p class="text-gray-400 text-base leading-relaxed mb-12 max-w-md">Retention-hacked storytelling for vloggers, streamers, and personal brands. We handle the edit, the thumbnails, and the strategy. You just press record.</p>
+                        <div class="flex items-center text-sm font-bold uppercase tracking-widest text-white/50 group-hover:text-rose-400 transition-colors">
+                            Enter Studio <i class="ph ph-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Brands Card -->
+                <a href="#" class="group glass-card rounded-[2rem] p-12 overflow-hidden relative block">
+                    <div class="absolute -right-20 -top-20 w-80 h-80 bg-purple-600/10 rounded-full blur-[80px] group-hover:bg-purple-600/20 transition-all duration-500"></div>
+                    <div class="relative z-10">
+                        <i class="ph-light ph-buildings text-6xl text-purple-500 mb-8 block group-hover:scale-110 transition-transform duration-500 transform origin-left"></i>
+                        <h3 class="text-4xl font-bold heading-font mb-4 text-white">Commercial Brands</h3>
+                        <p class="text-gray-400 text-base leading-relaxed mb-12 max-w-md">Full-stack domination for D2C, SaaS, and established enterprises. Paid acquisition, elite motion graphics, and conversion-optimized funnels under one roof.</p>
+                        <div class="flex items-center text-sm font-bold uppercase tracking-widest text-white/50 group-hover:text-purple-400 transition-colors">
+                            Scale Now <i class="ph ph-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 px-6 relative z-10">
+        <div class="container mx-auto max-w-7xl">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="scroll-reveal">
+                    <span class="text-purple-500 font-bold uppercase tracking-[0.3em] text-[10px] flex items-center gap-2"><i class="ph ph-intersect text-lg"></i> What we do</span>
+                    <h2 class="text-5xl md:text-6xl font-extrabold heading-font mt-4 mb-10 leading-tight">THE GROWTH <br>ECOSYSTEM.</h2>
+                    
+                    <div class="space-y-4">
+                        <div class="glass-card p-6 rounded-2xl flex gap-6 group hover:bg-white/5">
+                            <div class="shrink-0 w-14 h-14 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center group-hover:bg-purple-600 group-hover:border-purple-500 transition-all">
+                                <i class="ph ph-film-strip text-2xl text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xl mb-2 text-white">Production House</h4>
+                                <p class="text-gray-400 text-sm leading-relaxed">Full-scale video editing, cinematic motion graphics, and a ruthless short-form repurposing pipeline.</p>
+                            </div>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl flex gap-6 group hover:bg-white/5">
+                            <div class="shrink-0 w-14 h-14 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center group-hover:bg-rose-600 group-hover:border-rose-500 transition-all">
+                                <i class="ph ph-rocket-launch text-2xl text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xl mb-2 text-white">Paid Acquisition</h4>
+                                <p class="text-gray-400 text-sm leading-relaxed">Aggressive scaling on Meta, Google, and YouTube Ads with pinpoint ROAS tracking and optimization.</p>
+                            </div>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl flex gap-6 group hover:bg-white/5">
+                            <div class="shrink-0 w-14 h-14 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center group-hover:bg-amber-500 group-hover:border-amber-400 transition-all">
+                                <i class="ph ph-paint-brush text-2xl text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xl mb-2 text-white">Brand Identity</h4>
+                                <p class="text-gray-400 text-sm leading-relaxed">High-CTR thumbnails, typography systems, and social kits designed for pure algorithmic dominance.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative scroll-reveal delay-200">
+                    <div class="glass-card rounded-[3rem] p-8 md:p-12 relative z-10 border-white/10 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-purple-900/20 to-transparent"></div>
+                        <div class="relative z-10 space-y-4">
+                            <div class="flex items-center justify-between p-6 bg-black/40 rounded-2xl border border-white/5 backdrop-blur-md">
+                                <span class="text-sm font-medium text-gray-400 flex items-center gap-2"><i class="ph-fill ph-chart-line-up text-purple-400"></i> Retention Goal</span>
+                                <span class="text-2xl font-bold text-white">75%+</span>
+                            </div>
+                            <div class="flex items-center justify-between p-6 bg-black/40 rounded-2xl border border-white/5 backdrop-blur-md">
+                                <span class="text-sm font-medium text-gray-400 flex items-center gap-2"><i class="ph-fill ph-cursor-click text-rose-400"></i> Avg CTR (Thumbnails)</span>
+                                <span class="text-2xl font-bold text-white">8.2%</span>
+                            </div>
+                            <div class="flex items-center justify-between p-6 bg-purple-900/30 rounded-2xl border border-purple-500/30 backdrop-blur-md">
+                                <span class="text-sm font-bold text-purple-300 flex items-center gap-2"><i class="ph-fill ph-currency-circle-dollar text-green-400"></i> Quarterly ROI</span>
+                                <span class="text-2xl font-black text-white">4.2x</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Decorative element -->
+                    <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-purple-600/20 rounded-full blur-[100px] pointer-events-none"></div>
+                    <div class="absolute -top-20 -right-20 w-80 h-80 bg-rose-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="py-32 px-6 bg-black/50 relative">
+        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+        <div class="container mx-auto max-w-7xl">
+            <div class="text-center mb-20 scroll-reveal">
+                <span class="text-white/50 font-bold uppercase tracking-[0.3em] text-[10px] mb-4 block">Transparent Scaling</span>
+                <h2 class="text-5xl md:text-6xl font-extrabold heading-font mb-6">BUSINESS PLANS.</h2>
+                <p class="text-gray-400 max-w-lg mx-auto">Tiered growth infrastructure for every stage of your digital empire's lifecycle.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 items-center">
+                <!-- Starter -->
+                <div class="glass-card rounded-[2.5rem] p-10 flex flex-col scroll-reveal delay-100">
+                    <h3 class="text-2xl font-bold mb-2 text-white">Starter</h3>
+                    <p class="text-gray-500 text-sm mb-8 pb-8 border-b border-white/10">Perfect for emerging personal brands.</p>
+                    
+                    <div class="mb-10">
+                        <span class="price-cut block mb-1">₹7,500</span>
+                        <div class="flex items-baseline">
+                            <span class="text-5xl font-bold text-white">₹4,999</span>
+                            <span class="text-gray-500 ml-2 text-sm font-medium">/mo</span>
+                        </div>
+                    </div>
+                    <ul class="space-y-5 text-sm text-gray-300 mb-12 flex-grow">
+                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-green-500 mt-0.5"></i> 8 Strategic Posts</li>
+                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-green-500 mt-0.5"></i> 2 Viral Short-form Videos</li>
+                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-green-500 mt-0.5"></i> Hashtag Engineering</li>
+                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-green-500 mt-0.5"></i> Monthly Performance Audit</li>
+                    </ul>
+                    <button data-plan="Brand Starter" class="w-full py-4 bg-white/5 border border-white/10 rounded-xl font-bold hover:bg-white hover:text-black transition-all">Start Project</button>
+                </div>
+
+                <!-- Growth (Center Highlight) -->
+                <div class="relative rounded-[2.5rem] p-[2px] bg-gradient-to-b from-purple-500 via-rose-500 to-transparent shadow-[0_0_80px_rgba(147,51,234,0.2)] lg:-translate-y-4 scroll-reveal z-10 group">
+                    <div class="bg-[#0a0a0a] rounded-[2.4rem] p-12 flex flex-col h-full relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-purple-600/10 rounded-full blur-[80px] pointer-events-none"></div>
+                        
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-600 to-rose-600 text-white px-6 py-1.5 rounded-b-xl text-[10px] font-black uppercase tracking-[0.2em] shadow-lg">Scaling Choice</div>
+                        
+                        <h3 class="text-2xl font-bold mb-2 text-white mt-4">Growth</h3>
+                        <p class="text-gray-400 text-sm mb-8 pb-8 border-b border-white/10">The engine for aggressive market capture.</p>
+
+                        <div class="mb-10 relative z-10">
+                            <span class="price-cut block mb-1">₹15,000</span>
+                            <div class="flex items-baseline">
+                                <span class="text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">₹9,999</span>
+                                <span class="text-gray-500 ml-2 text-sm font-medium">/mo</span>
+                            </div>
+                        </div>
+                        <ul class="space-y-5 text-sm text-gray-200 mb-12 flex-grow relative z-10">
+                            <li class="flex items-start gap-3"><i class="ph-bold ph-check-circle text-purple-400 text-lg mt-0.5"></i> <span class="font-bold">12 Posts & 6 Viral Shorts</span></li>
+                            <li class="flex items-start gap-3"><i class="ph-bold ph-check-circle text-purple-400 text-lg mt-0.5"></i> <span class="font-bold">Paid Ads Management</span></li>
+                            <li class="flex items-start gap-3"><i class="ph-bold ph-check-circle text-purple-400 text-lg mt-0.5"></i> Active Community Management</li>
+                            <li class="flex items-start gap-3"><i class="ph-bold ph-check-circle text-purple-400 text-lg mt-0.5"></i> Dedicated Growth Lead</li>
+                        </ul>
+                        <button data-plan="Brand Growth" class="w-full py-5 bg-white text-black rounded-xl font-black hover:bg-gradient-to-r hover:from-purple-600 hover:to-rose-600 hover:text-white transition-all shadow-xl hover:shadow-purple-500/25 relative z-10">Claim Growth Slot</button>
+                    </div>
+                </div>
+
+                <!-- Pro -->
+                <div class="glass-card rounded-[2.5rem] p-10 flex flex-col scroll-reveal delay-200">
+                    <h3 class="text-2xl font-bold mb-2 text-white">Enterprise Pro</h3>
+                    <p class="text-gray-500 text-sm mb-8 pb-8 border-b border-white/10">Full-stack domination for established brands.</p>
+
+                    <div class="mb-10">
+                        <span class="price-cut block mb-1">₹28,000</span>
+                        <div class="flex items-baseline">
+                            <span class="text-5xl font-bold text-white">₹18,999</span>
+                            <span class="text-gray-500 ml-2 text-sm font-medium">/mo</span>
+                        </div>
+                    </div>
+                    <ul class="space-y-5 text-sm text-gray-300 mb-12 flex-grow">
+                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-white/50 mt-0.5"></i> 20 Posts & 10 Shorts</li>
+                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-white/50 mt-0.5"></i> Full Scale Paid Strategy</li>
+                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-white/50 mt-0.5"></i> UGC Content Sourcing</li>
+                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-white/50 mt-0.5"></i> Daily Analytics Sync</li>
+                    </ul>
+                    <button data-plan="Brand Pro" class="w-full py-4 bg-white/5 border border-white/10 rounded-xl font-bold hover:bg-white hover:text-black transition-all">Talk Enterprise</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="py-32 px-6 relative z-10">
+        <div class="container mx-auto max-w-6xl">
+            <div class="glass-card rounded-[3rem] p-10 md:p-20 flex flex-col lg:flex-row gap-16 items-center overflow-hidden relative border-white/10">
+                <!-- Background ambient light for card -->
+                <div class="absolute -right-40 bottom-0 w-[500px] h-[500px] bg-gradient-to-tr from-purple-600/20 to-rose-600/20 rounded-full blur-[120px] pointer-events-none"></div>
+                <div class="absolute -left-20 top-0 w-[300px] h-[300px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+                
+                <div class="flex-1 relative z-10 text-center lg:text-left">
+                    <span class="text-rose-500 font-bold uppercase tracking-[0.3em] text-[10px] mb-6 block flex items-center justify-center lg:justify-start gap-2"><i class="ph-fill ph-lightning text-lg"></i> Initiate Protocol</span>
+                    <h2 class="text-5xl md:text-7xl font-extrabold heading-font mb-6 leading-[0.9] tracking-tighter text-white">LET'S <br>BUILD.</h2>
+                    <p class="text-gray-400 mb-10 text-lg max-w-md mx-auto lg:mx-0">Submit your current coordinates. We'll analyze your presence and deploy a custom roadmap within 24 hours.</p>
+                    
+                    <div class="flex flex-col gap-4 max-w-sm mx-auto lg:mx-0">
+                        <div class="flex items-center gap-4 text-sm font-bold text-gray-300 bg-white/5 p-4 rounded-xl border border-white/5">
+                            <i class="ph-fill ph-shield-check text-xl text-green-500"></i> MONTH-TO-MONTH RETAINER
+                        </div>
+                        <div class="flex items-center gap-4 text-sm font-bold text-gray-300 bg-white/5 p-4 rounded-xl border border-white/5">
+                            <i class="ph-fill ph-handshake text-xl text-green-500"></i> ZERO LOCK-IN CONTRACTS
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-1 w-full relative z-10">
+                    <form id="contact-form" action="https://formspree.io/f/mandalko" method="POST" class="space-y-5 bg-black/40 p-8 rounded-[2rem] border border-white/10 backdrop-blur-xl">
+                        <div class="relative">
+                            <i class="ph ph-user absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 text-xl"></i>
+                            <input type="text" name="name" placeholder="Name / Brand" required class="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-14 pr-5 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:bg-white/10 transition-all">
+                        </div>
+                        <div class="relative">
+                            <i class="ph ph-phone absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 text-xl"></i>
+                            <input type="tel" name="phone" placeholder="WhatsApp / Phone" required class="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-14 pr-5 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:bg-white/10 transition-all">
+                        </div>
+                        <div class="relative">
+                            <i class="ph ph-target absolute left-5 top-5 text-gray-500 text-xl"></i>
+                            <textarea name="message" placeholder="Goals & Current Metrics" rows="4" class="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-14 pr-5 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:bg-white/10 transition-all resize-none"></textarea>
+                        </div>
+                        <button type="submit" id="contact-submit-btn" class="w-full bg-white text-black font-black py-4 rounded-xl hover:bg-purple-500 hover:text-white transition-all active:scale-[0.98] shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(147,51,234,0.4)] flex items-center justify-center gap-2">
+                            SUBMIT INQUIRY <i class="ph-bold ph-arrow-right"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 px-6 border-t border-white/10 relative z-10 bg-black/50">
+        <div class="container mx-auto text-center">
+            <div class="text-3xl font-black heading-font mb-10 flex justify-center items-center gap-3 text-white">
+                <div class="w-10 h-10 bg-white text-black flex items-center justify-center rounded-xl text-xl shadow-[0_0_20px_rgba(255,255,255,0.2)]">F</div>
+                Feasibility<span class="opacity-40 font-light italic">Media</span>
+            </div>
+            
+            <div class="flex justify-center gap-8 md:gap-16 text-xs font-bold uppercase tracking-[0.3em] text-gray-500 mb-16 flex-wrap">
+                <a href="#hero" class="hover:text-white transition-colors flex items-center gap-2"><i class="ph-fill ph-buildings"></i> Agency</a>
+                <a href="https://wa.me/919431366776" class="hover:text-white transition-colors flex items-center gap-2"><i class="ph-fill ph-whatsapp-logo"></i> WhatsApp</a>
+                <a href="https://instagram.com/feasibility.media" class="hover:text-white transition-colors flex items-center gap-2"><i class="ph-fill ph-instagram-logo"></i> Instagram</a>
+            </div>
+            
+            <p class="text-[10px] text-gray-600 uppercase tracking-widest font-bold">&copy; 2026 Feasibility Media. Infrastructure for the 1%.</p>
+        </div>
+    </footer>
+
+    <!-- Floating Tool: WhatsApp -->
+    <a href="https://wa.me/919431366776" class="fixed bottom-8 right-8 z-[60] bg-[#25D366] text-white p-4 rounded-2xl shadow-[0_10px_30px_rgba(37,211,102,0.3)] hover:scale-110 active:scale-90 transition-all group flex items-center justify-center">
+        <i class="ph-fill ph-whatsapp-logo text-3xl"></i>
+        <!-- Ping effect -->
+        <span class="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full animate-ping opacity-75"></span>
+        <span class="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full"></span>
+    </a>
+
+    <!-- Callback Modal -->
+    <div id="phone-modal" class="hidden fixed inset-0 z-[200] bg-black/80 backdrop-blur-xl flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
+        <div class="glass-card rounded-[2.5rem] p-10 max-w-sm w-full relative border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] transform transition-transform duration-300 scale-95" id="modal-content">
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-500 hover:text-white transition-colors">
+                <i class="ph ph-x text-2xl"></i>
+            </button>
+            <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center mb-6 border border-white/10">
+                <i class="ph-fill ph-lock-key text-2xl text-white"></i>
+            </div>
+            <h3 class="text-3xl font-bold heading-font mb-2 text-white">Secure Pricing.</h3>
+            <p class="text-gray-400 text-sm mb-8 leading-relaxed">Leave your number to lock in these base rates before the next quarterly increase.</p>
+            
+            <form id="phone-form" action="https://formspree.io/f/mandalko" method="POST" class="space-y-4">
+                <input type="hidden" id="plan-input" name="plan">
+                <div class="relative">
+                    <i class="ph ph-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                    <input type="text" name="name" placeholder="Name" required class="w-full bg-black/50 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-purple-500 transition-all">
+                </div>
+                <div class="relative">
+                    <i class="ph ph-phone absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                    <input type="tel" name="phone" placeholder="Phone Number" required class="w-full bg-black/50 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-purple-500 transition-all">
+                </div>
+                <button type="submit" id="phone-submit-button" class="w-full bg-white text-black font-black py-4 rounded-xl hover:bg-purple-600 hover:text-white transition-all flex items-center justify-center gap-2 mt-2 shadow-lg">
+                    Request Callback <i class="ph-bold ph-phone-call"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // --- Ticker Logic ---
+        const randomHours = Math.floor(Math.random() * 8) + 2; 
+        const countdownDate = new Date().getTime() + (randomHours * 60 * 60 * 1000);
+
+        setInterval(() => {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+            if (distance < 0) return;
+
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("timer-hours").innerText = String(h).padStart(2, '0');
+            document.getElementById("timer-minutes").innerText = String(m).padStart(2, '0');
+            document.getElementById("timer-seconds").innerText = String(s).padStart(2, '0');
+        }, 1000);
+
+        // --- Live Counters ---
+        const animateCounters = () => {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(c => {
+                const target = +c.dataset.target;
+                const update = () => {
+                    const current = +c.innerText.replace(/,/g, '');
+                    const inc = target / 60;
+                    if (current < target) {
+                        c.innerText = Math.ceil(current + inc).toLocaleString();
+                        setTimeout(update, 25);
+                    } else {
+                        c.innerText = target.toLocaleString();
+                    }
+                };
+                update();
+            });
+        };
+
+        // --- Scroll Reveal & Observers ---
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    if (e.target.id === 'stats') animateCounters();
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        document.querySelectorAll('.scroll-reveal, #stats').forEach(el => observer.observe(el));
+
+        // --- Modal Control with smooth animation ---
+        const modal = document.getElementById('phone-modal');
+        const modalContent = document.getElementById('modal-content');
+        
+        function openModal(plan) {
+            document.getElementById('plan-input').value = plan;
+            modal.classList.remove('hidden');
+            // Trigger reflow
+            void modal.offsetWidth;
+            modal.classList.add('opacity-100');
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            modal.classList.remove('opacity-100');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300); // match transition duration
+        }
+        
+        document.querySelectorAll('[data-plan]').forEach(b => b.onclick = () => openModal(b.dataset.plan));
+        
+        // Close modal on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // --- Form Submission Logic ---
+        const handleForm = (formId, btnId) => {
+            const form = document.getElementById(formId);
+            form.onsubmit = async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById(btnId);
+                const originalHTML = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="ph ph-spinner animate-spin"></i> Processing...';
+
+                const data = Object.fromEntries(new FormData(form).entries());
+                try {
+                    const res = await fetch(form.action, {
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
+                    });
+                    if (res.ok) {
+                        btn.innerHTML = '<i class="ph-bold ph-check"></i> Secured';
+                        btn.classList.add('bg-green-500', 'text-white');
+                        setTimeout(() => {
+                            if(formId === 'phone-form') closeModal();
+                            form.reset();
+                            btn.disabled = false;
+                            btn.innerHTML = originalHTML;
+                            btn.classList.remove('bg-green-500');
+                        }, 2000);
+                    }
+                } catch (err) {
+                    alert("Network Error. Please verify your connection.");
+                    btn.disabled = false;
+                    btn.innerHTML = originalHTML;
+                }
+            };
+        };
+        handleForm('contact-form', 'contact-submit-btn');
+        handleForm('phone-form', 'phone-submit-button');
+
+        // --- Dynamic Nav Appearance ---
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.glass-nav');
+            if (window.scrollY > 50) {
+                nav.style.transform = "scale(0.95) translateY(5px)";
+                nav.style.background = "rgba(3, 7, 18, 0.8)";
+            } else {
+                nav.style.transform = "scale(1) translateY(0)";
+                nav.style.background = "rgba(3, 7, 18, 0.6)";
+            }
+        });
+    </script>
+</body>
+</html>
