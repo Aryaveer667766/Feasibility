@@ -111,9 +111,9 @@
 
         /* --- Typography & Scrolling Text Animation --- */
         .hero-title {
-            font-size: clamp(3.2rem, 9vw, 7.5rem);
-            line-height: 1.02;
-            letter-spacing: -0.04em;
+            font-size: clamp(2.5rem, 10vw, 7.5rem);
+            line-height: 1.05;
+            letter-spacing: -0.03em;
         }
         
         .text-gradient-mesh {
@@ -121,41 +121,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-        }
-
-        /* CSS-Only Slot Machine Text (Lag-Free) */
-        .scrolling-words-container {
-            display: inline-flex;
-            overflow: hidden;
-            height: 1.1em;
-            vertical-align: bottom;
-            text-align: left;
-            position: relative;
-        }
-        .scrolling-words {
-            display: flex;
-            flex-direction: column;
-            animation: scrollUp 10s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-            transform: translateZ(0);
-        }
-        .scrolling-words span {
-            height: 1.1em;
-            line-height: 1.1em;
-            background: linear-gradient(135deg, #c084fc 0%, #fb7185 50%, #f59e0b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            padding-bottom: 0.1em;
-            white-space: nowrap;
-        }
-
-        @keyframes scrollUp {
-            0%, 15% { transform: translateY(0); }
-            20%, 35% { transform: translateY(-20%); }
-            40%, 55% { transform: translateY(-40%); }
-            60%, 75% { transform: translateY(-60%); }
-            80%, 95% { transform: translateY(-80%); }
-            100% { transform: translateY(0); } /* Instant snap back to start */
         }
 
         /* --- Bento Cards --- */
@@ -312,16 +277,9 @@
                 
                 <h1 class="hero-title font-black font-heading mb-6 text-white uppercase mx-auto text-balance">
                     We Build <br>
-                    <!-- CSS Hardware Accelerated Scrolling Text -->
-                    <span class="scrolling-words-container relative inline-block">
+                    <span class="relative inline-block">
                         <span class="absolute inset-0 bg-brand-purple/20 blur-2xl rounded-full z-[-1] animate-pulse-glow"></span>
-                        <span class="scrolling-words">
-                            <span>Digital Empires.</span>
-                            <span>Viral Brands.</span>
-                            <span>Creator Legacy.</span>
-                            <span>Sales Funnels.</span>
-                            <span>Digital Empires.</span> <!-- Loop -->
-                        </span>
+                        <span class="text-gradient-accent">Digital Empires.</span>
                     </span>
                 </h1>
                 
@@ -600,7 +558,7 @@
                             <input type="tel" name="phone" placeholder="WhatsApp Number" class="w-full bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5 text-white placeholder-zinc-600 focus:outline-none focus:border-white focus:bg-white/10 transition-all font-mono text-xs sm:text-sm" required>
                             <textarea name="message" placeholder="Project details / Goals" rows="4" class="w-full bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5 text-white placeholder-zinc-600 focus:outline-none focus:border-white focus:bg-white/10 transition-all resize-none font-mono text-xs sm:text-sm"></textarea>
                             <button type="submit" id="contact-submit-btn" class="primary-btn w-full font-bold py-4 sm:py-5 rounded-xl mt-2 text-xs sm:text-sm uppercase tracking-widest">
-                                Send Transmission
+                                Request Analysis
                             </button>
                         </form>
                     </div>
@@ -648,6 +606,25 @@
                     Request Callback
                 </button>
             </form>
+        </div>
+    </div>
+
+    <!-- Success Modal (Animated) -->
+    <div id="success-modal" class="hidden fixed inset-0 z-[110] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 modal">
+        <div id="success-content" class="bg-brand-panel border border-white/10 rounded-2xl sm:rounded-[32px] p-8 sm:p-12 max-w-sm w-full relative shadow-2xl text-center">
+            <!-- Emerald Glow -->
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 bg-brand-emerald rounded-full blur-[80px] opacity-20 pointer-events-none"></div>
+            
+            <div class="w-20 h-20 sm:w-24 sm:h-24 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(16,185,129,0.2)]">
+                <i class="fa-solid fa-check text-4xl sm:text-5xl text-brand-emerald"></i>
+            </div>
+            
+            <h3 class="text-2xl sm:text-3xl font-black text-white font-heading tracking-tight mb-3">Request Received</h3>
+            <p class="text-zinc-400 text-sm sm:text-base mb-8 leading-relaxed">Your details have been securely routed to our strategy team. We will review your profile and contact you within 24 hours.</p>
+            
+            <button onclick="closeSuccessModal()" class="primary-btn w-full font-bold py-4 sm:py-5 rounded-xl text-xs sm:text-sm uppercase tracking-widest">
+                Understood
+            </button>
         </div>
     </div>
 
@@ -743,6 +720,17 @@
             });
         });
 
+        // Success Modal Logic
+        const successModal = document.getElementById('success-modal');
+        function openSuccessModal() {
+            successModal.classList.remove('hidden');
+            setTimeout(() => successModal.classList.add('active'), 10);
+        }
+        function closeSuccessModal() {
+            successModal.classList.remove('active');
+            setTimeout(() => successModal.classList.add('hidden'), 300);
+        }
+
         // Form Handling
         const handleForm = (formId, btnId) => {
             const form = document.getElementById(formId);
@@ -752,7 +740,7 @@
                 const btn = document.getElementById(btnId);
                 const originalText = btn.innerHTML; 
                 btn.disabled = true;
-                btn.textContent = 'TRANSMITTING...';
+                btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> PROCESSING...';
 
                 fetch(form.action, {
                     method: 'POST',
@@ -760,8 +748,8 @@
                     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
                 }).then(res => {
                     if (res.ok) {
-                        alert("Transmission Received. We will contact you shortly.");
                         if(formId === 'phone-form') closeModal();
+                        openSuccessModal();
                         form.reset();
                     } else alert("Error. Please verify connection.");
                 }).catch(() => alert("Network error. Try again later."))
