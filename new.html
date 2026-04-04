@@ -2,678 +2,849 @@
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feasibility Media | The Growth Agency</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Feasibility Media | Elite Growth Infrastructure</title>
     
+    <!-- SEO Tags -->
     <link rel="canonical" href="https://feasibilitymedia.in/">
     <meta name="robots" content="index, follow, max-image-preview:large">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='black'/><text x='50' y='68' font-family='serif' font-weight='900' font-size='50' text-anchor='middle' fill='white'>F</text></svg>">
-    <meta name="description" content="Feasibility Media is the premier growth agency for brands & creators. We offer video editing, paid ads, and digital strategy to scale your business.">
-
-    <!-- Schema.org -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "MarketingAgency",
-          "@id": "https://feasibilitymedia.in/#organization",
-          "name": "Feasibility Media",
-          "url": "https://feasibilitymedia.in",
-          "logo": "https://placehold.co/500x500/000000/ffffff?text=F",
-          "telephone": "+91-9431366776"
-        }
-      ]
-    }
-    </script>
-
-    <!-- UI Essentials -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23000000'/><text x='50' y='70' font-family='sans-serif' font-weight='900' font-size='60' text-anchor='middle' fill='white'>F</text></svg>">
+    <meta name="description" content="Feasibility Media is the premier growth agency for brands & creators. Stop juggling freelancers. Get video editing, paid ads, and digital strategy under one roof.">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Bricolage+Grotesque:wght@600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            black: '#000000',
+                            dark: '#030303',
+                            panel: '#09090b',
+                            purple: '#8b5cf6',
+                            rose: '#f43f5e',
+                            emerald: '#10b981',
+                            cyan: '#06b6d4',
+                            text: '#f4f4f5',
+                            muted: '#a1a1aa'
+                        }
+                    },
+                    animation: {
+                        'aurora': 'aurora 30s linear infinite alternate',
+                        'pulse-glow': 'pulseGlow 4s ease-in-out infinite',
+                        'float': 'float 8s ease-in-out infinite',
+                        'spin-slow': 'spin 15s linear infinite',
+                    },
+                    keyframes: {
+                        aurora: {
+                            '0%': { transform: 'translateY(0) scale(1)' },
+                            '100%': { transform: 'translateY(-10%) scale(1.15)' }
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+                            '50%': { opacity: '0.8', transform: 'scale(1.05)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        :root {
-            --brand-primary: #9333EA;
-            --brand-secondary: #E11D48;
-            --dark-bg: #030712;
-        }
-
+        /* --- Base & Custom Cursor --- */
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--dark-bg);
-            color: #f9fafb;
+            background-color: #000000;
+            color: #f4f4f5;
             overflow-x: hidden;
+            padding-top: 36px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            cursor: none; /* Hide default cursor on desktop */
+        }
+        
+        @media (max-width: 1024px) {
+            body { cursor: auto; }
+            #custom-cursor, #custom-cursor-follower { display: none !important; }
         }
 
-        .heading-font { font-family: 'Bricolage Grotesque', sans-serif; }
+        #custom-cursor {
+            position: fixed; top: 0; left: 0; w: 8px; h: 8px;
+            background: #fff; border-radius: 50%;
+            pointer-events: none; z-index: 99999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            mix-blend-mode: difference;
+        }
+        #custom-cursor-follower {
+            position: fixed; top: 0; left: 0; w: 32px; h: 32px;
+            border: 1px solid rgba(255,255,255,0.3); border-radius: 50%;
+            pointer-events: none; z-index: 99998;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, border-color 0.3s;
+        }
+        body.hovering-link #custom-cursor { width: 40px; height: 40px; background: rgba(255,255,255,0.1); backdrop-filter: blur(4px); mix-blend-mode: normal; }
+        body.hovering-link #custom-cursor-follower { width: 0; height: 0; opacity: 0; }
 
-        /* Cinematic Noise Overlay */
+        /* --- Ambient Backgrounds --- */
         .noise-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0.04;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 9998; opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            will-change: transform;
+        }
+        
+        .bg-grid {
+            position: absolute; inset: 0; z-index: 0;
+            background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse at top, black 20%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse at top, black 20%, transparent 70%);
         }
 
-        /* Custom Mesh Gradient */
-        .mesh-gradient {
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(147, 51, 234, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(225, 29, 72, 0.08) 0px, transparent 50%);
+        .aurora-bg {
+            position: fixed; top: -30%; left: -30%; width: 160%; height: 160%;
+            z-index: -1; pointer-events: none;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(244, 63, 94, 0.05) 0%, transparent 30%),
+                radial-gradient(circle at 20% 80%, rgba(6, 182, 212, 0.03) 0%, transparent 40%);
+            filter: blur(60px);
+            transform: translateZ(0);
+            animation: aurora 30s linear infinite alternate;
         }
 
-        /* Animated Gradient Text */
-        .text-gradient-animated {
-            background: linear-gradient(to right, #ffffff, #9333EA, #E11D48, #ffffff);
-            background-size: 300% auto;
-            color: transparent;
+        /* --- Typography --- */
+        .hero-title {
+            font-size: clamp(3.5rem, 11vw, 9rem);
+            line-height: 0.95;
+            letter-spacing: -0.05em;
+        }
+        
+        .text-gradient-mesh {
+            background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
             -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-accent {
+            background: linear-gradient(135deg, #c084fc 0%, #fb7185 50%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: shine 6s linear infinite;
-        }
-        @keyframes shine {
-            to { background-position: 300% center; }
         }
 
-        /* Smooth Reveal Animation */
-        .scroll-reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+        /* --- Bento Cards & Spotlight --- */
+        .bento-card {
+            background: rgba(9, 9, 11, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 32px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.6s ease;
+            backdrop-filter: blur(32px) saturate(150%);
+            -webkit-backdrop-filter: blur(32px) saturate(150%);
         }
-        .scroll-reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
+        
+        .bento-card::before, .bento-card::after {
+            content: "";
+            position: absolute; inset: 0;
+            border-radius: 32px;
+            transition: opacity 0.6s ease;
+            pointer-events: none;
         }
-
-        /* Glassmorphism */
-        .glass-nav {
-            background: rgba(3, 7, 18, 0.6);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        
+        .bento-card::before {
+            background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.05), transparent 40%);
+            opacity: 0; z-index: 1;
         }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .glass-card:hover {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: rgba(255, 255, 255, 0.15);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px -20px rgba(147, 51, 234, 0.15);
-        }
-
-        /* Floating Dock Animation */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
-            100% { transform: translateY(0px); }
-        }
-        .floating-dock { 
-            animation: float 6s ease-in-out infinite;
-            animation-delay: 1s; /* Enters smoothly */
+        .bento-card::after {
+            padding: 1px;
+            background: radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.3), transparent 40%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0; z-index: 2;
         }
 
-        /* Pricing Toggle */
-        .price-cut { text-decoration: line-through; opacity: 0.4; font-size: 0.8em; }
+        @media (min-width: 768px) {
+            .bento-card:hover::before, .bento-card:hover::after { opacity: 1; }
+            .bento-card:hover { 
+                transform: translateY(-8px); 
+                border-color: rgba(255, 255, 255, 0.1);
+                box-shadow: 0 40px 80px -20px rgba(0,0,0,1); 
+            }
+        }
 
+        /* --- Navigation --- */
+        .pill-nav {
+            background: rgba(9, 9, 11, 0.6);
+            backdrop-filter: blur(24px) saturate(200%);
+            -webkit-backdrop-filter: blur(24px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.8);
+        }
+
+        /* --- Elite Buttons --- */
+        .btn-elite {
+            position: relative;
+            background: #ffffff; color: #000000;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: inset 0 -3px 0 rgba(0,0,0,0.2), 0 0 20px rgba(255,255,255,0.1);
+        }
+        .btn-elite::before {
+            content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 100%;
+            background: #e4e4e7; transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 0;
+        }
+        .btn-elite:hover::before { top: 0; }
+        .btn-elite:hover { transform: scale(1.05); box-shadow: inset 0 -1px 0 rgba(0,0,0,0.2), 0 0 40px rgba(255,255,255,0.3); }
+        .btn-elite span, .btn-elite i { position: relative; z-index: 1; }
+
+        /* --- Utilities --- */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        
+        /* Outline Text for Marquee */
+        .text-outline {
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+        }
+        
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--dark-bg); }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
-
-        /* Form Input Focus Glow */
-        input:focus, textarea:focus {
-            box-shadow: 0 0 0 1px rgba(147, 51, 234, 0.5), 0 0 20px 0 rgba(147, 51, 234, 0.1);
-        }
+        ::-webkit-scrollbar { display: none; } /* Hide for absolute cleanness, or use thin styling */
+        
+        /* Modals */
+        .modal { opacity: 0; pointer-events: none; transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .modal.active { opacity: 1; pointer-events: auto; }
+        .modal-content { transform: scale(0.9) translateY(20px); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .modal.active .modal-content { transform: scale(1) translateY(0); }
     </style>
 </head>
-<body class="mesh-gradient">
-    <!-- Noise Texture Overlay -->
+<body class="relative">
+
+    <!-- Custom Cursor -->
+    <div id="custom-cursor"></div>
+    <div id="custom-cursor-follower"></div>
+
     <div class="noise-overlay"></div>
+    <div class="aurora-bg"></div>
 
-    <!-- Flash Offer Ticker -->
-    <div id="countdown-bar" class="fixed top-0 left-0 right-0 bg-white text-black z-[100] py-2 px-6 flex justify-center items-center text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase">
-        <span class="text-rose-600 mr-2">● EXCLUSIVE OFFER:</span>
-        <span class="mr-4 hidden md:inline">2026 Strategy Slots Opening</span>
-        <div class="flex space-x-2 bg-gray-100 px-3 py-1 rounded-full text-black">
-            <span id="timer-hours">00</span>:
-            <span id="timer-minutes">00</span>:
-            <span id="timer-seconds">00</span>
+    <!-- Alert Bar -->
+    <div id="countdown-bar" class="fixed top-0 left-0 w-full bg-gradient-to-r from-brand-purple/10 via-brand-rose/10 to-brand-purple/10 backdrop-blur-xl border-b border-white/5 text-white z-[60] py-2 px-4 flex justify-center items-center text-[10px] sm:text-xs font-bold tracking-widest uppercase">
+        <span class="mr-2 sm:mr-3 flex items-center gap-2 text-zinc-300">
+            <span class="w-1.5 h-1.5 rounded-full bg-brand-rose animate-pulse shadow-[0_0_10px_#f43f5e]"></span> 
+            <span class="hidden sm:inline">Q1 INFRASTRUCTURE SLOTS CLOSING:</span>
+            <span class="sm:hidden">CLOSING:</span>
+        </span>
+        <div class="flex space-x-1 font-mono bg-black/60 px-2 py-0.5 rounded border border-white/10 text-white shadow-inner">
+            <span id="timer-hours">00</span>H :
+            <span id="timer-minutes">00</span>M :
+            <span id="timer-seconds">00</span>S
         </div>
-        <a href="#pricing" class="ml-6 border-b border-black hover:text-rose-600 hover:border-rose-600 transition-all">Secure Spot</a>
+        <a href="#pricing" class="ml-3 sm:ml-4 text-brand-purple hover:text-white transition-colors cursor-pointer" data-cursor-hover>CLAIM SPOT</a>
     </div>
-
-    <!-- Floating Dock Navigation -->
-    <div class="fixed bottom-8 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
-        <nav class="glass-nav rounded-2xl px-4 py-3 flex items-center gap-2 md:gap-6 shadow-2xl floating-dock pointer-events-auto">
-            <a href="#hero" class="p-2 hover:bg-white/10 rounded-xl transition-colors text-white/70 hover:text-white" title="Home">
-                <i class="ph ph-house text-xl"></i>
+    
+    <!-- Navigation -->
+    <header class="fixed top-12 left-0 right-0 z-50 flex justify-center px-4">
+        <nav class="pill-nav rounded-full p-2 flex items-center justify-between w-full max-w-5xl">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 pl-3 pr-4 group" data-cursor-hover>
+                <div class="w-10 h-10 bg-white text-black flex items-center justify-center rounded-full text-base font-black group-hover:rotate-45 transition-transform duration-700 shadow-[0_0_20px_rgba(255,255,255,0.4)]">F</div>
+                <span class="font-heading font-bold tracking-tight text-white text-lg hidden sm:block">Feasibility</span>
             </a>
-            <div class="w-px h-4 bg-white/10"></div>
-            <a href="#divisions" class="text-xs font-semibold px-2 py-1 text-white/70 hover:text-white transition-colors uppercase tracking-widest">Divisions</a>
-            <a href="#services" class="text-xs font-semibold px-2 py-1 text-white/70 hover:text-white transition-colors uppercase tracking-widest">Services</a>
-            <a href="#pricing" class="text-xs font-semibold px-2 py-1 text-white/70 hover:text-white transition-colors uppercase tracking-widest">Pricing</a>
-            <div class="w-px h-4 bg-white/10"></div>
-            <a href="#contact" class="bg-white text-black text-xs font-bold px-5 py-2.5 rounded-xl hover:bg-purple-600 hover:text-white transition-all uppercase tracking-widest">Inquire</a>
+            
+            <!-- Desktop Links -->
+            <ul class="hidden md:flex items-center space-x-2">
+                <li><a href="#why-us" class="px-5 py-2.5 rounded-full text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition-all" data-cursor-hover>The System</a></li>
+                <li><a href="#services" class="px-5 py-2.5 rounded-full text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition-all" data-cursor-hover>Engine</a></li>
+                <li><a href="#divisions" class="px-5 py-2.5 rounded-full text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition-all" data-cursor-hover>Domains</a></li>
+                <li><a href="#pricing" class="px-5 py-2.5 rounded-full text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition-all" data-cursor-hover>Scale</a></li>
+            </ul>
+            
+            <!-- CTA -->
+            <div class="flex items-center gap-2 pl-4">
+                <a href="#contact" class="btn-elite px-6 sm:px-8 py-3 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-widest" data-cursor-hover>
+                    <span>Initiate</span>
+                </a>
+                <button id="mobile-menu-button" class="md:hidden w-12 h-12 flex items-center justify-center rounded-full bg-white/5 text-white border border-white/10 hover:bg-white/10 transition-colors" data-cursor-hover>
+                   <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
         </nav>
-    </div>
-
-    <!-- Hero Section -->
-    <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center pt-20 px-6 text-center overflow-hidden">
-        <!-- Background Glows -->
-        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-purple-600/10 rounded-full blur-[150px] pointer-events-none animate-pulse" style="animation-duration: 8s;"></div>
         
-        <div class="max-w-5xl scroll-reveal relative z-10">
-            <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full glass-card text-[10px] font-bold text-white/70 mb-8 uppercase tracking-[0.3em] border border-white/10">
-                <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping"></span>
-                The Ultimate Growth Ecosystem
-            </div>
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden absolute top-24 left-4 right-4 bg-brand-panel/95 backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_30px_60px_rgba(0,0,0,0.8)] p-4 flex flex-col gap-2">
+            <a href="#why-us" class="px-4 py-4 rounded-2xl font-bold text-zinc-300 hover:bg-white/10 transition-colors">The System</a>
+            <a href="#services" class="px-4 py-4 rounded-2xl font-bold text-zinc-300 hover:bg-white/10 transition-colors">The Engine</a>
+            <a href="#divisions" class="px-4 py-4 rounded-2xl font-bold text-zinc-300 hover:bg-white/10 transition-colors">Domains</a>
+            <a href="#pricing" class="px-4 py-4 rounded-2xl font-bold text-zinc-300 hover:bg-white/10 transition-colors">Scale</a>
+        </div>
+    </header>
+
+    <main class="relative z-10 pt-24 sm:pt-32">
+
+        <!-- HERO SECTION -->
+        <section id="hero" class="min-h-[90vh] flex flex-col justify-center items-center text-center px-4 relative">
+            <div class="bg-grid"></div>
+            <!-- Center Hero Glow -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70vw] h-[70vw] bg-brand-purple/10 rounded-full blur-[120px] pointer-events-none -z-10 animate-pulse-glow"></div>
             
-            <h1 class="text-6xl md:text-8xl lg:text-9xl font-extrabold tracking-tighter heading-font mb-8 leading-[0.9]">
-                SCALE <br>
-                <span class="text-gradient-animated">BEYOND LIMITS.</span>
-            </h1>
-            
-            <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed font-light mb-12">
-                The last agency you will ever hire. We replace your entire content, design, and marketing teams with one ruthless, end-to-end growth engine.
-            </p>
-            
-            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                <a href="#divisions" class="group relative px-8 py-4 bg-white text-black font-bold rounded-2xl overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:shadow-[0_0_60px_rgba(255,255,255,0.4)]">
-                    <span class="relative z-10 flex items-center gap-2">Explore the Ecosystem <i class="ph ph-arrow-right font-bold group-hover:translate-x-1 transition-transform"></i></span>
-                </a>
-                <a href="#contact" class="text-sm font-bold text-white/50 hover:text-white transition-colors flex items-center gap-2 uppercase tracking-widest group">
-                    Book Discovery Call 
-                    <i class="ph ph-arrow-up-right text-lg group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
-                </a>
-            </div>
-        </div>
-
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-28 flex flex-col items-center gap-3 text-[10px] tracking-[0.4em] opacity-30 uppercase font-bold">
-            Scroll
-            <div class="w-px h-16 bg-gradient-to-b from-white to-transparent"></div>
-        </div>
-    </section>
-
-    <!-- Stats Bento Grid -->
-    <section id="stats" class="py-24 px-6 scroll-reveal relative z-10">
-        <div class="container mx-auto max-w-7xl">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <!-- Large Stat -->
-                <div class="md:col-span-2 glass-card rounded-3xl p-10 md:p-12 flex flex-col justify-between group">
-                    <div class="flex justify-between items-start mb-12">
-                        <span class="text-xs font-bold text-white/40 uppercase tracking-widest flex items-center gap-2"><i class="ph ph-globe text-lg"></i> Global Reach</span>
-                        <div class="w-10 h-10 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center">
-                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="text-7xl md:text-8xl font-bold heading-font mb-2 tracking-tighter">
-                            <span class="counter" data-target="320">0</span>M+
-                        </div>
-                        <p class="text-gray-400 font-medium max-w-sm">Impressions generated for our elite partners across all major platforms.</p>
-                    </div>
+            <div class="max-w-6xl reveal relative z-10 w-full mt-10">
+                <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-white/10 bg-black/40 backdrop-blur-xl text-[10px] sm:text-xs font-bold text-zinc-300 mb-10 uppercase tracking-widest shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+                    <i class="fa-solid fa-crown text-brand-emerald"></i>
+                    The Apex Agency Standard
                 </div>
-
-                <!-- Small Stat 1 -->
-                <div class="glass-card rounded-3xl p-10 flex flex-col justify-between group">
-                    <span class="text-xs font-bold text-white/40 uppercase tracking-widest flex items-center gap-2"><i class="ph ph-users-three text-lg"></i> Active Channels</span>
-                    <div>
-                        <div class="text-5xl font-bold heading-font mb-2 group-hover:text-purple-400 transition-colors">
-                            <span class="counter" data-target="312">0</span>+
-                        </div>
-                        <p class="text-xs text-gray-500 leading-relaxed">Across YouTube, TikTok & Instagram Reels.</p>
-                    </div>
-                </div>
-
-                <!-- Small Stat 2 -->
-                <div class="glass-card rounded-3xl p-10 flex flex-col justify-between group">
-                    <span class="text-xs font-bold text-rose-500/60 uppercase tracking-widest flex items-center gap-2"><i class="ph ph-trend-up text-lg"></i> Sales Driven</span>
-                    <div>
-                        <div class="text-5xl font-bold heading-font text-rose-500 mb-2 group-hover:text-rose-400 transition-colors">
-                            ₹<span class="counter" data-target="12">0</span>Cr+
-                        </div>
-                        <p class="text-xs text-gray-500 leading-relaxed">Direct attribution from organic and paid campaigns.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Divisions: The Domain Chooser -->
-    <section id="divisions" class="py-24 px-6 bg-black/40 relative">
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/5 to-transparent pointer-events-none"></div>
-        <div class="container mx-auto max-w-7xl relative z-10">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-                <div class="max-w-2xl scroll-reveal">
-                    <span class="text-purple-500 font-bold uppercase tracking-[0.3em] text-[10px] flex items-center gap-2"><i class="ph ph-target text-lg"></i> The Ultimate Partner</span>
-                    <h2 class="text-5xl md:text-7xl font-extrabold heading-font mt-4 leading-[0.9]">THE LAST <br>AGENCY.</h2>
-                </div>
-                <p class="text-gray-400 text-sm max-w-sm scroll-reveal delay-100">Why manage 5 different freelancers when you can plug into a single, high-leverage growth infrastructure? We handle everything.</p>
-            </div>
-
-            <div class="grid lg:grid-cols-2 gap-8">
-                <!-- Creator Card -->
-                <a href="#" class="group glass-card rounded-[2rem] p-12 overflow-hidden relative block">
-                    <div class="absolute -right-20 -top-20 w-80 h-80 bg-rose-600/10 rounded-full blur-[80px] group-hover:bg-rose-600/20 transition-all duration-500"></div>
-                    <div class="relative z-10">
-                        <i class="ph-light ph-aperture text-6xl text-rose-500 mb-8 block group-hover:scale-110 transition-transform duration-500 transform origin-left"></i>
-                        <h3 class="text-4xl font-bold heading-font mb-4 text-white">Creator Hub</h3>
-                        <p class="text-gray-400 text-base leading-relaxed mb-12 max-w-md">Retention-hacked storytelling for vloggers, streamers, and personal brands. We handle the edit, the thumbnails, and the strategy. You just press record.</p>
-                        <div class="flex items-center text-sm font-bold uppercase tracking-widest text-white/50 group-hover:text-rose-400 transition-colors">
-                            Enter Studio <i class="ph ph-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Brands Card -->
-                <a href="#" class="group glass-card rounded-[2rem] p-12 overflow-hidden relative block">
-                    <div class="absolute -right-20 -top-20 w-80 h-80 bg-purple-600/10 rounded-full blur-[80px] group-hover:bg-purple-600/20 transition-all duration-500"></div>
-                    <div class="relative z-10">
-                        <i class="ph-light ph-buildings text-6xl text-purple-500 mb-8 block group-hover:scale-110 transition-transform duration-500 transform origin-left"></i>
-                        <h3 class="text-4xl font-bold heading-font mb-4 text-white">Commercial Brands</h3>
-                        <p class="text-gray-400 text-base leading-relaxed mb-12 max-w-md">Full-stack domination for D2C, SaaS, and established enterprises. Paid acquisition, elite motion graphics, and conversion-optimized funnels under one roof.</p>
-                        <div class="flex items-center text-sm font-bold uppercase tracking-widest text-white/50 group-hover:text-purple-400 transition-colors">
-                            Scale Now <i class="ph ph-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="py-24 px-6 relative z-10">
-        <div class="container mx-auto max-w-7xl">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div class="scroll-reveal">
-                    <span class="text-purple-500 font-bold uppercase tracking-[0.3em] text-[10px] flex items-center gap-2"><i class="ph ph-intersect text-lg"></i> What we do</span>
-                    <h2 class="text-5xl md:text-6xl font-extrabold heading-font mt-4 mb-10 leading-tight">THE GROWTH <br>ECOSYSTEM.</h2>
-                    
-                    <div class="space-y-4">
-                        <div class="glass-card p-6 rounded-2xl flex gap-6 group hover:bg-white/5">
-                            <div class="shrink-0 w-14 h-14 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center group-hover:bg-purple-600 group-hover:border-purple-500 transition-all">
-                                <i class="ph ph-film-strip text-2xl text-white"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-xl mb-2 text-white">Production House</h4>
-                                <p class="text-gray-400 text-sm leading-relaxed">Full-scale video editing, cinematic motion graphics, and a ruthless short-form repurposing pipeline.</p>
-                            </div>
-                        </div>
-                        <div class="glass-card p-6 rounded-2xl flex gap-6 group hover:bg-white/5">
-                            <div class="shrink-0 w-14 h-14 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center group-hover:bg-rose-600 group-hover:border-rose-500 transition-all">
-                                <i class="ph ph-rocket-launch text-2xl text-white"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-xl mb-2 text-white">Paid Acquisition</h4>
-                                <p class="text-gray-400 text-sm leading-relaxed">Aggressive scaling on Meta, Google, and YouTube Ads with pinpoint ROAS tracking and optimization.</p>
-                            </div>
-                        </div>
-                        <div class="glass-card p-6 rounded-2xl flex gap-6 group hover:bg-white/5">
-                            <div class="shrink-0 w-14 h-14 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center group-hover:bg-amber-500 group-hover:border-amber-400 transition-all">
-                                <i class="ph ph-paint-brush text-2xl text-white"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-xl mb-2 text-white">Brand Identity</h4>
-                                <p class="text-gray-400 text-sm leading-relaxed">High-CTR thumbnails, typography systems, and social kits designed for pure algorithmic dominance.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="relative scroll-reveal delay-200">
-                    <div class="glass-card rounded-[3rem] p-8 md:p-12 relative z-10 border-white/10 overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-tr from-purple-900/20 to-transparent"></div>
-                        <div class="relative z-10 space-y-4">
-                            <div class="flex items-center justify-between p-6 bg-black/40 rounded-2xl border border-white/5 backdrop-blur-md">
-                                <span class="text-sm font-medium text-gray-400 flex items-center gap-2"><i class="ph-fill ph-chart-line-up text-purple-400"></i> Retention Goal</span>
-                                <span class="text-2xl font-bold text-white">75%+</span>
-                            </div>
-                            <div class="flex items-center justify-between p-6 bg-black/40 rounded-2xl border border-white/5 backdrop-blur-md">
-                                <span class="text-sm font-medium text-gray-400 flex items-center gap-2"><i class="ph-fill ph-cursor-click text-rose-400"></i> Avg CTR (Thumbnails)</span>
-                                <span class="text-2xl font-bold text-white">8.2%</span>
-                            </div>
-                            <div class="flex items-center justify-between p-6 bg-purple-900/30 rounded-2xl border border-purple-500/30 backdrop-blur-md">
-                                <span class="text-sm font-bold text-purple-300 flex items-center gap-2"><i class="ph-fill ph-currency-circle-dollar text-green-400"></i> Quarterly ROI</span>
-                                <span class="text-2xl font-black text-white">4.2x</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Decorative element -->
-                    <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-purple-600/20 rounded-full blur-[100px] pointer-events-none"></div>
-                    <div class="absolute -top-20 -right-20 w-80 h-80 bg-rose-600/10 rounded-full blur-[100px] pointer-events-none"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing -->
-    <section id="pricing" class="py-32 px-6 bg-black/50 relative">
-        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-        <div class="container mx-auto max-w-7xl">
-            <div class="text-center mb-20 scroll-reveal">
-                <span class="text-white/50 font-bold uppercase tracking-[0.3em] text-[10px] mb-4 block">Transparent Scaling</span>
-                <h2 class="text-5xl md:text-6xl font-extrabold heading-font mb-6">BUSINESS PLANS.</h2>
-                <p class="text-gray-400 max-w-lg mx-auto">Tiered growth infrastructure for every stage of your digital empire's lifecycle.</p>
-            </div>
-
-            <div class="grid lg:grid-cols-3 gap-8 items-center">
-                <!-- Starter -->
-                <div class="glass-card rounded-[2.5rem] p-10 flex flex-col scroll-reveal delay-100">
-                    <h3 class="text-2xl font-bold mb-2 text-white">Starter</h3>
-                    <p class="text-gray-500 text-sm mb-8 pb-8 border-b border-white/10">Perfect for emerging personal brands.</p>
-                    
-                    <div class="mb-10">
-                        <span class="price-cut block mb-1">₹7,500</span>
-                        <div class="flex items-baseline">
-                            <span class="text-5xl font-bold text-white">₹4,999</span>
-                            <span class="text-gray-500 ml-2 text-sm font-medium">/mo</span>
-                        </div>
-                    </div>
-                    <ul class="space-y-5 text-sm text-gray-300 mb-12 flex-grow">
-                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-green-500 mt-0.5"></i> 8 Strategic Posts</li>
-                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-green-500 mt-0.5"></i> 2 Viral Short-form Videos</li>
-                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-green-500 mt-0.5"></i> Hashtag Engineering</li>
-                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-green-500 mt-0.5"></i> Monthly Performance Audit</li>
-                    </ul>
-                    <button data-plan="Brand Starter" class="w-full py-4 bg-white/5 border border-white/10 rounded-xl font-bold hover:bg-white hover:text-black transition-all">Start Project</button>
-                </div>
-
-                <!-- Growth (Center Highlight) -->
-                <div class="relative rounded-[2.5rem] p-[2px] bg-gradient-to-b from-purple-500 via-rose-500 to-transparent shadow-[0_0_80px_rgba(147,51,234,0.2)] lg:-translate-y-4 scroll-reveal z-10 group">
-                    <div class="bg-[#0a0a0a] rounded-[2.4rem] p-12 flex flex-col h-full relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-64 h-64 bg-purple-600/10 rounded-full blur-[80px] pointer-events-none"></div>
-                        
-                        <div class="absolute top-0 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-600 to-rose-600 text-white px-6 py-1.5 rounded-b-xl text-[10px] font-black uppercase tracking-[0.2em] shadow-lg">Scaling Choice</div>
-                        
-                        <h3 class="text-2xl font-bold mb-2 text-white mt-4">Growth</h3>
-                        <p class="text-gray-400 text-sm mb-8 pb-8 border-b border-white/10">The engine for aggressive market capture.</p>
-
-                        <div class="mb-10 relative z-10">
-                            <span class="price-cut block mb-1">₹15,000</span>
-                            <div class="flex items-baseline">
-                                <span class="text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">₹9,999</span>
-                                <span class="text-gray-500 ml-2 text-sm font-medium">/mo</span>
-                            </div>
-                        </div>
-                        <ul class="space-y-5 text-sm text-gray-200 mb-12 flex-grow relative z-10">
-                            <li class="flex items-start gap-3"><i class="ph-bold ph-check-circle text-purple-400 text-lg mt-0.5"></i> <span class="font-bold">12 Posts & 6 Viral Shorts</span></li>
-                            <li class="flex items-start gap-3"><i class="ph-bold ph-check-circle text-purple-400 text-lg mt-0.5"></i> <span class="font-bold">Paid Ads Management</span></li>
-                            <li class="flex items-start gap-3"><i class="ph-bold ph-check-circle text-purple-400 text-lg mt-0.5"></i> Active Community Management</li>
-                            <li class="flex items-start gap-3"><i class="ph-bold ph-check-circle text-purple-400 text-lg mt-0.5"></i> Dedicated Growth Lead</li>
-                        </ul>
-                        <button data-plan="Brand Growth" class="w-full py-5 bg-white text-black rounded-xl font-black hover:bg-gradient-to-r hover:from-purple-600 hover:to-rose-600 hover:text-white transition-all shadow-xl hover:shadow-purple-500/25 relative z-10">Claim Growth Slot</button>
-                    </div>
-                </div>
-
-                <!-- Pro -->
-                <div class="glass-card rounded-[2.5rem] p-10 flex flex-col scroll-reveal delay-200">
-                    <h3 class="text-2xl font-bold mb-2 text-white">Enterprise Pro</h3>
-                    <p class="text-gray-500 text-sm mb-8 pb-8 border-b border-white/10">Full-stack domination for established brands.</p>
-
-                    <div class="mb-10">
-                        <span class="price-cut block mb-1">₹28,000</span>
-                        <div class="flex items-baseline">
-                            <span class="text-5xl font-bold text-white">₹18,999</span>
-                            <span class="text-gray-500 ml-2 text-sm font-medium">/mo</span>
-                        </div>
-                    </div>
-                    <ul class="space-y-5 text-sm text-gray-300 mb-12 flex-grow">
-                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-white/50 mt-0.5"></i> 20 Posts & 10 Shorts</li>
-                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-white/50 mt-0.5"></i> Full Scale Paid Strategy</li>
-                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-white/50 mt-0.5"></i> UGC Content Sourcing</li>
-                        <li class="flex items-start gap-3"><i class="ph-bold ph-check text-white/50 mt-0.5"></i> Daily Analytics Sync</li>
-                    </ul>
-                    <button data-plan="Brand Pro" class="w-full py-4 bg-white/5 border border-white/10 rounded-xl font-bold hover:bg-white hover:text-black transition-all">Talk Enterprise</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" class="py-32 px-6 relative z-10">
-        <div class="container mx-auto max-w-6xl">
-            <div class="glass-card rounded-[3rem] p-10 md:p-20 flex flex-col lg:flex-row gap-16 items-center overflow-hidden relative border-white/10">
-                <!-- Background ambient light for card -->
-                <div class="absolute -right-40 bottom-0 w-[500px] h-[500px] bg-gradient-to-tr from-purple-600/20 to-rose-600/20 rounded-full blur-[120px] pointer-events-none"></div>
-                <div class="absolute -left-20 top-0 w-[300px] h-[300px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
                 
-                <div class="flex-1 relative z-10 text-center lg:text-left">
-                    <span class="text-rose-500 font-bold uppercase tracking-[0.3em] text-[10px] mb-6 block flex items-center justify-center lg:justify-start gap-2"><i class="ph-fill ph-lightning text-lg"></i> Initiate Protocol</span>
-                    <h2 class="text-5xl md:text-7xl font-extrabold heading-font mb-6 leading-[0.9] tracking-tighter text-white">LET'S <br>BUILD.</h2>
-                    <p class="text-gray-400 mb-10 text-lg max-w-md mx-auto lg:mx-0">Submit your current coordinates. We'll analyze your presence and deploy a custom roadmap within 24 hours.</p>
-                    
-                    <div class="flex flex-col gap-4 max-w-sm mx-auto lg:mx-0">
-                        <div class="flex items-center gap-4 text-sm font-bold text-gray-300 bg-white/5 p-4 rounded-xl border border-white/5">
-                            <i class="ph-fill ph-shield-check text-xl text-green-500"></i> MONTH-TO-MONTH RETAINER
+                <h1 class="hero-title font-black font-heading mb-8 text-white uppercase mx-auto text-balance animate-float drop-shadow-2xl">
+                    We Build <br>
+                    <span class="relative inline-block">
+                        <span class="absolute inset-0 bg-brand-purple/30 blur-3xl rounded-full z-[-1] animate-pulse-glow"></span>
+                        <span class="text-gradient-accent">Digital Empires.</span>
+                    </span>
+                </h1>
+                
+                <p class="text-base sm:text-lg md:text-2xl text-zinc-400 max-w-3xl mx-auto leading-relaxed font-light mb-12 px-2 text-balance">
+                    The <strong class="text-white font-medium">only</strong> growth agency you will ever need. Stop juggling freelancers. Access world-class production, paid acquisition, and strategy under one roof.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-5 justify-center items-center w-full px-4 sm:px-0">
+                    <a href="#contact" class="btn-elite w-full sm:w-auto py-5 px-10 rounded-full text-xs sm:text-sm font-black tracking-widest uppercase flex items-center justify-center gap-3" data-cursor-hover>
+                        <span>Get Your Roadmap</span> <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a href="#about" class="w-full sm:w-auto bg-transparent border border-white/20 text-white font-bold py-5 px-10 rounded-full text-xs sm:text-sm tracking-widest uppercase hover:bg-white/5 hover:border-white/50 transition-all flex items-center justify-center backdrop-blur-sm" data-cursor-hover>
+                        Explore Infrastructure
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRUSTED BY (Outline Marquee) -->
+        <section class="py-12 sm:py-16 border-y border-white/5 bg-black/20 backdrop-blur-2xl reveal relative z-10 overflow-hidden">
+            <div class="marquee-wrapper flex space-x-12 sm:space-x-24">
+                <div class="flex space-x-12 sm:space-x-24 items-center text-4xl sm:text-6xl font-black font-heading uppercase tracking-widest animate-marquee whitespace-nowrap">
+                    <span class="text-white">Bewakoof<span class="text-brand-rose">.</span></span>
+                    <span class="text-outline">The Souled Store</span>
+                    <span class="text-white">Layers</span>
+                    <span class="text-outline">Total Gaming</span>
+                    <span class="text-white">TechWiser</span>
+                    <span class="text-outline">PhysicsWallah</span>
+                    <!-- Duplicates for seamless loop -->
+                    <span class="text-white">Bewakoof<span class="text-brand-rose">.</span></span>
+                    <span class="text-outline">The Souled Store</span>
+                    <span class="text-white">Layers</span>
+                    <span class="text-outline">Total Gaming</span>
+                    <span class="text-white">TechWiser</span>
+                    <span class="text-outline">PhysicsWallah</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- THE OLD WAY VS NEW WAY -->
+        <section id="why-us" class="py-32 sm:py-48 relative z-10 px-4">
+            <div class="container mx-auto max-w-7xl">
+                <div class="text-center mb-20 sm:mb-32 reveal">
+                    <h2 class="text-5xl md:text-6xl lg:text-8xl font-black text-white mb-6 font-heading tracking-tight text-gradient-mesh text-balance">The Agency Model is Broken.</h2>
+                    <p class="text-brand-muted text-lg sm:text-2xl max-w-3xl mx-auto font-light text-balance">Scaling a brand used to be a nightmare of miscommunication and missed deadlines. We fixed it.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 sm:gap-12 relative">
+                    <!-- Abstract connector line (desktop) -->
+                    <div class="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-1 bg-gradient-to-r from-zinc-800 to-brand-emerald z-0"></div>
+
+                    <!-- The Old Way -->
+                    <div class="bento-card p-10 sm:p-16 reveal bg-gradient-to-br from-black to-zinc-900/50 border-white/5 opacity-70 hover:opacity-100 z-10">
+                        <div class="w-16 h-16 rounded-3xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-600 text-2xl mb-10 shadow-inner">
+                            <i class="fa-solid fa-xmark"></i>
                         </div>
-                        <div class="flex items-center gap-4 text-sm font-bold text-gray-300 bg-white/5 p-4 rounded-xl border border-white/5">
-                            <i class="ph-fill ph-handshake text-xl text-green-500"></i> ZERO LOCK-IN CONTRACTS
+                        <h3 class="text-3xl sm:text-4xl font-bold font-heading text-zinc-500 mb-8">The Old Way</h3>
+                        <ul class="space-y-6">
+                            <li class="flex items-start gap-4 text-zinc-500 text-lg">
+                                <i class="fa-solid fa-minus mt-1.5 text-sm"></i> 
+                                Juggling 5 different freelancers who don't communicate.
+                            </li>
+                            <li class="flex items-start gap-4 text-zinc-500 text-lg">
+                                <i class="fa-solid fa-minus mt-1.5 text-sm"></i> 
+                                Unreliable editors missing critical upload deadlines.
+                            </li>
+                            <li class="flex items-start gap-4 text-zinc-500 text-lg">
+                                <i class="fa-solid fa-minus mt-1.5 text-sm"></i> 
+                                Burning ad spend because creatives cause fatigue.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- The Feasibility Way -->
+                    <div class="bento-card p-10 sm:p-16 reveal border-t-2 border-t-brand-emerald bg-gradient-to-br from-brand-emerald/10 to-black shadow-[0_0_50px_rgba(16,185,129,0.1)] z-10 delay-100">
+                        <div class="w-16 h-16 rounded-3xl bg-brand-emerald/10 border border-brand-emerald/30 flex items-center justify-center text-brand-emerald text-2xl mb-10 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
+                            <i class="fa-solid fa-check"></i>
                         </div>
+                        <h3 class="text-3xl sm:text-4xl font-bold font-heading text-white mb-8">Feasibility Infrastructure</h3>
+                        <ul class="space-y-6">
+                            <li class="flex items-start gap-4 text-zinc-300 text-lg">
+                                <i class="fa-solid fa-plus mt-1.5 text-sm text-brand-emerald"></i> 
+                                <span><span class="font-bold text-white">One unified team</span> managing your entire growth funnel.</span>
+                            </li>
+                            <li class="flex items-start gap-4 text-zinc-300 text-lg">
+                                <i class="fa-solid fa-plus mt-1.5 text-sm text-brand-emerald"></i> 
+                                <span>Guaranteed <span class="font-bold text-white">24-48h turnarounds</span> on high-end production.</span>
+                            </li>
+                            <li class="flex items-start gap-4 text-zinc-300 text-lg">
+                                <i class="fa-solid fa-plus mt-1.5 text-sm text-brand-emerald"></i> 
+                                <span>Data-backed creative testing to scale ROAS aggressively.</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div class="flex-1 w-full relative z-10">
-                    <form id="contact-form" action="https://formspree.io/f/mandalko" method="POST" class="space-y-5 bg-black/40 p-8 rounded-[2rem] border border-white/10 backdrop-blur-xl">
-                        <div class="relative">
-                            <i class="ph ph-user absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 text-xl"></i>
-                            <input type="text" name="name" placeholder="Name / Brand" required class="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-14 pr-5 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:bg-white/10 transition-all">
+        <!-- STATS / BENTO -->
+        <section id="about" class="py-32 sm:py-48 relative z-10 border-y border-white/5 bg-black/60 backdrop-blur-3xl px-4">
+            <div class="container mx-auto max-w-7xl">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8">
+                    <div class="md:col-span-2 bento-card p-12 sm:p-16 flex flex-col justify-between reveal bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+                        <i class="fa-solid fa-dna text-5xl text-brand-cyan mb-10 opacity-80"></i>
+                        <div>
+                            <h3 class="text-4xl sm:text-5xl font-black font-heading text-white mb-6 tracking-tight">The Apex Standard.</h3>
+                            <p class="text-zinc-400 text-lg sm:text-xl leading-relaxed font-light">Born from the need for high-quality, scalable content infrastructure. We serve as the backend production house for the world's fastest-growing digital brands. Excellence is our baseline.</p>
                         </div>
-                        <div class="relative">
-                            <i class="ph ph-phone absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 text-xl"></i>
-                            <input type="tel" name="phone" placeholder="WhatsApp / Phone" required class="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-14 pr-5 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:bg-white/10 transition-all">
+                    </div>
+                    
+                    <div class="bento-card p-10 sm:p-12 flex flex-col justify-center items-center text-center reveal border-b-4 border-b-brand-emerald delay-[100ms]">
+                        <div class="text-6xl sm:text-7xl lg:text-8xl font-black font-mono text-white mb-4 flex items-baseline tracking-tighter">
+                            <span class="counter text-gradient-accent" data-target="320">0</span>M+
                         </div>
-                        <div class="relative">
-                            <i class="ph ph-target absolute left-5 top-5 text-gray-500 text-xl"></i>
-                            <textarea name="message" placeholder="Goals & Current Metrics" rows="4" class="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-14 pr-5 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:bg-white/10 transition-all resize-none"></textarea>
+                        <p class="text-xs sm:text-sm font-bold text-zinc-500 uppercase tracking-widest mt-2">Views Generated</p>
+                    </div>
+
+                    <div class="bento-card p-10 sm:p-12 flex flex-col justify-center items-center text-center reveal border-b-4 border-b-brand-rose delay-[200ms]">
+                        <div class="text-6xl sm:text-7xl lg:text-8xl font-black font-mono text-white mb-4 flex items-baseline tracking-tighter">
+                            <span class="text-brand-rose text-4xl sm:text-5xl">₹</span><span class="counter text-brand-rose" data-target="12">0</span><span class="text-brand-rose">Cr+</span>
                         </div>
-                        <button type="submit" id="contact-submit-btn" class="w-full bg-white text-black font-black py-4 rounded-xl hover:bg-purple-500 hover:text-white transition-all active:scale-[0.98] shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(147,51,234,0.4)] flex items-center justify-center gap-2">
-                            SUBMIT INQUIRY <i class="ph-bold ph-arrow-right"></i>
-                        </button>
-                    </form>
+                        <p class="text-xs sm:text-sm font-bold text-zinc-500 uppercase tracking-widest mt-2">Sales Driven</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
-    <footer class="py-20 px-6 border-t border-white/10 relative z-10 bg-black/50">
-        <div class="container mx-auto text-center">
-            <div class="text-3xl font-black heading-font mb-10 flex justify-center items-center gap-3 text-white">
-                <div class="w-10 h-10 bg-white text-black flex items-center justify-center rounded-xl text-xl shadow-[0_0_20px_rgba(255,255,255,0.2)]">F</div>
-                Feasibility<span class="opacity-40 font-light italic">Media</span>
+        <!-- SERVICES / THE ENGINE -->
+        <section id="services" class="py-32 sm:py-48 relative z-10 px-4">
+            <div class="container mx-auto max-w-7xl">
+                 <div class="mb-20 sm:mb-32 reveal flex flex-col md:flex-row justify-between md:items-end gap-8">
+                    <div>
+                        <h2 class="text-5xl md:text-7xl lg:text-8xl font-black text-white font-heading tracking-tight mb-4 text-gradient-mesh">The Engine.</h2>
+                    </div>
+                    <p class="text-brand-muted text-xl sm:text-2xl font-light text-balance md:text-right max-w-md">Full-stack digital presence, managed perfectly under one roof.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+                    <div class="bento-card p-10 sm:p-12 group reveal">
+                        <i class="fa-solid fa-photo-film text-4xl text-zinc-700 group-hover:text-brand-purple transition-colors mb-10 block"></i>
+                        <h3 class="text-2xl font-bold text-white mb-4 font-heading">Production</h3>
+                        <p class="text-base text-zinc-400 leading-relaxed font-light">Long-form documentary editing, shorts repurposing, and advanced motion graphics.</p>
+                    </div>
+                    <div class="bento-card p-10 sm:p-12 group reveal lg:delay-[100ms]">
+                        <i class="fa-solid fa-pen-nib text-4xl text-zinc-700 group-hover:text-brand-rose transition-colors mb-10 block"></i>
+                        <h3 class="text-2xl font-bold text-white mb-4 font-heading">Design</h3>
+                        <p class="text-base text-zinc-400 leading-relaxed font-light">High-CTR thumbnails, ad creatives, UI/UX, and complete brand identity kits.</p>
+                    </div>
+                    <div class="bento-card p-10 sm:p-12 group reveal lg:delay-[200ms]">
+                        <i class="fa-solid fa-bullseye text-4xl text-zinc-700 group-hover:text-brand-emerald transition-colors mb-10 block"></i>
+                        <h3 class="text-2xl font-bold text-white mb-4 font-heading">Acquisition</h3>
+                        <p class="text-base text-zinc-400 leading-relaxed font-light">Meta & Google Ads management. DABA campaigns optimized for maximum ROAS.</p>
+                    </div>
+                    <div class="bento-card p-10 sm:p-12 group reveal lg:delay-[300ms]">
+                        <i class="fa-solid fa-chess-knight text-4xl text-zinc-700 group-hover:text-brand-cyan transition-colors mb-10 block"></i>
+                        <h3 class="text-2xl font-bold text-white mb-4 font-heading">Strategy</h3>
+                        <p class="text-base text-zinc-400 leading-relaxed font-light">Monthly content matrices, SEO audits, channel scaling, and analytics reporting.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DIVISIONS -->
+        <section id="divisions" class="py-32 sm:py-48 bg-brand-panel border-y border-white/5 relative z-10 px-4">
+            <div class="container mx-auto max-w-6xl">
+                <div class="text-center mb-24 sm:mb-32 reveal">
+                    <h2 class="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 font-heading tracking-tight text-gradient-mesh">Choose Your Domain.</h2>
+                    <p class="text-brand-muted max-w-2xl mx-auto text-xl sm:text-2xl font-light text-balance">Dedicated backend infrastructure tailored for your specific industry.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 max-w-5xl mx-auto">
+                    
+                    <!-- Creator Hub -->
+                    <a href="creator.html" class="bento-card p-12 sm:p-16 flex flex-col group reveal border-b-4 border-b-transparent hover:border-b-brand-rose" data-cursor-hover>
+                        <h3 class="text-4xl sm:text-5xl font-black text-white mb-4 font-heading group-hover:text-brand-rose transition-colors">Creator Hub</h3>
+                        <p class="text-xs sm:text-sm text-zinc-500 font-mono uppercase tracking-widest mb-10">Vloggers & Influencers</p>
+                        <p class="text-zinc-400 text-lg sm:text-xl mb-12 flex-grow leading-relaxed font-light">Viral editing, thumbnail engineering, and audience retention strategy to maximize your reach and ad revenue.</p>
+                        <div class="flex items-center text-sm font-bold text-white uppercase tracking-widest mt-auto group-hover:text-brand-rose transition-colors">
+                            Explore Hub <i class="fa-solid fa-arrow-right ml-4 group-hover:translate-x-4 transition-transform"></i>
+                        </div>
+                    </a>
+
+                    <!-- Gaming -->
+                    <a href="gaming.html" class="bento-card p-12 sm:p-16 flex flex-col group reveal border-b-4 border-b-transparent hover:border-b-brand-emerald md:delay-[150ms]" data-cursor-hover>
+                        <h3 class="text-4xl sm:text-5xl font-black text-white mb-4 font-heading group-hover:text-brand-emerald transition-colors">Gaming</h3>
+                        <p class="text-xs sm:text-sm text-zinc-500 font-mono uppercase tracking-widest mb-10">Streamers & Esports</p>
+                        <p class="text-zinc-400 text-lg sm:text-xl mb-12 flex-grow leading-relaxed font-light">High-octane editing, sound design, and meme integration. Turn raw gameplay VODs into a lasting digital legacy.</p>
+                        <div class="flex items-center text-sm font-bold text-white uppercase tracking-widest mt-auto group-hover:text-brand-emerald transition-colors">
+                            Enter Lobby <i class="fa-solid fa-arrow-right ml-4 group-hover:translate-x-4 transition-transform"></i>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- PRICING -->
+        <section id="pricing" class="py-32 sm:py-48 relative z-10 px-4">
+            <div class="container mx-auto max-w-7xl">
+                <div class="text-center mb-24 sm:mb-32 reveal">
+                    <h2 class="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6 font-heading tracking-tight text-gradient-mesh text-balance">Scale Without Limits.</h2>
+                    <p class="text-brand-muted text-xl sm:text-2xl font-light text-balance">Standardized infrastructure pricing for Brands & Creators. No hidden fees. No lock-ins.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10 items-center">
+                    <!-- Starter -->
+                    <div class="bento-card p-10 sm:p-14 reveal hover:bg-white/[0.02]">
+                        <h3 class="text-3xl font-bold text-white mb-2 font-heading">Starter</h3>
+                        <p class="text-xs sm:text-sm text-zinc-500 mb-10 font-mono uppercase tracking-widest">Professional Baseline</p>
+                        <div class="mb-10 pb-10 border-b border-white/5">
+                             <span class="text-5xl sm:text-6xl font-black text-white font-heading">₹4,999</span><span class="text-zinc-500 text-base font-mono">/mo</span>
+                        </div>
+                        <ul class="space-y-6 text-base text-zinc-300 mb-12 font-light">
+                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-zinc-600 mt-1"></i> 8 Posts & 2 Reels</li>
+                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-zinc-600 mt-1"></i> SEO Captions & Tags</li>
+                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-zinc-600 mt-1"></i> Monthly Calendar</li>
+                        </ul>
+                        <button data-plan="Starter Plan" class="w-full py-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl text-white font-bold transition-colors text-sm uppercase tracking-widest" data-cursor-hover>Select Plan</button>
+                    </div>
+
+                    <!-- Growth (Highlighted) -->
+                    <div class="bento-card p-10 sm:p-14 reveal bg-brand-panel lg:-translate-y-8 shadow-[0_0_80px_rgba(139,92,246,0.15)] border-t-4 border-t-brand-purple delay-[100ms] z-10">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-4xl font-bold text-white font-heading">Growth</h3>
+                            <span class="bg-white text-black text-[10px] sm:text-xs px-4 py-1.5 rounded-full font-black uppercase tracking-widest shadow-lg">Popular</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-brand-purple mb-10 font-mono uppercase tracking-widest">Market Capture</p>
+                        <div class="mb-10 pb-10 border-b border-white/10">
+                             <span class="text-6xl sm:text-7xl lg:text-8xl font-black text-white font-heading">₹9,999</span><span class="text-zinc-400 text-base font-mono">/mo</span>
+                        </div>
+                        <ul class="space-y-6 text-lg text-zinc-200 mb-12 font-light">
+                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-brand-purple mt-1"></i> <span class="font-bold">12 Posts & 6 Viral Reels</span></li>
+                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-brand-purple mt-1"></i> <span class="font-bold">Ad Setup Included</span></li>
+                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Community Management</li>
+                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Monthly Strategy Call</li>
+                        </ul>
+                        <button data-plan="Growth Plan" class="btn-elite w-full py-6 rounded-2xl font-black transition-all text-sm uppercase tracking-widest shadow-[0_0_30px_rgba(255,255,255,0.2)]" data-cursor-hover><span>Deploy Infrastructure</span></button>
+                    </div>
+
+                    <!-- Pro -->
+                    <div class="bento-card p-10 sm:p-14 reveal hover:bg-white/[0.02] delay-[200ms]">
+                        <h3 class="text-3xl font-bold text-white mb-2 font-heading">Enterprise</h3>
+                        <p class="text-xs sm:text-sm text-zinc-500 mb-10 font-mono uppercase tracking-widest">Total Dominance</p>
+                        <div class="mb-10 pb-10 border-b border-white/5">
+                             <span class="text-5xl sm:text-6xl font-black text-white font-heading">₹18,999</span><span class="text-zinc-500 text-base font-mono">/mo</span>
+                        </div>
+                        <ul class="space-y-6 text-base text-zinc-300 mb-12 font-light">
+                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-zinc-600 mt-1"></i> 20 Posts & 10 Reels</li>
+                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-zinc-600 mt-1"></i> Ads Scaling & A/B</li>
+                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-zinc-600 mt-1"></i> UGC Coordination</li>
+                        </ul>
+                        <button data-plan="Enterprise Pro" class="w-full py-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl text-white font-bold transition-colors text-sm uppercase tracking-widest" data-cursor-hover>Consult Team</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT / LEAD GEN -->
+        <section id="contact" class="py-32 sm:py-48 relative overflow-hidden bg-brand-panel border-t border-white/5 z-10 px-4">
+             <div class="container mx-auto max-w-7xl">
+                 <div class="bento-card p-8 sm:p-16 md:p-24 flex flex-col md:flex-row gap-16 md:gap-24 reveal border border-white/10 bg-black/60 shadow-[0_0_80px_rgba(0,0,0,0.8)] backdrop-blur-3xl">
+                    
+                    <div class="flex-1">
+                        <h2 class="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 font-heading tracking-tight text-balance">Initiate <br>Uplink.</h2>
+                        <p class="text-zinc-400 mb-12 sm:mb-16 text-xl sm:text-2xl font-light text-balance leading-relaxed">We'll analyze your current digital presence and send a custom growth roadmap within 24 hours.</p>
+                        
+                        <div class="space-y-8 sm:space-y-10">
+                            <div class="flex items-center gap-6 sm:gap-8 text-lg sm:text-xl text-zinc-300">
+                                <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-white/10 flex items-center justify-center bg-white/5 shrink-0 shadow-inner"><i class="fa-solid fa-check text-white text-xl"></i></div>
+                                <div><p class="font-bold text-white font-heading tracking-wide">100% Satisfaction</p><p class="text-base sm:text-lg text-zinc-500 font-light mt-1">We don't stop until it's perfect.</p></div>
+                            </div>
+                            <div class="flex items-center gap-6 sm:gap-8 text-lg sm:text-xl text-zinc-300">
+                                <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-white/10 flex items-center justify-center bg-white/5 shrink-0 shadow-inner"><i class="fa-solid fa-lock-open text-white text-xl"></i></div>
+                                <div><p class="font-bold text-white font-heading tracking-wide">No Lock-ins</p><p class="text-base sm:text-lg text-zinc-500 font-light mt-1">Cancel anytime. Pure performance.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 w-full bg-white/[0.02] p-10 sm:p-14 rounded-[2rem] border border-white/5 shadow-2xl">
+                        <form id="contact-form" action="https://formspree.io/f/mandalko" method="POST" class="space-y-6 sm:space-y-8">
+                            <input type="text" name="name" placeholder="Name / Brand" class="w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-white placeholder-zinc-600 focus:outline-none focus:border-white focus:bg-white/10 transition-all font-mono text-sm shadow-inner" required data-cursor-hover>
+                            <input type="tel" name="phone" placeholder="WhatsApp Number" class="w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-white placeholder-zinc-600 focus:outline-none focus:border-white focus:bg-white/10 transition-all font-mono text-sm shadow-inner" required data-cursor-hover>
+                            <textarea name="message" placeholder="Project details / Goals" rows="4" class="w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-white placeholder-zinc-600 focus:outline-none focus:border-white focus:bg-white/10 transition-all resize-none font-mono text-sm shadow-inner" data-cursor-hover></textarea>
+                            <button type="submit" id="contact-submit-btn" class="btn-elite w-full font-black py-6 rounded-2xl mt-4 text-sm uppercase tracking-widest shadow-2xl" data-cursor-hover>
+                                <span>Request Analysis</span>
+                            </button>
+                        </form>
+                    </div>
+                 </div>
+             </div>
+        </section>
+    </main>
+
+    <!-- MEGA FOOTER -->
+    <footer class="bg-black border-t border-white/10 pt-20 pb-12 sm:pt-32 sm:pb-16 relative z-10 px-4 overflow-hidden">
+        <div class="container mx-auto max-w-7xl text-center relative z-10">
+            <a href="#" class="text-3xl sm:text-4xl font-bold tracking-tight text-white flex items-center justify-center gap-4 sm:gap-5 mb-12 sm:mb-16 font-heading" data-cursor-hover>
+                <span class="w-12 h-12 sm:w-14 sm:h-14 bg-white text-black flex items-center justify-center rounded-full text-lg sm:text-xl font-black shadow-[0_0_20px_rgba(255,255,255,0.2)]">F</span>
+                Feasibility
+            </a>
+            
+            <div class="flex flex-wrap justify-center gap-8 sm:gap-12 text-sm sm:text-base text-zinc-500 mb-16 sm:mb-20 font-mono uppercase tracking-widest font-bold">
+                <a href="#about" class="hover:text-white transition-colors" data-cursor-hover>DNA</a>
+                <a href="portfolio.html" class="hover:text-white transition-colors" data-cursor-hover>Work</a>
+                <a href="careers.html" class="hover:text-white transition-colors" data-cursor-hover>Careers</a>
+                <a href="https://wa.me/919431366776" class="hover:text-white transition-colors" data-cursor-hover>Contact</a>
             </div>
             
-            <div class="flex justify-center gap-8 md:gap-16 text-xs font-bold uppercase tracking-[0.3em] text-gray-500 mb-16 flex-wrap">
-                <a href="#hero" class="hover:text-white transition-colors flex items-center gap-2"><i class="ph-fill ph-buildings"></i> Agency</a>
-                <a href="https://wa.me/919431366776" class="hover:text-white transition-colors flex items-center gap-2"><i class="ph-fill ph-whatsapp-logo"></i> WhatsApp</a>
-                <a href="https://instagram.com/feasibility.media" class="hover:text-white transition-colors flex items-center gap-2"><i class="ph-fill ph-instagram-logo"></i> Instagram</a>
-            </div>
-            
-            <p class="text-[10px] text-gray-600 uppercase tracking-widest font-bold">&copy; 2026 Feasibility Media. Infrastructure for the 1%.</p>
+            <p class="text-xs sm:text-sm text-zinc-700 font-mono uppercase tracking-widest">&copy; 2026 FEASIBILITY MEDIA GROUP. ALL RIGHTS RESERVED.</p>
         </div>
+        
+        <!-- MASSIVE WATERMARK -->
+        <h1 class="absolute bottom-[-10%] left-1/2 -translate-x-1/2 text-[20vw] font-black leading-none text-white opacity-[0.02] pointer-events-none select-none font-heading whitespace-nowrap">
+            FEASIBILITY
+        </h1>
     </footer>
-
-    <!-- Floating Tool: WhatsApp -->
-    <a href="https://wa.me/919431366776" class="fixed bottom-8 right-8 z-[60] bg-[#25D366] text-white p-4 rounded-2xl shadow-[0_10px_30px_rgba(37,211,102,0.3)] hover:scale-110 active:scale-90 transition-all group flex items-center justify-center">
-        <i class="ph-fill ph-whatsapp-logo text-3xl"></i>
-        <!-- Ping effect -->
-        <span class="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full animate-ping opacity-75"></span>
-        <span class="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full"></span>
+    
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/919431366776" target="_blank" aria-label="Chat on WhatsApp" class="fixed bottom-8 right-8 z-50 bg-white text-black w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow-[0_0_40px_rgba(255,255,255,0.4)] hover:scale-110 transition-transform flex items-center justify-center text-4xl sm:text-5xl" data-cursor-hover>
+        <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <!-- Callback Modal -->
-    <div id="phone-modal" class="hidden fixed inset-0 z-[200] bg-black/80 backdrop-blur-xl flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
-        <div class="glass-card rounded-[2.5rem] p-10 max-w-sm w-full relative border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] transform transition-transform duration-300 scale-95" id="modal-content">
-            <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-500 hover:text-white transition-colors">
-                <i class="ph ph-x text-2xl"></i>
-            </button>
-            <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center mb-6 border border-white/10">
-                <i class="ph-fill ph-lock-key text-2xl text-white"></i>
+    <!-- Pricing Modal -->
+    <div id="phone-modal" class="hidden fixed inset-0 z-[100] bg-black/90 backdrop-blur-2xl flex items-center justify-center p-4 modal">
+        <div id="modal-content" class="bg-brand-panel border border-white/10 rounded-[2rem] sm:rounded-[3rem] p-8 sm:p-14 max-w-md w-full relative shadow-[0_0_100px_rgba(0,0,0,1)]">
+            <div class="flex justify-between items-start mb-10 sm:mb-12">
+                <h3 class="text-3xl sm:text-4xl font-black text-white font-heading tracking-tight">Lock In Price</h3>
+                <button onclick="closeModal()" aria-label="Close Modal" class="text-zinc-600 hover:text-white text-4xl sm:text-5xl leading-none transition-colors" data-cursor-hover>&times;</button>
             </div>
-            <h3 class="text-3xl font-bold heading-font mb-2 text-white">Secure Pricing.</h3>
-            <p class="text-gray-400 text-sm mb-8 leading-relaxed">Leave your number to lock in these base rates before the next quarterly increase.</p>
-            
-            <form id="phone-form" action="https://formspree.io/f/mandalko" method="POST" class="space-y-4">
+            <form id="phone-form" action="https://formspree.io/f/mandalko" method="POST" class="space-y-6 sm:space-y-8">
                 <input type="hidden" id="plan-input" name="plan">
-                <div class="relative">
-                    <i class="ph ph-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
-                    <input type="text" name="name" placeholder="Name" required class="w-full bg-black/50 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-purple-500 transition-all">
-                </div>
-                <div class="relative">
-                    <i class="ph ph-phone absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
-                    <input type="tel" name="phone" placeholder="Phone Number" required class="w-full bg-black/50 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-purple-500 transition-all">
-                </div>
-                <button type="submit" id="phone-submit-button" class="w-full bg-white text-black font-black py-4 rounded-xl hover:bg-purple-600 hover:text-white transition-all flex items-center justify-center gap-2 mt-2 shadow-lg">
-                    Request Callback <i class="ph-bold ph-phone-call"></i>
+                <input type="text" name="name" placeholder="Your Name" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-5 sm:p-6 text-white focus:outline-none focus:border-white transition-colors font-mono text-sm shadow-inner" data-cursor-hover>
+                <input type="tel" name="phone" placeholder="Phone Number" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-5 sm:p-6 text-white focus:outline-none focus:border-white transition-colors font-mono text-sm shadow-inner" data-cursor-hover>
+                <button type="submit" id="phone-submit-button" class="btn-elite w-full font-black py-5 sm:py-6 rounded-2xl mt-4 sm:mt-6 text-sm uppercase tracking-widest shadow-2xl" data-cursor-hover>
+                    <span>Request Callback</span>
                 </button>
             </form>
         </div>
     </div>
 
+    <!-- Success Modal -->
+    <div id="success-modal" class="hidden fixed inset-0 z-[110] bg-black/90 backdrop-blur-2xl flex items-center justify-center p-4 modal">
+        <div id="success-content" class="bg-brand-panel border border-white/10 rounded-[2rem] sm:rounded-[3rem] p-10 sm:p-16 max-w-lg w-full relative shadow-[0_0_100px_rgba(0,0,0,1)] text-center">
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-brand-emerald rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
+            
+            <div class="w-28 h-28 sm:w-32 sm:h-32 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto mb-10 shadow-[0_0_50px_rgba(16,185,129,0.3)]">
+                <i class="fa-solid fa-check text-6xl sm:text-7xl text-brand-emerald"></i>
+            </div>
+            
+            <h3 class="text-4xl sm:text-5xl font-black text-white font-heading tracking-tight mb-6">Request Received</h3>
+            <p class="text-zinc-400 text-lg sm:text-xl mb-12 leading-relaxed font-light">Your details have been securely routed to our strategy team. We will review your profile and contact you within 24 hours.</p>
+            
+            <button onclick="closeSuccessModal()" class="btn-elite w-full font-black py-6 sm:py-7 rounded-2xl text-sm uppercase tracking-widest shadow-2xl" data-cursor-hover>
+                <span>Understood</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
     <script>
-        // --- Ticker Logic ---
-        const randomHours = Math.floor(Math.random() * 8) + 2; 
-        const countdownDate = new Date().getTime() + (randomHours * 60 * 60 * 1000);
-
-        setInterval(() => {
-            const now = new Date().getTime();
-            const distance = countdownDate - now;
-            if (distance < 0) return;
-
-            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("timer-hours").innerText = String(h).padStart(2, '0');
-            document.getElementById("timer-minutes").innerText = String(m).padStart(2, '0');
-            document.getElementById("timer-seconds").innerText = String(s).padStart(2, '0');
-        }, 1000);
-
-        // --- Live Counters ---
-        const animateCounters = () => {
-            const counters = document.querySelectorAll('.counter');
-            counters.forEach(c => {
-                const target = +c.dataset.target;
-                const update = () => {
-                    const current = +c.innerText.replace(/,/g, '');
-                    const inc = target / 60;
-                    if (current < target) {
-                        c.innerText = Math.ceil(current + inc).toLocaleString();
-                        setTimeout(update, 25);
-                    } else {
-                        c.innerText = target.toLocaleString();
-                    }
-                };
-                update();
+        // Custom Cursor Logic
+        const cursor = document.getElementById('custom-cursor');
+        const follower = document.getElementById('custom-cursor-follower');
+        
+        if (window.matchMedia("(min-width: 1025px)").matches) {
+            let mouseX = 0, mouseY = 0, followerX = 0, followerY = 0;
+            
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX; mouseY = e.clientY;
+                cursor.style.left = `${mouseX}px`; cursor.style.top = `${mouseY}px`;
             });
-        };
-
-        // --- Scroll Reveal & Observers ---
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(e => {
-                if (e.isIntersecting) {
-                    e.target.classList.add('visible');
-                    if (e.target.id === 'stats') animateCounters();
-                }
+            
+            function animateFollower() {
+                followerX += (mouseX - followerX) * 0.15;
+                followerY += (mouseY - followerY) * 0.15;
+                follower.style.left = `${followerX}px`; follower.style.top = `${followerY}px`;
+                requestAnimationFrame(animateFollower);
+            }
+            animateFollower();
+            
+            document.querySelectorAll('a, button, input, textarea, [data-cursor-hover]').forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('hovering-link'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('hovering-link'));
             });
-        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
-
-        document.querySelectorAll('.scroll-reveal, #stats').forEach(el => observer.observe(el));
-
-        // --- Modal Control with smooth animation ---
-        const modal = document.getElementById('phone-modal');
-        const modalContent = document.getElementById('modal-content');
-        
-        function openModal(plan) {
-            document.getElementById('plan-input').value = plan;
-            modal.classList.remove('hidden');
-            // Trigger reflow
-            void modal.offsetWidth;
-            modal.classList.add('opacity-100');
-            modalContent.classList.remove('scale-95');
-            modalContent.classList.add('scale-100');
-            document.body.style.overflow = 'hidden';
         }
-        
-        function closeModal() {
-            modal.classList.remove('opacity-100');
-            modalContent.classList.remove('scale-100');
-            modalContent.classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                document.body.style.overflow = '';
-            }, 300); // match transition duration
-        }
-        
-        document.querySelectorAll('[data-plan]').forEach(b => b.onclick = () => openModal(b.dataset.plan));
-        
-        // Close modal on outside click
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
+
+        // Hover Card Gradient Tracking
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
         });
 
-        // --- Form Submission Logic ---
+        // Countdown Timer
+        const randomHours = Math.floor(Math.random() * 20) + 4; 
+        const randomMinutes = Math.floor(Math.random() * 60);
+        const countdownDate = new Date().getTime() + (randomHours * 60 * 60 * 1000) + (randomMinutes * 60 * 1000);
+
+        const timerInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("timer-hours").innerHTML = hours < 10 ? "0" + hours : hours;
+            document.getElementById("timer-minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("timer-seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+            
+            if (distance < 0) clearInterval(timerInterval);
+        }, 1000);
+
+        // Counter Animation
+        const statsSection = document.querySelector('#about');
+        const counters = document.querySelectorAll('.counter');
+        if (statsSection) {
+            let hasCounted = false;
+            const countObserver = new IntersectionObserver((entries) => {
+                if(entries[0].isIntersecting && !hasCounted) {
+                    counters.forEach((counter, index) => {
+                        const target = +counter.getAttribute('data-target');
+                        const speed = 100;
+                        const inc = target / speed;
+                        let count = 0;
+                        
+                        setTimeout(() => {
+                            const updateCount = () => {
+                                count += inc;
+                                if (count < target) {
+                                    counter.innerText = Math.ceil(count).toLocaleString();
+                                    setTimeout(updateCount, 20);
+                                } else {
+                                    counter.innerText = target.toLocaleString();
+                                }
+                            };
+                            updateCount();
+                        }, index * 200); 
+                    });
+                    hasCounted = true;
+                }
+            }, { threshold: 0.3 });
+            countObserver.observe(statsSection);
+        }
+
+        // Staggered Scroll Reveal
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target); 
+                }
+            });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // Mobile Menu
+        document.getElementById('mobile-menu-button').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Modal Logic
+        const phoneModal = document.getElementById('phone-modal');
+        function openModal(planName) {
+            document.getElementById('plan-input').value = planName;
+            phoneModal.classList.remove('hidden');
+            setTimeout(() => phoneModal.classList.add('active'), 10);
+        }
+        function closeModal() {
+            phoneModal.classList.remove('active');
+            setTimeout(() => phoneModal.classList.add('hidden'), 300);
+        }
+        document.querySelectorAll('[data-plan]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                openModal(e.target.dataset.plan);
+            });
+        });
+
+        // Success Modal Logic
+        const successModal = document.getElementById('success-modal');
+        function openSuccessModal() {
+            successModal.classList.remove('hidden');
+            setTimeout(() => successModal.classList.add('active'), 10);
+        }
+        function closeSuccessModal() {
+            successModal.classList.remove('active');
+            setTimeout(() => successModal.classList.add('hidden'), 300);
+        }
+
+        // Form Handling
         const handleForm = (formId, btnId) => {
             const form = document.getElementById(formId);
-            form.onsubmit = async (e) => {
+            if(!form) return;
+            form.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const btn = document.getElementById(btnId);
-                const originalHTML = btn.innerHTML;
+                const originalText = btn.innerHTML; 
                 btn.disabled = true;
-                btn.innerHTML = '<i class="ph ph-spinner animate-spin"></i> Processing...';
+                btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-3"></i> PROCESSING...';
 
-                const data = Object.fromEntries(new FormData(form).entries());
-                try {
-                    const res = await fetch(form.action, {
-                        method: 'POST',
-                        body: JSON.stringify(data),
-                        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
-                    });
+                fetch(form.action, {
+                    method: 'POST',
+                    body: JSON.stringify(Object.fromEntries(new FormData(form).entries())),
+                    headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
+                }).then(res => {
                     if (res.ok) {
-                        btn.innerHTML = '<i class="ph-bold ph-check"></i> Secured';
-                        btn.classList.add('bg-green-500', 'text-white');
-                        setTimeout(() => {
-                            if(formId === 'phone-form') closeModal();
-                            form.reset();
-                            btn.disabled = false;
-                            btn.innerHTML = originalHTML;
-                            btn.classList.remove('bg-green-500');
-                        }, 2000);
-                    }
-                } catch (err) {
-                    alert("Network Error. Please verify your connection.");
+                        if(formId === 'phone-form') closeModal();
+                        openSuccessModal();
+                        form.reset();
+                    } else alert("Error. Please verify connection.");
+                }).catch(() => alert("Network error. Try again later."))
+                .finally(() => {
                     btn.disabled = false;
-                    btn.innerHTML = originalHTML;
-                }
-            };
+                    btn.innerHTML = originalText;
+                });
+            });
         };
+        
         handleForm('contact-form', 'contact-submit-btn');
         handleForm('phone-form', 'phone-submit-button');
 
-        // --- Dynamic Nav Appearance ---
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('.glass-nav');
-            if (window.scrollY > 50) {
-                nav.style.transform = "scale(0.95) translateY(5px)";
-                nav.style.background = "rgba(3, 7, 18, 0.8)";
-            } else {
-                nav.style.transform = "scale(1) translateY(0)";
-                nav.style.background = "rgba(3, 7, 18, 0.6)";
-            }
-        });
     </script>
 </body>
 </html>
