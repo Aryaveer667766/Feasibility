@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Proof of Concept | Feasibility Media</title>
+    
+    <!-- SEO Tags -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23000000'/><text x='50' y='70' font-family='sans-serif' font-weight='900' font-size='60' text-anchor='middle' fill='white'>F</text></svg>">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            black: '#000000',
+                            dark: '#030303',
+                            panel: '#09090b',
+                            purple: '#8b5cf6',
+                            rose: '#f43f5e',
+                            emerald: '#10b981',
+                            cyan: '#06b6d4',
+                            text: '#f4f4f5',
+                            muted: '#a1a1aa'
+                        }
+                    },
+                    animation: {
+                        'aurora': 'aurora 30s linear infinite alternate',
+                        'pulse-glow': 'pulseGlow 4s ease-in-out infinite',
+                        'float': 'float 8s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        aurora: {
+                            '0%': { transform: 'translateY(0) scale(1)' },
+                            '100%': { transform: 'translateY(-10%) scale(1.15)' }
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+                            '50%': { opacity: '0.8', transform: 'scale(1.05)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* --- Base & Custom Cursor --- */
+        body {
+            background-color: #000000;
+            color: #f4f4f5;
+            overflow-x: hidden;
+            padding-top: 36px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            cursor: none;
+        }
+        
+        @media (max-width: 1024px) {
+            body { cursor: auto; }
+            #custom-cursor, #custom-cursor-follower { display: none !important; }
+        }
+
+        #custom-cursor {
+            position: fixed; top: 0; left: 0; width: 8px; height: 8px;
+            background: #fff; border-radius: 50%;
+            pointer-events: none; z-index: 99999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            mix-blend-mode: difference;
+        }
+        #custom-cursor-follower {
+            position: fixed; top: 0; left: 0; width: 32px; height: 32px;
+            border: 1px solid rgba(255,255,255,0.3); border-radius: 50%;
+            pointer-events: none; z-index: 99998;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, border-color 0.3s;
+        }
+        body.hovering-link #custom-cursor { width: 40px; height: 40px; background: rgba(255,255,255,0.1); backdrop-filter: blur(4px); mix-blend-mode: normal; }
+        body.hovering-link #custom-cursor-follower { width: 0; height: 0; opacity: 0; }
+
+        /* --- Ambient Backgrounds --- */
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 9998; opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            will-change: transform;
+        }
+        
+        .bg-grid {
+            position: absolute; inset: 0; z-index: 0;
+            background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse at top, black 20%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse at top, black 20%, transparent 70%);
+        }
+
+        .aurora-bg {
+            position: fixed; top: -30%; left: -30%; width: 160%; height: 160%;
+            z-index: -1; pointer-events: none;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(244, 63, 94, 0.04) 0%, transparent 30%),
+                radial-gradient(circle at 20% 80%, rgba(6, 182, 212, 0.03) 0%, transparent 40%);
+            filter: blur(60px);
+            transform: translateZ(0);
+            animation: aurora 30s linear infinite alternate;
+        }
+
+        /* --- Typography --- */
+        .hero-title {
+            font-size: clamp(3rem, 10vw, 7.5rem);
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+        }
+        
+        .text-gradient-mesh {
+            background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-accent {
+            background: linear-gradient(135deg, #c084fc 0%, #fb7185 50%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* --- Bento Cards & Spotlight --- */
+        .bento-card {
+            background: rgba(9, 9, 11, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.6s ease;
+            backdrop-filter: blur(32px) saturate(150%);
+            -webkit-backdrop-filter: blur(32px) saturate(150%);
+        }
+        
+        .bento-card::before, .bento-card::after {
+            content: "";
+            position: absolute; inset: 0;
+            border-radius: 24px;
+            transition: opacity 0.6s ease;
+            pointer-events: none;
+        }
+        
+        .bento-card::before {
+            background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.05), transparent 40%);
+            opacity: 0; z-index: 1;
+        }
+        .bento-card::after {
+            padding: 1px;
+            background: radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.2), transparent 40%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0; z-index: 2;
+        }
+
+        @media (min-width: 768px) {
+            .bento-card:hover::before, .bento-card:hover::after { opacity: 1; }
+            .bento-card:hover { 
+                transform: translateY(-8px); 
+                border-color: rgba(255, 255, 255, 0.1);
+                box-shadow: 0 40px 80px -20px rgba(0,0,0,1); 
+            }
+        }
+
+        /* --- Filtering System --- */
+        .filter-btn {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .filter-btn.active {
+            background-color: white;
+            color: #000;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+            border-color: white;
+        }
+        .portfolio-item {
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .portfolio-item.hidden-item {
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+            pointer-events: none;
+            position: absolute;
+            visibility: hidden;
+        }
+
+        /* --- Media Overlays --- */
+        .play-overlay {
+            position: absolute; inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: all 0.4s ease;
+        }
+        .bento-card:hover .play-overlay { opacity: 1; }
+        
+        .play-btn {
+            width: 80px; height: 80px;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(12px);
+            border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);
+            display: flex; align-items: center; justify-content: center;
+            transform: scale(0.8); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .bento-card:hover .play-btn { transform: scale(1); }
+
+        /* --- Navigation & Buttons --- */
+        .pill-nav {
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(24px) saturate(200%);
+            -webkit-backdrop-filter: blur(24px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.8);
+        }
+
+        .btn-elite {
+            position: relative; background: #ffffff; color: #000000;
+            overflow: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: inset 0 -3px 0 rgba(0,0,0,0.2), 0 0 20px rgba(255,255,255,0.1);
+        }
+        .btn-elite::before {
+            content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 100%;
+            background: #e4e4e7; transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 0;
+        }
+        .btn-elite:hover::before { top: 0; }
+        .btn-elite:hover { transform: scale(1.05); box-shadow: inset 0 -1px 0 rgba(0,0,0,0.2), 0 0 40px rgba(255,255,255,0.3); }
+        .btn-elite span, .btn-elite i { position: relative; z-index: 1; }
+
+        /* --- Utilities --- */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        ::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- Custom Cursor -->
+    <div id="custom-cursor"></div>
+    <div id="custom-cursor-follower"></div>
+
+    <div class="noise-overlay"></div>
+    <div class="aurora-bg"></div>
+
+    <!-- Navigation -->
+    <header class="fixed top-8 left-0 right-0 z-50 flex justify-center px-4 transition-transform duration-500">
+        <nav class="pill-nav rounded-full p-1.5 flex items-center justify-between w-full max-w-4xl">
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-2 md:gap-3 pl-2 md:pl-3 pr-4 group" data-cursor-hover>
+                <div class="w-8 h-8 md:w-9 md:h-9 bg-white text-black flex items-center justify-center rounded-full text-sm md:text-base font-black group-hover:rotate-45 transition-transform duration-700 shadow-[0_0_20px_rgba(255,255,255,0.4)]">F</div>
+                <span class="font-heading font-bold tracking-tight text-white text-base md:text-lg hidden sm:block">Feasibility</span>
+            </a>
+            
+            <!-- Desktop Links -->
+            <ul class="hidden md:flex items-center space-x-2">
+                <li><a href="index.html" class="px-5 py-2.5 rounded-full text-sm font-medium text-brand-muted hover:text-white hover:bg-white/5 transition-all" data-cursor-hover>Home</a></li>
+                <li><a href="index.html#services" class="px-5 py-2.5 rounded-full text-sm font-medium text-brand-muted hover:text-white hover:bg-white/5 transition-all" data-cursor-hover>Services</a></li>
+                <li><a href="index.html#pricing" class="px-5 py-2.5 rounded-full text-sm font-medium text-brand-muted hover:text-white hover:bg-white/5 transition-all" data-cursor-hover>Pricing</a></li>
+            </ul>
+            
+            <!-- CTA & Mobile -->
+            <div class="flex items-center gap-2 pl-2 md:pl-4">
+                <a href="index.html#contact" class="btn-elite px-5 py-2.5 md:px-8 md:py-3 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest" data-cursor-hover>
+                    <span>Start Project</span>
+                </a>
+                <button id="mobile-menu-button" class="md:hidden w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-white border border-white/10 hover:bg-white/10 transition-colors" data-cursor-hover>
+                   <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden absolute top-20 left-4 right-4 bg-brand-panel/95 backdrop-blur-3xl border border-white/10 rounded-2xl shadow-[0_30px_60px_rgba(0,0,0,0.8)] p-3 flex flex-col gap-1">
+            <a href="index.html" class="px-4 py-4 rounded-xl font-bold text-zinc-300 hover:bg-white/10 hover:text-white transition-colors">Home</a>
+            <a href="index.html#services" class="px-4 py-4 rounded-xl font-bold text-zinc-300 hover:bg-white/10 hover:text-white transition-colors">Services</a>
+            <a href="index.html#pricing" class="px-4 py-4 rounded-xl font-bold text-zinc-300 hover:bg-white/10 hover:text-white transition-colors">Pricing</a>
+        </div>
+    </header>
+
+    <main class="relative z-10 pt-32 pb-24">
+        
+        <!-- Hero Section -->
+        <section class="container mx-auto px-4 max-w-6xl text-center mb-20 reveal">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-[10px] md:text-xs font-bold text-zinc-300 mb-8 uppercase tracking-widest">
+                <i class="fa-solid fa-chart-line text-brand-emerald"></i> Documented ROI
+            </div>
+            <h1 class="hero-title font-black text-white font-heading tracking-tight mb-6 text-balance drop-shadow-2xl">
+                Proof Over <br>
+                <span class="text-gradient-accent">Promises.</span>
+            </h1>
+            <p class="text-base md:text-xl text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed text-balance">
+                We don't sell vanity metrics or empty likes. We engineer scalable growth systems that translate directly into revenue. Here is the exact data from our latest deployments.
+            </p>
+        </section>
+
+        <!-- Filter Bar -->
+        <section class="container mx-auto px-4 max-w-6xl mb-16 reveal relative z-20">
+            <div class="flex flex-wrap justify-center gap-3">
+                <button class="filter-btn active px-6 py-3 bg-white text-black rounded-full text-xs sm:text-sm font-bold uppercase tracking-widest border border-white shadow-[0_0_20px_rgba(255,255,255,0.2)]" data-filter="all" data-cursor-hover>All Wins</button>
+                <button class="filter-btn px-6 py-3 bg-black/40 backdrop-blur-md text-zinc-400 hover:text-white rounded-full text-xs sm:text-sm font-bold uppercase tracking-widest border border-white/10" data-filter="retention" data-cursor-hover>YouTube Retention</button>
+                <button class="filter-btn px-6 py-3 bg-black/40 backdrop-blur-md text-zinc-400 hover:text-white rounded-full text-xs sm:text-sm font-bold uppercase tracking-widest border border-white/10" data-filter="shorts" data-cursor-hover>Short-Form Scaling</button>
+                <button class="filter-btn px-6 py-3 bg-black/40 backdrop-blur-md text-zinc-400 hover:text-white rounded-full text-xs sm:text-sm font-bold uppercase tracking-widest border border-white/10" data-filter="ads" data-cursor-hover>Performance Ads</button>
+            </div>
+        </section>
+
+        <!-- Portfolio Grid -->
+        <section class="container mx-auto px-4 max-w-6xl">
+            <div class="grid md:grid-cols-2 gap-8 relative" id="portfolio-grid">
+                
+                <!-- Project 1: Performance Ads -->
+                <div class="portfolio-item w-full" data-category="ads">
+                    <div class="bento-card flex flex-col h-full group" data-cursor-hover>
+                        <!-- Media Container -->
+                        <div class="relative aspect-[16/10] bg-black overflow-hidden rounded-t-3xl cursor-pointer border-b border-white/5">
+                            <img src="https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=1200&auto=format&fit=crop" alt="Bewakoof Ads" class="w-full h-full object-cover opacity-60 group-hover:scale-105 group-hover:opacity-40 transition-all duration-700">
+                            
+                            <!-- Timeline Badge -->
+                            <div class="absolute bottom-5 left-5 bg-black/70 border border-white/10 text-zinc-300 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest backdrop-blur-md z-20">
+                                <i class="fa-regular fa-clock mr-1 text-brand-rose"></i> Timeline: 45 Days
+                            </div>
+
+                            <div class="absolute top-5 left-5 bg-brand-rose/10 border border-brand-rose/30 text-brand-rose px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg backdrop-blur-md">
+                                <i class="fa-solid fa-bullseye mr-1"></i> D2C Performance
+                            </div>
+                            <div class="play-overlay z-20">
+                                <div class="play-btn"><i class="fa-solid fa-play text-white text-3xl ml-1 drop-shadow-xl"></i></div>
+                            </div>
+                        </div>
+                        <!-- Content -->
+                        <div class="p-8 flex flex-col flex-grow relative z-10 bg-gradient-to-b from-brand-rose/5 to-transparent">
+                            <div class="mb-6">
+                                <p class="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2 font-mono">Bewakoof.com</p>
+                                <h3 class="text-2xl sm:text-3xl font-bold text-white font-heading tracking-tight leading-tight group-hover:text-brand-rose transition-colors">Creative Fatigue Eradicated</h3>
+                            </div>
+                            <p class="text-zinc-400 text-sm sm:text-base leading-relaxed mb-8 font-light flex-grow">
+                                Client was bleeding ad spend due to static image fatigue on Meta. We deployed a high-velocity UGC pipeline with silent autoplay hooks, immediately dropping acquisition costs.
+                            </p>
+                            <div class="grid grid-cols-2 gap-6 border-t border-white/10 pt-6">
+                                <div>
+                                    <p class="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-1">Avg. ROAS</p>
+                                    <p class="text-white font-mono font-black text-2xl sm:text-3xl drop-shadow-[0_0_15px_rgba(16,185,129,0.3)]">4.8x <i class="fa-solid fa-arrow-trend-up text-brand-emerald text-lg ml-1"></i></p>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-1">CPA Drop</p>
+                                    <p class="text-white font-mono font-black text-2xl sm:text-3xl drop-shadow-[0_0_15px_rgba(16,185,129,0.3)]">-42% <i class="fa-solid fa-arrow-trend-down text-brand-emerald text-lg ml-1"></i></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2: Short Form -->
+                <div class="portfolio-item w-full" data-category="shorts">
+                    <div class="bento-card flex flex-col h-full group" data-cursor-hover>
+                        <!-- Media Container -->
+                        <div class="relative aspect-[16/10] bg-brand-panel overflow-hidden rounded-t-3xl cursor-pointer border-b border-white/5 flex items-center justify-center">
+                            <img src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?q=80&w=1200&auto=format&fit=crop" alt="Souled Store Reels" class="absolute w-full h-full object-cover opacity-20 group-hover:scale-105 transition-all duration-700">
+                            
+                            <!-- Timeline Badge -->
+                            <div class="absolute bottom-5 left-5 bg-black/70 border border-white/10 text-zinc-300 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest backdrop-blur-md z-20">
+                                <i class="fa-regular fa-clock mr-1 text-brand-purple"></i> Timeline: 60 Days
+                            </div>
+
+                            <!-- Mock Vertical Video Element -->
+                            <div class="relative w-32 h-56 border-4 border-zinc-900 rounded-xl overflow-hidden shadow-2xl z-10 group-hover:-translate-y-4 transition-transform duration-700 ease-out rotate-[-2deg]">
+                                 <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover">
+                                 <div class="absolute bottom-4 left-0 w-full text-center">
+                                     <span class="bg-brand-purple text-white text-[9px] font-black px-2 py-0.5 uppercase rounded-sm shadow-lg tracking-widest">Wait for it...</span>
+                                 </div>
+                            </div>
+
+                            <div class="absolute top-5 left-5 bg-brand-purple/10 border border-brand-purple/30 text-brand-purple px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg backdrop-blur-md z-20">
+                                <i class="fa-brands fa-instagram mr-1"></i> Short-Form Scaling
+                            </div>
+                            <div class="play-overlay z-20">
+                                <div class="play-btn"><i class="fa-solid fa-play text-white text-3xl ml-1 drop-shadow-xl"></i></div>
+                            </div>
+                        </div>
+                        <!-- Content -->
+                        <div class="p-8 flex flex-col flex-grow relative z-10 bg-gradient-to-b from-brand-purple/5 to-transparent">
+                            <div class="mb-6">
+                                <p class="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2 font-mono">The Souled Store</p>
+                                <h3 class="text-2xl sm:text-3xl font-bold text-white font-heading tracking-tight leading-tight group-hover:text-brand-purple transition-colors">Pop-Culture Domination</h3>
+                            </div>
+                            <p class="text-zinc-400 text-sm sm:text-base leading-relaxed mb-8 font-light flex-grow">
+                                Replaced their stale organic content with viral-engineered shorts leveraging trending audio, aggressive 2-second hook scripts, and visual pattern interrupts.
+                            </p>
+                            <div class="grid grid-cols-2 gap-6 border-t border-white/10 pt-6">
+                                <div>
+                                    <p class="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-1">Organic Reach</p>
+                                    <p class="text-white font-mono font-black text-2xl sm:text-3xl drop-shadow-[0_0_15px_rgba(147,51,234,0.3)]">12M+</p>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-1">Engagement Rate</p>
+                                    <p class="text-white font-mono font-black text-2xl sm:text-3xl drop-shadow-[0_0_15px_rgba(147,51,234,0.3)]">8.5%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3: YouTube Retention (Creator) -->
+                <div class="portfolio-item w-full" data-category="retention">
+                    <div class="bento-card flex flex-col h-full group" data-cursor-hover>
+                        <!-- Media Container -->
+                        <div class="relative aspect-[16/10] bg-black overflow-hidden rounded-t-3xl cursor-pointer border-b border-white/5">
+                            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1200&auto=format&fit=crop" alt="Gaming Setup" class="w-full h-full object-cover opacity-60 group-hover:scale-105 group-hover:opacity-40 transition-all duration-700">
+                            
+                            <!-- Timeline Badge -->
+                            <div class="absolute bottom-5 left-5 bg-black/70 border border-white/10 text-zinc-300 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest backdrop-blur-md z-20">
+                                <i class="fa-regular fa-clock mr-1 text-brand-emerald"></i> Timeline: 90 Days
+                            </div>
+
+                            <div class="absolute top-5 left-5 bg-brand-emerald/10 border border-brand-emerald/30 text-brand-emerald px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg backdrop-blur-md">
+                                <i class="fa-brands fa-youtube mr-1"></i> Creator Framework
+                            </div>
+                            <div class="play-overlay z-20">
+                                <div class="play-btn"><i class="fa-solid fa-play text-white text-3xl ml-1 drop-shadow-xl"></i></div>
+                            </div>
+                        </div>
+                        <!-- Content -->
+                        <div class="p-8 flex flex-col flex-grow relative z-10 bg-gradient-to-b from-brand-emerald/5 to-transparent">
+                            <div class="mb-6">
+                                <p class="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2 font-mono">Confidential Tech Channel</p>
+                                <h3 class="text-2xl sm:text-3xl font-bold text-white font-heading tracking-tight leading-tight group-hover:text-brand-emerald transition-colors">Resurrecting The Algorithm</h3>
+                            </div>
+                            <p class="text-zinc-400 text-sm sm:text-base leading-relaxed mb-8 font-light flex-grow">
+                                The channel was bleeding viewership early in videos. We implemented strict pacing protocols, audio-visual risers, and redesigned their entire thumbnail architecture.
+                            </p>
+                            <div class="grid grid-cols-2 gap-6 border-t border-white/10 pt-6">
+                                <div>
+                                    <p class="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-1">Avg View Duration</p>
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-zinc-600 font-mono text-base line-through">28%</span>
+                                        <span class="text-white font-mono font-black text-2xl sm:text-3xl drop-shadow-[0_0_15px_rgba(16,185,129,0.3)]">54.2%</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-1">New Views Generated</p>
+                                    <p class="text-white font-mono font-black text-2xl sm:text-3xl drop-shadow-[0_0_15px_rgba(16,185,129,0.3)]">12.5M <i class="fa-solid fa-arrow-trend-up text-brand-emerald text-lg ml-1"></i></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4: Launch Campaign / Shorts -->
+                <div class="portfolio-item w-full" data-category="shorts">
+                    <div class="bento-card flex flex-col h-full group" data-cursor-hover>
+                        <!-- Media Container -->
+                        <div class="relative aspect-[16/10] bg-black overflow-hidden rounded-t-3xl cursor-pointer border-b border-white/5 flex items-center justify-center">
+                            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
+                            <img src="https://images.unsplash.com/photo-1616469829581-73993eb86b02?q=80&w=1200&auto=format&fit=crop" alt="Layers Setup" class="absolute w-full h-full object-cover opacity-40 group-hover:scale-105 transition-all duration-700">
+                            
+                            <!-- Timeline Badge -->
+                            <div class="absolute bottom-5 left-5 bg-black/70 border border-white/10 text-zinc-300 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest backdrop-blur-md z-20">
+                                <i class="fa-regular fa-clock mr-1 text-brand-cyan"></i> Timeline: 7 Days
+                            </div>
+
+                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10 w-full px-6">
+                                 <h4 class="text-6xl font-black text-white font-heading uppercase italic tracking-tighter drop-shadow-2xl">DROP 01</h4>
+                            </div>
+
+                            <div class="absolute top-5 left-5 bg-brand-cyan/10 border border-brand-cyan/30 text-brand-cyan px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg backdrop-blur-md z-20">
+                                <i class="fa-solid fa-rocket mr-1"></i> Launch Mechanics
+                            </div>
+                            <div class="play-overlay z-20">
+                                <div class="play-btn"><i class="fa-solid fa-play text-white text-3xl ml-1 drop-shadow-xl"></i></div>
+                            </div>
+                        </div>
+                        <!-- Content -->
+                        <div class="p-8 flex flex-col flex-grow relative z-10 bg-gradient-to-b from-brand-cyan/5 to-transparent">
+                            <div class="mb-6">
+                                <p class="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2 font-mono">Layers</p>
+                                <h3 class="text-2xl sm:text-3xl font-bold text-white font-heading tracking-tight leading-tight group-hover:text-brand-cyan transition-colors">The Viral Sales Machine</h3>
+                            </div>
+                            <p class="text-zinc-400 text-sm sm:text-base leading-relaxed mb-8 font-light flex-grow">
+                                For a creator-led brand, visual aesthetic is everything. We produced high-retention launch assets that converted massive subscriber attention directly into a bottleneck-breaking sales event.
+                            </p>
+                            <div class="grid grid-cols-2 gap-6 border-t border-white/10 pt-6">
+                                <div>
+                                    <p class="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-1">Hook Rate (3s)</p>
+                                    <p class="text-white font-mono font-black text-2xl sm:text-3xl drop-shadow-[0_0_15px_rgba(6,182,212,0.3)]">68%</p>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-1">Sell Out Time</p>
+                                    <p class="text-white font-mono font-black text-2xl sm:text-3xl drop-shadow-[0_0_15px_rgba(6,182,212,0.3)]">48 Hrs</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- THE BLUEPRINT SECTION (NEW) -->
+        <section class="container mx-auto px-4 max-w-6xl mt-32 reveal relative z-20">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-black text-white mb-4 font-heading tracking-tight">How We Manufacture ROI.</h2>
+                <p class="text-zinc-400 text-lg max-w-2xl mx-auto font-light">These results aren't accidents. They are the byproduct of our strict operational framework.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bento-card p-8 group">
+                    <div class="w-12 h-12 rounded-full bg-brand-purple/20 border border-brand-purple/30 flex items-center justify-center text-brand-purple mb-6 shadow-inner">1</div>
+                    <h3 class="text-xl font-bold text-white mb-3 font-heading">The Deep Audit</h3>
+                    <p class="text-sm text-zinc-400 font-light leading-relaxed">Before we cut a single frame of video, we analyze your retention graphs, competitor funnels, and historical ad account data to find the leaks.</p>
+                </div>
+                <div class="bento-card p-8 group">
+                    <div class="w-12 h-12 rounded-full bg-brand-rose/20 border border-brand-rose/30 flex items-center justify-center text-brand-rose mb-6 shadow-inner">2</div>
+                    <h3 class="text-xl font-bold text-white mb-3 font-heading">Hypnotic Creative</h3>
+                    <p class="text-sm text-zinc-400 font-light leading-relaxed">We deploy our '3-Second Rule' architecture. Aggressive hooks, pattern interrupts, and visual storytelling engineered specifically for algorithmic dominance.</p>
+                </div>
+                <div class="bento-card p-8 group">
+                    <div class="w-12 h-12 rounded-full bg-brand-emerald/20 border border-brand-emerald/30 flex items-center justify-center text-brand-emerald mb-6 shadow-inner">3</div>
+                    <h3 class="text-xl font-bold text-white mb-3 font-heading">Scale & Optimize</h3>
+                    <p class="text-sm text-zinc-400 font-light leading-relaxed">We don't set and forget. We continuously A/B test thumbnails, hooks, and DABA ad structures daily to push CPA down and drive revenue up.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="container mx-auto px-4 max-w-6xl mt-32 reveal relative z-20">
+            <div class="bento-card p-10 md:p-20 text-center relative overflow-hidden bg-black/60 shadow-[0_0_80px_rgba(0,0,0,0.8)] backdrop-blur-3xl border-t-2 border-t-brand-purple">
+                <!-- Glowing Orb -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-brand-purple/20 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+                
+                <h2 class="text-4xl md:text-6xl font-black text-white mb-6 font-heading tracking-tight text-balance z-10 relative">Stop Leaving Money On The Table.</h2>
+                <p class="text-zinc-400 text-lg md:text-xl mb-12 max-w-2xl mx-auto font-light leading-relaxed z-10 relative">We only onboard 4 new partners per month to ensure elite quality and maximum ROI for our active clients.</p>
+                
+                <div class="flex flex-col sm:flex-row justify-center gap-5 z-10 relative">
+                    <a href="index.html#contact" class="btn-elite py-5 px-10 rounded-full text-sm font-black uppercase tracking-widest flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(255,255,255,0.2)]" data-cursor-hover>
+                        <span>Get Your Custom Growth Roadmap</span> <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MEGA FOOTER -->
+    <footer class="bg-black border-t border-white/10 pt-20 pb-12 sm:pt-32 sm:pb-16 relative z-10 px-4 overflow-hidden mt-12">
+        <div class="container mx-auto max-w-7xl text-center relative z-10">
+            <a href="index.html" class="text-3xl sm:text-4xl font-bold tracking-tight text-white flex items-center justify-center gap-4 sm:gap-5 mb-12 sm:mb-16 font-heading" data-cursor-hover>
+                <span class="w-12 h-12 sm:w-14 sm:h-14 bg-white text-black flex items-center justify-center rounded-full text-lg sm:text-xl font-black shadow-[0_0_20px_rgba(255,255,255,0.2)]">F</span>
+                Feasibility
+            </a>
+            
+            <div class="flex flex-wrap justify-center gap-8 sm:gap-12 text-sm sm:text-base text-zinc-500 mb-16 sm:mb-20 font-mono uppercase tracking-widest font-bold">
+                <a href="index.html" class="hover:text-white transition-colors" data-cursor-hover>Home</a>
+                <a href="portfolio.html" class="text-white transition-colors" data-cursor-hover>Work</a>
+                <a href="careers.html" class="hover:text-white transition-colors" data-cursor-hover>Careers</a>
+                <a href="https://wa.me/919431366776" class="hover:text-white transition-colors" data-cursor-hover>Contact</a>
+            </div>
+            
+            <p class="text-xs sm:text-sm text-zinc-700 font-mono uppercase tracking-widest">&copy; 2026 FEASIBILITY MEDIA GROUP. ALL RIGHTS RESERVED.</p>
+        </div>
+        
+        <!-- MASSIVE WATERMARK -->
+        <h1 class="absolute bottom-[5%] md:bottom-[-10%] left-1/2 -translate-x-1/2 text-[18vw] md:text-[20vw] font-black leading-none text-white opacity-[0.02] pointer-events-none select-none font-heading whitespace-nowrap">
+            FEASIBILITY
+        </h1>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Custom Cursor Logic
+        const cursor = document.getElementById('custom-cursor');
+        const follower = document.getElementById('custom-cursor-follower');
+        
+        if (window.matchMedia("(pointer: fine) and (min-width: 1024px)").matches) {
+            let mouseX = 0, mouseY = 0, followerX = 0, followerY = 0;
+            
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX; mouseY = e.clientY;
+                if(cursor) { cursor.style.left = `${mouseX}px`; cursor.style.top = `${mouseY}px`; }
+            });
+            
+            function animateFollower() {
+                followerX += (mouseX - followerX) * 0.15;
+                followerY += (mouseY - followerY) * 0.15;
+                if(follower) { follower.style.left = `${followerX}px`; follower.style.top = `${followerY}px`; }
+                requestAnimationFrame(animateFollower);
+            }
+            animateFollower();
+            
+            document.querySelectorAll('a, button, input, textarea, [data-cursor-hover], .filter-btn, .portfolio-item, .bento-card').forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('hovering-link'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('hovering-link'));
+            });
+        }
+
+        // Hover Card Gradient Tracking
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // Scroll Reveal
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target); 
+                }
+            });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // Mobile Menu
+        document.getElementById('mobile-menu-button').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Advanced Filtering Logic
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Styling active button
+                filterBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-white', 'text-black', 'border-white', 'shadow-[0_0_20px_rgba(255,255,255,0.2)]');
+                    b.classList.add('bg-black/40', 'text-zinc-400', 'border-white/10');
+                });
+                
+                btn.classList.add('active', 'bg-white', 'text-black', 'border-white', 'shadow-[0_0_20px_rgba(255,255,255,0.2)]');
+                btn.classList.remove('bg-black/40', 'text-zinc-400', 'border-white/10');
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                // Animate Out
+                portfolioItems.forEach(item => {
+                    item.classList.add('hidden-item');
+                });
+
+                // Wait for animation out, then re-layout and animate in
+                setTimeout(() => {
+                    portfolioItems.forEach(item => {
+                        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                            item.style.position = 'relative'; // Put back in flow
+                            
+                            // Slight delay to allow DOM to recalculate before animating in
+                            setTimeout(() => {
+                                item.classList.remove('hidden-item');
+                            }, 50);
+                        } else {
+                            item.style.position = 'absolute'; // Remove from flow
+                        }
+                    });
+                }, 400); // Matches the CSS transition time
+            });
+        });
+    </script>
+</body>
+</html>
