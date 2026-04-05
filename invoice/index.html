@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feasibility Media | Elite Invoice Generator</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            black: '#000000',
+                            dark: '#050505',
+                            panel: '#09090b',
+                            purple: '#8b5cf6',
+                            rose: '#f43f5e',
+                            emerald: '#10b981',
+                            cyan: '#06b6d4',
+                            text: '#f4f4f5',
+                            muted: '#a1a1aa'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* --- Base --- */
+        body {
+            background-color: #030303;
+            color: #f4f4f5;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #52525b; }
+
+        /* --- UI Controls --- */
+        .glass-panel {
+            background: rgba(9, 9, 11, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .input-glass {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-glass:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.06);
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+        }
+        
+        /* Dark Mode Date Picker Icon */
+        ::-webkit-calendar-picker-indicator {
+            filter: invert(1) opacity(0.5);
+            cursor: pointer;
+        }
+
+        /* --- The Invoice Paper (Preview) --- */
+        .invoice-paper {
+            background: #09090b; /* Deep slate, almost black */
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 40px 80px -20px rgba(0,0,0,0.8), 0 0 40px rgba(139, 92, 246, 0.1);
+            aspect-ratio: 1 / 1.414; /* A4 Ratio */
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            transform-origin: top center;
+        }
+
+        /* Watermark */
+        .watermark {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 15rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
+            color: rgba(255,255,255,0.015);
+            pointer-events: none;
+            z-index: 0;
+            white-space: nowrap;
+        }
+
+        /* Table styling on invoice */
+        .invoice-table th { border-bottom: 1px solid rgba(255,255,255,0.1); color: #a1a1aa; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; padding-bottom: 0.75rem; }
+        .invoice-table td { padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        
+        .total-glow {
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+            background: linear-gradient(to right, #fff, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* --- Print Styles --- */
+        @media print {
+            @page { margin: 0; size: A4; }
+            body { 
+                background: #09090b !important; 
+                -webkit-print-color-adjust: exact !important; 
+                print-color-adjust: exact !important; 
+                margin: 0; padding: 0;
+            }
+            #control-panel { display: none !important; }
+            #preview-panel { width: 100% !important; padding: 0 !important; margin: 0 !important; align-items: flex-start !important; overflow: visible !important; }
+            .invoice-paper { 
+                width: 210mm !important; 
+                height: 297mm !important; 
+                max-width: none !important;
+                border: none !important; 
+                box-shadow: none !important; 
+                border-radius: 0 !important;
+                transform: scale(1) !important;
+                margin: 0 !important;
+            }
+            .hide-on-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col md:flex-row overflow-hidden">
+
+    <!-- LEFT: CONTROL PANEL -->
+    <aside id="control-panel" class="w-full md:w-[450px] lg:w-[500px] h-full glass-panel flex flex-col z-20 shrink-0">
+        
+        <div class="p-6 border-b border-white/5 flex justify-between items-center bg-black/20">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-white text-black flex items-center justify-center rounded-lg text-sm font-black shadow-[0_0_15px_rgba(255,255,255,0.2)]">F</div>
+                <div class="flex flex-col leading-none">
+                    <span class="text-white font-bold tracking-tight font-heading">Feasibility</span>
+                    <span class="text-[10px] text-brand-purple font-bold uppercase tracking-widest mt-0.5">Billing Dept.</span>
+                </div>
+            </div>
+            <button onclick="window.print()" class="bg-brand-purple hover:bg-purple-600 text-white px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-colors shadow-lg shadow-purple-500/20 flex items-center gap-2">
+                <i class="fa-solid fa-file-pdf"></i> Generate PDF
+            </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-6 space-y-8">
+            
+            <!-- Section: Meta Details -->
+            <div>
+                <h3 class="text-xs font-bold text-brand-muted uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fa-solid fa-hashtag"></i> Invoice Details</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] text-zinc-500 uppercase mb-1">Invoice Number</label>
+                        <input type="text" id="inp-inv-num" value="FM-2026-001" class="input-glass w-full rounded-lg px-3 py-2 text-sm font-mono" oninput="updatePreview()">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-zinc-500 uppercase mb-1">Status Badge</label>
+                        <select id="inp-status" class="input-glass w-full rounded-lg px-3 py-2 text-sm font-bold" onchange="updatePreview()">
+                            <option value="DUE ON RECEIPT" class="bg-zinc-900">DUE ON RECEIPT</option>
+                            <option value="PAID IN FULL" class="bg-zinc-900 text-green-500">PAID IN FULL</option>
+                            <option value="OVERDUE" class="bg-zinc-900 text-red-500">OVERDUE</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-zinc-500 uppercase mb-1">Issue Date</label>
+                        <input type="date" id="inp-date" class="input-glass w-full rounded-lg px-3 py-2 text-sm font-mono" oninput="updatePreview()">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-zinc-500 uppercase mb-1">Due Date</label>
+                        <input type="date" id="inp-due-date" class="input-glass w-full rounded-lg px-3 py-2 text-sm font-mono" oninput="updatePreview()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section: Client Details -->
+            <div>
+                <h3 class="text-xs font-bold text-brand-muted uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fa-solid fa-user-tie"></i> Bill To</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] text-zinc-500 uppercase mb-1">Client / Company Name</label>
+                        <input type="text" id="inp-client-name" placeholder="e.g. Bewakoof Brands Pvt Ltd" class="input-glass w-full rounded-lg px-3 py-2 text-sm font-bold" oninput="updatePreview()">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-zinc-500 uppercase mb-1">Contact Email</label>
+                        <input type="email" id="inp-client-email" placeholder="finance@client.com" class="input-glass w-full rounded-lg px-3 py-2 text-sm" oninput="updatePreview()">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-zinc-500 uppercase mb-1">Address / Tax ID (Optional)</label>
+                        <textarea id="inp-client-address" rows="2" placeholder="Street, City, GSTIN..." class="input-glass w-full rounded-lg px-3 py-2 text-sm resize-none" oninput="updatePreview()"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section: Line Items -->
+            <div>
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xs font-bold text-brand-muted uppercase tracking-widest flex items-center gap-2"><i class="fa-solid fa-list"></i> Line Items</h3>
+                    <button onclick="addItem()" class="text-[10px] bg-white/10 hover:bg-white/20 px-2 py-1 rounded text-white transition-colors"><i class="fa-solid fa-plus"></i> Add Item</button>
+                </div>
+                
+                <div id="items-container" class="space-y-3">
+                    <!-- Items populated by JS -->
+                </div>
+            </div>
+
+            <!-- Section: Financials -->
+            <div>
+                <h3 class="text-xs font-bold text-brand-muted uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fa-solid fa-calculator"></i> Calculations</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] text-zinc-500 uppercase mb-1">Tax / GST (%)</label>
+                        <input type="number" id="inp-tax" value="18" min="0" step="0.1" class="input-glass w-full rounded-lg px-3 py-2 text-sm font-mono" oninput="updatePreview()">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-zinc-500 uppercase mb-1">Discount (Flat ₹)</label>
+                        <input type="number" id="inp-discount" value="0" min="0" class="input-glass w-full rounded-lg px-3 py-2 text-sm font-mono" oninput="updatePreview()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section: Notes -->
+            <div>
+                <h3 class="text-xs font-bold text-brand-muted uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fa-solid fa-align-left"></i> Payment Terms / Notes</h3>
+                <textarea id="inp-notes" rows="3" class="input-glass w-full rounded-lg px-3 py-2 text-sm resize-none" oninput="updatePreview()">Please process payment to:
+Bank: HDFC Bank
+A/C Name: Feasibility Media Group
+A/C No: 50200012345678
+IFSC: HDFC0001234</textarea>
+            </div>
+
+        </div>
+    </aside>
+
+    <!-- RIGHT: LIVE PREVIEW -->
+    <main id="preview-panel" class="flex-1 h-full overflow-y-auto bg-[#030303] flex justify-center p-8 relative z-10">
+        
+        <!-- Ambient Glow behind invoice -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-brand-purple/5 rounded-full blur-[120px] pointer-events-none hide-on-print"></div>
+
+        <!-- THE INVOICE PAPER -->
+        <div id="invoice-paper" class="invoice-paper p-10 md:p-14 flex flex-col relative z-10 rounded-2xl">
+            
+            <div class="watermark">FEASIBILITY</div>
+
+            <!-- Header -->
+            <div class="flex justify-between items-start border-b border-white/10 pb-8 relative z-10">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 bg-white text-black flex items-center justify-center rounded-full text-2xl font-black">F</div>
+                    <div class="flex flex-col leading-none">
+                        <span class="text-white font-bold tracking-tight font-heading text-2xl">Feasibility</span>
+                        <span class="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mt-1">Growth Infrastructure</span>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <h1 class="text-4xl font-black font-heading text-white tracking-tight uppercase mb-2">Invoice</h1>
+                    <div id="out-status" class="inline-block border border-white/20 text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">DUE ON RECEIPT</div>
+                </div>
+            </div>
+
+            <!-- Addresses & Dates -->
+            <div class="grid grid-cols-2 gap-10 mt-8 relative z-10">
+                <!-- From / To -->
+                <div class="space-y-6">
+                    <div>
+                        <p class="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mb-1">From</p>
+                        <p class="text-sm font-bold text-white">Feasibility Media Group</p>
+                        <p class="text-xs text-zinc-400 mt-1">contact@feasibilitymedia.in<br>www.feasibilitymedia.in<br>India</p>
+                    </div>
+                    <div>
+                        <p class="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mb-1">Bill To</p>
+                        <p id="out-client-name" class="text-base font-bold text-brand-purple">Client Name Here</p>
+                        <p id="out-client-email" class="text-xs text-zinc-300 mt-1">client@email.com</p>
+                        <p id="out-client-address" class="text-xs text-zinc-400 mt-1 whitespace-pre-line">Client Address / GST</p>
+                    </div>
+                </div>
+                
+                <!-- Invoice Meta -->
+                <div class="space-y-4 text-right">
+                    <div>
+                        <p class="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mb-1">Invoice Number</p>
+                        <p id="out-inv-num" class="text-sm font-mono text-white font-bold">FM-2026-001</p>
+                    </div>
+                    <div>
+                        <p class="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mb-1">Date of Issue</p>
+                        <p id="out-date" class="text-sm font-mono text-zinc-300">--</p>
+                    </div>
+                    <div>
+                        <p class="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mb-1">Due Date</p>
+                        <p id="out-due-date" class="text-sm font-mono text-zinc-300">--</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Line Items Table -->
+            <div class="mt-12 flex-grow relative z-10">
+                <table class="w-full invoice-table text-left">
+                    <thead>
+                        <tr>
+                            <th class="w-1/2">Description</th>
+                            <th class="text-center w-1/6">Qty</th>
+                            <th class="text-right w-1/6">Rate</th>
+                            <th class="text-right w-1/6">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="out-items-body">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Totals & Notes -->
+            <div class="mt-8 flex justify-between items-end relative z-10">
+                
+                <!-- Notes -->
+                <div class="w-1/2 pr-8">
+                    <p class="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mb-2">Payment Terms & Notes</p>
+                    <p id="out-notes" class="text-xs text-zinc-400 whitespace-pre-line leading-relaxed border-l-2 border-white/10 pl-3">Please process payment to...</p>
+                </div>
+
+                <!-- Calculations -->
+                <div class="w-1/2 w-64 bg-white/[0.02] border border-white/5 rounded-xl p-5">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs text-zinc-400">Subtotal</span>
+                        <span id="out-subtotal" class="text-sm font-mono text-white">₹0.00</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-3">
+                        <span id="out-tax-label" class="text-xs text-zinc-400">Tax (18%)</span>
+                        <span id="out-tax-amount" class="text-sm font-mono text-white">₹0.00</span>
+                    </div>
+                    <div id="out-discount-row" class="flex justify-between items-center mb-4 hidden">
+                        <span class="text-xs text-brand-emerald">Discount</span>
+                        <span id="out-discount" class="text-sm font-mono text-brand-emerald">-₹0.00</span>
+                    </div>
+                    <div class="border-t border-white/10 pt-3 flex justify-between items-center">
+                        <span class="text-xs font-bold text-white uppercase tracking-widest">Total Due</span>
+                        <span id="out-total" class="text-2xl font-black font-mono total-glow">₹0.00</span>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Footer Branding -->
+            <div class="mt-12 text-center border-t border-white/5 pt-6 relative z-10">
+                <p class="text-[10px] font-bold text-zinc-600 uppercase tracking-widest font-heading">We Build Digital Empires.</p>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // State
+        let items = [
+            { id: Date.now(), desc: "Growth Plan Retainer (Month 1)\n- 12 Posts & 6 Viral Reels\n- Ad Management", qty: 1, rate: 9999 }
+        ];
+
+        // Format Currency
+        const formatMoney = (amount) => {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                minimumFractionDigits: 2
+            }).format(amount);
+        };
+
+        // Initialize Dates
+        document.addEventListener("DOMContentLoaded", () => {
+            const today = new Date();
+            const nextWeek = new Date(today);
+            nextWeek.setDate(today.getDate() + 7);
+            
+            document.getElementById('inp-date').valueAsDate = today;
+            document.getElementById('inp-due-date').valueAsDate = nextWeek;
+            
+            renderInputs();
+            updatePreview();
+        });
+
+        // Items Logic
+        function addItem() {
+            items.push({ id: Date.now(), desc: "", qty: 1, rate: 0 });
+            renderInputs();
+            updatePreview();
+        }
+
+        function removeItem(id) {
+            items = items.filter(item => item.id !== id);
+            renderInputs();
+            updatePreview();
+        }
+
+        function updateItem(id, field, value) {
+            const item = items.find(i => i.id === id);
+            if (item) {
+                item[field] = value;
+                updatePreview();
+            }
+        }
+
+        // Render Control Panel Inputs
+        function renderInputs() {
+            const container = document.getElementById('items-container');
+            container.innerHTML = '';
+            
+            items.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'bg-white/5 border border-white/10 rounded-xl p-4 relative';
+                div.innerHTML = `
+                    <button onclick="removeItem(${item.id})" class="absolute top-2 right-2 text-zinc-500 hover:text-brand-rose transition-colors"><i class="fa-solid fa-times"></i></button>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-[9px] text-zinc-500 uppercase mb-1">Description</label>
+                            <textarea rows="2" class="input-glass w-full rounded-lg px-3 py-2 text-sm resize-none" oninput="updateItem(${item.id}, 'desc', this.value)">${item.desc}</textarea>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[9px] text-zinc-500 uppercase mb-1">Quantity</label>
+                                <input type="number" min="1" class="input-glass w-full rounded-lg px-3 py-2 text-sm font-mono" value="${item.qty}" oninput="updateItem(${item.id}, 'qty', Number(this.value))">
+                            </div>
+                            <div>
+                                <label class="block text-[9px] text-zinc-500 uppercase mb-1">Rate (₹)</label>
+                                <input type="number" min="0" class="input-glass w-full rounded-lg px-3 py-2 text-sm font-mono" value="${item.rate}" oninput="updateItem(${item.id}, 'rate', Number(this.value))">
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Master Sync Function
+        window.updatePreview = function() {
+            // 1. Sync Text Fields
+            document.getElementById('out-inv-num').innerText = document.getElementById('inp-inv-num').value || '--';
+            document.getElementById('out-client-name').innerText = document.getElementById('inp-client-name').value || 'Client Name';
+            document.getElementById('out-client-email').innerText = document.getElementById('inp-client-email').value || '';
+            document.getElementById('out-client-address').innerText = document.getElementById('inp-client-address').value || '';
+            document.getElementById('out-notes').innerText = document.getElementById('inp-notes').value || '';
+            
+            // Status Formatting
+            const statusVal = document.getElementById('inp-status').value;
+            const statusEl = document.getElementById('out-status');
+            statusEl.innerText = statusVal;
+            statusEl.className = "inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border ";
+            if(statusVal === "PAID IN FULL") statusEl.className += "border-green-500/30 text-green-400 bg-green-500/10";
+            else if(statusVal === "OVERDUE") statusEl.className += "border-red-500/30 text-red-400 bg-red-500/10";
+            else statusEl.className += "border-white/20 text-white bg-white/5";
+
+            // Dates
+            const formatDate = (dateString) => {
+                if(!dateString) return '--';
+                return new Date(dateString).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            };
+            document.getElementById('out-date').innerText = formatDate(document.getElementById('inp-date').value);
+            document.getElementById('out-due-date').innerText = formatDate(document.getElementById('inp-due-date').value);
+
+            // 2. Render Table Items & Calculate
+            const tbody = document.getElementById('out-items-body');
+            tbody.innerHTML = '';
+            let subtotal = 0;
+
+            items.forEach(item => {
+                const amount = item.qty * item.rate;
+                subtotal += amount;
+                
+                // Convert newlines to <br> for description
+                const descFormatted = item.desc.replace(/\n/g, '<br>');
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="text-sm text-white font-medium align-top pr-4">${descFormatted || '--'}</td>
+                    <td class="text-sm font-mono text-zinc-400 text-center align-top">${item.qty}</td>
+                    <td class="text-sm font-mono text-zinc-400 text-right align-top">${formatMoney(item.rate)}</td>
+                    <td class="text-sm font-mono text-white font-bold text-right align-top">${formatMoney(amount)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // 3. Financials
+            const taxRate = Number(document.getElementById('inp-tax').value) || 0;
+            const discount = Number(document.getElementById('inp-discount').value) || 0;
+
+            const taxAmount = subtotal * (taxRate / 100);
+            const total = subtotal + taxAmount - discount;
+
+            document.getElementById('out-subtotal').innerText = formatMoney(subtotal);
+            document.getElementById('out-tax-label').innerText = `Tax (${taxRate}%)`;
+            document.getElementById('out-tax-amount').innerText = formatMoney(taxAmount);
+            
+            const discRow = document.getElementById('out-discount-row');
+            if (discount > 0) {
+                discRow.classList.remove('hidden');
+                discRow.classList.add('flex');
+                document.getElementById('out-discount').innerText = `-${formatMoney(discount)}`;
+            } else {
+                discRow.classList.add('hidden');
+                discRow.classList.remove('flex');
+            }
+
+            document.getElementById('out-total').innerText = formatMoney(Math.max(0, total));
+        }
+    </script>
+</body>
+</html>
