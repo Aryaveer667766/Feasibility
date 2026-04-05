@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Master Services Agreement | Feasibility Media</title>
+    
+    <!-- SEO Tags -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23000000'/><text x='50' y='70' font-family='sans-serif' font-weight='900' font-size='60' text-anchor='middle' fill='white'>F</text></svg>">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            black: '#000000',
+                            dark: '#030303',
+                            panel: '#09090b',
+                            purple: '#8b5cf6',
+                            rose: '#f43f5e',
+                            emerald: '#10b981',
+                            cyan: '#06b6d4',
+                            text: '#f4f4f5',
+                            muted: '#a1a1aa'
+                        }
+                    },
+                    animation: {
+                        'aurora': 'aurora 30s linear infinite alternate',
+                    },
+                    keyframes: {
+                        aurora: {
+                            '0%': { transform: 'translateY(0) scale(1)' },
+                            '100%': { transform: 'translateY(-5%) scale(1.1)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* --- Base & Custom Cursor --- */
+        body {
+            background-color: #000000;
+            color: #f4f4f5;
+            overflow-x: hidden;
+            padding-top: 36px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            cursor: none;
+        }
+        
+        @media (max-width: 1024px) {
+            body { cursor: auto; }
+            #custom-cursor, #custom-cursor-follower { display: none !important; }
+        }
+
+        #custom-cursor {
+            position: fixed; top: 0; left: 0; width: 8px; height: 8px;
+            background: #fff; border-radius: 50%; pointer-events: none; z-index: 99999;
+            transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, background-color 0.2s; mix-blend-mode: difference;
+        }
+        #custom-cursor-follower {
+            position: fixed; top: 0; left: 0; width: 32px; height: 32px;
+            border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; pointer-events: none; z-index: 99998;
+            transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s, border-color 0.3s;
+        }
+        body.hovering-link #custom-cursor { width: 40px; height: 40px; background: rgba(255,255,255,0.1); backdrop-filter: blur(4px); mix-blend-mode: normal; }
+        body.hovering-link #custom-cursor-follower { width: 0; height: 0; opacity: 0; }
+
+        /* --- Ambient Backgrounds --- */
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 9998; opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        .bg-grid {
+            position: absolute; inset: 0; z-index: 0;
+            background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse at top, black 20%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse at top, black 20%, transparent 70%);
+        }
+        .aurora-bg {
+            position: fixed; top: -30%; left: -30%; width: 160%; height: 160%; z-index: -1; pointer-events: none;
+            background: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.04) 0%, transparent 40%), radial-gradient(circle at 80% 20%, rgba(244, 63, 94, 0.03) 0%, transparent 30%);
+            filter: blur(60px); transform: translateZ(0); animation: aurora 30s linear infinite alternate;
+        }
+
+        /* --- Typography --- */
+        .text-gradient-mesh {
+            background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        /* --- Custom Scrollbar --- */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #52525b; }
+
+        /* --- Legal Document Styling --- */
+        .legal-container {
+            background: rgba(9, 9, 11, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            backdrop-filter: blur(32px) saturate(150%);
+            -webkit-backdrop-filter: blur(32px) saturate(150%);
+            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.8);
+        }
+        .legal-content h2 { font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 700; color: #fff; margin-top: 2.5rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; }
+        .legal-content h3 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 600; color: #e4e4e7; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        .legal-content p { color: #a1a1aa; line-height: 1.8; margin-bottom: 1rem; font-weight: 300; }
+        .legal-content ul { color: #a1a1aa; line-height: 1.8; margin-bottom: 1rem; list-style-type: none; padding-left: 0; font-weight: 300; }
+        .legal-content li { margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative; }
+        .legal-content li::before { content: '✓'; position: absolute; left: 0; color: #10b981; font-family: "Font Awesome 6 Free"; font-weight: 900; }
+        .legal-content strong { color: #e4e4e7; font-weight: 600; }
+        
+        .pill-nav {
+            background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(24px) saturate(200%); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.8);
+        }
+
+        /* --- Custom Checkbox --- */
+        .checkbox-wrapper input[type="checkbox"] {
+            appearance: none; background-color: rgba(255, 255, 255, 0.05); margin: 0; font: inherit;
+            color: currentColor; width: 1.5em; height: 1.5em; border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 0.35em; display: grid; place-content: center; transition: 0.2s all; cursor: pointer;
+        }
+        .checkbox-wrapper input[type="checkbox"]::before {
+            content: ""; width: 0.75em; height: 0.75em; transform: scale(0); transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em #10b981; transform-origin: center;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+        .checkbox-wrapper input[type="checkbox"]:checked { border-color: #10b981; background: rgba(16,185,129,0.1); }
+        .checkbox-wrapper input[type="checkbox"]:checked::before { transform: scale(1); }
+
+        /* Button states */
+        .btn-accept:disabled { opacity: 0.5; cursor: not-allowed; background: rgba(255,255,255,0.05); color: #a1a1aa; border-color: rgba(255,255,255,0.1); }
+        .btn-accept:not(:disabled) { background: #10b981; color: #000; box-shadow: 0 0 30px rgba(16,185,129,0.4); border-color: #10b981; }
+        .btn-accept:not(:disabled):hover { background: #34d399; transform: scale(1.02); }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- Custom Cursor -->
+    <div id="custom-cursor"></div>
+    <div id="custom-cursor-follower"></div>
+
+    <div class="noise-overlay"></div>
+    <div class="aurora-bg"></div>
+    <div class="bg-grid"></div>
+    
+    <!-- Navigation -->
+    <header class="fixed top-8 left-0 right-0 z-50 flex justify-center px-4">
+        <nav class="pill-nav rounded-full p-1.5 flex items-center justify-between w-full max-w-4xl">
+            <a href="index.html" class="flex items-center gap-2 md:gap-3 pl-2 md:pl-3 pr-4 group" data-cursor-hover>
+                <div class="w-8 h-8 md:w-9 md:h-9 bg-white text-black flex items-center justify-center rounded-full text-sm md:text-base font-black shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-transform group-hover:-rotate-12">F</div>
+                <span class="font-heading font-bold tracking-tight text-white text-base md:text-lg hidden sm:block">Feasibility</span>
+            </a>
+            <div class="flex items-center pr-2 md:pr-4">
+                <a href="index.html" class="text-xs md:text-sm font-bold text-zinc-400 hover:text-white uppercase tracking-widest transition-colors" data-cursor-hover>
+                    &larr; Return to Base
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="relative z-10 pt-32 pb-24">
+        
+        <!-- Header -->
+        <section class="container mx-auto px-4 max-w-4xl text-center mb-12">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-emerald/20 bg-brand-emerald/10 backdrop-blur-md text-[10px] md:text-xs font-bold text-brand-emerald mb-6 uppercase tracking-widest shadow-[0_0_20px_rgba(16,185,129,0.15)]">
+                <i class="fa-solid fa-file-contract"></i> Client Prospectus
+            </div>
+            <h1 class="text-4xl md:text-6xl font-black text-white font-heading tracking-tight mb-4 text-gradient-mesh">
+                Master Services Agreement.
+            </h1>
+            <p class="text-base text-zinc-400 font-light max-w-2xl mx-auto">
+                Please review the operational and legal protocols below. Once reviewed, provide your digital signature at the bottom of the page to initiate the partnership.
+            </p>
+        </section>
+
+        <!-- Document Container -->
+        <section class="container mx-auto px-4 max-w-4xl">
+            <div class="legal-container p-6 md:p-12 lg:p-16 mb-8">
+                
+                <div class="legal-content">
+                    <div class="text-center mb-12 border-b border-white/10 pb-10">
+                        <p class="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-2">Effective: Q1 2026</p>
+                        <h2 style="border:none; margin:0;" class="text-2xl md:text-3xl font-black text-white font-heading tracking-tight">Feasibility Media Group</h2>
+                        <p class="text-sm text-zinc-400 mt-2">Operational Protocol \& Legal Framework</p>
+                    </div>
+
+                    <p>This Master Service Agreement (the "Agreement") governs the relationship between Feasibility Media Group ("Agency") and You ("Client"). By authorizing this document, you agree to be bound by the following infrastructure terms.</p>
+
+                    <h2>1. Social Media Management & Access</h2>
+                    <ul>
+                        <li><strong>Authorization & Access:</strong> The Client grants the Agency the authority to access, manage, and publish content on the Client's designated social media accounts for the duration of this Agreement. The Client agrees to provide necessary login credentials or "Partner/Admin" access via platform business managers.</li>
+                        <li><strong>Platform Compliance & Liability (Anti-Ban Clause):</strong> The Agency strictly adheres to the terms of service of all major platforms. However, the Client acknowledges that social media platforms frequently update their algorithms and policies. The Agency shall not be liable for any account suspension, restriction, shadow-ban, or permanent ban imposed by the social media platforms, provided the Agency has acted in good faith. The Agency is not responsible for rectifying account restrictions caused by the Client's previous activities or third-party bot services.</li>
+                        <li><strong>Community Management:</strong> If included in the Client's tier, the Agency will reply to standard comments and messages during business hours. The Agency is not responsible for complex customer support or crisis communication.</li>
+                    </ul>
+
+                    <h2>2. Client Obligations</h2>
+                    <ul>
+                        <li><strong>Content Materials:</strong> The Client agrees to provide all necessary raw materials (high-res logos, brand guidelines, footage) required for the Agency to perform the Services within 48 hours of onboarding.</li>
+                        <li><strong>Approval Process:</strong> The Client must provide feedback on drafts within 48 hours of delivery. If no feedback is received, the content is deemed "Approved" to maintain the posting schedule.</li>
+                        <li><strong>Legal Validity:</strong> The Client guarantees that all claims, copyrights, and product information provided to the Agency for publication are legally valid and owned by the Client.</li>
+                    </ul>
+
+                    <h2>3. Fees, Payment & Taxes</h2>
+                    <ul>
+                        <li><strong>Invoicing:</strong> Services are billed in advance to secure infrastructure bandwidth. Invoices are generated on the 1st of every month. Payment is strictly due within 5 days of invoice receipt via NEFT, UPI, or Bank Transfer.</li>
+                        <li><strong>Late Payment:</strong> Invoices not paid within 7 days of the due date will incur a late fee of 2% per month. The Agency reserves the right to suspend all production if payment is overdue by more than 10 days.</li>
+                        <li><strong>Third-Party Costs & Ad Spend:</strong> The Agency retainer fee does not cover your advertising spend. The Client is solely responsible for funding their own ad accounts (Meta, Google, etc.) directly via their own credit cards.</li>
+                    </ul>
+
+                    <h2>4. Intellectual Property (IP) Rights</h2>
+                    <ul>
+                        <li><strong>Transfer of Ownership:</strong> Upon full payment of the monthly invoice, the Agency assigns to the Client 100% ownership rights to the final, exported Deliverables.</li>
+                        <li><strong>Agency Rights:</strong> The Agency retains ownership of internal tools, proprietary templates, and working files (e.g., Premiere Pro project files). </li>
+                        <li><strong>Portfolio Rights:</strong> The Client grants the Agency a non-exclusive right to display the final work and generalized performance metrics (e.g., Views, ROAS percentages) in its portfolio for self-promotion, unless a strict Non-Disclosure Agreement (NDA) is executed.</li>
+                    </ul>
+
+                    <h2>5. Confidentiality</h2>
+                    <p>Both parties agree to treat all non-public information (logins, trade secrets, financial data, unreleased strategies) as strictly confidential. This obligation survives the termination of this Agreement for a period of two (2) years.</p>
+
+                    <h2>6. Limitation of Liability & Indemnity</h2>
+                    <ul>
+                        <li><strong>Limitation:</strong> We engineer content for maximum algorithmic reach. However, algorithms and market conditions are out of our control. Feasibility Media does not legally guarantee specific financial returns or subscriber counts. The Agency's total liability shall not exceed the total fees paid by the Client in the three (3) months preceding the claim. No liability is assumed for indirect or consequential damages.</li>
+                        <li><strong>Indemnity:</strong> The Client indemnifies the Agency against legal claims arising from content provided directly by the Client or false claims regarding Client products/services.</li>
+                    </ul>
+
+                    <h2>7. Non-Solicitation</h2>
+                    <p>During the term of this Agreement and for 12 months thereafter, the Client agrees not to solicit, poach, or hire any Agency employee or contractor. A breach of this clause incurs a placement fee equal to 50% of the employee's annual salary.</p>
+
+                    <h2>8. Term and Termination</h2>
+                    <ul>
+                        <li><strong>No Lock-ins:</strong> This Agreement operates on a rolling month-to-month basis.</li>
+                        <li><strong>Termination:</strong> Either party may terminate with 30 days' written notice. </li>
+                        <li><strong>Effect:</strong> The Client is responsible for paying for all work up to the termination date. The Agency will transfer all finalized assets upon clearing of final dues.</li>
+                    </ul>
+
+                    <h2>9. Governing Law</h2>
+                    <p>This Agreement shall be governed by the laws of India. Any disputes arising from this Agreement shall be subject to the exclusive jurisdiction of the courts located in Ranchi, Jharkhand, India.</p>
+
+                </div>
+            </div>
+
+            <!-- DIGITAL ACCEPTANCE MODULE -->
+            <div class="legal-container p-8 md:p-10 relative overflow-hidden bg-gradient-to-b from-black to-zinc-900/50">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-brand-emerald/10 rounded-full blur-[80px] pointer-events-none"></div>
+                
+                <h3 class="text-2xl font-bold text-white font-heading mb-2">Digital Signature</h3>
+                <p class="text-zinc-400 text-sm mb-8 font-light">Please verify your brand name and confirm acceptance to proceed.</p>
+
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-3">Client / Brand Name</label>
+                        <input type="text" id="client-name" placeholder="e.g. Acme Corporation" class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-emerald focus:bg-white/10 transition-all font-mono text-sm shadow-inner" data-cursor-hover>
+                    </div>
+
+                    <div class="flex items-start gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
+                        <div class="checkbox-wrapper mt-1">
+                            <input type="checkbox" id="accept-terms" data-cursor-hover>
+                        </div>
+                        <label for="accept-terms" class="text-sm text-zinc-300 font-light cursor-pointer select-none leading-relaxed" data-cursor-hover>
+                            I, acting as an authorized representative of the brand named above, have read, understood, and officially agree to be bound by the Master Services Agreement outlined on this page.
+                        </label>
+                    </div>
+
+                    <button id="accept-btn" disabled class="btn-accept w-full font-bold py-5 rounded-xl mt-4 text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-3" data-cursor-hover>
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                        <span>Sign & Confirm via WhatsApp</span>
+                    </button>
+                    
+                    <p class="text-center text-[10px] text-zinc-500 font-mono mt-4">
+                        <i class="fa-solid fa-lock text-brand-emerald mr-1"></i> THIS ACTION WILL GENERATE A SECURE TIMESTAMPED MESSAGE TO FEASIBILITY MEDIA HQ.
+                    </p>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-white/10 py-12 relative z-10 px-4 mt-12">
+        <div class="container mx-auto max-w-4xl text-center relative z-10">
+            <p class="text-[10px] sm:text-xs text-zinc-600 font-mono uppercase tracking-widest">&copy; 2026 FEASIBILITY MEDIA GROUP. ALL RIGHTS RESERVED.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Custom Cursor Logic
+        const cursor = document.getElementById('custom-cursor');
+        const follower = document.getElementById('custom-cursor-follower');
+        
+        if (window.matchMedia("(pointer: fine) and (min-width: 1024px)").matches) {
+            let mouseX = 0, mouseY = 0, followerX = 0, followerY = 0;
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX; mouseY = e.clientY;
+                if(cursor) { cursor.style.left = `${mouseX}px`; cursor.style.top = `${mouseY}px`; }
+            });
+            function animateFollower() {
+                followerX += (mouseX - followerX) * 0.15;
+                followerY += (mouseY - followerY) * 0.15;
+                if(follower) { follower.style.left = `${followerX}px`; follower.style.top = `${followerY}px`; }
+                requestAnimationFrame(animateFollower);
+            }
+            animateFollower();
+            document.querySelectorAll('a, button, input, label, [data-cursor-hover]').forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('hovering-link'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('hovering-link'));
+            });
+        }
+
+        // --- Digital Signature Logic ---
+        const nameInput = document.getElementById('client-name');
+        const termsCheck = document.getElementById('accept-terms');
+        const acceptBtn = document.getElementById('accept-btn');
+
+        // Validate form to enable button
+        function validateForm() {
+            if (nameInput.value.trim().length > 0 && termsCheck.checked) {
+                acceptBtn.disabled = false;
+            } else {
+                acceptBtn.disabled = true;
+            }
+        }
+
+        nameInput.addEventListener('input', validateForm);
+        termsCheck.addEventListener('change', validateForm);
+
+        // Action on Button Click
+        acceptBtn.addEventListener('click', () => {
+            const brandName = encodeURIComponent(nameInput.value.trim());
+            const text = `Hi Feasibility Media,%0A%0AI have read, understood, and officially accept the Master Services Agreement for my brand to initiate onboarding.%0A%0A*Brand / Client Name:* ${brandName}`;
+            
+            // Redirect to WhatsApp with pre-filled message
+            window.location.href = `https://wa.me/919431366776?text=${text}`;
+        });
+    </script>
+</body>
+</html>
