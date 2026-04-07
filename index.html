@@ -206,9 +206,34 @@
         .modal-content { transform: scale(0.95) translateY(10px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .modal.active .modal-content { transform: scale(1) translateY(0); }
 
-        /* Trusted By Group Hover */
-        .trusted-group:hover .trusted-logo { opacity: 0.3; }
-        .trusted-group .trusted-logo:hover { opacity: 1; transform: scale(1.05); }
+        /* --- Marquee Brands --- */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            animation: marquee 55s linear infinite;
+        }
+        .brand-logo-item {
+            color: #52525b; /* zinc-600 */
+            transition: all 0.4s ease;
+            font-size: 1.5rem; 
+            line-height: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: default;
+            white-space: nowrap;
+        }
+        .brand-logo-item:hover {
+            color: #d4d4d8; /* zinc-300 */
+            transform: scale(1.05);
+            text-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+        @media (min-width: 768px) {
+            .brand-logo-item { font-size: 2rem; }
+        }
+
     </style>
 </head>
 <body class="relative">
@@ -305,16 +330,96 @@
             </div>
         </section>
 
-        <!-- TRUSTED BY (Static Grid w/ Hover Dimming) -->
-        <section class="py-16 sm:py-20 border-y border-white/5 bg-black/50 backdrop-blur-xl reveal relative z-10">
-            <div class="container mx-auto px-4 max-w-6xl">
-                <p class="text-center text-xs font-bold text-zinc-500 uppercase tracking-widest mb-10 sm:mb-14">Trusted by industry leaders</p>
-                <div class="flex flex-wrap justify-center items-center gap-8 sm:gap-12 md:gap-16 trusted-group">
-                    <span class="trusted-logo text-xl sm:text-2xl md:text-3xl font-bold font-heading text-zinc-400 transition-all duration-500 cursor-default">Bewakoof<span class="text-brand-rose">.</span></span>
-                    <span class="trusted-logo text-xl sm:text-2xl md:text-3xl font-bold font-heading text-zinc-400 transition-all duration-500 cursor-default">The Souled Store</span>
-                    <span class="trusted-logo text-xl sm:text-2xl md:text-3xl font-black font-heading text-zinc-400 transition-all duration-500 tracking-widest uppercase cursor-default">Layers</span>
-                    <span class="trusted-logo text-xl sm:text-2xl md:text-3xl font-bold font-heading text-zinc-400 transition-all duration-500 cursor-default">Total Gaming</span>
-                    <span class="trusted-logo text-xl sm:text-2xl md:text-3xl font-bold font-heading text-zinc-400 transition-all duration-500 cursor-default">TechWiser</span>
+        <!-- TRUSTED BY (Professional Marquee) -->
+        <section class="py-16 sm:py-20 border-y border-white/5 bg-black/60 backdrop-blur-xl reveal relative z-10 overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-transparent to-black/90 z-20 pointer-events-none"></div>
+            
+            <div class="container mx-auto px-4 max-w-full relative z-10">
+                <p class="text-center text-xs font-bold text-zinc-500 uppercase tracking-widest mb-10 sm:mb-14">Trusted by global industry leaders</p>
+                
+                <div class="relative flex overflow-x-hidden w-full group">
+                    <div class="flex w-max animate-marquee group-hover:[animation-play-state:paused]">
+                        
+                        <!-- Set 1 -->
+                        <div class="flex items-center justify-around w-max gap-16 md:gap-28 px-8 md:px-14">
+                            <!-- Apple -->
+                            <span class="brand-logo-item font-medium tracking-tight"><i class="fa-brands fa-apple text-3xl md:text-5xl mb-1"></i></span>
+                            
+                            <!-- Samsung -->
+                            <span class="brand-logo-item font-black tracking-[0.15em] uppercase font-sans">SAMSUNG</span>
+                            
+                            <!-- Amazon -->
+                            <span class="brand-logo-item font-medium tracking-tight"><i class="fa-brands fa-amazon text-2xl md:text-4xl"></i></span>
+                            
+                            <!-- Google -->
+                            <span class="brand-logo-item font-medium tracking-tight"><i class="fa-brands fa-google text-2xl md:text-4xl"></i> Google</span>
+                            
+                            <!-- Meta -->
+                            <span class="brand-logo-item font-medium tracking-tight"><i class="fa-brands fa-meta text-2xl md:text-4xl"></i> Meta</span>
+                            
+                            <!-- Spotify -->
+                            <span class="brand-logo-item font-medium tracking-tight"><i class="fa-brands fa-spotify text-2xl md:text-4xl"></i> Spotify</span>
+                            
+                            <!-- Shopify -->
+                            <span class="brand-logo-item font-medium tracking-tight"><i class="fa-brands fa-shopify text-2xl md:text-4xl"></i> Shopify</span>
+                            
+                            <!-- Xiaomi -->
+                            <span class="brand-logo-item font-bold tracking-widest uppercase">
+                                <span class="w-8 h-8 md:w-10 md:h-10 bg-current rounded-[10px] flex items-center justify-center text-[#0a0a0a] font-black text-sm md:text-base transition-colors duration-300">mi</span> XIAOMI
+                            </span>
+                            
+                            <!-- boAt -->
+                            <span class="brand-logo-item font-black tracking-widest lowercase text-3xl">boAt</span>
+                            
+                            <!-- Bewakoof -->
+                            <span class="brand-logo-item font-bold font-heading">Bewakoof<span class="text-brand-rose">.</span></span>
+                            
+                            <!-- Lenskart -->
+                            <span class="brand-logo-item font-black font-sans tracking-widest uppercase">LENSKART</span>
+                            
+                            <!-- The Souled Store -->
+                            <span class="brand-logo-item font-bold font-heading">The Souled Store</span>
+                            
+                            <!-- PhysicsWallah -->
+                            <span class="brand-logo-item font-bold font-heading">PhysicsWallah</span>
+                            
+                            <!-- Unacademy -->
+                            <span class="brand-logo-item font-bold font-sans tracking-tight">unacademy</span>
+                            
+                            <!-- Layers -->
+                            <span class="brand-logo-item font-black font-heading tracking-[0.2em] uppercase italic">LAYERS</span>
+                            
+                            <!-- Total Gaming -->
+                            <span class="brand-logo-item font-bold font-heading uppercase tracking-wide">Total Gaming</span>
+                            
+                            <!-- TechWiser -->
+                            <span class="brand-logo-item font-bold font-heading">TechWiser</span>
+                        </div>
+
+                        <!-- Set 2 (Exact Duplicate for Seamless Looping) -->
+                        <div class="flex items-center justify-around w-max gap-16 md:gap-28 px-8 md:px-14">
+                            <span class="brand-logo-item font-medium tracking-tight"><i class="fa-brands fa-apple text-3xl md:text-5xl mb-1"></i></span>
+                            <span class="brand-logo-item font-black tracking-[0.15em] uppercase font-sans">SAMSUNG</span>
+                            <span class="brand-logo-item font-medium tracking-tight"><i class="fa-brands fa-amazon text-2xl md:text-4xl"></i></span>
+                            <span class="brand-logo-item font-medium tracking-tight"><i class="fa-brands fa-google text-2xl md:text-4xl"></i> Google</span>
+                            <span class="brand-logo-item font-medium tracking-tight"><i class="fa-brands fa-meta text-2xl md:text-4xl"></i> Meta</span>
+                            <span class="brand-logo-item font-medium tracking-tight"><i class="fa-brands fa-spotify text-2xl md:text-4xl"></i> Spotify</span>
+                            <span class="brand-logo-item font-medium tracking-tight"><i class="fa-brands fa-shopify text-2xl md:text-4xl"></i> Shopify</span>
+                            <span class="brand-logo-item font-bold tracking-widest uppercase">
+                                <span class="w-8 h-8 md:w-10 md:h-10 bg-current rounded-[10px] flex items-center justify-center text-[#0a0a0a] font-black text-sm md:text-base transition-colors duration-300">mi</span> XIAOMI
+                            </span>
+                            <span class="brand-logo-item font-black tracking-widest lowercase text-3xl">boAt</span>
+                            <span class="brand-logo-item font-bold font-heading">Bewakoof<span class="text-brand-rose">.</span></span>
+                            <span class="brand-logo-item font-black font-sans tracking-widest uppercase">LENSKART</span>
+                            <span class="brand-logo-item font-bold font-heading">The Souled Store</span>
+                            <span class="brand-logo-item font-bold font-heading">PhysicsWallah</span>
+                            <span class="brand-logo-item font-bold font-sans tracking-tight">unacademy</span>
+                            <span class="brand-logo-item font-black font-heading tracking-[0.2em] uppercase italic">LAYERS</span>
+                            <span class="brand-logo-item font-bold font-heading uppercase tracking-wide">Total Gaming</span>
+                            <span class="brand-logo-item font-bold font-heading">TechWiser</span>
+                        </div>
+                        
+                    </div>
                 </div>
             </div>
         </section>
