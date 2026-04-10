@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sales Executive Onboarding | Feasibility Media</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            black: '#020617',
+                            panel: '#0f172a',
+                            purple: '#8b5cf6',
+                            rose: '#e11d48',
+                            emerald: '#10b981',
+                            cyan: '#06b6d4',
+                            muted: '#94a3b8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* --- Background Effects --- */
+        .bg-grid {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, black 10%, transparent 90%);
+            -webkit-mask-image: linear-gradient(to bottom, black 10%, transparent 90%);
+        }
+
+        .aurora-bg {
+            position: fixed; top: -30%; left: -10%; width: 120%; height: 100%;
+            z-index: -1; pointer-events: none;
+            background: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
+            filter: blur(60px);
+        }
+
+        /* --- Form Elements --- */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.02);
+        }
+
+        .input-field {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px 20px;
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.2), inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .input-field::placeholder { color: #475569; }
+
+        /* Custom Checkbox */
+        .custom-checkbox {
+            appearance: none;
+            background-color: rgba(255, 255, 255, 0.05);
+            margin: 0;
+            font: inherit;
+            color: currentColor;
+            width: 22px;
+            height: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            display: grid;
+            place-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .custom-checkbox::before {
+            content: "";
+            width: 12px;
+            height: 12px;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+            transform: scale(0);
+            transform-origin: bottom left;
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em white;
+            background-color: white;
+        }
+
+        .custom-checkbox:checked {
+            background-color: #10b981;
+            border-color: #10b981;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .custom-checkbox:checked::before { transform: scale(1); }
+
+        /* Buttons */
+        .primary-btn {
+            background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
+            color: #020617;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 20px -10px rgba(255,255,255,0.3);
+        }
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px -10px rgba(255,255,255,0.5);
+        }
+        .primary-btn:disabled {
+            opacity: 0.7; cursor: not-allowed; transform: none;
+        }
+
+        /* Modals */
+        .modal { opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .modal.active { opacity: 1; pointer-events: auto; }
+        .modal-content { transform: scale(0.95) translateY(10px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .modal.active .modal-content { transform: scale(1) translateY(0); }
+    </style>
+</head>
+<body class="relative">
+
+    <div class="bg-grid"></div>
+    <div class="aurora-bg"></div>
+
+    <!-- Header Branding -->
+    <header class="w-full py-8 px-6 flex justify-center relative z-10">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-white text-black flex items-center justify-center rounded-full font-heading font-black text-xl shadow-[0_0_20px_rgba(255,255,255,0.2)]">F</div>
+            <span class="font-heading font-bold text-xl tracking-tight text-white uppercase">Feasibility Media</span>
+        </div>
+    </header>
+
+    <main class="relative z-10 flex-grow flex items-center justify-center p-4 pb-20">
+        
+        <div class="glass-panel w-full max-w-3xl rounded-[32px] p-8 sm:p-12">
+            
+            <div class="text-center mb-12">
+                <span class="font-mono text-brand-emerald bg-brand-emerald/10 border border-brand-emerald/20 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-6 inline-block">Secure Portal</span>
+                <h1 class="text-4xl md:text-5xl font-black font-heading text-white mb-4 tracking-tight">Sales Executive Onboarding</h1>
+                <p class="text-brand-muted text-lg">Complete your profile below to initialize your workspace and begin your 14-day probationary mandate.</p>
+            </div>
+
+            <!-- Form starts here -->
+            <form id="onboarding-form" action="https://formspree.io/f/mandalko" method="POST" class="space-y-10" onsubmit="handleOnboarding(event)">
+                
+                <input type="hidden" name="_subject" value="New Sales Executive Onboarding Submission">
+
+                <!-- Section 1: Identity -->
+                <div class="space-y-6">
+                    <h3 class="text-xl font-bold font-heading text-white flex items-center gap-3 border-b border-white/10 pb-3">
+                        <i class="fa-regular fa-id-badge text-brand-purple"></i> Identity & Contact
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2 ml-1">Full Legal Name *</label>
+                            <input type="text" name="name" required class="input-field" placeholder="Your Full Name">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2 ml-1">Personal Email *</label>
+                            <input type="email" name="email" required class="input-field" placeholder="you@example.com">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2 ml-1">WhatsApp Number *</label>
+                            <input type="tel" name="phone" required class="input-field" placeholder="+91 90000 00000">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2 ml-1">LinkedIn Profile URL (Preferred)</label>
+                            <input type="url" name="linkedin" class="input-field" placeholder="https://linkedin.com/in/username">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2 ml-1">City & State / Current Location *</label>
+                            <input type="text" name="location" required class="input-field" placeholder="e.g. Mumbai, Maharashtra">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 1.5: Professional Background -->
+                <div class="space-y-6">
+                    <h3 class="text-xl font-bold font-heading text-white flex items-center gap-3 border-b border-white/10 pb-3">
+                        <i class="fa-solid fa-briefcase text-brand-cyan"></i> Professional Background
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2 ml-1">B2B Sales Experience *</label>
+                            <select name="experience" required class="input-field cursor-pointer appearance-none">
+                                <option value="" disabled selected>Select Experience Level</option>
+                                <option value="0-1 Years">0-1 Years</option>
+                                <option value="1-3 Years">1-3 Years</option>
+                                <option value="3-5 Years">3-5 Years</option>
+                                <option value="5+ Years">5+ Years</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2 ml-1">Current Work Status *</label>
+                            <select name="status" required class="input-field cursor-pointer appearance-none">
+                                <option value="" disabled selected>Select Current Status</option>
+                                <option value="Full-Time Employed">Full-Time Employed</option>
+                                <option value="Freelancer / Agency Owner">Freelancer / Agency Owner</option>
+                                <option value="Student">Student</option>
+                                <option value="Currently Looking for Work">Currently Looking for Work</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Financials -->
+                <div class="space-y-6">
+                    <h3 class="text-xl font-bold font-heading text-white flex items-center gap-3 border-b border-white/10 pb-3">
+                        <i class="fa-solid fa-money-bill-transfer text-brand-emerald"></i> Payout Configuration
+                    </h3>
+                    <p class="text-sm text-zinc-400 mb-4">Where should we route your commission payouts once deals are closed?</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2 ml-1">UPI ID (For rapid transfers) *</label>
+                            <input type="text" name="upi" required class="input-field" placeholder="username@bank">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2 ml-1">Preferred Start Date *</label>
+                            <input type="date" name="start_date" required class="input-field text-zinc-400" style="color-scheme: dark;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: The Mandate Agreement -->
+                <div class="space-y-6 bg-black/40 rounded-2xl p-6 md:p-8 border border-white/5">
+                    <h3 class="text-xl font-bold font-heading text-white flex items-center gap-3 mb-6">
+                        <i class="fa-solid fa-file-contract text-brand-rose"></i> The Feasibility Agreement
+                    </h3>
+                    
+                    <div class="space-y-5">
+                        <label class="flex items-start gap-4 cursor-pointer group">
+                            <input type="checkbox" required class="custom-checkbox mt-1">
+                            <span class="text-sm text-zinc-300 leading-relaxed group-hover:text-white transition-colors">
+                                <strong class="text-white font-semibold">14-Day Probation.</strong> I understand that I am entering a 14-day trial period. I must close at least 1 B2B client (Starter, Growth, or Enterprise) to be officially onboarded to the permanent roster.
+                            </span>
+                        </label>
+
+                        <label class="flex items-start gap-4 cursor-pointer group">
+                            <input type="checkbox" required class="custom-checkbox mt-1">
+                            <span class="text-sm text-zinc-300 leading-relaxed group-hover:text-white transition-colors">
+                                <strong class="text-white font-semibold">100% Commission Structure.</strong> I acknowledge that there is no fixed base salary. I will be compensated exclusively via a performance-based commission structure (up to 20%) on all revenue generated from deals I successfully close.
+                            </span>
+                        </label>
+
+                        <label class="flex items-start gap-4 cursor-pointer group">
+                            <input type="checkbox" required class="custom-checkbox mt-1">
+                            <span class="text-sm text-zinc-300 leading-relaxed group-hover:text-white transition-colors">
+                                <strong class="text-white font-semibold">Brand Standard.</strong> I agree to represent Feasibility Media professionally. Any spam, unethical sales practices, or misrepresentation of our services will result in immediate termination.
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <div class="pt-4">
+                    <button type="submit" id="submit-btn" class="primary-btn w-full py-5 rounded-xl font-bold uppercase tracking-widest text-sm flex items-center justify-center gap-3">
+                        <span>Initialize Workspace</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <p class="text-center text-xs text-zinc-600 mt-4 font-mono">SECURE 256-BIT ENCRYPTED CONNECTION</p>
+                </div>
+            </form>
+
+        </div>
+    </main>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 modal">
+        <div class="modal-content bg-brand-panel border border-white/10 rounded-[32px] p-10 sm:p-14 max-w-md w-full relative shadow-2xl text-center">
+            
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-brand-emerald rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
+            
+            <div class="w-24 h-24 sm:w-28 sm:h-28 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto mb-8 shadow-[0_0_40px_rgba(16,185,129,0.2)]">
+                <i class="fa-solid fa-check text-5xl sm:text-6xl text-brand-emerald"></i>
+            </div>
+            
+            <h3 class="text-3xl font-black text-white font-heading tracking-tight mb-4">Uplink Established</h3>
+            <p class="text-zinc-400 text-base mb-8 leading-relaxed font-light">Your profile has been registered. You will receive access to your Feasibility Media email and Slack workspace shortly.</p>
+            
+            <p class="text-brand-emerald font-mono text-sm font-bold uppercase tracking-widest mb-2">Status: Active</p>
+            <p class="text-zinc-600 font-mono text-xs">Probation clock started.</p>
+        </div>
+    </div>
+
+    <script>
+        function handleOnboarding(e) {
+            e.preventDefault();
+            const form = e.target;
+            const btn = document.getElementById('submit-btn');
+            
+            // UI State change
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i> <span class="ml-2">PROCESSING...</span>';
+            
+            // Submitting to Formspree
+            fetch(form.action, {
+                method: form.method,
+                body: new FormData(form),
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    // Show Success Modal on success
+                    const modal = document.getElementById('success-modal');
+                    modal.classList.add('active');
+                    form.reset(); // Optional: reset the form
+                } else {
+                    response.json().then(data => {
+                        if (Object.hasOwn(data, 'errors')) {
+                            alert(data["errors"].map(error => error["message"]).join(", "));
+                        } else {
+                            alert("Oops! There was a problem submitting your form");
+                        }
+                    });
+                    resetButton(btn);
+                }
+            }).catch(error => {
+                alert("Network error. Please check your connection and try again.");
+                resetButton(btn);
+            });
+        }
+        
+        function resetButton(btn) {
+            btn.disabled = false;
+            btn.innerHTML = '<span>Initialize Workspace</span> <i class="fa-solid fa-arrow-right"></i>';
+        }
+    </script>
+</body>
+</html>
