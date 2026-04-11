@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supreme Command Center | Feasibility Media</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;600;800;900&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
@@ -79,10 +77,8 @@
 </head>
 <body class="h-screen w-full flex relative">
 
-    <!-- Background Elements -->
     <div class="fixed inset-0 z-0 pointer-events-none" style="background-image: radial-gradient(circle at 100% 0%, rgba(225, 29, 72, 0.08) 0%, transparent 40%), radial-gradient(circle at 0% 100%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);"></div>
 
-    <!-- SIDEBAR -->
     <aside class="w-64 glass-panel border-r border-white/5 h-full flex flex-col z-20 shrink-0">
         <div class="p-6 border-b border-white/5">
             <div class="flex items-center gap-3">
@@ -132,10 +128,8 @@
         </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <main class="flex-1 h-full flex flex-col relative z-10">
         
-        <!-- Header -->
         <header class="h-20 border-b border-white/5 glass-panel flex justify-between items-center px-8 shrink-0">
             <h1 id="page-title" class="text-2xl font-bold text-white font-heading">God's Eye View</h1>
             
@@ -149,12 +143,9 @@
             </div>
         </header>
 
-        <!-- TABS CONTAINER -->
         <div class="flex-1 overflow-y-auto p-8">
             
-            <!-- TAB: OVERVIEW -->
             <div id="tab-overview" class="tab-content active space-y-8">
-                <!-- God Mode KPIs -->
                 <div class="grid grid-cols-4 gap-6">
                     <div class="card-ceo p-6 border-t-2 border-emerald-500">
                         <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Total Agency Pipeline</p>
@@ -178,7 +169,6 @@
                     </div>
                 </div>
 
-                <!-- Recent Activity Feed -->
                 <div class="card-ceo p-6">
                     <h3 class="text-lg font-bold text-white font-heading mb-4">Latest Global Pipeline Activity</h3>
                     <div class="overflow-x-auto">
@@ -193,14 +183,12 @@
                                 </tr>
                             </thead>
                             <tbody id="overview-recent-leads" class="text-sm text-slate-300">
-                                <!-- JS Populated -->
-                            </tbody>
+                                </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB: TEAM ROSTER & ACCESS -->
             <div id="tab-team" class="tab-content">
                 <div class="card-ceo p-6 min-h-[600px] flex flex-col">
                     <div class="flex justify-between items-center mb-6">
@@ -220,14 +208,12 @@
                                 </tr>
                             </thead>
                             <tbody id="team-table-body" class="text-sm text-slate-300">
-                                <!-- JS Populated -->
-                            </tbody>
+                                </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB: MASTER PIPELINE (GOD VIEW) -->
             <div id="tab-pipeline" class="tab-content">
                 <div class="card-ceo p-6 min-h-[600px] flex flex-col">
                     <div class="flex justify-between items-center mb-6">
@@ -254,14 +240,12 @@
                                 </tr>
                             </thead>
                             <tbody id="master-leads-body" class="text-sm text-slate-300">
-                                <!-- JS Populated -->
-                            </tbody>
+                                </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB: MANUAL PAYROLL ENGINE -->
             <div id="tab-payroll" class="tab-content">
                 <div class="card-ceo p-6 min-h-[600px] flex flex-col">
                     <div class="mb-6 border-b border-white/5 pb-4 flex justify-between items-end">
@@ -276,12 +260,10 @@
                     </div>
                     
                     <div class="grid grid-cols-1 xl:grid-cols-2 gap-6" id="payroll-grid">
-                        <!-- JS Populated Cards -->
-                    </div>
+                        </div>
                 </div>
             </div>
 
-            <!-- TAB: SYSTEM AUDIT LOGS -->
             <div id="tab-logs" class="tab-content">
                 <div class="card-ceo p-6 min-h-[600px] flex flex-col">
                     <div class="flex justify-between items-center mb-6">
@@ -295,7 +277,6 @@
                     </div>
                     
                     <div class="bg-black/50 border border-white/5 rounded-xl flex-1 p-4 font-mono text-xs overflow-y-auto" id="audit-log-container">
-                        <!-- JS Populated -->
                         <div class="text-slate-500 italic py-4 text-center">No logs recorded yet.</div>
                     </div>
                 </div>
@@ -304,7 +285,6 @@
         </div>
     </main>
 
-    <!-- MODAL: ADD USER -->
     <div id="modal-add-user" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center modal z-50 p-4">
         <div class="modal-content glass-panel border border-white/10 rounded-2xl w-full max-w-lg p-6 shadow-2xl shadow-black">
             <div class="flex justify-between items-center mb-6">
@@ -347,7 +327,6 @@
         </div>
     </div>
 
-    <!-- MODAL: EDIT LEAD OVERRIDE -->
     <div id="modal-edit-lead" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center modal z-50 p-4">
         <div class="modal-content glass-panel border border-white/10 rounded-2xl w-full max-w-2xl p-6 shadow-2xl shadow-rose-900/20">
             <div class="flex justify-between items-center mb-6">
@@ -369,8 +348,7 @@
                     <div>
                         <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Assigned Rep</label>
                         <select id="edit-ld-rep" class="w-full rounded-lg px-3 py-2 text-sm">
-                            <!-- Populated JS -->
-                        </select>
+                            </select>
                     </div>
                     <div>
                         <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Force Status</label>
@@ -399,7 +377,6 @@
         </div>
     </div>
 
-    <!-- MODAL: AWARD COMMISSION -->
     <div id="modal-award" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center modal z-50 p-4">
         <div class="modal-content glass-panel border border-white/10 rounded-2xl w-full max-w-sm p-6 shadow-2xl shadow-emerald-900/20">
             <div class="flex justify-between items-center mb-6">
@@ -430,7 +407,6 @@
         </div>
     </div>
 
-    <!-- MODAL: BROADCAST -->
     <div id="modal-broadcast" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center modal z-50 p-4">
         <div class="modal-content glass-panel border border-white/10 rounded-2xl w-full max-w-lg p-6 shadow-2xl shadow-purple-900/20">
             <div class="flex justify-between items-center mb-6">
@@ -447,12 +423,10 @@
         </div>
     </div>
 
-    <!-- Toast -->
     <div id="toast" class="fixed bottom-6 right-6 bg-emerald-600 text-white px-6 py-3 rounded-lg shadow-xl font-bold text-sm transform translate-y-20 opacity-0 transition-all duration-300 z-[100] flex items-center gap-2 pointer-events-none">
         <i class="fa-solid fa-check-circle"></i> <span id="toast-msg">Action Successful</span>
     </div>
 
-    <!-- Scripts & Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -515,18 +489,23 @@
         let allUsers = [];
 
         try {
-            const firebaseConfig = JSON.parse(__firebase_config);
+            const firebaseConfig = {
+              apiKey: "AIzaSyAAgcIprurHXdo9tztkqVzLsIzJCWhqWwc",
+              authDomain: "feasibility-44ca4.firebaseapp.com",
+              databaseURL: "https://feasibility-44ca4-default-rtdb.asia-southeast1.firebasedatabase.app",
+              projectId: "feasibility-44ca4",
+              storageBucket: "feasibility-44ca4.firebasestorage.app",
+              messagingSenderId: "166006393145",
+              appId: "1:166006393145:web:6bb64d5ee1a0578a7200e8",
+              measurementId: "G-BVE4SPNZQR"
+            };
             const app = initializeApp(firebaseConfig);
             db = getFirestore(app);
             auth = getAuth(app);
 
             const initAuth = async () => {
                 try {
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
+                    await signInAnonymously(auth);
                 } catch (e) {
                     console.error("Auth error:", e);
                     setDbStatus(false);
