@@ -301,6 +301,10 @@
                                     <input type="number" id="ld-value" required min="0" class="w-full rounded-xl px-4 py-3 text-sm font-mono" placeholder="50000">
                                 </div>
                                 <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Assigned Rep</label>
+                                    <input type="text" id="ld-rep" readonly class="w-full rounded-xl px-4 py-3 text-sm bg-slate-900/50 text-slate-500 cursor-not-allowed border-slate-700">
+                                </div>
+                                <div>
                                     <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Initial Status</label>
                                     <select id="ld-status" class="w-full rounded-xl px-4 py-3 text-sm font-bold bg-slate-900">
                                         <option value="New Lead">New Lead</option>
@@ -415,12 +419,26 @@
 
         // INIT FIREBASE
         try {
-            const firebaseConfig = JSON.parse(__firebase_config);
+            let firebaseConfig;
+            if (typeof __firebase_config !== 'undefined') {
+                firebaseConfig = JSON.parse(__firebase_config);
+            } else {
+                // Fallback configuration to prevent ReferenceError when opened locally
+                firebaseConfig = {
+                    apiKey: "AIzaSyDnKHTghSxW7fi6bp_UGBhR6Nx4paAtO4U",
+                    authDomain: "my-babys-place.firebaseapp.com",
+                    projectId: "my-babys-place",
+                    storageBucket: "my-babys-place.firebasestorage.app",
+                    messagingSenderId: "276027805309",
+                    appId: "1:276027805309:web:7997b78ccf2c5004126b14"
+                };
+            }
+            
             const app = initializeApp(firebaseConfig);
             db = getFirestore(app);
             auth = getAuth(app);
 
-            // Establish secure connection first (Anonymous is fine for reading public docs based on setup)
+            // Establish secure connection first
             const initSystem = async () => {
                 try {
                     if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -535,6 +553,7 @@
             document.getElementById('desk-user-role').innerText = activeUserRecord.role;
             document.getElementById('desk-avatar').src = `https://ui-avatars.com/api/?name=${activeUserRecord.name.replace(/ /g, '+')}&background=0f172a&color=fff`;
             document.getElementById('form-user-name').innerText = activeUserRecord.name;
+            document.getElementById('ld-rep').value = activeUserRecord.name; // Set default rep
 
             // Apply Role-Based UI
             applyRoleBasedAccess(activeUserRecord.role);
@@ -754,6 +773,8 @@
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), newLead);
                 showToast("Prospect added to your pipeline!");
                 document.getElementById('form-add-lead').reset();
+                // Reset assigned rep field based on user
+                document.getElementById('ld-rep').value = activeUserRecord.name;
                 switchTab('leads');
             } catch (err) {
                 console.error("Add error:", err);
