@@ -73,46 +73,6 @@
 
     <div class="fixed inset-0 z-0 pointer-events-none" style="background-image: radial-gradient(circle at 100% 0%, rgba(225, 29, 72, 0.08) 0%, transparent 40%), radial-gradient(circle at 0% 100%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);"></div>
 
-    <div id="login-screen" class="absolute inset-0 z-50 flex items-center justify-center backdrop-blur-xl bg-[#020617]/90 p-4">
-        <div class="glass-panel p-8 md:p-12 w-full max-w-md relative overflow-hidden rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.8)]">
-            <div class="text-center mb-8 relative z-10">
-                <div class="w-14 h-14 mx-auto bg-gradient-to-br from-rose-600 to-orange-500 text-white flex items-center justify-center rounded-2xl text-2xl font-black shadow-lg shadow-rose-500/20 mb-4">F</div>
-                <h2 class="text-3xl font-black text-white font-heading tracking-tight">Supreme Command</h2>
-                <p class="text-xs text-rose-400 font-bold uppercase tracking-widest mt-1">Feasibility Media</p>
-            </div>
-
-            <form id="login-form" class="space-y-6 relative z-10">
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Registered Email</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-slate-500"></i>
-                        <input type="email" id="login-email" required class="w-full rounded-xl pl-11 pr-4 py-3 text-sm focus:border-rose-500">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Access Password</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-500"></i>
-                        <input type="password" id="login-pwd" required class="w-full rounded-xl pl-11 pr-4 py-3 text-sm focus:border-rose-500" placeholder="••••••••">
-                    </div>
-                </div>
-                <div id="login-error" class="hidden bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold text-center py-3 rounded-xl">
-                    Invalid credentials or access revoked.
-                </div>
-                <button type="submit" id="btn-login" class="btn-primary w-full py-4 rounded-xl text-sm tracking-widest uppercase flex items-center justify-center gap-2 mt-4">
-                    <span>Initialize Uplink</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                </button>
-            </form>
-            
-            <div class="mt-8 text-center border-t border-white/5 pt-6">
-                <div class="flex items-center justify-center gap-2 text-xs text-slate-500 font-mono">
-                    <div class="w-2 h-2 rounded-full bg-slate-500 animate-pulse" id="login-db-indicator"></div>
-                    <span id="login-db-status">Connecting to secure core...</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="md:hidden flex h-16 border-b border-white/5 glass-panel justify-between items-center px-4 shrink-0 z-30">
         <div class="flex items-center gap-3">
             <div class="w-8 h-8 bg-gradient-to-br from-rose-600 to-orange-500 text-white flex items-center justify-center rounded-lg text-sm font-black shadow-lg">F</div>
@@ -137,7 +97,7 @@
 
         <div class="p-6 pb-2 border-b border-white/5 flex items-center gap-3">
             <div class="w-10 h-10 rounded-full border-2 border-rose-500 overflow-hidden shadow-[0_0_15px_rgba(225,29,72,0.4)] shrink-0">
-                <img id="desk-avatar" src="https://ui-avatars.com/api/?name=CEO&background=0f172a&color=fff" class="w-full h-full">
+                <img src="https://ui-avatars.com/api/?name=CEO&background=0f172a&color=fff" class="w-full h-full">
             </div>
             <div class="overflow-hidden">
                 <p class="text-sm font-bold text-white leading-tight truncate">Chief Executive</p>
@@ -164,12 +124,6 @@
             <button onclick="switchTab('logs')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
                 <i class="fa-solid fa-terminal w-5 text-center"></i> System Audit Logs
             </button>
-            
-            <div class="mt-auto border-t border-white/5 pt-2">
-                <button onclick="logout()" class="w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left text-slate-500 hover:text-red-400 transition-colors">
-                    <i class="fa-solid fa-power-off w-5 text-center"></i> Secure Logout
-                </button>
-            </div>
         </nav>
         
         <div class="p-6 border-t border-white/5">
@@ -182,7 +136,7 @@
         </div>
     </aside>
 
-    <main id="app-main-content" class="flex-1 h-full flex flex-col relative z-10 overflow-hidden hidden">
+    <main id="app-main-content" class="flex-1 h-full flex flex-col relative z-10 overflow-hidden">
         
         <header class="h-16 md:h-20 border-b border-white/5 glass-panel flex justify-between items-center px-4 md:px-8 shrink-0">
             <h1 id="page-title" class="text-xl md:text-2xl font-bold text-white font-heading truncate pr-4">God's Eye View</h1>
@@ -645,8 +599,7 @@
               projectId: "feasibility-44ca4", 
               storageBucket: "feasibility-44ca4.firebasestorage.app",
               messagingSenderId: "166006393145", 
-              appId: "1:166006393145:web:6bb64d5ee1a0578a7200e8",
-              measurementId: "G-BVE4SPNZQR"
+              appId: "1:166006393145:web:6bb64d5ee1a0578a7200e8"
             };
             
             const app = initializeApp(fbConfig);
@@ -659,13 +612,24 @@
                     await signInAnonymously(auth);
                     console.log("Uplink Established.");
                     setDbStatus(true);
+
+                    // AUTO LOGIN AS ADMIN
+                    activeUserRecord = {
+                        id: 'master-admin',
+                        name: 'Chief Executive',
+                        role: 'Head of Sales',
+                        email: 'admin@feasibility.com'
+                    };
+                    currentUser = activeUserRecord;
+                    
+                    loadData();
+                    logAudit("System Initialized. God Mode Active.");
+                    showToast("Access Granted");
+
                 } catch (error) {
                     console.error("AUTH ERROR:", error);
                     setDbStatus(false);
-                    // Force the error to show on the UI so we can read it
-                    const errDiv = document.getElementById('login-error');
-                    errDiv.innerText = "Connection Failed: " + error.message;
-                    errDiv.classList.remove('hidden');
+                    showToast("Connection Failed: " + error.message, true);
                 }
             };
             
@@ -677,47 +641,11 @@
         }
 
         function setDbStatus(isOnline) {
-            document.getElementById('login-db-indicator').className = `w-2 h-2 rounded-full ${isOnline ? 'bg-emerald-500 shadow-[0_0_8px_#10b981]' : 'bg-red-500 animate-pulse'}`;
-            document.getElementById('login-db-status').innerText = isOnline ? 'Uplink Established (Secure)' : 'Connection Error.';
-            document.getElementById('db-indicator').className = `w-2 h-2 rounded-full ${isOnline ? 'bg-emerald-500 shadow-[0_0_8px_#10b981]' : 'bg-red-500 animate-pulse'}`;
-            document.getElementById('db-status').innerText = isOnline ? 'Uplink Established' : 'Connection Error';
+            const ind = document.getElementById('db-indicator');
+            const txt = document.getElementById('db-status');
+            if(ind) ind.className = `w-2 h-2 rounded-full ${isOnline ? 'bg-emerald-500 shadow-[0_0_8px_#10b981]' : 'bg-red-500 animate-pulse'}`;
+            if(txt) txt.innerText = isOnline ? 'Uplink Established' : 'Connection Error';
         }
-
-        // LOGIN
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('btn-login'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true;
-            try {
-                const snapshot = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'team_users'));
-                let u = null;
-                snapshot.forEach(doc => {
-                    const d = doc.data();
-                    if(d.email.toLowerCase() === document.getElementById('login-email').value.trim().toLowerCase() && d.password === document.getElementById('login-pwd').value.trim()) { u = { id: doc.id, ...d }; }
-                });
-                
-                if (u && u.status !== 'Suspended') {
-                    activeUserRecord = u; currentUser = u;
-                    document.getElementById('login-screen').classList.add('hidden');
-                    document.getElementById('sidebar').classList.remove('hidden');
-                    document.getElementById('app-main-content').classList.remove('hidden');
-                    loadData();
-                    logAudit("CEO Authenticated. God Mode Enabled.");
-                    showToast("Access Granted");
-                } else {
-                    document.getElementById('login-error').innerText = "Invalid credentials or access revoked.";
-                    document.getElementById('login-error').classList.remove('hidden'); btn.innerHTML = '<span>Initialize Uplink</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>'; btn.disabled = false;
-                }
-            } catch (e) { btn.innerHTML = '<span>Initialize Uplink</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>'; btn.disabled = false; }
-        });
-        
-        window.logout = () => {
-            if(unsubscribeLeads) unsubscribeLeads(); if(unsubscribeUsers) unsubscribeUsers(); if(unsubscribeTickets) unsubscribeTickets();
-            activeUserRecord = null; allLeads = []; allTickets = [];
-            document.getElementById('app-main-content').classList.add('hidden');
-            document.getElementById('sidebar').classList.add('hidden');
-            document.getElementById('login-screen').classList.remove('hidden'); document.getElementById('login-pwd').value = "";
-            document.querySelectorAll('.nav-btn')[0].click();
-        };
 
         function loadData() {
             if(!currentUser) return;
@@ -792,7 +720,7 @@
                 const isSusp = user.status === 'Suspended';
                 return `
                 <tr class="border-b border-white/5 hover:bg-white/5 ${isSusp ? 'opacity-50' : ''}">
-                    <td class="py-4 px-4"><div class="flex items-center gap-3"><img src="https://ui-avatars.com/api/?name=${user.name}&background=0f172a&color=fff" class="w-8 h-8 rounded-full border border-slate-600 shrink-0"><span class="font-bold text-white">${user.name}</span></div></td>
+                    <td class="py-4 px-4"><div class="flex items-center gap-3"><img src="https://ui-avatars.com/api/?name=${user.name.replace(/ /g, '+')}&background=0f172a&color=fff" class="w-8 h-8 rounded-full border border-slate-600 shrink-0"><span class="font-bold text-white">${user.name}</span></div></td>
                     <td class="py-4 px-4 text-purple-400 font-bold text-xs uppercase tracking-widest">${user.role}</td>
                     <td class="py-4 px-4 text-xs font-mono"><div class="text-slate-400">${user.email}</div><div class="text-rose-300 mt-1">Pwd: ${user.password}</div></td>
                     <td class="py-4 px-4"><span class="px-2 py-1 rounded text-[10px] font-bold uppercase ${isSusp ? 'status-suspended' : 'status-active'}">${user.status}</span></td>
@@ -840,7 +768,7 @@
                 <div class="card-ceo p-5 border border-white/5 flex flex-col">
                     <div class="flex justify-between items-start mb-4">
                         <div class="flex items-center gap-3">
-                            <img src="https://ui-avatars.com/api/?name=${user.name}&background=0f172a&color=fff" class="w-10 h-10 rounded-full border border-slate-600 shrink-0">
+                            <img src="https://ui-avatars.com/api/?name=${user.name.replace(/ /g, '+')}&background=0f172a&color=fff" class="w-10 h-10 rounded-full border border-slate-600 shrink-0">
                             <div>
                                 <h4 class="font-bold text-white flex items-center gap-2">${user.name} <span class="text-[9px] bg-white/10 px-2 py-0.5 rounded text-slate-300 font-normal">${user.status}</span></h4>
                                 <p class="text-[10px] text-slate-400 font-mono">UPI: ${user.upi}</p>
@@ -948,7 +876,7 @@
         };
         window.addTimelineEvent = async () => {
             const id = document.getElementById('tl-lead-id').value; const note = document.getElementById('tl-new-note').value.trim(); if(!note) return;
-            await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), { history: arrayUnion({ note: note, date: new Date().toISOString(), user: "CEO Directive" }) });
+            await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), { history: arrayUnion({ note: note, date: new Date().toISOString(), user: activeUserRecord.name }) });
             document.getElementById('tl-new-note').value = '';
         };
 
