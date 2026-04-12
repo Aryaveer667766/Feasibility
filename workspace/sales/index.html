@@ -79,7 +79,7 @@
         .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
     </style>
 </head>
-<body class="h-screen w-full relative flex">
+<body class="h-screen w-full relative flex flex-col md:flex-row">
 
     <div id="login-screen" class="absolute inset-0 z-50 flex items-center justify-center backdrop-blur-xl bg-[#020617]/90 p-4">
         <div class="glass-panel p-8 md:p-12 w-full max-w-md relative overflow-hidden rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.8)]">
@@ -128,24 +128,31 @@
 
     <div id="app-screen" class="hidden w-full h-full flex flex-col md:flex-row relative">
         
-        <aside class="w-full md:w-64 glass-panel border-b md:border-b-0 md:border-r border-white/5 flex flex-col z-20 shrink-0">
+        <div class="md:hidden flex h-16 border-b border-white/5 glass-panel justify-between items-center px-4 shrink-0 z-30">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-white text-black flex items-center justify-center rounded-lg text-sm font-black">F</div>
+                <span class="text-white font-bold tracking-tight font-heading">Feasibility</span>
+            </div>
+            <button onclick="toggleSidebar()" class="text-white p-2 hover:bg-white/5 rounded-lg transition-colors"><i class="fa-solid fa-bars text-xl"></i></button>
+        </div>
+
+        <div id="mobile-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 hidden md:hidden transition-opacity" onclick="toggleSidebar()"></div>
+
+        <aside id="sidebar" class="w-64 glass-panel border-r border-white/5 flex flex-col z-50 shrink-0 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300">
+            
             <div class="p-4 md:p-6 border-b border-white/5 flex justify-between items-center bg-black/20">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-white text-black flex items-center justify-center rounded-lg text-sm font-black">F</div>
-                    <div class="flex flex-col leading-none hidden md:flex">
+                    <div class="w-8 h-8 bg-white text-black flex items-center justify-center rounded-lg text-sm font-black hidden md:flex">F</div>
+                    <div class="flex flex-col leading-none">
                         <span class="text-white font-bold tracking-tight font-heading">Feasibility</span>
                         <span class="text-[10px] text-purple-400 font-bold uppercase tracking-widest mt-0.5">Sales CRM</span>
                     </div>
                 </div>
-                <div class="flex md:hidden items-center gap-3">
-                    <span id="mob-user-name" class="text-xs font-bold text-white">Loading...</span>
-                    <button onclick="logout()" class="text-slate-400"><i class="fa-solid fa-power-off"></i></button>
-                    <button onclick="document.getElementById('nav-menu').classList.toggle('hidden')" class="text-white p-2"><i class="fa-solid fa-bars"></i></button>
-                </div>
+                <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-white p-2"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
 
-            <div class="hidden md:flex p-6 pb-2 border-b border-white/5 items-center gap-3">
-                <div class="w-10 h-10 rounded-full border-2 border-purple-500 overflow-hidden shadow-[0_0_15px_rgba(147,51,234,0.4)]">
+            <div class="flex p-6 pb-4 border-b border-white/5 items-center gap-3">
+                <div class="w-10 h-10 rounded-full border-2 border-purple-500 overflow-hidden shadow-[0_0_15px_rgba(147,51,234,0.4)] shrink-0">
                     <img id="desk-avatar" src="https://ui-avatars.com/api/?name=User&background=0f172a&color=fff" class="w-full h-full">
                 </div>
                 <div class="overflow-hidden">
@@ -154,7 +161,7 @@
                 </div>
             </div>
 
-            <nav id="nav-menu" class="hidden md:flex flex-col flex-1 py-4 space-y-1 bg-slate-900 md:bg-transparent absolute md:relative top-full left-0 w-full md:w-auto border-b md:border-none border-white/5 z-50">
+            <nav id="nav-menu" class="flex flex-col flex-1 py-4 space-y-1">
                 <button onclick="switchTab('dashboard')" class="nav-btn active w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
                     <i class="fa-solid fa-chart-pie w-5 text-center"></i> <span class="tab-label">My Performance</span>
                 </button>
@@ -168,7 +175,7 @@
                     <i class="fa-solid fa-trophy w-5 text-center text-yellow-500"></i> <span class="tab-label">Team Leaderboard</span>
                 </button>
                 
-                <div class="mt-auto hidden md:block border-t border-white/5 pt-2">
+                <div class="mt-auto border-t border-white/5 pt-2">
                     <button onclick="logout()" class="w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left text-slate-500 hover:text-red-400 transition-colors">
                         <i class="fa-solid fa-power-off w-5 text-center"></i> Secure Logout
                     </button>
@@ -178,11 +185,12 @@
 
         <main class="flex-1 h-full flex flex-col relative z-10 overflow-hidden">
             
-            <header class="hidden md:flex h-20 border-b border-white/5 glass-panel justify-between items-center px-8 shrink-0">
-                <h1 id="page-title" class="text-2xl font-bold text-white font-heading">My Performance</h1>
-                <div class="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full">
+            <header class="flex h-16 md:h-20 border-b border-white/5 glass-panel justify-between items-center px-4 md:px-8 shrink-0">
+                <h1 id="page-title" class="text-xl md:text-2xl font-bold text-white font-heading truncate pr-4">My Performance</h1>
+                <div class="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full shrink-0">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-widest">Live Sync Active</span>
+                    <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-widest hidden sm:inline">Live Sync Active</span>
+                    <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-widest sm:hidden">Sync</span>
                 </div>
             </header>
 
@@ -190,33 +198,33 @@
                 
                 <div id="tab-dashboard" class="tab-content active space-y-6 md:space-y-8">
                     
-                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                    <div class="grid grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
                         <div class="glass-card p-5 md:p-6 border-t-2 border-purple-500">
-                            <p id="kpi-pipeline-title" class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">My Active Pipeline</p>
-                            <h3 id="kpi-pipeline" class="text-2xl md:text-3xl font-black text-white font-mono">₹0</h3>
+                            <p id="kpi-pipeline-title" class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 truncate">My Active Pipeline</p>
+                            <h3 id="kpi-pipeline" class="text-xl md:text-3xl font-black text-white font-mono truncate">₹0</h3>
                             <p class="text-[9px] md:text-[10px] text-purple-400 mt-2 font-bold">Total value of open deals</p>
                         </div>
                         <div class="glass-card p-5 md:p-6 border-t-2 border-emerald-500">
-                            <p id="kpi-won-title" class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">My Deals Won</p>
-                            <h3 id="kpi-won" class="text-2xl md:text-3xl font-black text-emerald-400 font-mono">₹0</h3>
+                            <p id="kpi-won-title" class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 truncate">My Deals Won</p>
+                            <h3 id="kpi-won" class="text-xl md:text-3xl font-black text-emerald-400 font-mono truncate">₹0</h3>
                             <p class="text-[9px] md:text-[10px] text-slate-500 mt-2 font-bold">Total revenue closed</p>
                         </div>
                         <div class="glass-card p-5 md:p-6 border-t-2 border-blue-500">
-                            <p class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Commission Awarded</p>
-                            <h3 id="kpi-awarded" class="text-2xl md:text-3xl font-black text-blue-400 font-mono">₹0</h3>
+                            <p class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 truncate">Commission Awarded</p>
+                            <h3 id="kpi-awarded" class="text-xl md:text-3xl font-black text-blue-400 font-mono truncate">₹0</h3>
                             <p class="text-[9px] md:text-[10px] text-slate-500 mt-2 font-bold">Approved by CEO</p>
                         </div>
                         <div class="glass-card p-5 md:p-6 border-t-2 border-rose-500">
-                            <p class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Pending Payout</p>
-                            <h3 id="kpi-pending" class="text-2xl md:text-3xl font-black text-rose-400 font-mono">₹0</h3>
+                            <p class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 truncate">Pending Payout</p>
+                            <h3 id="kpi-pending" class="text-xl md:text-3xl font-black text-rose-400 font-mono truncate">₹0</h3>
                             <p class="text-[9px] md:text-[10px] text-rose-500 mt-2 font-bold">To be transferred</p>
                         </div>
                     </div>
 
-                    <div class="glass-card p-6">
+                    <div class="glass-card p-4 md:p-6 w-full overflow-hidden">
                         <h3 class="text-lg font-bold text-white font-heading mb-4 border-b border-white/5 pb-4">My Recent Activity</h3>
                         <div class="overflow-x-auto">
-                            <table class="w-full text-left">
+                            <table class="w-full text-left whitespace-nowrap">
                                 <thead>
                                     <tr class="text-[10px] font-bold text-slate-500 uppercase border-b border-white/5">
                                         <th class="pb-3 px-4">Date</th>
@@ -233,24 +241,24 @@
                 </div>
 
                 <div id="tab-leads" class="tab-content">
-                    <div class="glass-card p-6 flex flex-col min-h-[500px]">
-                        <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6">
+                    <div class="glass-card p-4 md:p-6 flex flex-col min-h-[500px] w-full overflow-hidden">
+                        <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-6">
                             <h3 class="text-lg font-bold text-white font-heading">My Assigned Prospects</h3>
-                            <div class="relative w-full md:w-64">
+                            <div class="relative w-full lg:w-64 shrink-0">
                                 <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-500 text-xs"></i>
                                 <input type="text" id="search-leads" placeholder="Search my deals..." class="w-full rounded-lg pl-8 pr-3 py-1.5 text-sm focus:border-purple-500 bg-black/40">
                             </div>
                         </div>
                         
-                        <div class="overflow-x-auto flex-1">
-                            <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <div class="overflow-x-auto flex-1 pb-4">
+                            <table class="w-full text-left border-collapse whitespace-nowrap min-w-[700px]">
                                 <thead>
                                     <tr class="text-[10px] md:text-xs font-bold text-slate-500 uppercase border-b border-white/10 bg-white/5">
-                                        <th class="py-3 px-4">Company</th>
-                                        <th class="py-3 px-4">Contact</th>
+                                        <th class="py-3 px-4 rounded-tl-lg">Company Details</th>
+                                        <th class="py-3 px-4">Contact Info</th>
                                         <th class="py-3 px-4">Value (₹)</th>
                                         <th class="py-3 px-4">Update Status</th>
-                                        <th class="py-3 px-4 text-right">Delete</th>
+                                        <th class="py-3 px-4 text-right rounded-tr-lg">Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody id="my-leads-body" class="text-sm text-slate-300">
@@ -261,7 +269,7 @@
                 </div>
 
                 <div id="tab-add-lead" class="tab-content">
-                    <div class="max-w-3xl mx-auto glass-card p-6 md:p-10">
+                    <div class="max-w-3xl mx-auto glass-card p-4 md:p-10 w-full">
                         <h3 class="text-2xl font-bold text-white font-heading mb-2">Create New Prospect</h3>
                         <p id="add-lead-desc" class="text-xs text-slate-400 mb-8 border-b border-white/5 pb-6">Enter prospect details. This deal will be automatically assigned to you (<span id="form-user-name" class="text-purple-400 font-bold"></span>) and visible to the CEO.</p>
                         
@@ -290,10 +298,7 @@
                                 <div>
                                     <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Initial Status</label>
                                     <select id="ld-status" class="w-full rounded-xl px-4 py-3 text-sm font-bold bg-slate-900">
-                                        <option value="New Lead">New Lead</option>
-                                        <option value="Contacted">Contacted</option>
-                                        <option value="Meeting Set">Meeting Set</option>
-                                    </select>
+                                        </select>
                                 </div>
                             </div>
                             <div>
@@ -310,7 +315,7 @@
                 </div>
 
                 <div id="tab-leaderboard" class="tab-content">
-                    <div class="glass-card p-6 md:p-10 flex flex-col min-h-[500px]">
+                    <div class="glass-card p-4 md:p-10 flex flex-col min-h-[500px] w-full overflow-hidden">
                         <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6">
                             <div>
                                 <h3 class="text-lg font-bold text-white font-heading text-yellow-500"><i class="fa-solid fa-trophy mr-2"></i> Team Leaderboard</h3>
@@ -318,15 +323,15 @@
                             </div>
                         </div>
                         
-                        <div class="overflow-x-auto flex-1">
-                            <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <div class="overflow-x-auto flex-1 pb-4">
+                            <table class="w-full text-left border-collapse whitespace-nowrap min-w-[600px]">
                                 <thead>
                                     <tr class="text-[10px] md:text-xs font-bold text-slate-500 uppercase border-b border-white/10 bg-white/5">
-                                        <th class="py-3 px-4">Rank</th>
+                                        <th class="py-3 px-4 rounded-tl-lg w-16 text-center">Rank</th>
                                         <th class="py-3 px-4">Sales Representative</th>
                                         <th class="py-3 px-4">Active Pipeline</th>
                                         <th class="py-3 px-4">Deals Won</th>
-                                        <th class="py-3 px-4 text-emerald-400">Total Revenue Closed (₹)</th>
+                                        <th class="py-3 px-4 text-emerald-400 rounded-tr-lg">Total Revenue Closed (₹)</th>
                                     </tr>
                                 </thead>
                                 <tbody id="leaderboard-body" class="text-sm text-slate-300">
@@ -346,8 +351,28 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, getDocs, addDoc, onSnapshot, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // GLOBAL CONFIG
+        const LEAD_STATUSES = [
+            'New Lead', 'Attempted Contact', 'Contacted', 'Discovery', 
+            'Meeting Set', 'Proposal Sent', 'In Negotiation', 
+            'Closed Won', 'Closed Lost', 'Unqualified'
+        ];
+
+        // MOBILE SIDEBAR TOGGLE
+        window.toggleSidebar = function() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        };
 
         // UI HELPERS
         window.switchTab = function(tabId) {
@@ -360,25 +385,26 @@
             }
 
             const isHead = activeUserRecord && activeUserRecord.role === 'Head of Sales';
+            const isSenior = activeUserRecord && (activeUserRecord.role === 'Senior Executive' || isHead);
 
             const titles = { 
-                'dashboard': isHead ? "Agency Performance" : "My Performance", 
-                'leads': isHead ? "Master Pipeline" : "My Pipeline", 
+                'dashboard': isSenior ? "Agency Performance" : "My Performance", 
+                'leads': isSenior ? "Master Pipeline" : "My Pipeline", 
                 'add-lead': 'Add New Prospect',
                 'leaderboard': 'Team Leaderboard'
             };
             document.getElementById('page-title').innerText = titles[tabId];
 
-            // Close mobile menu if open
-            const navMenu = document.getElementById('nav-menu');
-            if(!navMenu.classList.contains('hidden') && window.innerWidth < 768) {
-                navMenu.classList.add('hidden');
+            // Auto-close sidebar on mobile after clicking a tab
+            if(window.innerWidth < 768) {
+                document.getElementById('sidebar').classList.add('-translate-x-full');
+                document.getElementById('mobile-overlay').classList.add('hidden');
             }
         };
 
         window.showToast = function(msg, isError=false) {
             const toast = document.getElementById('toast');
-            toast.className = `fixed bottom-6 right-6 text-white px-6 py-3 rounded-xl shadow-2xl font-bold text-sm transform translate-y-0 opacity-100 transition-all duration-300 z-[100] flex items-center gap-3 ${isError ? 'bg-red-600' : 'bg-emerald-600'}`;
+            toast.className = `fixed bottom-6 right-4 md:right-6 text-white px-6 py-3 rounded-xl shadow-2xl font-bold text-sm transform translate-y-0 opacity-100 transition-all duration-300 z-[100] flex items-center gap-3 ${isError ? 'bg-red-600' : 'bg-emerald-600'}`;
             document.getElementById('toast-msg').innerText = msg;
             setTimeout(() => {
                 toast.classList.replace('translate-y-0', 'translate-y-24');
@@ -413,7 +439,6 @@
             db = getFirestore(app);
             auth = getAuth(app);
 
-            // Establish secure connection first
             const initSystem = async () => {
                 try {
                     await signInAnonymously(auth);
@@ -455,7 +480,6 @@
             errDiv.classList.add('hidden');
 
             try {
-                // Fetch all team users and check credentials in memory
                 const usersRef = collection(db, 'artifacts', appId, 'public', 'data', 'team_users');
                 const querySnapshot = await getDocs(usersRef);
                 
@@ -482,6 +506,7 @@
                     
                     document.getElementById('login-screen').classList.add('hidden');
                     document.getElementById('app-screen').classList.remove('hidden');
+                    document.getElementById('app-screen').classList.add('flex');
                     showToast(`Welcome back, ${foundUser.name}`);
                 } else {
                     errDiv.innerText = "Invalid credentials.";
@@ -510,39 +535,37 @@
             document.getElementById('btn-login').disabled = false;
             
             document.getElementById('app-screen').classList.add('hidden');
+            document.getElementById('app-screen').classList.remove('flex');
             document.getElementById('login-screen').classList.remove('hidden');
             
-            // Reset tab
             document.querySelectorAll('.nav-btn')[0].click();
         };
 
         // --- APP WORKSPACE INITIALIZATION ---
         function initializeAppWorkspace() {
-            // Setup UI Headers
+            // Setup Initial UI Headers
             document.getElementById('desk-user-name').innerText = activeUserRecord.name;
-            document.getElementById('mob-user-name').innerText = activeUserRecord.name;
             document.getElementById('desk-user-role').innerText = activeUserRecord.role;
             document.getElementById('desk-avatar').src = `https://ui-avatars.com/api/?name=${activeUserRecord.name.replace(/ /g, '+')}&background=0f172a&color=fff`;
             document.getElementById('form-user-name').innerText = activeUserRecord.name;
-            document.getElementById('ld-rep').value = activeUserRecord.name; // Set default rep
+            document.getElementById('ld-rep').value = activeUserRecord.name;
+            
+            // Populate Initial Status Dropdown
+            document.getElementById('ld-status').innerHTML = LEAD_STATUSES.map(s => `<option value="${s}">${s}</option>`).join('');
 
-            // Apply Role-Based UI
+            // Apply Role-Based UI (Senior Executives get full access)
             applyRoleBasedAccess(activeUserRecord.role);
 
-            // 1. Listen to Real-time changes on THIS user's doc (for Commissions)
+            // 1. Listen to Real-time changes on THIS user's doc
             const userDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'team_users', activeUserRecord.id);
             unsubscribeUser = onSnapshot(userDocRef, (docSnap) => {
                 if(docSnap.exists()) {
                     const data = docSnap.data();
-                    
-                    // Auto-logout if suspended by CEO while logged in
                     if(data.status === 'Suspended') {
                         alert("Your access has been suspended by the administrator.");
                         logout();
                         return;
                     }
-
-                    // Update Commission KPIs
                     const awarded = Number(data.commission_awarded) || 0;
                     const paid = Number(data.commission_paid) || 0;
                     const pending = Math.max(0, awarded - paid);
@@ -552,18 +575,20 @@
                 }
             });
 
-            // 2. Listen to all leads, filter in memory for THIS user
+            // 2. Listen to all leads, filter in memory
             const leadsRef = collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads');
             unsubscribeLeads = onSnapshot(leadsRef, (snapshot) => {
                 myLeads = [];
                 allAgencyLeads = [];
                 
+                const isSenior = activeUserRecord.role === 'Head of Sales' || activeUserRecord.role === 'Senior Executive';
+
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     allAgencyLeads.push({ id: doc.id, ...data });
 
-                    // FILTER: Head of Sales sees ALL leads. Others see ONLY their own.
-                    if(activeUserRecord.role === 'Head of Sales') {
+                    // FILTER: Head of Sales & Senior Executive see ALL leads.
+                    if(isSenior) {
                         myLeads.push({ id: doc.id, ...data });
                     } else if(data.rep === activeUserRecord.name) {
                         myLeads.push({ id: doc.id, ...data });
@@ -575,7 +600,7 @@
                 renderDashboard();
                 renderMyPipeline();
 
-                if (activeUserRecord.role === 'Head of Sales' || activeUserRecord.role === 'Senior Executive') {
+                if (isSenior) {
                     renderLeaderboard();
                 }
             });
@@ -586,25 +611,25 @@
             const isSenior = role === 'Senior Executive' || isHead;
 
             // 1. Dashboard Titles
-            document.getElementById('kpi-pipeline-title').innerText = isHead ? 'Agency Active Pipeline' : 'My Active Pipeline';
-            document.getElementById('kpi-won-title').innerText = isHead ? 'Agency Deals Won' : 'My Deals Won';
-            document.querySelectorAll('[onclick="switchTab(\'dashboard\')"] .tab-label').forEach(el => el.innerText = isHead ? 'Agency Performance' : 'My Performance');
-            document.querySelectorAll('[onclick="switchTab(\'leads\')"] .tab-label').forEach(el => el.innerText = isHead ? 'Master Pipeline' : 'My Pipeline');
-            document.getElementById('page-title').innerText = isHead ? 'Agency Performance' : 'My Performance';
+            document.getElementById('kpi-pipeline-title').innerText = isSenior ? 'Agency Active Pipeline' : 'My Active Pipeline';
+            document.getElementById('kpi-won-title').innerText = isSenior ? 'Agency Deals Won' : 'My Deals Won';
+            document.querySelectorAll('[onclick="switchTab(\'dashboard\')"] .tab-label').forEach(el => el.innerText = isSenior ? 'Agency Performance' : 'My Performance');
+            document.querySelectorAll('[onclick="switchTab(\'leads\')"] .tab-label').forEach(el => el.innerText = isSenior ? 'Master Pipeline' : 'My Pipeline');
+            document.getElementById('page-title').innerText = isSenior ? 'Agency Performance' : 'My Performance';
 
-            // 2. Add Lead Form - Assigned Rep Field
+            // 2. Add Lead Form - Assigned Rep Field (Seniors can override)
             const repInput = document.getElementById('ld-rep');
             const addLeadDesc = document.getElementById('add-lead-desc');
-            if (isHead) {
+            if (isSenior) {
                 repInput.readOnly = false;
                 repInput.classList.remove('bg-slate-900/50', 'text-slate-500', 'cursor-not-allowed', 'border-slate-700');
                 repInput.classList.add('bg-black/40', 'text-white', 'border-white/10');
-                addLeadDesc.innerHTML = `Enter prospect details. As Head of Sales, you can assign this to any rep (Default: <span class="text-purple-400 font-bold">${activeUserRecord.name}</span>).`;
+                addLeadDesc.innerHTML = `Enter prospect details. As a leader, you can assign this to any rep (Default: <span class="text-purple-400 font-bold">${activeUserRecord.name}</span>).`;
             } else {
                 repInput.readOnly = true;
                 repInput.classList.add('bg-slate-900/50', 'text-slate-500', 'cursor-not-allowed', 'border-slate-700');
                 repInput.classList.remove('bg-black/40', 'text-white', 'border-white/10');
-                addLeadDesc.innerHTML = `Enter prospect details. Your name is locked as the assigned rep (<span class="text-purple-400 font-bold">${activeUserRecord.name}</span>) and visible to the CEO.`;
+                addLeadDesc.innerHTML = `Enter prospect details. Your name is locked as the assigned rep (<span class="text-purple-400 font-bold">${activeUserRecord.name}</span>).`;
             }
 
             // 3. Show Leaderboard Tab for Senior/Head
@@ -623,7 +648,7 @@
                 const val = Number(lead.value) || 0;
                 if(lead.status === 'Closed Won') {
                     myWon += val;
-                } else if(lead.status !== 'Closed Lost') {
+                } else if(lead.status !== 'Closed Lost' && lead.status !== 'Unqualified') {
                     myPipe += val;
                 }
             });
@@ -635,12 +660,15 @@
             const recentHTML = myLeads.slice(0, 6).map(lead => {
                 const date = new Date(lead.timestamp || Date.now()).toLocaleDateString();
                 const statusColor = getStatusColor(lead.status);
+                const repBadge = (activeUserRecord.role === 'Senior Executive' || activeUserRecord.role === 'Head of Sales') && lead.rep 
+                    ? `<br><span class="text-[9px] text-purple-400 font-mono">${lead.rep}</span>` : '';
+                
                 return `
                     <tr class="border-b border-white/5 hover:bg-white/5">
                         <td class="py-3 px-4 font-mono text-[10px] text-slate-500">${date}</td>
-                        <td class="py-3 px-4 font-bold text-white">${lead.company}</td>
+                        <td class="py-3 px-4 font-bold text-white whitespace-normal min-w-[120px]">${lead.company} ${repBadge}</td>
                         <td class="py-3 px-4 font-mono font-bold">₹${Number(lead.value).toLocaleString('en-IN')}</td>
-                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded border ${statusColor.classes} text-[10px] font-bold uppercase">${lead.status}</span></td>
+                        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded border ${statusColor.classes} text-[10px] font-bold uppercase whitespace-nowrap">${lead.status}</span></td>
                     </tr>
                 `;
             }).join('');
@@ -649,25 +677,29 @@
 
         window.renderMyPipeline = function(filterText = '') {
             const html = myLeads.filter(lead => 
-                (lead.company||'').toLowerCase().includes(filterText.toLowerCase())
+                (lead.company||'').toLowerCase().includes(filterText.toLowerCase()) ||
+                (lead.rep||'').toLowerCase().includes(filterText.toLowerCase())
             ).map(lead => {
                 const statusColor = getStatusColor(lead.status);
+                const isSenior = activeUserRecord.role === 'Senior Executive' || activeUserRecord.role === 'Head of Sales';
+                const assignedRepHtml = isSenior ? `<p class="text-[9px] text-purple-400 font-mono mt-1"><i class="fa-solid fa-user-tag mr-1"></i>${lead.rep || 'Unassigned'}</p>` : '';
                 
                 return `
                 <tr class="border-b border-white/5 hover:bg-white/5">
-                    <td class="py-3 px-4">
-                        <p class="font-bold text-white">${lead.company}</p>
-                        <p class="text-[10px] text-slate-500 truncate max-w-[200px] mt-1" title="${lead.notes}">${lead.notes || 'No notes'}</p>
+                    <td class="py-3 px-4 whitespace-normal min-w-[200px]">
+                        <p class="font-bold text-white leading-tight">${lead.company}</p>
+                        ${assignedRepHtml}
+                        <p class="text-[10px] text-slate-500 line-clamp-2 mt-1" title="${lead.notes}">${lead.notes || 'No notes'}</p>
                     </td>
-                    <td class="py-3 px-4 text-slate-400 text-xs">${lead.contact || '--'}<br><span class="font-mono text-purple-300">${lead.phone}</span></td>
+                    <td class="py-3 px-4 text-slate-400 text-xs">${lead.contact || '--'}<br><span class="font-mono text-blue-300">${lead.phone}</span></td>
                     <td class="py-3 px-4 font-mono font-bold text-emerald-400">₹${Number(lead.value).toLocaleString('en-IN')}</td>
                     <td class="py-3 px-4">
-                        <select onchange="updateLeadStatus('${lead.id}', this.value)" class="bg-black/50 border border-white/10 rounded-lg px-2 py-1.5 text-xs font-bold ${statusColor.text} focus:outline-none cursor-pointer appearance-none">
+                        <select onchange="updateLeadStatus('${lead.id}', this.value)" class="bg-black/50 border border-white/10 rounded-lg px-2 py-2 text-xs font-bold ${statusColor.text} focus:outline-none cursor-pointer appearance-none w-36">
                             ${generateStatusOptions(lead.status)}
                         </select>
                     </td>
                     <td class="py-3 px-4 text-right">
-                        <button onclick="deleteMyLead('${lead.id}')" class="text-slate-500 hover:text-red-400 transition-colors p-2 bg-white/5 rounded" title="Delete Deal"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="deleteMyLead('${lead.id}')" class="text-slate-500 hover:text-red-400 transition-colors p-2 bg-white/5 hover:bg-red-500/10 rounded" title="Delete Deal"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
             `}).join('');
@@ -679,7 +711,6 @@
         window.renderLeaderboard = function() {
             const repStats = {};
             
-            // Calculate stats per rep
             allAgencyLeads.forEach(lead => {
                 const repName = lead.rep || 'Unassigned';
                 if (!repStats[repName]) {
@@ -690,12 +721,11 @@
                 if (lead.status === 'Closed Won') {
                     repStats[repName].wonCount++;
                     repStats[repName].wonValue += val;
-                } else if (lead.status !== 'Closed Lost') {
+                } else if (lead.status !== 'Closed Lost' && lead.status !== 'Unqualified') {
                     repStats[repName].pipeline += val;
                 }
             });
 
-            // Sort by revenue won (descending)
             const sortedReps = Object.values(repStats).sort((a, b) => b.wonValue - a.wonValue);
 
             const html = sortedReps.map((rep, index) => {
@@ -706,10 +736,10 @@
 
                 return `
                 <tr class="border-b border-white/5 hover:bg-white/5">
-                    <td class="py-3 px-4 text-center w-10">${rankIcon}</td>
+                    <td class="py-3 px-4 text-center w-16">${rankIcon}</td>
                     <td class="py-3 px-4 font-bold text-white flex items-center gap-3">
-                        <img src="https://ui-avatars.com/api/?name=${rep.name.replace(/ /g, '+')}&background=0f172a&color=fff" class="w-6 h-6 rounded-full border border-white/10">
-                        ${rep.name}
+                        <img src="https://ui-avatars.com/api/?name=${rep.name.replace(/ /g, '+')}&background=0f172a&color=fff" class="w-6 h-6 rounded-full border border-white/10 shrink-0">
+                        <span class="truncate">${rep.name}</span>
                     </td>
                     <td class="py-3 px-4 font-mono text-slate-400">₹${rep.pipeline.toLocaleString('en-IN')}</td>
                     <td class="py-3 px-4 font-bold text-white">${rep.wonCount}</td>
@@ -734,7 +764,7 @@
                 contact: document.getElementById('ld-contact').value.trim(),
                 phone: document.getElementById('ld-phone').value.trim(),
                 value: Number(document.getElementById('ld-value').value),
-                rep: document.getElementById('ld-rep').value.trim(), // Respects manual entry if Head of Sales
+                rep: document.getElementById('ld-rep').value.trim(),
                 status: document.getElementById('ld-status').value,
                 notes: document.getElementById('ld-notes').value.trim(),
                 timestamp: Date.now()
@@ -744,8 +774,7 @@
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), newLead);
                 showToast("Prospect added to your pipeline!");
                 document.getElementById('form-add-lead').reset();
-                // Reset assigned rep field based on user
-                document.getElementById('ld-rep').value = activeUserRecord.name;
+                document.getElementById('ld-rep').value = activeUserRecord.name; // reset rep field
                 switchTab('leads');
             } catch (err) {
                 console.error("Add error:", err);
@@ -781,18 +810,21 @@
         function getStatusColor(status) {
             switch(status) {
                 case 'New Lead': return { classes: 'bg-blue-500/20 border-blue-500/30', text: 'text-blue-400' };
+                case 'Attempted Contact': return { classes: 'bg-slate-500/20 border-slate-500/30', text: 'text-slate-400' };
                 case 'Contacted': return { classes: 'bg-yellow-500/20 border-yellow-500/30', text: 'text-yellow-400' };
+                case 'Discovery': return { classes: 'bg-indigo-500/20 border-indigo-500/30', text: 'text-indigo-400' };
                 case 'Meeting Set': return { classes: 'bg-purple-500/20 border-purple-500/30', text: 'text-purple-400' };
                 case 'Proposal Sent': return { classes: 'bg-orange-500/20 border-orange-500/30', text: 'text-orange-400' };
+                case 'In Negotiation': return { classes: 'bg-pink-500/20 border-pink-500/30', text: 'text-pink-400' };
                 case 'Closed Won': return { classes: 'bg-emerald-500/20 border-emerald-500/30', text: 'text-emerald-400' };
                 case 'Closed Lost': return { classes: 'bg-red-500/20 border-red-500/30', text: 'text-red-400' };
+                case 'Unqualified': return { classes: 'bg-zinc-500/20 border-zinc-500/30', text: 'text-zinc-500' };
                 default: return { classes: 'bg-slate-500/20 border-slate-500/30', text: 'text-slate-400' };
             }
         }
 
         function generateStatusOptions(currentStatus) {
-            const statuses = ['New Lead', 'Contacted', 'Meeting Set', 'Proposal Sent', 'Closed Won', 'Closed Lost'];
-            return statuses.map(s => `<option value="${s}" ${s === currentStatus ? 'selected' : ''} class="bg-slate-800 text-white">${s}</option>`).join('');
+            return LEAD_STATUSES.map(s => `<option value="${s}" ${s === currentStatus ? 'selected' : ''} class="bg-slate-800 text-white">${s}</option>`).join('');
         }
 
     </script>
