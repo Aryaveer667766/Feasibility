@@ -38,12 +38,6 @@
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #8b5cf6; }
 
-        /* Kanban Board Specifics */
-        .kanban-col { min-width: 300px; max-width: 300px; background: rgba(0,0,0,0.2); border-radius: 0.75rem; padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; border: 1px dashed rgba(255,255,255,0.05); }
-        .kanban-card { background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255,255,255,0.1); border-left: 3px solid #8b5cf6; border-radius: 0.5rem; padding: 1rem; cursor: grab; transition: transform 0.2s; }
-        .kanban-card:active { cursor: grabbing; transform: scale(0.98); opacity: 0.8; }
-        .kanban-board-container { display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1rem; height: calc(100vh - 180px); }
-
         /* Navigation */
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: fadeUp 0.3s ease-out; }
@@ -142,14 +136,14 @@
                 <button onclick="switchTab('dashboard')" class="nav-btn active w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
                     <i class="fa-solid fa-chart-pie w-5 text-center"></i> <span class="tab-label">My Analytics</span>
                 </button>
-                <button onclick="switchTab('kanban')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
-                    <i class="fa-solid fa-chess-board w-5 text-center"></i> <span class="tab-label">Visual Pipeline</span>
-                </button>
                 <button onclick="switchTab('leads')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
                     <i class="fa-solid fa-table-list w-5 text-center"></i> <span class="tab-label">Data Engine</span>
                 </button>
                 <button onclick="switchTab('add-lead')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
                     <i class="fa-solid fa-user-plus w-5 text-center"></i> <span class="tab-label">New Prospect</span>
+                </button>
+                <button onclick="switchTab('hr')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left border-t border-white/5 mt-2 pt-4">
+                    <i class="fa-solid fa-headset w-5 text-center text-blue-400"></i> <span class="tab-label">HR / Help Desk</span>
                 </button>
                 <button id="nav-leaderboard-desk" onclick="switchTab('leaderboard')" class="nav-btn hidden w-full items-center gap-3 px-6 py-3.5 text-sm text-left border-t border-white/5 mt-2 pt-4">
                     <i class="fa-solid fa-trophy w-5 text-center text-yellow-500"></i> <span class="tab-label">Leaderboard</span>
@@ -213,11 +207,6 @@
                                 </div>
                         </div>
                     </div>
-                </div>
-
-                <div id="tab-kanban" class="tab-content h-full">
-                    <div class="kanban-board-container" id="kanban-board">
-                        </div>
                 </div>
 
                 <div id="tab-leads" class="tab-content">
@@ -306,6 +295,55 @@
                     </div>
                 </div>
 
+                <div id="tab-hr" class="tab-content">
+                    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                        <div class="glass-card p-6 xl:col-span-1 h-fit">
+                            <h3 class="text-lg font-bold text-white font-heading mb-4">Raise HR Ticket</h3>
+                            <p class="text-xs text-slate-400 mb-6">Need help from leadership? Submit a formal request here.</p>
+                            <form id="form-hr-ticket" class="space-y-4">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Subject *</label>
+                                    <input type="text" id="tk-subject" required class="w-full rounded-lg px-3 py-2 text-sm" placeholder="Brief issue summary">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Category *</label>
+                                    <select id="tk-category" class="w-full rounded-lg px-3 py-2 text-sm font-bold bg-slate-900">
+                                        <option value="Payroll / Commission">Payroll / Commission</option>
+                                        <option value="Technical Issue">Technical Issue</option>
+                                        <option value="Client Dispute">Client Dispute</option>
+                                        <option value="Leave Request">Leave Request</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Details *</label>
+                                    <textarea id="tk-details" rows="4" required class="w-full rounded-lg px-3 py-2 text-sm resize-none" placeholder="Provide full context..."></textarea>
+                                </div>
+                                <button type="submit" id="btn-submit-ticket" class="bg-blue-600 hover:bg-blue-500 text-white w-full py-3 rounded-lg text-sm font-bold tracking-wide flex items-center justify-center gap-2 transition-colors">
+                                    <i class="fa-solid fa-paper-plane"></i> Submit Ticket
+                                </button>
+                            </form>
+                        </div>
+                        <div class="glass-card p-6 xl:col-span-2 flex flex-col min-h-[500px]">
+                            <h3 class="text-lg font-bold text-white font-heading mb-4 border-b border-white/5 pb-4">My Support History</h3>
+                            <div class="overflow-x-auto flex-1">
+                                <table class="w-full text-left whitespace-nowrap min-w-[500px]">
+                                    <thead>
+                                        <tr class="text-[10px] font-bold text-slate-500 uppercase border-b border-white/10 bg-white/5">
+                                            <th class="py-3 px-4">Date</th>
+                                            <th class="py-3 px-4">Subject</th>
+                                            <th class="py-3 px-4">Category</th>
+                                            <th class="py-3 px-4">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="my-tickets-body" class="text-sm text-slate-300">
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="tab-leaderboard" class="tab-content">
                     <div class="glass-card p-6 md:p-10 flex flex-col min-h-[500px]">
                         <h3 class="text-lg font-bold text-yellow-500 font-heading mb-6"><i class="fa-solid fa-trophy mr-2"></i> Team Leaderboard</h3>
@@ -334,10 +372,10 @@
             <div class="flex justify-between items-start mb-4 border-b border-white/5 pb-4">
                 <div>
                     <h2 id="tl-company" class="text-2xl font-bold text-white font-heading">Company Name</h2>
-                    <div class="flex gap-4 text-xs text-slate-400 font-mono mt-1">
-                        <span id="tl-contact"><i class="fa-solid fa-user mr-1"></i> Contact</span>
-                        <span id="tl-phone"><i class="fa-solid fa-phone mr-1"></i> Phone</span>
-                        <span id="tl-val" class="text-emerald-400 font-bold">₹0</span>
+                    <div class="flex flex-wrap gap-3 md:gap-4 text-xs text-slate-400 font-mono mt-2">
+                        <span id="tl-contact" class="flex items-center"><i class="fa-solid fa-user mr-1"></i> <span>Contact</span></span>
+                        <span id="tl-phone" class="flex items-center"><i class="fa-solid fa-phone mr-1"></i> <span>Phone</span></span>
+                        <span id="tl-val" class="text-emerald-400 font-bold ml-auto md:ml-0">₹0</span>
                     </div>
                 </div>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
@@ -376,8 +414,8 @@
         let db, auth, chartInstance;
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         let activeUserRecord = null;
-        let myLeads = [], allAgencyLeads = [];
-        let unsubscribeLeads = null, unsubscribeUser = null;
+        let myLeads = [], allAgencyLeads = [], myTickets = [];
+        let unsubscribeLeads = null, unsubscribeUser = null, unsubscribeTickets = null;
 
         // UI HELPERS
         window.toggleSidebar = () => {
@@ -397,9 +435,10 @@
             const isSenior = activeUserRecord && (activeUserRecord.role === 'Senior Executive' || activeUserRecord.role === 'Head of Sales');
             const titles = { 
                 'dashboard': isSenior ? "Agency Analytics" : "My Analytics", 
-                'kanban': isSenior ? "Master Board" : "Visual Pipeline",
                 'leads': isSenior ? "Master Database" : "Data Engine", 
-                'add-lead': 'Add New Prospect', 'leaderboard': 'Team Leaderboard'
+                'add-lead': 'Add New Prospect', 
+                'hr': 'HR / Help Desk',
+                'leaderboard': 'Team Leaderboard'
             };
             document.getElementById('page-title').innerText = titles[tabId] || '';
 
@@ -462,8 +501,8 @@
         });
 
         window.logout = () => {
-            if(unsubscribeLeads) unsubscribeLeads(); if(unsubscribeUser) unsubscribeUser();
-            activeUserRecord = null; myLeads = [];
+            if(unsubscribeLeads) unsubscribeLeads(); if(unsubscribeUser) unsubscribeUser(); if(unsubscribeTickets) unsubscribeTickets();
+            activeUserRecord = null; myLeads = []; myTickets = [];
             document.getElementById('app-screen').classList.add('hidden'); document.getElementById('app-screen').classList.remove('flex');
             document.getElementById('login-screen').classList.remove('hidden'); document.getElementById('login-pwd').value = "";
             document.querySelectorAll('.nav-btn')[0].click();
@@ -501,10 +540,20 @@
                 myLeads.sort((a,b) => b.timestamp - a.timestamp);
                 renderAll();
             });
+
+            unsubscribeTickets = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'hr_tickets'), (snap) => {
+                myTickets = [];
+                snap.forEach(d => {
+                    const data = {id: d.id, ...d.data()};
+                    if(isSenior || data.rep === activeUserRecord.name) myTickets.push(data);
+                });
+                myTickets.sort((a,b) => b.timestamp - a.timestamp);
+                renderTickets();
+            });
         }
 
         function renderAll() {
-            renderDashboard(); renderTasks(); renderChart(); renderKanban(); renderTable();
+            renderDashboard(); renderTasks(); renderChart(); renderTable();
             if (activeUserRecord.role === 'Head of Sales' || activeUserRecord.role === 'Senior Executive') renderLeaderboard();
         }
 
@@ -524,12 +573,12 @@
             const tasks = myLeads.filter(l => l.nextAction && l.nextAction <= todayStr && !l.status.includes('Closed'));
             
             const html = tasks.map(l => `
-                <div class="bg-black/40 border border-white/5 rounded-lg p-3 flex justify-between items-center cursor-pointer hover:bg-white/5 transition-colors" onclick="openTimeline('${l.id}')">
-                    <div>
-                        <p class="font-bold text-white text-sm">${l.company}</p>
-                        <p class="text-[10px] text-slate-400 font-mono"><i class="fa-solid fa-phone mr-1 text-rose-400"></i>${l.phone}</p>
+                <div class="bg-black/40 border border-white/5 rounded-lg p-3 flex justify-between items-center hover:bg-white/5 transition-colors">
+                    <div class="cursor-pointer flex-1" onclick="openTimeline('${l.id}')">
+                        <p class="font-bold text-white text-sm line-clamp-1">${l.company}</p>
+                        <p class="text-[10px] text-slate-400 font-mono mt-1"><span class="bg-rose-500/20 text-rose-400 px-2 py-0.5 rounded">Due: ${new Date(l.nextAction).toLocaleDateString()}</span></p>
                     </div>
-                    <span class="bg-rose-500/20 text-rose-400 text-[10px] font-bold px-2 py-1 rounded">Due: ${new Date(l.nextAction).toLocaleDateString()}</span>
+                    <a href="tel:${l.phone}" class="ml-3 bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-400 w-10 h-10 flex items-center justify-center rounded-full transition-colors shrink-0" title="Call Prospect"><i class="fa-solid fa-phone"></i></a>
                 </div>
             `).join('');
             document.getElementById('task-list').innerHTML = html || '<p class="text-sm text-slate-500 italic p-2">Inbox zero! No immediate tasks.</p>';
@@ -556,59 +605,79 @@
             });
         }
 
-        // --- KANBAN BOARD ---
-        function renderKanban() {
-            const board = document.getElementById('kanban-board');
-            board.innerHTML = LEAD_STATUSES.map(status => {
-                const leadsInStatus = myLeads.filter(l => l.status === status);
-                const totalVal = leadsInStatus.reduce((sum, l) => sum + (Number(l.value)||0), 0);
-                
-                const cardsHtml = leadsInStatus.map(l => `
-                    <div class="kanban-card group" draggable="true" ondragstart="drag(event, '${l.id}')">
-                        <div class="flex justify-between items-start mb-2">
-                            <p class="font-bold text-white text-sm line-clamp-1">${l.company}</p>
-                            <button onclick="openTimeline('${l.id}')" class="text-slate-500 hover:text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity"><i class="fa-solid fa-expand"></i></button>
-                        </div>
-                        <p class="text-xs font-mono text-emerald-400 font-bold mb-2">₹${Number(l.value).toLocaleString('en-IN')}</p>
-                        <p class="text-[10px] text-slate-400 truncate"><i class="fa-solid fa-user-tag mr-1"></i>${l.rep}</p>
-                    </div>
-                `).join('');
-
-                return `
-                <div class="kanban-col" ondrop="drop(event, '${status}')" ondragover="allowDrop(event)">
-                    <div class="flex justify-between items-center mb-2 px-1 border-b border-white/10 pb-2">
-                        <h4 class="font-bold text-slate-300 text-sm uppercase tracking-wide">${status}</h4>
-                        <span class="bg-black/50 text-xs font-mono px-2 py-0.5 rounded text-slate-400">${leadsInStatus.length}</span>
-                    </div>
-                    <p class="text-[10px] font-mono text-slate-500 px-1 mb-2">Total: ₹${totalVal.toLocaleString('en-IN')}</p>
-                    <div class="flex-1 overflow-y-auto space-y-3 pr-1">${cardsHtml}</div>
-                </div>`;
-            }).join('');
-        }
-
-        window.allowDrop = (ev) => ev.preventDefault();
-        window.drag = (ev, id) => ev.dataTransfer.setData("leadId", id);
-        window.drop = (ev, status) => {
-            ev.preventDefault();
-            const id = ev.dataTransfer.getData("leadId");
-            if(id) updateLeadField(id, {status: status});
-        };
-
         // --- DATA TABLE ---
         function renderTable() {
-            const html = myLeads.map(l => `
+            const html = myLeads.map(l => {
+                const statusColor = getStatusColor(l.status);
+                const isSenior = activeUserRecord.role === 'Senior Executive' || activeUserRecord.role === 'Head of Sales';
+                const assignedRepHtml = isSenior ? `<p class="text-[9px] text-purple-400 font-mono mt-1"><i class="fa-solid fa-user-tag mr-1"></i>${l.rep || 'Unassigned'}</p>` : '';
+                
+                return `
                 <tr class="border-b border-white/5 hover:bg-white/5">
-                    <td class="py-3 px-4"><p class="font-bold text-white">${l.company}</p><p class="text-[10px] text-slate-400 mt-1"><i class="fa-solid fa-user-tag mr-1"></i>${l.rep}</p></td>
+                    <td class="py-3 px-4 whitespace-normal min-w-[200px]">
+                        <p class="font-bold text-white leading-tight">${l.company}</p>
+                        ${assignedRepHtml}
+                        <p class="text-[10px] text-slate-500 line-clamp-2 mt-1" title="${l.notes}">${l.notes || 'No notes'}</p>
+                    </td>
                     <td class="py-3 px-4 font-mono font-bold text-emerald-400">₹${Number(l.value).toLocaleString('en-IN')}</td>
                     <td class="py-3 px-4 text-xs text-slate-400">${l.source || '--'}</td>
                     <td class="py-3 px-4 text-xs font-mono text-purple-300">${l.nextAction ? new Date(l.nextAction).toLocaleDateString() : '--'}</td>
-                    <td class="py-3 px-4 text-right space-x-2">
-                        <button onclick="openTimeline('${l.id}')" class="text-slate-400 hover:text-white bg-white/5 p-2 rounded"><i class="fa-solid fa-clock-rotate-left"></i></button>
-                        <button onclick="deleteMyLead('${l.id}')" class="text-slate-500 hover:text-red-400 bg-white/5 p-2 rounded"><i class="fa-solid fa-trash"></i></button>
+                    <td class="py-3 px-4 text-right whitespace-nowrap">
+                        <div class="flex justify-end gap-2">
+                            <a href="tel:${l.phone}" class="bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-400 px-3 py-1.5 rounded text-xs font-bold transition-colors flex items-center gap-1" title="Call Now"><i class="fa-solid fa-phone"></i> <span class="hidden lg:inline">Call</span></a>
+                            <select onchange="updateLeadStatus('${l.id}', this.value)" class="bg-black/50 border border-white/10 rounded px-2 py-1.5 text-xs font-bold ${statusColor.text} focus:outline-none cursor-pointer appearance-none w-28">
+                                ${generateStatusOptions(l.status)}
+                            </select>
+                            <button onclick="openTimeline('${l.id}')" class="text-slate-400 hover:text-white bg-white/5 px-3 py-1.5 rounded transition-colors" title="Timeline"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                        </div>
                     </td>
                 </tr>
-            `).join('');
+            `}).join('');
             document.getElementById('my-leads-body').innerHTML = html || '<tr><td colspan="5" class="py-8 text-center text-slate-500">No data found.</td></tr>';
+        }
+        
+        document.getElementById('search-leads').addEventListener('input', (e) => {
+            const filterText = e.target.value.toLowerCase();
+            const filtered = myLeads.filter(l => (l.company||'').toLowerCase().includes(filterText) || (l.rep||'').toLowerCase().includes(filterText));
+            // quick re-render of table body
+            const tempLeads = myLeads; myLeads = filtered; renderTable(); myLeads = tempLeads;
+        });
+
+        // --- HR TICKETS ---
+        document.getElementById('form-hr-ticket').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-ticket'); btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+            
+            const ticket = {
+                subject: document.getElementById('tk-subject').value.trim(),
+                category: document.getElementById('tk-category').value,
+                details: document.getElementById('tk-details').value.trim(),
+                rep: activeUserRecord.name,
+                status: 'Open',
+                timestamp: Date.now()
+            };
+
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'hr_tickets'), ticket);
+                showToast("Ticket submitted to HR."); document.getElementById('form-hr-ticket').reset();
+            } catch(e) { showToast("Failed to submit ticket", true); } finally {
+                btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Ticket';
+            }
+        });
+
+        function renderTickets() {
+            const html = myTickets.map(t => {
+                const statusColor = t.status === 'Open' ? 'text-yellow-400' : (t.status === 'Resolved' ? 'text-emerald-400' : 'text-slate-400');
+                const repInfo = (activeUserRecord.role === 'Senior Executive' || activeUserRecord.role === 'Head of Sales') ? `<p class="text-[9px] text-purple-400 font-mono mt-1">${t.rep}</p>` : '';
+                return `
+                <tr class="border-b border-white/5 hover:bg-white/5">
+                    <td class="py-3 px-4 font-mono text-[10px] text-slate-400">${new Date(t.timestamp).toLocaleDateString()}</td>
+                    <td class="py-3 px-4 whitespace-normal min-w-[200px]"><p class="font-bold text-white text-sm leading-tight">${t.subject}</p>${repInfo}</td>
+                    <td class="py-3 px-4 text-xs text-slate-300">${t.category}</td>
+                    <td class="py-3 px-4 text-xs font-bold ${statusColor}">${t.status}</td>
+                </tr>
+            `}).join('');
+            document.getElementById('my-tickets-body').innerHTML = html || '<tr><td colspan="4" class="py-8 text-center text-slate-500">No support tickets found.</td></tr>';
         }
 
         // --- TIMELINE MODAL ---
@@ -616,8 +685,8 @@
             const l = myLeads.find(x => x.id === id); if(!l) return;
             document.getElementById('tl-lead-id').value = id;
             document.getElementById('tl-company').innerText = l.company;
-            document.getElementById('tl-contact').innerHTML = `<i class="fa-solid fa-user mr-1"></i> ${l.contact || 'N/A'}`;
-            document.getElementById('tl-phone').innerHTML = `<i class="fa-solid fa-phone mr-1"></i> ${l.phone}`;
+            document.getElementById('tl-contact').innerHTML = `<i class="fa-solid fa-user mr-1"></i> <span>${l.contact || 'N/A'}</span>`;
+            document.getElementById('tl-phone').innerHTML = `<i class="fa-solid fa-phone mr-1"></i> <a href="tel:${l.phone}" class="hover:text-emerald-400 underline">${l.phone}</a>`;
             document.getElementById('tl-val').innerText = `₹${Number(l.value).toLocaleString('en-IN')}`;
             
             const history = l.history || [];
@@ -658,18 +727,19 @@
             };
             try {
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), newLead);
-                showToast("Lead initialized!"); document.getElementById('form-add-lead').reset(); document.getElementById('ld-rep').value = activeUserRecord.name; switchTab('kanban');
+                showToast("Lead initialized!"); document.getElementById('form-add-lead').reset(); document.getElementById('ld-rep').value = activeUserRecord.name; switchTab('leads');
             } catch (err) { showToast("Failed to add", true); } finally { btn.disabled = false; }
         });
 
-        window.updateLeadField = async (id, updates) => {
+        window.updateLeadStatus = async (id, newStatus) => {
             try { 
-                if(updates.status) updates.history = arrayUnion({ note: `Status updated to ${updates.status}`, date: new Date().toISOString(), user: activeUserRecord.name });
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), updates); showToast("Deal Updated"); 
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), { 
+                    status: newStatus, 
+                    history: arrayUnion({ note: `Status updated to ${newStatus}`, date: new Date().toISOString(), user: activeUserRecord.name }) 
+                }); 
+                showToast("Status Updated"); 
             } catch(e) { showToast("Error updating", true); }
         };
-
-        window.deleteMyLead = async (id) => { if(confirm("CRITICAL: Delete prospect permanently?")) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id)); };
 
         window.exportDataCSV = () => {
             const data = myLeads;
@@ -693,7 +763,6 @@
         }
         function generateStatusOptions(curr) { return LEAD_STATUSES.map(s => `<option value="${s}" ${s === curr ? 'selected' : ''} class="bg-slate-800">${s}</option>`).join(''); }
 
-        // Leaderboard logic retained from previous implementation
         window.renderLeaderboard = function() {
             const repStats = {};
             allAgencyLeads.forEach(lead => {
