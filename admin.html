@@ -62,6 +62,11 @@
         .nav-btn.active { background: linear-gradient(90deg, rgba(225, 29, 72, 0.15) 0%, transparent 100%); border-left-color: #e11d48; color: #fff; font-weight: 700; }
         .nav-btn:hover:not(.active) { color: white; background: rgba(255,255,255,0.02); }
 
+        /* Quick Filters */
+        .filter-pill { padding: 0.35rem 1rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #94a3b8; transition: all 0.2s; }
+        .filter-pill:hover { background: rgba(255,255,255,0.1); color: white; }
+        .filter-pill.active { background: rgba(225, 29, 72, 0.2); border-color: rgba(225, 29, 72, 0.5); color: #f43f5e; }
+
         /* Modals */
         .modal { opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 100; }
         .modal.active { opacity: 1; pointer-events: auto; }
@@ -81,13 +86,15 @@
             }
             .mobile-label { display: none; }
             .team-grid { grid-template-columns: 2fr 1fr 1.5fr 1fr 1fr; }
-            .sales-grid { grid-template-columns: 2.5fr 1fr 1fr 1fr 1.5fr; }
-            .creative-grid { grid-template-columns: 2fr 1.5fr 1fr 1fr 1.5fr; }
+            .sales-grid { grid-template-columns: 2fr 1fr 1fr 1.5fr 1.5fr; }
+            .creative-grid { grid-template-columns: 2fr 1.5fr 1fr 1.5fr 1.5fr; }
             .hr-grid { grid-template-columns: 1fr 2fr 1.5fr 1fr 1fr; }
         }
     </style>
 </head>
 <body class="h-screen w-full flex flex-col md:flex-row relative">
+
+    <div class="fixed inset-0 z-0 pointer-events-none" style="background-image: radial-gradient(circle at 100% 0%, rgba(225, 29, 72, 0.08) 0%, transparent 40%), radial-gradient(circle at 0% 100%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);"></div>
 
     <div class="md:hidden flex h-16 border-b border-white/5 glass-panel justify-between items-center px-4 shrink-0 z-30">
         <div class="flex items-center gap-3">
@@ -99,7 +106,7 @@
 
     <div id="mobile-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 hidden md:hidden" onclick="toggleSidebar()"></div>
 
-    <aside id="sidebar" class="w-64 glass-panel border-r border-white/5 h-full flex flex-col z-50 shrink-0 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300">
+    <aside id="sidebar" class="w-64 glass-panel border-r border-white/5 h-full flex flex-col z-50 shrink-0 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 hidden md:flex">
         <div class="p-4 md:p-6 border-b border-white/5 flex justify-between items-center">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-gradient-to-br from-rose-600 to-orange-500 text-white items-center justify-center rounded-xl text-lg font-black shadow-lg shadow-rose-500/20 hidden md:flex">F</div>
@@ -214,8 +221,8 @@
                     </div>
 
                     <div class="card-ceo p-6 flex flex-col h-full max-h-[350px]">
-                        <h3 class="text-lg font-bold text-white font-heading mb-4 text-rose-400"><i class="fa-solid fa-fire mr-2"></i> Global Action Items Today</h3>
-                        <div class="overflow-y-auto flex-1 pr-2 space-y-3 custom-scrollbar" id="global-task-list">
+                        <h3 class="text-lg font-bold text-white font-heading mb-4 text-purple-400"><i class="fa-solid fa-satellite-dish mr-2"></i> Agency Pulse</h3>
+                        <div class="overflow-y-auto flex-1 pr-2 space-y-3 custom-scrollbar" id="global-pulse-list">
                             </div>
                     </div>
                 </div>
@@ -243,14 +250,21 @@
 
             <div id="tab-sales-pipeline" class="tab-content">
                 <div class="card-ceo p-4 md:p-6 flex flex-col min-h-[600px] w-full">
-                    <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-6">
+                    <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-6 border-b border-white/10 pb-6">
                         <div>
                             <h3 class="text-lg font-bold text-emerald-400 font-heading">Sales Database</h3>
                             <p class="text-xs text-slate-400">Total visibility over revenue pipeline.</p>
                         </div>
-                        <div class="relative w-full lg:w-64">
-                            <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-500 text-xs"></i>
-                            <input type="text" id="search-leads" placeholder="Search sales deals..." class="w-full bg-slate-900 border border-white/10 rounded-lg pl-8 pr-3 py-1.5 text-sm text-white focus:border-emerald-500">
+                        <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                            <div class="flex flex-wrap gap-2 items-center w-full lg:w-auto">
+                                <button onclick="setSalesFilter('All')" class="filter-pill active" id="sf-all">All</button>
+                                <button onclick="setSalesFilter('Active')" class="filter-pill" id="sf-active">Active</button>
+                                <button onclick="setSalesFilter('Closed Won')" class="filter-pill" id="sf-won">Won</button>
+                            </div>
+                            <div class="relative w-full sm:w-64">
+                                <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-500 text-xs"></i>
+                                <input type="text" id="search-leads" placeholder="Deep search..." class="w-full bg-slate-900 border border-white/10 rounded-lg pl-8 pr-3 py-1.5 text-sm text-white focus:border-emerald-500">
+                            </div>
                         </div>
                     </div>
                     
@@ -259,7 +273,7 @@
                             <div>Deal Info</div>
                             <div>Value</div>
                             <div>Rep</div>
-                            <div>Status</div>
+                            <div>Update Status</div>
                             <div class="text-right">Overrides</div>
                         </div>
                         <div id="master-leads-body" class="flex flex-col mt-2 md:mt-0"></div>
@@ -269,15 +283,20 @@
 
             <div id="tab-creative-pipeline" class="tab-content">
                 <div class="card-ceo p-4 md:p-6 flex flex-col min-h-[600px] w-full">
-                    <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-6">
+                    <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-6 border-b border-white/10 pb-6">
                         <div>
                             <h3 class="text-lg font-bold text-cyan-400 font-heading">Creative Engine</h3>
                             <p class="text-xs text-slate-400">Manage all edits, designs, and creative tasks.</p>
                         </div>
-                        <div class="flex flex-col sm:flex-row gap-3">
-                            <div class="relative w-full sm:w-64">
+                        <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                            <div class="flex flex-wrap gap-2 items-center w-full lg:w-auto">
+                                <button onclick="setCreativeFilter('All')" class="filter-pill active" id="cf-all">All</button>
+                                <button onclick="setCreativeFilter('In Progress')" class="filter-pill" id="cf-active">Active</button>
+                                <button onclick="setCreativeFilter('Review')" class="filter-pill" id="cf-review">Review</button>
+                            </div>
+                            <div class="relative w-full sm:w-56">
                                 <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-500 text-xs"></i>
-                                <input type="text" id="search-creative" placeholder="Search briefs..." class="w-full bg-slate-900 border border-white/10 rounded-lg pl-8 pr-3 py-1.5 text-sm text-white focus:border-cyan-500">
+                                <input type="text" id="search-creative" placeholder="Deep search..." class="w-full bg-slate-900 border border-white/10 rounded-lg pl-8 pr-3 py-1.5 text-sm text-white focus:border-cyan-500">
                             </div>
                             <button onclick="openAssignCreativeModal()" class="bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors shadow-lg shadow-cyan-900/30 flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-plus"></i> Assign Brief
@@ -290,7 +309,7 @@
                             <div>Project Brief</div>
                             <div>Format / Client</div>
                             <div>Deadline</div>
-                            <div>Status</div>
+                            <div>Update Status</div>
                             <div class="text-right">Actions</div>
                         </div>
                         <div id="master-creative-body" class="flex flex-col mt-2 md:mt-0"></div>
@@ -428,7 +447,6 @@
                         </div>
                         <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Next Action</label><input type="date" id="edit-ld-nextaction" class="w-full rounded-lg px-3 py-2 text-sm text-slate-300"></div>
                         <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Assigned Rep</label><select id="edit-ld-rep" class="w-full rounded-lg px-3 py-2 text-sm bg-slate-900"></select></div>
-                        <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Force Status</label><select id="edit-ld-status" class="w-full rounded-lg px-3 py-2 text-sm font-bold bg-slate-900"></select></div>
                     </div>
                     <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">CEO Notes</label><textarea id="edit-ld-notes" rows="3" class="w-full rounded-lg px-3 py-2 text-sm resize-none"></textarea></div>
                     <div class="flex gap-3 pt-2">
@@ -464,13 +482,6 @@
                         <div class="sm:col-span-2"><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Raw Assets Link *</label><input type="url" id="crt-raw" required class="w-full rounded-lg px-3 py-2 text-sm font-mono text-cyan-300" placeholder="G-Drive / Dropbox Link"></div>
                         <div class="sm:col-span-2"><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Inspiration / Reference Link (Optional)</label><input type="url" id="crt-inspiration" class="w-full rounded-lg px-3 py-2 text-sm font-mono text-yellow-300" placeholder="YouTube, Pinterest, competitor ad..."></div>
                         <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Assign To *</label><select id="crt-assignee" required class="w-full rounded-lg px-3 py-2 text-sm bg-slate-900"></select></div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Status</label>
-                            <select id="crt-status" class="w-full rounded-lg px-3 py-2 text-sm font-bold bg-slate-900">
-                                <option>In Progress</option> <option>Awaiting Assets</option> <option>Internal Review</option>
-                                <option>Client Review</option> <option>Revision Requested</option> <option>Approved & Completed</option>
-                            </select>
-                        </div>
                     </div>
                     <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Creative Directives / Notes</label><textarea id="crt-notes" rows="3" class="w-full rounded-lg px-3 py-2 text-sm resize-none" placeholder="Pacing, colors, required elements..."></textarea></div>
                     <div class="flex gap-3 pt-2">
@@ -490,7 +501,7 @@
                     <div class="flex flex-wrap gap-4 text-sm text-slate-300 font-mono mt-3" id="tl-meta-bar">
                         </div>
                 </div>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-white text-2xl bg-white/5 w-10 h-10 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="closeModals()" class="text-slate-400 hover:text-white text-2xl bg-white/5 w-10 h-10 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
             <div class="flex-1 overflow-y-auto pr-4 space-y-5 mb-6 custom-scrollbar" id="tl-history-list"></div>
@@ -586,6 +597,11 @@
         const SALES_STATUSES = ['New Lead', 'Attempted Contact', 'Discovery Call', 'Meeting Set', 'Proposal Sent', 'In Negotiation', 'Closed Won', 'Closed Lost'];
         const CREATIVE_STATUSES = ['In Progress', 'Awaiting Assets', 'Internal Review', 'Client Review', 'Revision Requested', 'Approved & Completed'];
 
+        let currentSalesFilter = 'All';
+        let currentCreativeFilter = 'All';
+        let activeUserRecord = null;
+        let allLeads = [], allUsers = [], allTickets = [], allCreatives = [];
+
         // UI Helpers
         window.toggleSidebar = function() {
             document.getElementById('sidebar').classList.toggle('-translate-x-full');
@@ -634,7 +650,6 @@
         // Firebase Initialization
         let db, auth, chartInstance;
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        let allLeads = [], allUsers = [], allTickets = [], allCreatives = [];
 
         try {
             const fbConfig = {
@@ -657,6 +672,7 @@
                     
                     // AUTO LOGIN BYPASS FOR ADMIN
                     document.getElementById('edit-ld-status').innerHTML = SALES_STATUSES.map(s => `<option value="${s}">${s}</option>`).join('');
+                    activeUserRecord = { name: "Chief Executive" }; // required for timeline notes
                     
                     loadData();
                     logAudit("System Initialized. God Mode Active.");
@@ -740,17 +756,24 @@
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8', font: {size: 10} } } } }
             });
 
-            // Global Tasks
-            const todayStr = new Date().toISOString().split('T')[0];
-            const tasks = allLeads.filter(l => l.nextAction && l.nextAction <= todayStr && !l.status.includes('Closed'));
-            document.getElementById('global-task-list').innerHTML = tasks.map(l => `
-                <div class="bg-black/40 border border-white/5 rounded-lg p-3 flex justify-between items-center hover:bg-white/5 transition-colors cursor-pointer" onclick="openTimeline('${l.id}', 'sales')">
-                    <div class="flex-1">
-                        <p class="font-bold text-white text-sm line-clamp-1">${l.company}</p>
-                        <p class="text-[10px] text-slate-400 mt-1"><span class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono mr-2">${l.rep}</span> <span class="bg-rose-500/20 text-rose-400 px-2 py-0.5 rounded font-mono">Sales Call</span></p>
+            // Master Pulse Feed (Pulls history from all Leads and Creatives)
+            let masterHistory = [];
+            allLeads.forEach(l => { if(l.history) { l.history.forEach(h => masterHistory.push({ ...h, itemType: 'Sales', itemName: l.company, id: l.id })); } });
+            allCreatives.forEach(c => { if(c.history) { c.history.forEach(h => masterHistory.push({ ...h, itemType: 'Creative', itemName: c.title, id: c.id })); } });
+            
+            masterHistory.sort((a,b) => new Date(b.date) - new Date(a.date));
+            
+            document.getElementById('global-task-list').innerHTML = masterHistory.slice(0, 15).map(h => {
+                const iconColor = h.itemType === 'Sales' ? 'text-emerald-400' : 'text-cyan-400';
+                return `
+                <div class="bg-black/40 border border-white/5 rounded-lg p-3 hover:bg-white/5 transition-colors cursor-pointer" onclick="openTimeline('${h.id}', '${h.itemType.toLowerCase()}')">
+                    <p class="text-xs font-bold text-white mb-1">${h.note}</p>
+                    <div class="flex justify-between items-center mt-1">
+                        <span class="text-[9px] font-mono text-slate-400"><i class="fa-solid fa-circle text-[6px] ${iconColor} mr-1"></i>${h.itemName}</span>
+                        <span class="text-[9px] font-mono text-slate-500">${new Date(h.date).toLocaleString()} • ${h.user}</span>
                     </div>
                 </div>
-            `).join('') || '<p class="text-sm text-slate-500 italic">No immediate sales tasks globally.</p>';
+            `}).join('') || '<p class="text-sm text-slate-500 italic">No activity yet.</p>';
         }
 
         function renderTeamRoster() {
@@ -775,38 +798,96 @@
         }
 
         // --- SALES DB ---
+        window.setSalesFilter = function(filter) {
+            currentSalesFilter = filter;
+            document.getElementById('sf-all').classList.remove('active');
+            document.getElementById('sf-active').classList.remove('active');
+            document.getElementById('sf-won').classList.remove('active');
+            
+            if(filter === 'All') document.getElementById('sf-all').classList.add('active');
+            if(filter === 'Active') document.getElementById('sf-active').classList.add('active');
+            if(filter === 'Closed Won') document.getElementById('sf-won').classList.add('active');
+            
+            renderSalesPipeline();
+        }
+
         function getSalesColor(s) {
             const map = { 'New Lead': 'text-blue-400', 'Contacted': 'text-yellow-400', 'Meeting Set': 'text-purple-400', 'Proposal Sent': 'text-orange-400', 'Closed Won': 'text-emerald-400', 'Closed Lost': 'text-red-400' };
             return map[s] || 'text-slate-400';
         }
-        window.renderSalesPipeline = function(filterText = '') {
-            const filtered = allLeads.filter(l => (l.company||'').toLowerCase().includes(filterText.toLowerCase()) || (l.rep||'').toLowerCase().includes(filterText.toLowerCase()));
+
+        function getSalesStatusOptions(curr) { return SALES_STATUSES.map(s => `<option value="${s}" ${s === curr ? 'selected' : ''} class="bg-slate-900 text-white">${s}</option>`).join(''); }
+
+        window.renderSalesPipeline = function() {
+            const filterText = document.getElementById('search-leads').value.toLowerCase();
+            
+            const filtered = allLeads.filter(l => {
+                const textMatch = (l.company||'').toLowerCase().includes(filterText) || (l.rep||'').toLowerCase().includes(filterText) || (l.status||'').toLowerCase().includes(filterText) || (l.source||'').toLowerCase().includes(filterText);
+                
+                let statusMatch = true;
+                if(currentSalesFilter === 'Active') statusMatch = l.status !== 'Closed Won' && l.status !== 'Closed Lost';
+                if(currentSalesFilter === 'Closed Won') statusMatch = l.status === 'Closed Won';
+
+                return textMatch && statusMatch;
+            });
+
             document.getElementById('master-leads-body').innerHTML = filtered.map(l => `
-                <div class="responsive-grid sales-grid hover:bg-white/5">
+                <div class="responsive-grid sales-grid hover:bg-white/5 border-l-2 border-transparent hover:border-emerald-500/50">
                     <div>
                         <p class="font-bold text-white leading-tight text-sm">${l.company}</p>
-                        <p class="text-[10px] text-slate-400 font-mono mt-1"><i class="fa-solid fa-phone text-blue-400 mr-1"></i>${l.phone}</p>
+                        <p class="text-[10px] text-slate-400 font-mono mt-1"><i class="fa-solid fa-phone text-blue-400 mr-1"></i>${l.phone} • ${l.source||'--'}</p>
                     </div>
                     <div class="font-mono font-bold text-emerald-400 text-sm"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Value</span>₹${Number(l.value).toLocaleString('en-IN')}</div>
                     <div><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Rep</span><span class="text-xs font-bold text-slate-300">${l.rep || 'Unassigned'}</span></div>
-                    <div><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Status</span><span class="font-bold text-xs ${getSalesColor(l.status)}">${l.status}</span></div>
+                    <div>
+                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Status</span>
+                        <select onchange="updateInlineStatus('${l.id}', 'sales', this.value)" class="bg-black/60 border border-white/10 rounded-lg px-2 py-1.5 text-[10px] md:text-xs font-bold ${getSalesColor(l.status)} focus:outline-none cursor-pointer appearance-none w-full shadow-inner">
+                            ${getSalesStatusOptions(l.status)}
+                        </select>
+                    </div>
                     <div class="flex justify-end gap-2 whitespace-nowrap">
-                        <button onclick="openEditLeadModal('${l.id}')" class="bg-rose-500/20 text-rose-400 px-3 py-1.5 rounded-lg text-xs font-bold" title="Override"><i class="fa-solid fa-pen"></i></button>
-                        <button onclick="openTimeline('${l.id}', 'sales')" class="bg-white/5 hover:bg-white/10 text-slate-300 px-3 py-1.5 rounded-lg text-xs transition-colors" title="Timeline"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                        <button onclick="openEditLeadModal('${l.id}')" class="bg-rose-500/20 text-rose-400 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors hover:bg-rose-500/40" title="Override"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="openTimeline('${l.id}', 'sales')" class="bg-white/5 hover:bg-white/20 text-slate-300 px-3 py-1.5 rounded-lg text-xs transition-colors" title="Timeline"><i class="fa-solid fa-clock-rotate-left"></i></button>
                         <button onclick="deleteDocItem('sales_leads', '${l.id}')" class="text-slate-500 hover:text-red-400 p-2" title="Delete"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>`
             ).join('') || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-folder-open text-3xl mb-2 opacity-20"></i><p>No sales deals match.</p></div>';
         }
-        document.getElementById('search-leads').addEventListener('input', (e) => renderSalesPipeline(e.target.value));
+        document.getElementById('search-leads').addEventListener('input', () => renderSalesPipeline());
 
         // --- CREATIVE DB ---
+        window.setCreativeFilter = function(filter) {
+            currentCreativeFilter = filter;
+            document.getElementById('cf-all').classList.remove('active');
+            document.getElementById('cf-active').classList.remove('active');
+            document.getElementById('cf-review').classList.remove('active');
+            
+            if(filter === 'All') document.getElementById('cf-all').classList.add('active');
+            if(filter === 'In Progress') document.getElementById('cf-active').classList.add('active');
+            if(filter === 'Review') document.getElementById('cf-review').classList.add('active');
+            
+            renderCreativePipeline();
+        }
+
         function getCreativeColor(s) {
             const map = { 'In Progress': 'text-cyan-400', 'Internal Review': 'text-indigo-400', 'Client Review': 'text-purple-400', 'Revision Requested': 'text-rose-400', 'Approved & Completed': 'text-emerald-400' };
             return map[s] || 'text-slate-400';
         }
-        window.renderCreativePipeline = function(filterText = '') {
-            const filtered = allCreatives.filter(c => (c.title||'').toLowerCase().includes(filterText.toLowerCase()) || (c.assignee||'').toLowerCase().includes(filterText.toLowerCase()));
+        function getCreativeStatusOptions(curr) { return CREATIVE_STATUSES.map(s => `<option value="${s}" ${s === curr ? 'selected' : ''} class="bg-slate-900 text-white">${s}</option>`).join(''); }
+
+        window.renderCreativePipeline = function() {
+            const filterText = document.getElementById('search-creative').value.toLowerCase();
+            
+            const filtered = allCreatives.filter(c => {
+                const textMatch = (c.title||'').toLowerCase().includes(filterText) || (c.assignee||'').toLowerCase().includes(filterText) || (c.client||'').toLowerCase().includes(filterText) || (c.status||'').toLowerCase().includes(filterText);
+                
+                let statusMatch = true;
+                if(currentCreativeFilter === 'In Progress') statusMatch = c.status === 'In Progress' || c.status === 'Revision Requested' || c.status === 'Awaiting Assets';
+                if(currentCreativeFilter === 'Review') statusMatch = c.status === 'Internal Review' || c.status === 'Client Review';
+
+                return textMatch && statusMatch;
+            });
+
             document.getElementById('master-creative-body').innerHTML = filtered.map(c => `
                 <div class="responsive-grid creative-grid hover:bg-white/5 border-l-2 ${c.status==='Approved & Completed'?'border-l-emerald-500':'border-l-cyan-500'}">
                     <div>
@@ -815,18 +896,34 @@
                     </div>
                     <div class="text-xs text-slate-300"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Format</span>${c.type}<br><span class="text-[10px] text-slate-500 mt-1 inline-block">${c.client}</span></div>
                     <div class="text-xs font-mono text-slate-400"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Deadline</span>${new Date(c.deadline).toLocaleDateString()}</div>
-                    <div><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Status</span><span class="font-bold text-[10px] uppercase tracking-wider px-2 py-1 rounded bg-white/5 border border-white/5 ${getCreativeColor(c.status)}">${c.status}</span></div>
+                    <div>
+                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Status</span>
+                        <select onchange="updateInlineStatus('${c.id}', 'creative', this.value)" class="bg-black/60 border border-white/10 rounded-lg px-2 py-1.5 text-[10px] md:text-xs font-bold ${getCreativeColor(c.status)} focus:outline-none cursor-pointer appearance-none w-full shadow-inner">
+                            ${getCreativeStatusOptions(c.status)}
+                        </select>
+                    </div>
                     <div class="flex justify-end gap-2 items-center flex-wrap">
-                        <a href="${c.raw_link}" target="_blank" class="bg-blue-500/10 text-blue-400 px-3 py-1.5 rounded-lg text-xs" title="Raw Assets"><i class="fa-solid fa-folder-open"></i></a>
-                        ${c.inspiration ? `<a href="${c.inspiration}" target="_blank" class="bg-yellow-500/10 text-yellow-400 px-3 py-1.5 rounded-lg text-xs" title="Inspiration Reference"><i class="fa-solid fa-lightbulb"></i></a>` : ''}
-                        ${c.final_link ? `<a href="${c.final_link}" target="_blank" class="bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-lg text-xs" title="Final Link"><i class="fa-solid fa-play"></i></a>` : ''}
-                        <button onclick="openTimeline('${c.id}', 'creative')" class="bg-white/5 hover:bg-white/10 text-slate-300 px-3 py-1.5 rounded-lg text-xs transition-colors" title="Timeline"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                        <a href="${c.raw_link}" target="_blank" class="bg-blue-500/10 hover:bg-blue-500/30 transition-colors text-blue-400 px-3 py-1.5 rounded-lg text-xs" title="Raw Assets"><i class="fa-solid fa-folder-open"></i></a>
+                        ${c.inspiration ? `<a href="${c.inspiration}" target="_blank" class="bg-yellow-500/10 hover:bg-yellow-500/30 transition-colors text-yellow-400 px-3 py-1.5 rounded-lg text-xs" title="Inspiration Reference"><i class="fa-solid fa-lightbulb"></i></a>` : ''}
+                        ${c.final_link ? `<a href="${c.final_link}" target="_blank" class="bg-emerald-500/10 hover:bg-emerald-500/30 transition-colors text-emerald-400 px-3 py-1.5 rounded-lg text-xs" title="Final Link"><i class="fa-solid fa-play"></i></a>` : ''}
+                        <button onclick="openTimeline('${c.id}', 'creative')" class="bg-white/5 hover:bg-white/20 text-slate-300 px-3 py-1.5 rounded-lg text-xs transition-colors" title="Timeline"><i class="fa-solid fa-clock-rotate-left"></i></button>
                         <button onclick="deleteDocItem('creative_tasks', '${c.id}')" class="text-slate-500 hover:text-red-400 p-2" title="Delete"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>`
             ).join('') || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-clapperboard text-3xl mb-2 opacity-20"></i><p>No creative briefs match.</p></div>';
         }
-        document.getElementById('search-creative').addEventListener('input', (e) => renderCreativePipeline(e.target.value));
+        document.getElementById('search-creative').addEventListener('input', () => renderCreativePipeline());
+
+        window.updateInlineStatus = async (id, type, newStatus) => {
+            const collectionName = type === 'sales' ? 'sales_leads' : 'creative_tasks';
+            try { 
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', collectionName, id), { 
+                    status: newStatus,
+                    history: arrayUnion({ note: `Status updated to ${newStatus}`, date: new Date().toISOString(), user: "CEO (Admin)" })
+                }); 
+                showToast("Status Updated"); 
+            } catch(e) { showToast("Error updating status", true); }
+        };
 
         window.openAssignCreativeModal = () => {
             const select = document.getElementById('crt-assignee');
@@ -880,11 +977,11 @@
                     <div class="text-xs text-slate-300"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Category</span><span class="bg-white/5 px-2.5 py-1 rounded-md border border-white/5">${t.category}</span></div>
                     <div><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Status</span><span class="px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider ${statusColor}">${t.status}</span></div>
                     <div class="text-right">
-                        <button onclick="openManageTicket('${t.id}')" class="bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 px-4 py-2 rounded-lg text-xs font-bold transition-colors w-full md:w-auto">Manage</button>
+                        <button onclick="openManageTicket('${t.id}')" class="bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 px-4 py-2 rounded-lg text-xs font-bold transition-colors w-full md:w-auto border border-blue-500/20">Manage</button>
                     </div>
                 </div>`
             }).join('');
-            document.getElementById('hr-tickets-body').innerHTML = html || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-check-circle text-3xl mb-2 opacity-20"></i><p>No support tickets.</p></div>';
+            document.getElementById('hr-tickets-body').innerHTML = html || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-check-circle text-3xl mb-2 opacity-20"></i><p>No open tickets.</p></div>';
             document.getElementById('hr-open-count').innerText = openC;
         }
 
@@ -948,32 +1045,6 @@
         };
         window.deleteUser = async (id) => { if(confirm("CRITICAL: Delete staff permanently?")) { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', id)); logAudit(`Deleted staff ${id}`); showToast("Deleted"); } };
 
-        // SALES OVERRIDE
-        function populateRepDropdowns() {
-            const salesOpts = '<option value="">Unassigned</option>' + allUsers.filter(u => u.role.includes('Sales')).map(u => `<option value="${u.name}">${u.name}</option>`).join('');
-            document.getElementById('edit-ld-rep').innerHTML = salesOpts;
-        }
-
-        window.openEditLeadModal = (id) => {
-            const l = allLeads.find(x => x.id === id); if(!l) return;
-            document.getElementById('edit-ld-id').value = id;
-            document.getElementById('edit-ld-company').value = l.company || ''; document.getElementById('edit-ld-value').value = l.value || 0;
-            document.getElementById('edit-ld-contact').value = l.contact || ''; document.getElementById('edit-ld-phone').value = l.phone || '';
-            document.getElementById('edit-ld-source').value = l.source || 'Cold Email'; document.getElementById('edit-ld-nextaction').value = l.nextAction || '';
-            document.getElementById('edit-ld-rep').value = l.rep || ''; document.getElementById('edit-ld-status').value = l.status || 'New Lead';
-            document.getElementById('edit-ld-notes').value = l.notes || '';
-            document.getElementById('modal-edit-lead').classList.add('active');
-        };
-
-        document.getElementById('form-edit-lead').addEventListener('submit', async (e) => {
-            e.preventDefault(); const id = document.getElementById('edit-ld-id').value; const comp = document.getElementById('edit-ld-company').value;
-            const up = {
-                company: comp, value: Number(document.getElementById('edit-ld-value').value), contact: document.getElementById('edit-ld-contact').value, phone: document.getElementById('edit-ld-phone').value,
-                source: document.getElementById('edit-ld-source').value, nextAction: document.getElementById('edit-ld-nextaction').value,
-                rep: document.getElementById('edit-ld-rep').value, status: document.getElementById('edit-ld-status').value, notes: document.getElementById('edit-ld-notes').value.trim()
-            };
-            try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), up); logAudit(`Overrode sales deal: ${comp}`); showToast("Override Executed"); closeModals(); } catch(e) { showToast("Error", true); }
-        });
 
         window.deleteDocItem = async (collectionName, id) => { if(confirm("CRITICAL: Delete record permanently?")) { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', collectionName, id)); logAudit(`Deleted from ${collectionName}: ${id}`); } };
 
