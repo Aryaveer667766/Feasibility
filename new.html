@@ -19,7 +19,7 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #020617; /* Deepest slate */
+            background-color: #020617; 
             color: #f8fafc;
             overflow: hidden;
             /* Cyan/Indigo gradient for the creative team */
@@ -75,7 +75,13 @@
         ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
 
-        /* Navigation */
+        /* Custom Scrollbars */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(6,182,212,0.5); }
+
+        /* Navigation Tabs */
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes fadeUp { 
@@ -118,7 +124,7 @@
         .modal { opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 100; }
         .modal.active { opacity: 1; pointer-events: auto; }
         
-        /* Mobile List Optimization */
+        /* Mobile-First Responsive Grids */
         .responsive-list-item {
             display: flex; flex-direction: column; gap: 0.75rem; padding: 1rem;
             border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02);
@@ -128,13 +134,10 @@
         
         @media (min-width: 768px) {
             .responsive-list-item {
-                display: grid; flex-direction: row; gap: 1rem; padding: 1rem 1.25rem;
+                display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 1rem; padding: 1rem 1.25rem;
                 background: transparent; border-radius: 0; margin-bottom: 0; align-items: center;
             }
             .mobile-label { display: none; }
-        }
-        @media (max-width: 767px) {
-            .desktop-only { display: none !important; }
         }
     </style>
 </head>
@@ -245,10 +248,7 @@
                 <button onclick="switchTab('new-brief')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
                     <i class="fa-solid fa-file-circle-plus w-5 text-center text-lg"></i> <span class="tab-label">Accept New Brief</span>
                 </button>
-                <button onclick="switchTab('vault')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left border-t border-white/10 mt-3 pt-4">
-                    <i class="fa-solid fa-vault w-5 text-center text-lg text-emerald-400"></i> <span class="tab-label">Asset Vault</span>
-                </button>
-                <button onclick="switchTab('hr')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
+                <button onclick="switchTab('hr')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left border-t border-white/10 mt-3 pt-4">
                     <i class="fa-solid fa-headset w-5 text-center text-lg text-blue-400"></i> <span class="tab-label">Support Desk</span>
                 </button>
                 
@@ -317,13 +317,11 @@
                             </div>
                         </div>
 
-                        <div class="flex flex-col gap-4 md:gap-6">
-                            <!-- Critical Deadlines -->
-                            <div class="glass-card p-4 md:p-6 flex flex-col flex-1 min-h-[250px] max-h-[300px]">
-                                <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3 text-rose-400 flex items-center"><i class="fa-solid fa-stopwatch mr-2"></i> Upcoming Deadlines</h3>
-                                <div class="overflow-y-auto flex-1 pr-2 space-y-2 md:space-y-3 custom-scrollbar" id="deadline-list">
-                                    <!-- Populated via JS -->
-                                </div>
+                        <!-- Critical Deadlines -->
+                        <div class="glass-card p-4 md:p-6 flex flex-col flex-1 min-h-[250px] max-h-[350px]">
+                            <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3 text-rose-400 flex items-center"><i class="fa-solid fa-stopwatch mr-2"></i> Upcoming Deadlines</h3>
+                            <div class="overflow-y-auto flex-1 pr-2 space-y-2 md:space-y-3 custom-scrollbar" id="deadline-list">
+                                <!-- Populated via JS -->
                             </div>
                         </div>
                     </div>
@@ -371,7 +369,7 @@
                 </div>
 
                 <!-- TAB: ACCEPT NEW BRIEF -->
-                <div id="tab-add-lead" class="tab-content">
+                <div id="tab-new-brief" class="tab-content">
                     <div class="max-w-4xl mx-auto glass-card p-4 sm:p-6 md:p-10 w-full relative overflow-hidden">
                         <div class="absolute top-0 left-0 w-full h-1.5 md:h-2 bg-gradient-to-r from-cyan-400 to-indigo-500"></div>
                         <h3 class="text-xl md:text-2xl font-bold text-white font-heading mb-1 md:mb-2 mt-2">Accept New Brief</h3>
@@ -406,6 +404,10 @@
                                     <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 md:mb-2">Raw Assets Link (G-Drive, Dropbox) *</label>
                                     <input type="url" id="pj-raw-link" required class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm font-mono text-cyan-300" placeholder="https://drive.google.com/...">
                                 </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 md:mb-2">Inspiration / Reference Link (Optional)</label>
+                                    <input type="url" id="pj-inspiration" class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm font-mono text-yellow-300" placeholder="https://youtube.com/... or Pinterest board">
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 md:mb-2">Creative Notes / Instructions</label>
@@ -417,35 +419,6 @@
                                 </button>
                             </div>
                         </form>
-                    </div>
-                </div>
-
-                <!-- TAB: ASSET VAULT -->
-                <div id="tab-vault" class="tab-content">
-                    <h2 class="text-xl md:text-2xl font-bold text-white font-heading mb-1 mt-2">Shared Asset Vault</h2>
-                    <p class="text-xs md:text-sm text-slate-400 mb-6 md:mb-8 pb-4">Approved creative resources for all Feasibility Media projects.</p>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                        <a href="#" onclick="showToast('Opening Brand Kit...')" class="glass-card p-6 flex flex-col items-center justify-center text-center group hover:border-cyan-500/50">
-                            <div class="w-14 h-14 md:w-16 md:h-16 rounded-full bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-xl md:text-2xl mb-4 group-hover:scale-110 transition-transform"><i class="fa-solid fa-swatchbook"></i></div>
-                            <h4 class="font-bold text-white mb-1 text-sm md:text-base">Brand Guidelines</h4>
-                            <p class="text-[10px] md:text-xs text-slate-400">Logos, Hex codes, Fonts</p>
-                        </a>
-                        <a href="#" onclick="showToast('Opening Envato Elements...')" class="glass-card p-6 flex flex-col items-center justify-center text-center group hover:border-indigo-500/50">
-                            <div class="w-14 h-14 md:w-16 md:h-16 rounded-full bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-xl md:text-2xl mb-4 group-hover:scale-110 transition-transform"><i class="fa-solid fa-video"></i></div>
-                            <h4 class="font-bold text-white mb-1 text-sm md:text-base">Stock Video & B-Roll</h4>
-                            <p class="text-[10px] md:text-xs text-slate-400">Envato & Storyblocks Access</p>
-                        </a>
-                        <a href="#" onclick="showToast('Opening Artlist...')" class="glass-card p-6 flex flex-col items-center justify-center text-center group hover:border-rose-500/50">
-                            <div class="w-14 h-14 md:w-16 md:h-16 rounded-full bg-rose-500/10 text-rose-400 flex items-center justify-center text-xl md:text-2xl mb-4 group-hover:scale-110 transition-transform"><i class="fa-solid fa-music"></i></div>
-                            <h4 class="font-bold text-white mb-1 text-sm md:text-base">Licensed Audio</h4>
-                            <p class="text-[10px] md:text-xs text-slate-400">Music & SFX Library</p>
-                        </a>
-                        <a href="#" onclick="showToast('Opening Plugin Drive...')" class="glass-card p-6 flex flex-col items-center justify-center text-center group hover:border-emerald-500/50">
-                            <div class="w-14 h-14 md:w-16 md:h-16 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl md:text-2xl mb-4 group-hover:scale-110 transition-transform"><i class="fa-solid fa-puzzle-piece"></i></div>
-                            <h4 class="font-bold text-white mb-1 text-sm md:text-base">Premiere / AE Plugins</h4>
-                            <p class="text-[10px] md:text-xs text-slate-400">Mogrt files & Presets</p>
-                        </a>
                     </div>
                 </div>
 
@@ -538,10 +511,9 @@
                     <h2 id="tl-company" class="text-xl md:text-3xl font-bold text-white font-heading tracking-tight">Company Name</h2>
                     <div class="flex flex-wrap gap-2 md:gap-6 text-[10px] md:text-sm text-slate-300 font-mono mt-2 md:mt-3">
                         <span id="tl-contact" class="flex items-center bg-white/5 px-2.5 md:px-3 py-1 md:py-1.5 rounded-lg border border-white/10"><i class="fa-solid fa-user mr-1.5 md:mr-2 text-purple-400"></i> <span>Contact</span></span>
-                        <span id="tl-val" class="text-emerald-400 font-bold bg-emerald-500/10 px-2.5 md:px-3 py-1 md:py-1.5 rounded-lg border border-emerald-500/20 ml-auto md:ml-0">₹0</span>
                     </div>
                 </div>
-                <button onclick="closeModals()" class="text-slate-400 hover:text-white text-lg md:text-2xl bg-white/5 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white text-lg md:text-2xl bg-white/5 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
             <div class="flex-1 overflow-y-auto pr-2 md:pr-4 space-y-4 md:space-y-5 mb-4 md:mb-6 custom-scrollbar" id="tl-history-list">
@@ -560,7 +532,7 @@
     </div>
 
     <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-6 right-4 md:right-8 text-white px-5 md:px-6 py-3 md:py-4 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] font-bold text-xs md:text-sm transform translate-y-32 opacity-0 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md">
+    <div id="toast" class="fixed bottom-6 right-4 md:right-8 text-white px-5 md:px-6 py-3 md:py-4 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] font-bold text-xs md:text-sm transform translate-y-32 opacity-0 transition-all duration-400 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md">
         <i class="fa-solid fa-check-circle text-lg md:text-xl"></i> <span id="toast-msg">Success</span>
     </div>
 
@@ -593,7 +565,7 @@
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
             if(event && event.currentTarget.classList.contains('nav-btn')) event.currentTarget.classList.add('active');
             
-            const titles = { 'dashboard': "My Workspace", 'projects': "Active Projects", 'add-lead': 'Accept New Brief', 'vault': 'Asset Vault', 'hr': 'Support Desk' };
+            const titles = { 'dashboard': "My Workspace", 'projects': "Active Projects", 'new-brief': 'Accept New Brief', 'hr': 'Support Desk' };
             document.getElementById('page-title').innerText = titles[tabId] || '';
 
             if(window.innerWidth < 768) {
@@ -610,6 +582,7 @@
         };
 
         window.closeModals = () => { document.querySelectorAll('.modal').forEach(el => el.classList.remove('active')); };
+        window.closeModal = () => { document.getElementById('modal-timeline').classList.remove('active'); };
 
         // INIT FIREBASE
         try {
@@ -694,16 +667,15 @@
                 myProjects = [];
                 snap.forEach(d => {
                     const data = {id: d.id, ...d.data()};
-                    if(data.assignee === activeUserRecord.name || activeUserRecord.id === 'demo-creative') myProjects.push(data); // If demo, show all
+                    if(data.assignee === activeUserRecord.name || activeUserRecord.id === 'demo-creative') myProjects.push(data);
                 });
                 myProjects.sort((a,b) => b.timestamp - a.timestamp);
                 
-                // Demo dummy data
                 if(activeUserRecord.id === 'demo-creative' && myProjects.length === 0) {
                     myProjects.push({
                         id: 'dummy-1', title: 'Welcome Video Edit', client: 'Feasibility HQ', type: 'YouTube Long-form', 
                         deadline: new Date(Date.now() + 86400000 * 2).toISOString().split('T')[0], status: 'In Progress', 
-                        raw_link: 'https://drive.google.com/', notes: 'Make it cinematic.', assignee: 'Demo Editor', timestamp: Date.now()
+                        raw_link: 'https://drive.google.com/', inspiration: 'https://youtube.com', notes: 'Make it cinematic.', assignee: 'Demo Editor', timestamp: Date.now()
                     });
                 }
                 renderAll();
@@ -838,6 +810,7 @@
                     
                     <div class="md:col-span-2 flex justify-end gap-2 items-center mt-2 md:mt-0 pt-3 md:pt-0 border-t border-white/5 md:border-none">
                         <a href="${p.raw_link}" target="_blank" class="bg-blue-500/10 hover:bg-blue-500/30 text-blue-400 px-3 py-2 rounded-lg text-xs font-bold transition-colors border border-blue-500/20" title="Raw Assets"><i class="fa-solid fa-folder-open"></i></a>
+                        ${p.inspiration ? `<a href="${p.inspiration}" target="_blank" class="bg-yellow-500/10 hover:bg-yellow-500/30 text-yellow-400 px-3 py-2 rounded-lg text-xs font-bold transition-colors border border-yellow-500/20" title="Inspiration / Reference"><i class="fa-solid fa-lightbulb"></i></a>` : ''}
                         <button onclick="openSubmitModal('${p.id}', '${p.title.replace(/'/g, "\\'")}')" class="bg-cyan-500/10 hover:bg-cyan-500/30 text-cyan-400 px-3 py-2 rounded-lg text-xs font-bold transition-colors border border-cyan-500/20" title="Submit Final"><i class="fa-solid fa-cloud-arrow-up"></i></button>
                         <button onclick="deleteProject('${p.id}')" class="text-slate-500 hover:text-red-400 bg-white/5 hover:bg-red-500/10 px-3 py-2 rounded-lg transition-colors border border-transparent hover:border-red-500/20"><i class="fa-solid fa-trash"></i></button>
                     </div>
@@ -861,7 +834,9 @@
             const newProj = {
                 title: document.getElementById('pj-title').value.trim(), client: document.getElementById('pj-client').value.trim(),
                 type: document.getElementById('pj-type').value, deadline: document.getElementById('pj-deadline').value,
-                raw_link: document.getElementById('pj-raw-link').value.trim(), notes: document.getElementById('pj-notes').value.trim(),
+                raw_link: document.getElementById('pj-raw-link').value.trim(), 
+                inspiration: document.getElementById('pj-inspiration').value.trim(),
+                notes: document.getElementById('pj-notes').value.trim(),
                 assignee: activeUserRecord.name, status: 'In Progress', timestamp: Date.now(),
                 history: [{ note: `Project logged into workspace.`, date: new Date().toISOString(), user: activeUserRecord.name }]
             };
@@ -932,7 +907,7 @@
             } catch(e) { showToast("Error", true); }
         });
 
-        // --- HR TICKETS (Responsive Grid List) ---
+        // --- HR TICKETS ---
         document.getElementById('form-hr-ticket').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btn-submit-ticket'); btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
