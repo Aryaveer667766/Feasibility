@@ -66,7 +66,7 @@
         .modal { opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 100; }
         .modal.active { opacity: 1; pointer-events: auto; }
 
-        /* Mobile-First Responsive Grids (Replaces Tables) */
+        /* Mobile-First Responsive Grids */
         .responsive-grid {
             display: flex; flex-direction: column; gap: 0.75rem; padding: 1rem;
             border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02);
@@ -84,13 +84,10 @@
             .sales-grid { grid-template-columns: 2.5fr 1fr 1fr 1fr 1.5fr; }
             .creative-grid { grid-template-columns: 2fr 1.5fr 1fr 1fr 1.5fr; }
             .hr-grid { grid-template-columns: 1fr 2fr 1.5fr 1fr 1fr; }
-            .leaderboard-grid { grid-template-columns: 0.5fr 2fr 1.5fr 1fr 1.5fr; }
         }
     </style>
 </head>
 <body class="h-screen w-full flex flex-col md:flex-row relative">
-
-    <div class="fixed inset-0 z-0 pointer-events-none" style="background-image: radial-gradient(circle at 100% 0%, rgba(225, 29, 72, 0.08) 0%, transparent 40%), radial-gradient(circle at 0% 100%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);"></div>
 
     <div class="md:hidden flex h-16 border-b border-white/5 glass-panel justify-between items-center px-4 shrink-0 z-30">
         <div class="flex items-center gap-3">
@@ -120,7 +117,7 @@
             </div>
             <div class="overflow-hidden">
                 <p class="text-sm font-bold text-white leading-tight truncate">Chief Executive</p>
-                <p class="text-[10px] text-emerald-400 uppercase tracking-wider font-bold truncate"><i class="fa-solid fa-bolt mr-1"></i> God Mode</p>
+                <p class="text-[10px] text-emerald-400 uppercase tracking-wider font-bold truncate"><i class="fa-solid fa-bolt mr-1"></i> God Mode Active</p>
             </div>
         </div>
 
@@ -170,6 +167,9 @@
             <h1 id="page-title" class="text-xl md:text-2xl font-bold text-white font-heading truncate pr-4">God's Eye View</h1>
             
             <div class="flex items-center gap-2 md:gap-4">
+                <button onclick="exportGlobalCSV()" class="hidden md:flex bg-slate-800 hover:bg-slate-700 border border-white/10 text-white px-3 py-2 rounded-lg text-xs font-bold items-center gap-2 transition-colors">
+                    <i class="fa-solid fa-file-csv text-emerald-400"></i> Export DB
+                </button>
                 <button onclick="document.getElementById('modal-broadcast').classList.add('active')" class="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all shadow-lg flex items-center gap-2">
                     <i class="fa-solid fa-bullhorn text-purple-400"></i> <span class="hidden md:inline">Broadcast</span>
                 </button>
@@ -486,11 +486,11 @@
         <div class="glass-panel border border-white/10 rounded-3xl w-full max-w-2xl p-6 md:p-8 shadow-2xl flex flex-col max-h-[90vh]">
             <div class="flex justify-between items-start mb-6 border-b border-white/10 pb-6">
                 <div>
-                    <h2 id="tl-company" class="text-xl md:text-3xl font-bold text-white font-heading tracking-tight">Company Name</h2>
+                    <h2 id="tl-company" class="text-xl md:text-3xl font-bold text-white font-heading tracking-tight">Project / Company</h2>
                     <div class="flex flex-wrap gap-4 text-sm text-slate-300 font-mono mt-3" id="tl-meta-bar">
                         </div>
                 </div>
-                <button onclick="closeModals()" class="text-slate-400 hover:text-white text-2xl bg-white/5 w-10 h-10 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white text-2xl bg-white/5 w-10 h-10 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
             <div class="flex-1 overflow-y-auto pr-4 space-y-5 mb-6 custom-scrollbar" id="tl-history-list"></div>
@@ -608,6 +608,7 @@
         };
 
         window.closeModals = function() { document.querySelectorAll('.modal').forEach(el => el.classList.remove('active')); };
+        window.closeModal = function() { document.getElementById('modal-timeline').classList.remove('active'); };
 
         window.showToast = function(msg, isError=false) {
             const toast = document.getElementById('toast');
@@ -655,7 +656,6 @@
                     setDbStatus(true);
                     
                     // AUTO LOGIN BYPASS FOR ADMIN
-                    document.getElementById('app-main-content').classList.remove('hidden');
                     document.getElementById('edit-ld-status').innerHTML = SALES_STATUSES.map(s => `<option value="${s}">${s}</option>`).join('');
                     
                     loadData();
@@ -730,7 +730,6 @@
             document.getElementById('kpi-creative-active').innerText = crtAct;
             document.getElementById('kpi-total-awarded').innerText = "₹" + aw.toLocaleString('en-IN');
             document.getElementById('kpi-pending-payouts').innerText = "₹" + liab.toLocaleString('en-IN');
-            document.getElementById('stat-all-awarded').innerText = "₹" + aw.toLocaleString('en-IN');
 
             // Chart (Sales)
             if(chartInstance) chartInstance.destroy();
@@ -817,8 +816,9 @@
                     <div class="text-xs text-slate-300"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Format</span>${c.type}<br><span class="text-[10px] text-slate-500 mt-1 inline-block">${c.client}</span></div>
                     <div class="text-xs font-mono text-slate-400"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Deadline</span>${new Date(c.deadline).toLocaleDateString()}</div>
                     <div><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Status</span><span class="font-bold text-[10px] uppercase tracking-wider px-2 py-1 rounded bg-white/5 border border-white/5 ${getCreativeColor(c.status)}">${c.status}</span></div>
-                    <div class="flex justify-end gap-2 items-center">
+                    <div class="flex justify-end gap-2 items-center flex-wrap">
                         <a href="${c.raw_link}" target="_blank" class="bg-blue-500/10 text-blue-400 px-3 py-1.5 rounded-lg text-xs" title="Raw Assets"><i class="fa-solid fa-folder-open"></i></a>
+                        ${c.inspiration ? `<a href="${c.inspiration}" target="_blank" class="bg-yellow-500/10 text-yellow-400 px-3 py-1.5 rounded-lg text-xs" title="Inspiration Reference"><i class="fa-solid fa-lightbulb"></i></a>` : ''}
                         ${c.final_link ? `<a href="${c.final_link}" target="_blank" class="bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-lg text-xs" title="Final Link"><i class="fa-solid fa-play"></i></a>` : ''}
                         <button onclick="openTimeline('${c.id}', 'creative')" class="bg-white/5 hover:bg-white/10 text-slate-300 px-3 py-1.5 rounded-lg text-xs transition-colors" title="Timeline"><i class="fa-solid fa-clock-rotate-left"></i></button>
                         <button onclick="deleteDocItem('creative_tasks', '${c.id}')" class="text-slate-500 hover:text-red-400 p-2" title="Delete"><i class="fa-solid fa-trash"></i></button>
@@ -835,7 +835,6 @@
             document.getElementById('form-creative-project').reset();
             document.getElementById('crt-id').value = '';
             document.getElementById('crt-modal-title').innerHTML = '<i class="fa-solid fa-wand-magic-sparkles text-cyan-500 mr-2"></i> Assign Creative Brief';
-            document.getElementById('btn-save-creative').innerText = 'Deploy Brief';
             document.getElementById('modal-creative-project').classList.add('active');
         }
 
