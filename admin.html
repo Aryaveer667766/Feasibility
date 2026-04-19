@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -86,7 +86,7 @@
             }
             .mobile-label { display: none; }
             .team-grid { grid-template-columns: 2fr 1fr 1.5fr 1fr 1fr; }
-            .sales-grid { grid-template-columns: 2fr 1fr 1fr 1.5fr 1.5fr; }
+            .sales-grid { grid-template-columns: 2.5fr 1fr 1fr 1.5fr 1.5fr; }
             .creative-grid { grid-template-columns: 2fr 1.5fr 1fr 1.5fr 1.5fr; }
             .hr-grid { grid-template-columns: 1fr 2fr 1.5fr 1fr 1fr; }
         }
@@ -447,6 +447,7 @@
                         </div>
                         <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Next Action</label><input type="date" id="edit-ld-nextaction" class="w-full rounded-lg px-3 py-2 text-sm text-slate-300"></div>
                         <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Assigned Rep</label><select id="edit-ld-rep" class="w-full rounded-lg px-3 py-2 text-sm bg-slate-900"></select></div>
+                        <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Force Status</label><select id="edit-ld-status" class="w-full rounded-lg px-3 py-2 text-sm font-bold bg-slate-900"></select></div>
                     </div>
                     <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">CEO Notes</label><textarea id="edit-ld-notes" rows="3" class="w-full rounded-lg px-3 py-2 text-sm resize-none"></textarea></div>
                     <div class="flex gap-3 pt-2">
@@ -482,6 +483,13 @@
                         <div class="sm:col-span-2"><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Raw Assets Link *</label><input type="url" id="crt-raw" required class="w-full rounded-lg px-3 py-2 text-sm font-mono text-cyan-300" placeholder="G-Drive / Dropbox Link"></div>
                         <div class="sm:col-span-2"><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Inspiration / Reference Link (Optional)</label><input type="url" id="crt-inspiration" class="w-full rounded-lg px-3 py-2 text-sm font-mono text-yellow-300" placeholder="YouTube, Pinterest, competitor ad..."></div>
                         <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Assign To *</label><select id="crt-assignee" required class="w-full rounded-lg px-3 py-2 text-sm bg-slate-900"></select></div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Status</label>
+                            <select id="crt-status" class="w-full rounded-lg px-3 py-2 text-sm font-bold bg-slate-900">
+                                <option>In Progress</option> <option>Awaiting Assets</option> <option>Internal Review</option>
+                                <option>Client Review</option> <option>Revision Requested</option> <option>Approved & Completed</option>
+                            </select>
+                        </div>
                     </div>
                     <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Creative Directives / Notes</label><textarea id="crt-notes" rows="3" class="w-full rounded-lg px-3 py-2 text-sm resize-none" placeholder="Pacing, colors, required elements..."></textarea></div>
                     <div class="flex gap-3 pt-2">
@@ -501,7 +509,7 @@
                     <div class="flex flex-wrap gap-4 text-sm text-slate-300 font-mono mt-3" id="tl-meta-bar">
                         </div>
                 </div>
-                <button onclick="closeModals()" class="text-slate-400 hover:text-white text-2xl bg-white/5 w-10 h-10 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white text-2xl bg-white/5 w-10 h-10 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
             <div class="flex-1 overflow-y-auto pr-4 space-y-5 mb-6 custom-scrollbar" id="tl-history-list"></div>
@@ -756,14 +764,14 @@
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8', font: {size: 10} } } } }
             });
 
-            // Master Pulse Feed (Pulls history from all Leads and Creatives)
+            // Master Pulse Feed
             let masterHistory = [];
             allLeads.forEach(l => { if(l.history) { l.history.forEach(h => masterHistory.push({ ...h, itemType: 'Sales', itemName: l.company, id: l.id })); } });
             allCreatives.forEach(c => { if(c.history) { c.history.forEach(h => masterHistory.push({ ...h, itemType: 'Creative', itemName: c.title, id: c.id })); } });
             
             masterHistory.sort((a,b) => new Date(b.date) - new Date(a.date));
             
-            document.getElementById('global-task-list').innerHTML = masterHistory.slice(0, 15).map(h => {
+            document.getElementById('global-pulse-list').innerHTML = masterHistory.slice(0, 15).map(h => {
                 const iconColor = h.itemType === 'Sales' ? 'text-emerald-400' : 'text-cyan-400';
                 return `
                 <div class="bg-black/40 border border-white/5 rounded-lg p-3 hover:bg-white/5 transition-colors cursor-pointer" onclick="openTimeline('${h.id}', '${h.itemType.toLowerCase()}')">
