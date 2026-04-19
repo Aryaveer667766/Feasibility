@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Creative Director Portal | Feasibility Media</title>
+    <title>Operations Engine | Feasibility Media</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -11,115 +11,65 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;800;900&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #020617; 
+            background-color: #020617;
             color: #f8fafc;
             overflow: hidden;
-            /* Creative Leadership Gradient */
+            /* Operations Amber/Gold Gradient */
             background-image: 
-                radial-gradient(circle at 15% 0%, rgba(99, 102, 241, 0.08) 0%, transparent 45%), 
-                radial-gradient(circle at 85% 100%, rgba(6, 182, 212, 0.06) 0%, transparent 45%);
+                radial-gradient(circle at 100% 0%, rgba(245, 158, 11, 0.08) 0%, transparent 40%), 
+                radial-gradient(circle at 0% 100%, rgba(217, 119, 6, 0.05) 0%, transparent 40%);
         }
         .font-heading { font-family: 'Outfit', sans-serif; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
 
         /* Premium Glassmorphism */
-        .glass-panel { 
-            background: rgba(15, 23, 42, 0.75); 
-            backdrop-filter: blur(24px); 
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            border-top: 1px solid rgba(255, 255, 255, 0.15); 
-        }
-        .glass-card { 
-            background: linear-gradient(180deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.6) 100%);
-            border: 1px solid rgba(255,255,255,0.06); 
-            border-top: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 1.25rem; 
+        .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .card-ops {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.7) 100%);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            border-radius: 1rem;
+            transition: all 0.3s;
         }
-        .glass-card:hover { 
-            background: linear-gradient(180deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.8) 100%);
-            border-color: rgba(99, 102, 241, 0.4); 
-            box-shadow: 0 15px 35px -10px rgba(0,0,0,0.6), 0 0 15px rgba(99, 102, 241, 0.1);
+        .card-ops:hover {
+            border-color: rgba(245, 158, 11, 0.3);
+            box-shadow: 0 15px 35px -10px rgba(0,0,0,0.6), 0 0 15px rgba(245, 158, 11, 0.1);
             transform: translateY(-2px);
         }
 
-        /* Inputs & Form Controls */
-        input, select, textarea { 
-            background: rgba(2, 6, 23, 0.6); 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            color: white; 
-            transition: all 0.2s ease-in-out; 
-            border-radius: 0.75rem;
-            width: 100%;
-        }
-        input:focus, select:focus, textarea:focus { 
-            outline: none; 
-            border-color: #6366f1; 
-            background: rgba(2, 6, 23, 0.9);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25); 
-        }
-
         /* Scrollbars */
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
-
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.5); }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(245,158,11,0.5); }
 
-        /* Navigation Tabs */
+        /* Inputs */
+        input, select, textarea { background: rgba(2, 6, 23, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; border-radius: 0.5rem; width: 100%; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #f59e0b; background: rgba(2, 6, 23, 0.9); box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2); }
+        
+        /* Tabs */
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes fadeUp { 
-            from { opacity: 0; transform: translateY(15px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
+        .tab-content.active { display: block; animation: fadeUp 0.3s ease-out forwards; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .nav-btn { 
-            border-left: 3px solid transparent; 
-            color: #94a3b8; 
-            transition: all 0.2s ease-in-out; 
-            border-radius: 0 0.75rem 0.75rem 0;
-            margin-right: 1rem;
-        }
-        .nav-btn.active { 
-            background: linear-gradient(90deg, rgba(99, 102, 241, 0.2) 0%, transparent 100%); 
-            border-left-color: #6366f1; 
-            color: #fff; 
-            font-weight: 700; 
-        }
-        .nav-btn:hover:not(.active) { 
-            color: white; 
-            background: rgba(255,255,255,0.03); 
-        }
+        .nav-btn { border-left: 3px solid transparent; color: #94a3b8; transition: all 0.2s; border-radius: 0 0.75rem 0.75rem 0; margin-right: 1rem;}
+        .nav-btn.active { background: linear-gradient(90deg, rgba(245, 158, 11, 0.15) 0%, transparent 100%); border-left-color: #f59e0b; color: #fff; font-weight: 700; }
+        .nav-btn:hover:not(.active) { color: white; background: rgba(255,255,255,0.03); }
 
-        .btn-primary { 
-            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%); 
-            color: white; 
-            font-weight: 800; 
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); 
-            transition: all 0.2s ease-in-out; 
-        }
-        .btn-primary:hover:not(:disabled) { 
-            transform: translateY(-2px) scale(1.01); 
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5); 
-        }
+        .btn-primary { background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); color: white; font-weight: 800; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); transition: all 0.2s; }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px) scale(1.01); box-shadow: 0 8px 25px rgba(245, 158, 11, 0.5); }
 
         /* Modals */
         .modal { opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 100; }
         .modal.active { opacity: 1; pointer-events: auto; }
-        
+
         /* Mobile-First Responsive Grids */
         .responsive-grid {
             display: flex; flex-direction: column; gap: 0.75rem; padding: 1rem;
@@ -134,59 +84,72 @@
                 background: transparent; border-radius: 0; margin-bottom: 0; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05);
             }
             .mobile-label { display: none; }
-            .review-grid { grid-template-columns: 2fr 1.5fr 1fr 1fr 2fr; }
-            .master-grid { grid-template-columns: 2fr 1.5fr 1fr 1.5fr 1.5fr; }
+            .sales-grid { grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr; }
+            .creative-grid { grid-template-columns: 2fr 1.5fr 1fr 1fr 1.5fr; }
+            .hr-grid { grid-template-columns: 1fr 2fr 1.5fr 1fr 1fr; }
+            .roster-grid { grid-template-columns: 2fr 1.5fr 1.5fr 1fr; }
         }
     </style>
 </head>
-<body class="h-screen w-full relative flex flex-col md:flex-row">
+<body class="h-screen w-full flex flex-col md:flex-row relative">
 
-    <div class="md:hidden flex h-16 border-b border-white/10 glass-panel justify-between items-center px-4 shrink-0 z-30 shadow-md">
+    <div class="md:hidden flex h-16 border-b border-white/5 glass-panel justify-between items-center px-4 shrink-0 z-30 shadow-md">
         <div class="flex items-center gap-3">
-            <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-cyan-400 text-white flex items-center justify-center rounded-lg text-sm font-black shadow"><i class="fa-solid fa-crown"></i></div>
-            <span class="text-white font-bold tracking-tight font-heading">Feasibility</span>
+            <div class="w-8 h-8 bg-gradient-to-br from-amber-600 to-yellow-500 text-white flex items-center justify-center rounded-lg text-sm font-black shadow-lg"><i class="fa-solid fa-layer-group"></i></div>
+            <span class="text-white font-bold tracking-tight font-heading">Operations</span>
         </div>
-        <button onclick="toggleSidebar()" class="text-white p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors"><i class="fa-solid fa-bars text-xl"></i></button>
+        <button onclick="toggleSidebar()" class="text-white p-2 bg-white/5 rounded-lg"><i class="fa-solid fa-bars text-xl"></i></button>
     </div>
 
     <div id="mobile-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 hidden md:hidden" onclick="toggleSidebar()"></div>
 
-    <aside id="sidebar" class="w-64 glass-panel border-r border-white/10 flex flex-col z-50 shrink-0 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 shadow-2xl md:shadow-none">
-        <div class="p-4 md:p-6 border-b border-white/10 flex justify-between items-center bg-black/20">
+    <aside id="sidebar" class="w-64 glass-panel border-r border-white/5 h-full flex flex-col z-50 shrink-0 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 hidden md:flex">
+        <div class="p-4 md:p-6 border-b border-white/5 flex justify-between items-center bg-black/20">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-cyan-400 text-white items-center justify-center rounded-xl text-lg font-black hidden md:flex shadow-lg"><i class="fa-solid fa-crown text-sm"></i></div>
+                <div class="w-10 h-10 bg-gradient-to-br from-amber-600 to-yellow-500 text-white items-center justify-center rounded-xl text-lg font-black shadow-lg shadow-amber-500/20 hidden md:flex"><i class="fa-solid fa-layer-group text-sm"></i></div>
                 <div class="flex flex-col leading-none">
                     <span class="text-white font-bold tracking-tight text-lg font-heading">Feasibility</span>
-                    <span class="text-[10px] text-indigo-400 font-bold uppercase tracking-widest mt-1">Creative Director</span>
+                    <span class="text-[9px] text-amber-400 font-bold uppercase tracking-widest mt-1">Operations Engine</span>
                 </div>
             </div>
             <button onclick="toggleSidebar()" class="md:hidden text-slate-400 bg-white/5 p-2 rounded-lg"><i class="fa-solid fa-xmark text-xl"></i></button>
         </div>
 
         <div class="flex p-5 md:p-6 pb-4 border-b border-white/10 items-center gap-4 bg-gradient-to-b from-white/5 to-transparent">
-            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-indigo-500 overflow-hidden shadow-[0_0_15px_rgba(99,102,241,0.4)] shrink-0">
-                <img id="desk-avatar" src="https://ui-avatars.com/api/?name=Shahil+Sharma&background=0f172a&color=6366f1" class="w-full h-full object-cover">
+            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-amber-500 overflow-hidden shadow-[0_0_15px_rgba(245,158,11,0.4)] shrink-0">
+                <img src="https://ui-avatars.com/api/?name=Head+Ops&background=0f172a&color=f59e0b" class="w-full h-full object-cover">
             </div>
             <div class="overflow-hidden">
-                <p id="desk-user-name" class="text-sm font-bold text-white leading-tight truncate">Shahil Sharma</p>
-                <p id="desk-user-role" class="text-[10px] text-cyan-400 uppercase tracking-wider font-bold truncate mt-1">Director Mode</p>
+                <p class="text-sm font-bold text-white leading-tight truncate">Head of Operations</p>
+                <p class="text-[10px] text-emerald-400 uppercase tracking-wider font-bold truncate mt-1"><i class="fa-solid fa-bolt mr-1"></i> Ops Mode Active</p>
             </div>
         </div>
 
-        <nav id="nav-menu" class="flex flex-col flex-1 py-4 md:py-6 space-y-1 overflow-y-auto custom-scrollbar">
+        <nav class="flex-1 py-4 space-y-1 overflow-y-auto custom-scrollbar">
             <button onclick="switchTab('dashboard')" class="nav-btn active w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
-                <i class="fa-solid fa-chart-pie w-5 text-center text-lg"></i> <span class="tab-label">Leadership Overview</span>
+                <i class="fa-solid fa-chart-line w-5 text-center text-lg"></i> <span class="tab-label">Ops Overview</span>
             </button>
-            <button onclick="switchTab('review-queue')" class="nav-btn w-full flex items-center justify-between gap-4 px-6 py-3.5 text-sm text-left">
-                <div class="flex items-center gap-4"><i class="fa-solid fa-clipboard-check w-5 text-center text-lg"></i> <span class="tab-label">Approval Queue</span></div>
-                <span id="nav-badge-review" class="bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full hidden">0</span>
+            <div class="px-6 py-2 mt-2">
+                <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Divisions</p>
+            </div>
+            <button onclick="switchTab('sales-pipeline')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
+                <i class="fa-solid fa-globe w-5 text-center text-emerald-400 text-lg"></i> <span class="tab-label">Sales Monitor</span>
             </button>
-            <button onclick="switchTab('master-briefs')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
-                <i class="fa-solid fa-layer-group w-5 text-center text-lg"></i> <span class="tab-label">Master Pipeline</span>
+            <button onclick="switchTab('creative-pipeline')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
+                <i class="fa-solid fa-wand-magic-sparkles w-5 text-center text-cyan-400 text-lg"></i> <span class="tab-label">Creative Monitor</span>
+            </button>
+            <div class="px-6 py-2 mt-2">
+                <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Management</p>
+            </div>
+            <button onclick="switchTab('hr')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
+                <i class="fa-solid fa-users-gear w-5 text-center text-blue-400 text-lg"></i> <span class="tab-label">Team & HR</span>
+            </button>
+            <button onclick="switchTab('ceo-brief')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left border-t border-white/10 mt-3 pt-4">
+                <i class="fa-solid fa-file-signature w-5 text-center text-rose-400 text-lg"></i> <span class="tab-label">CEO Briefing</span>
             </button>
         </nav>
-
-        <div class="p-6 border-t border-white/5">
+        
+        <div class="p-6 border-t border-white/5 bg-black/20">
             <div class="flex items-center justify-between text-xs text-slate-500 font-mono">
                 <div class="flex items-center gap-2">
                     <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" id="db-indicator"></div>
@@ -197,12 +160,14 @@
     </aside>
 
     <main class="flex-1 h-full flex flex-col relative z-10 overflow-hidden">
+        
         <header class="flex h-14 md:h-20 border-b border-white/10 glass-panel justify-between items-center px-4 md:px-8 shrink-0 bg-black/20">
-            <h1 id="page-title" class="text-lg md:text-2xl font-bold text-white font-heading truncate pr-4 drop-shadow-md">Leadership Overview</h1>
+            <h1 id="page-title" class="text-lg md:text-2xl font-bold text-white font-heading truncate pr-4 drop-shadow-md">Operations Overview</h1>
             <div class="flex items-center gap-4">
-                <button onclick="document.getElementById('modal-broadcast').classList.add('active')" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all shadow-lg shadow-indigo-900/30 flex items-center gap-2">
-                    <i class="fa-solid fa-bullhorn"></i> <span class="hidden sm:inline">Team Broadcast</span>
-                </button>
+                <div class="flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 px-3 py-1.5 md:px-4 md:py-2 rounded-full shrink-0 shadow-[0_0_10px_rgba(245,158,11,0.1)]">
+                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                    <span class="text-[9px] md:text-[10px] text-amber-400 font-bold uppercase tracking-widest hidden sm:inline">System Synced</span>
+                </div>
             </div>
         </header>
 
@@ -210,154 +175,205 @@
             
             <div id="tab-dashboard" class="tab-content active space-y-4 md:space-y-6">
                 <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 md:gap-6">
-                    <div class="glass-card p-4 md:p-6 border-t-4 border-t-rose-500 relative overflow-hidden group">
-                        <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-rose-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                        <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">Awaiting Your Review</p>
-                        <h3 id="kpi-review" class="text-2xl md:text-4xl font-black text-rose-400 font-mono relative z-10 drop-shadow-md">0</h3>
-                        <p class="text-[8px] md:text-[9px] text-rose-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">Requires Director Approval</p>
+                    <div class="card-ops p-4 md:p-6 border-t-4 border-t-emerald-500 relative overflow-hidden group">
+                        <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-emerald-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+                        <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">Sales Pipeline (Active)</p>
+                        <h3 id="kpi-pipeline" class="text-2xl md:text-4xl font-black text-white font-mono relative z-10 drop-shadow-md">₹0</h3>
                     </div>
-                    <div class="glass-card p-4 md:p-6 border-t-4 border-t-cyan-500 relative overflow-hidden group">
+                    <div class="card-ops p-4 md:p-6 border-t-4 border-t-blue-500 relative overflow-hidden group">
+                        <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-blue-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-sack-dollar"></i></div>
+                        <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">Revenue Won</p>
+                        <h3 id="kpi-won" class="text-2xl md:text-4xl font-black text-blue-400 font-mono relative z-10 drop-shadow-md">₹0</h3>
+                    </div>
+                    <div class="card-ops p-4 md:p-6 border-t-4 border-t-cyan-500 relative overflow-hidden group">
                         <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-cyan-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-spinner"></i></div>
-                        <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">Team In Progress</p>
-                        <h3 id="kpi-progress" class="text-2xl md:text-4xl font-black text-white font-mono relative z-10 drop-shadow-md">0</h3>
-                        <p class="text-[8px] md:text-[9px] text-cyan-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">Active edits & designs</p>
+                        <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">Creative (In Progress)</p>
+                        <h3 id="kpi-creative" class="text-2xl md:text-4xl font-black text-cyan-400 font-mono relative z-10 drop-shadow-md">0</h3>
                     </div>
-                    <div class="glass-card p-4 md:p-6 border-t-4 border-t-yellow-500 relative overflow-hidden group">
-                        <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-yellow-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-rotate-left"></i></div>
-                        <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">In Revision</p>
-                        <h3 id="kpi-revisions" class="text-2xl md:text-4xl font-black text-yellow-400 font-mono relative z-10 drop-shadow-md">0</h3>
-                        <p class="text-[8px] md:text-[9px] text-slate-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">Pending editor changes</p>
-                    </div>
-                    <div class="glass-card p-4 md:p-6 border-t-4 border-t-emerald-500 relative overflow-hidden group">
-                        <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-emerald-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-check-circle"></i></div>
-                        <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">Completed (Month)</p>
-                        <h3 id="kpi-completed" class="text-2xl md:text-4xl font-black text-emerald-400 font-mono relative z-10 drop-shadow-md">0</h3>
-                        <p class="text-[8px] md:text-[9px] text-emerald-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">Successfully delivered</p>
+                    <div class="card-ops p-4 md:p-6 border-t-4 border-t-rose-500 relative overflow-hidden group">
+                        <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-rose-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">Pending HR Issues</p>
+                        <h3 id="kpi-tickets" class="text-2xl md:text-4xl font-black text-rose-400 font-mono relative z-10 drop-shadow-md">0</h3>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-                    <div class="glass-card p-4 md:p-6 lg:col-span-2">
-                        <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 md:mb-6 border-b border-white/10 pb-3 md:pb-4">Team Workload Distribution</h3>
+                    <div class="card-ops p-4 md:p-6 lg:col-span-2">
+                        <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 md:mb-6 border-b border-white/10 pb-3 md:pb-4">Agency Workload / Status</h3>
                         <div class="relative h-48 md:h-64 w-full">
-                            <canvas id="workloadChart"></canvas>
+                            <canvas id="agencyChart"></canvas>
                         </div>
                     </div>
 
-                    <div class="glass-card p-4 md:p-6 flex flex-col flex-1 min-h-[250px] max-h-[350px]">
-                        <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3 text-rose-400 flex items-center"><i class="fa-solid fa-stopwatch mr-2"></i> Division Deadlines</h3>
-                        <div class="overflow-y-auto flex-1 pr-2 space-y-2 md:space-y-3 custom-scrollbar" id="deadline-list"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="tab-review-queue" class="tab-content">
-                <div class="glass-card p-3 md:p-6 flex flex-col min-h-[500px]">
-                    <div class="mb-4 md:mb-6 px-1 md:px-0">
-                        <h3 class="text-xl font-bold text-white font-heading"><i class="fa-solid fa-clipboard-check text-indigo-400 mr-2"></i> Director's Approval Queue</h3>
-                        <p class="text-xs text-slate-400 mt-1">Review finalized assets submitted by the team. Approve to deliver, or reject with notes.</p>
-                    </div>
-                    
-                    <div class="flex-1 pb-4">
-                        <div class="hidden lg:grid review-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-bold text-slate-400 uppercase tracking-wider rounded-t-xl">
-                            <div>Project / Editor</div>
-                            <div>Client / Format</div>
-                            <div>Deadline</div>
-                            <div>Status</div>
-                            <div class="text-right">Review Action</div>
-                        </div>
-                        
-                        <div id="review-table-body" class="flex flex-col">
+                    <div class="card-ops p-4 md:p-6 flex flex-col flex-1 min-h-[250px] max-h-[350px]">
+                        <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3 text-amber-400 flex items-center"><i class="fa-solid fa-bolt mr-2"></i> Live Operations Feed</h3>
+                        <div class="overflow-y-auto flex-1 pr-2 space-y-2 md:space-y-3 custom-scrollbar" id="ops-feed">
                             </div>
                     </div>
                 </div>
             </div>
 
-            <div id="tab-master-briefs" class="tab-content">
-                <div class="glass-card p-3 md:p-6 flex flex-col min-h-[500px]">
-                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 md:gap-4 mb-4 md:mb-6 px-1 md:px-0">
-                        <div class="relative w-full sm:w-72">
+            <div id="tab-sales-pipeline" class="tab-content">
+                <div class="card-ops p-3 md:p-6 flex flex-col min-h-[500px]">
+                    <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-4 md:mb-6 px-1 md:px-0 border-b border-white/10 pb-4 md:pb-6">
+                        <div>
+                            <h3 class="text-lg font-bold text-emerald-400 font-heading">Sales Pipeline Monitor</h3>
+                            <p class="text-xs text-slate-400 hidden md:block">Track rep progress and deal movements.</p>
+                        </div>
+                        <div class="relative w-full lg:w-72">
                             <i class="fa-solid fa-search absolute left-4 top-3 md:top-3.5 text-slate-500 text-xs md:text-sm"></i>
-                            <input type="text" id="search-projects" placeholder="Search entire creative DB..." class="w-full pl-10 pr-4 py-2 md:py-2.5 text-sm bg-black/40 shadow-inner">
+                            <input type="text" id="search-sales" placeholder="Search accounts, reps..." class="w-full pl-10 pr-4 py-2 md:py-2.5 text-sm bg-black/40 shadow-inner">
                         </div>
                     </div>
                     
                     <div class="flex-1 pb-4">
-                        <div class="hidden lg:grid master-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-bold text-slate-400 uppercase tracking-wider rounded-t-xl">
+                        <div class="hidden lg:grid sales-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-bold text-slate-500 uppercase tracking-wider rounded-t-xl">
+                            <div>Deal Info</div>
+                            <div>Value</div>
+                            <div>Rep</div>
+                            <div>Status</div>
+                            <div class="text-right">Actions</div>
+                        </div>
+                        <div id="sales-table-body" class="flex flex-col mt-2 md:mt-0"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-creative-pipeline" class="tab-content">
+                <div class="card-ops p-3 md:p-6 flex flex-col min-h-[500px]">
+                    <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-4 md:mb-6 px-1 md:px-0 border-b border-white/10 pb-4 md:pb-6">
+                        <div>
+                            <h3 class="text-lg font-bold text-cyan-400 font-heading">Creative Workflow Monitor</h3>
+                            <p class="text-xs text-slate-400 hidden md:block">Track edit deadlines, formats, and designer output.</p>
+                        </div>
+                        <div class="relative w-full lg:w-72">
+                            <i class="fa-solid fa-search absolute left-4 top-3 md:top-3.5 text-slate-500 text-xs md:text-sm"></i>
+                            <input type="text" id="search-creative" placeholder="Search briefs, editors..." class="w-full pl-10 pr-4 py-2 md:py-2.5 text-sm bg-black/40 shadow-inner">
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 pb-4">
+                        <div class="hidden lg:grid creative-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-bold text-slate-500 uppercase tracking-wider rounded-t-xl">
                             <div>Project Brief</div>
                             <div>Format / Client</div>
                             <div>Deadline</div>
                             <div>Status</div>
-                            <div class="text-right">Actions</div>
+                            <div class="text-right">Assets / Log</div>
                         </div>
-                        <div id="master-table-body" class="flex flex-col"></div>
+                        <div id="creative-table-body" class="flex flex-col mt-2 md:mt-0"></div>
                     </div>
+                </div>
+            </div>
+
+            <div id="tab-hr" class="tab-content">
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-6">
+                    <div class="card-ops p-4 md:p-6 xl:col-span-1 h-fit">
+                        <h3 class="text-base md:text-lg font-bold text-white font-heading mb-1 md:mb-2">Staff Roster</h3>
+                        <p class="text-[11px] md:text-xs text-slate-400 mb-4 md:mb-6 border-b border-white/10 pb-3 md:pb-4">Overview of all active agency accounts.</p>
+                        <div class="overflow-y-auto max-h-[400px] pr-2 custom-scrollbar" id="roster-list">
+                            </div>
+                    </div>
+                    
+                    <div class="card-ops p-3 md:p-6 xl:col-span-2 flex flex-col min-h-[400px]">
+                        <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 md:mb-6 border-b border-white/10 pb-3 md:pb-4 px-2 md:px-0 flex justify-between items-center">
+                            HR & Support Tickets
+                            <span class="bg-rose-500/20 border border-rose-500/30 text-rose-400 px-3 py-1.5 rounded-lg text-xs font-bold"><span id="hr-badge">0</span> Action Required</span>
+                        </h3>
+                        <div class="flex-1 pb-4">
+                            <div class="hidden lg:grid hr-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-bold text-slate-500 uppercase tracking-wider rounded-t-xl">
+                                <div>Date</div>
+                                <div>Rep & Issue</div>
+                                <div>Category</div>
+                                <div>Status</div>
+                                <div class="text-right">Resolve</div>
+                            </div>
+                            <div id="hr-tickets-body" class="flex flex-col mt-2 md:mt-0"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-ceo-brief" class="tab-content">
+                <div class="max-w-4xl mx-auto card-ops p-4 sm:p-6 md:p-10 w-full relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1.5 md:h-2 bg-gradient-to-r from-amber-500 to-rose-500"></div>
+                    <h3 class="text-xl md:text-2xl font-bold text-white font-heading mb-1 md:mb-2 mt-2"><i class="fa-solid fa-file-signature text-rose-500 mr-2"></i> Submit CEO Briefing</h3>
+                    <p class="text-xs md:text-sm text-slate-400 mb-6 md:mb-8 border-b border-white/10 pb-4 md:pb-6">Compile a daily or weekly operations summary. This logs directly to the master database for the CEO.</p>
+                    
+                    <form id="form-ceo-report" class="space-y-4 md:space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                            <div>
+                                <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 md:mb-2">Report Type</label>
+                                <select id="rep-type" class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm bg-slate-900">
+                                    <option value="End of Day Report">End of Day (EOD) Report</option>
+                                    <option value="Weekly Operations Summary">Weekly Operations Summary</option>
+                                    <option value="Critical Alert">Critical Alert / Blocker</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 md:mb-2">Date</label>
+                                <input type="date" id="rep-date" required class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm text-slate-300 font-mono">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 md:mb-2">Executive Summary *</label>
+                                <textarea id="rep-summary" required rows="6" class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm resize-none" placeholder="1. Sales pipeline updates...&#10;2. Creative bottlenecks...&#10;3. HR / Payroll issues resolved..."></textarea>
+                            </div>
+                        </div>
+                        <div class="pt-4 md:pt-6 border-t border-white/10 flex justify-end">
+                            <button type="submit" id="btn-submit-report" class="btn-primary w-full md:w-auto px-6 py-3 md:px-10 md:py-4 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-3">
+                                <i class="fa-solid fa-satellite-dish text-lg"></i> Transmit to CEO
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
         </div>
     </main>
 
-    <div id="modal-reject" class="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center modal z-[100] p-4">
-        <div class="glass-panel border border-white/10 rounded-3xl w-full max-w-lg p-5 md:p-8 shadow-2xl flex flex-col">
-            <div class="flex justify-between items-start mb-5 md:mb-6 border-b border-white/10 pb-4">
-                <div>
-                    <h2 class="text-xl md:text-2xl font-bold text-white font-heading"><i class="fa-solid fa-rotate-left text-rose-500 mr-2"></i> Request Revision</h2>
-                    <p id="rej-title" class="text-xs md:text-sm text-cyan-400 font-mono mt-1">Project Name</p>
-                </div>
-                <button onclick="closeModals()" class="text-slate-400 hover:text-white text-xl bg-white/5 w-8 h-8 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+    <div id="modal-manage-ticket" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center modal z-[100] p-4">
+        <div class="glass-panel border border-white/10 rounded-2xl w-full max-w-lg p-5 md:p-8 shadow-2xl">
+            <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-4">
+                <h2 class="text-xl font-bold text-white font-heading">Resolve Support Ticket</h2>
+                <button onclick="closeModals()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
-            
-            <form id="form-reject-deliverable" class="space-y-4 md:space-y-5">
-                <input type="hidden" id="rej-id">
+            <div class="bg-black/30 p-4 rounded-xl border border-white/5 mb-5">
+                <p class="font-bold text-white text-sm md:text-base" id="mng-tk-subject">Subject</p>
+                <p class="text-[10px] md:text-xs text-blue-400 font-mono mt-1" id="mng-tk-rep">Rep Name • Category</p>
+                <p class="text-xs md:text-sm text-slate-300 mt-3 whitespace-pre-wrap" id="mng-tk-details">Details...</p>
+            </div>
+            <form id="form-manage-ticket" class="space-y-4">
+                <input type="hidden" id="mng-tk-id">
                 <div>
-                    <label class="block text-[10px] md:text-[11px] font-bold text-rose-400 uppercase tracking-wider mb-1.5 md:mb-2">Director's Feedback / Changes Required *</label>
-                    <textarea id="rej-notes" required rows="5" class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm resize-none focus:border-rose-500" placeholder="List the specific changes the editor needs to make..."></textarea>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Action / Status</label>
+                    <select id="mng-tk-status" class="w-full rounded-lg px-4 py-3 text-sm font-bold bg-slate-900 focus:border-blue-500">
+                        <option value="Open">Keep Open</option>
+                        <option value="In Progress">Mark In Progress</option>
+                        <option value="Resolved">Mark Resolved</option>
+                    </select>
                 </div>
-                <button type="submit" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold py-3.5 md:py-4 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-3 transition-colors shadow-lg shadow-rose-900/50">
-                    <i class="fa-solid fa-paper-plane"></i> Send Back to Editor
-                </button>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl text-sm mt-2 transition-colors">Update Resolution</button>
             </form>
         </div>
     </div>
 
-    <div id="modal-timeline" class="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center modal z-[100] p-4">
+    <div id="modal-timeline" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center modal z-[100] p-4">
         <div class="glass-panel border border-white/10 rounded-3xl w-full max-w-2xl p-5 md:p-8 shadow-2xl flex flex-col max-h-[90vh]">
             <div class="flex justify-between items-start mb-4 md:mb-6 border-b border-white/10 pb-4 md:pb-6">
                 <div>
-                    <h2 id="tl-company" class="text-xl md:text-3xl font-bold text-white font-heading tracking-tight">Project Title</h2>
-                    <div class="flex flex-wrap gap-2 md:gap-6 text-[10px] md:text-sm text-slate-300 font-mono mt-2 md:mt-3">
-                        <span id="tl-contact" class="flex items-center bg-white/5 px-2.5 md:px-3 py-1 md:py-1.5 rounded-lg border border-white/10"><i class="fa-solid fa-user-tag mr-1.5 md:mr-2 text-purple-400"></i> <span>Assignee</span></span>
-                    </div>
+                    <h2 id="tl-title" class="text-xl md:text-3xl font-bold text-white font-heading tracking-tight">Project / Company</h2>
+                    <div class="flex flex-wrap gap-2 md:gap-6 text-[10px] md:text-sm text-slate-300 font-mono mt-2 md:mt-3" id="tl-meta"></div>
                 </div>
                 <button onclick="closeModals()" class="text-slate-400 hover:text-white text-lg md:text-2xl bg-white/5 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            
             <div class="flex-1 overflow-y-auto pr-2 md:pr-4 space-y-4 md:space-y-5 mb-4 md:mb-6 custom-scrollbar" id="tl-history-list"></div>
-
             <div class="bg-gradient-to-r from-slate-900 to-black p-3 md:p-5 rounded-2xl border border-white/10 shrink-0 shadow-inner">
                 <input type="hidden" id="tl-id">
-                <label class="block text-[9px] md:text-[11px] font-bold text-indigo-400 uppercase tracking-wider mb-2 md:mb-3">Log Director Note</label>
+                <input type="hidden" id="tl-type">
+                <label class="block text-[9px] md:text-[11px] font-bold text-amber-400 uppercase tracking-wider mb-2 md:mb-3">Log Operations Note</label>
                 <div class="flex flex-col sm:flex-row gap-2 md:gap-3">
-                    <input type="text" id="tl-new-note" class="flex-1 px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm bg-black focus:border-indigo-500" placeholder="Type a project note...">
+                    <input type="text" id="tl-new-note" class="flex-1 px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm bg-black focus:border-amber-500" placeholder="Type an update...">
                     <button onclick="addTimelineEvent()" class="btn-primary w-full sm:w-auto px-4 md:px-6 py-2.5 md:py-3 rounded-xl text-xs md:text-sm font-bold flex items-center justify-center gap-2"><i class="fa-solid fa-plus"></i> Log</button>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="modal-broadcast" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center modal z-[100] p-4">
-        <div class="modal-content glass-panel border border-white/10 rounded-2xl w-full max-w-lg p-6 shadow-2xl shadow-indigo-900/20">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-white font-heading">Broadcast to Creative Team</h2>
-                <button onclick="closeModals()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
-            <div class="space-y-4">
-                <p class="text-sm text-slate-300">Send a priority directive to all editors and designers.</p>
-                <textarea rows="4" class="w-full rounded-lg px-3 py-2 text-sm resize-none focus:border-indigo-500" placeholder="Type global creative directive here..."></textarea>
-                <button onclick="showToast('Broadcast dispatched'); closeModals();" class="btn-primary w-full py-3 rounded-lg text-sm transition-colors flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-satellite-dish"></i> Transmit Directive
-                </button>
             </div>
         </div>
     </div>
@@ -371,25 +387,19 @@
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, getDocs, addDoc, onSnapshot, doc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const CREATIVE_STATUSES = ['In Progress', 'Awaiting Assets', 'Internal Review', 'Client Review', 'Revision Requested', 'Approved & Completed'];
-
-        let db, auth, chartInstance;
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        let allCreatives = [];
-
-        // UI HELPERS
-        window.toggleSidebar = () => {
+        // UI Helpers
+        window.toggleSidebar = function() {
             document.getElementById('sidebar').classList.toggle('-translate-x-full');
             document.getElementById('mobile-overlay').classList.toggle('hidden');
         };
 
-        window.switchTab = (tabId) => {
+        window.switchTab = function(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
             if(event && event.currentTarget.classList.contains('nav-btn')) event.currentTarget.classList.add('active');
-            
-            const titles = { 'dashboard': "Leadership Overview", 'review-queue': "Approval Queue", 'master-briefs': 'Master Pipeline' };
+
+            const titles = { 'overview': "Operations Overview", 'sales-pipeline': 'Sales Monitor', 'creative-pipeline': 'Creative Monitor', 'hr': 'Team & HR', 'ceo-brief': 'CEO Briefing' };
             document.getElementById('page-title').innerText = titles[tabId] || '';
 
             if(window.innerWidth < 768) {
@@ -398,16 +408,20 @@
             }
         };
 
-        window.showToast = (msg, isError=false) => {
+        window.closeModals = function() { document.querySelectorAll('.modal').forEach(el => el.classList.remove('active')); };
+
+        window.showToast = function(msg, isError=false) {
             const toast = document.getElementById('toast');
-            toast.className = `fixed bottom-6 right-4 md:right-8 text-white px-5 md:px-6 py-3 md:py-4 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] font-bold text-xs md:text-sm transform translate-y-0 opacity-100 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md ${isError ? 'bg-rose-600/90' : 'bg-indigo-600/90'}`;
+            toast.className = `fixed bottom-6 right-4 md:right-8 text-white px-5 md:px-6 py-3 md:py-4 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] font-bold text-xs md:text-sm transform translate-y-0 opacity-100 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md ${isError ? 'bg-red-600/90' : 'bg-emerald-600/90'}`;
             document.getElementById('toast-msg').innerText = msg;
             setTimeout(() => { toast.classList.replace('translate-y-0', 'translate-y-32'); toast.classList.replace('opacity-100', 'opacity-0'); }, 3000);
         };
 
-        window.closeModals = () => { document.querySelectorAll('.modal').forEach(el => el.classList.remove('active')); };
+        // Firebase Initialization
+        let db, auth, chartInstance;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        let allLeads = [], allUsers = [], allTickets = [], allCreatives = [];
 
-        // INIT FIREBASE
         try {
             const fbConfig = {
               apiKey: "AIzaSyAAgcIprurHXdo9tztkqVzLsIzJCWhqWwc", 
@@ -419,280 +433,260 @@
               appId: "1:166006393145:web:6bb64d5ee1a0578a7200e8"
             };
             const app = initializeApp(fbConfig);
-            db = getFirestore(app); auth = getAuth(app);
-            
-            // Auto Login for Director
+            db = getFirestore(app); 
+            auth = getAuth(app);
+
             signInAnonymously(auth).then(() => {
-                document.getElementById('db-indicator').className = 'w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]';
+                setDbStatus(true);
+                document.getElementById('rep-date').value = new Date().toISOString().split('T')[0];
                 loadData();
-            });
-        } catch (e) { console.error(e); }
+            }).catch(e => { setDbStatus(false); showToast("Connection Failed", true); });
+        } catch (e) { console.error(e); setDbStatus(false); }
+
+        function setDbStatus(isOnline) {
+            const ind = document.getElementById('db-indicator');
+            const txt = document.getElementById('db-status');
+            if(ind) ind.className = `w-2 h-2 rounded-full ${isOnline ? 'bg-emerald-500 shadow-[0_0_8px_#10b981]' : 'bg-red-500 animate-pulse'}`;
+            if(txt) txt.innerText = isOnline ? 'Engine Connected' : 'Connection Error';
+        }
 
         function loadData() {
-            // Listen to creative tasks globally
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), (snap) => {
+                allLeads = []; snap.forEach(d => allLeads.push({id: d.id, ...d.data()}));
+                allLeads.sort((a, b) => b.timestamp - a.timestamp);
+                renderOverview(); renderSalesPipeline();
+            });
+
             onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'creative_tasks'), (snap) => {
-                allCreatives = [];
-                snap.forEach(d => { allCreatives.push({id: d.id, ...d.data()}); });
-                allCreatives.sort((a,b) => b.timestamp - a.timestamp);
-                renderAll();
+                allCreatives = []; snap.forEach(d => allCreatives.push({id: d.id, ...d.data()}));
+                allCreatives.sort((a, b) => b.timestamp - a.timestamp);
+                renderOverview(); renderCreativePipeline();
+            });
+
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'team_users'), (snap) => {
+                allUsers = [];
+                snap.forEach(d => {
+                    const data = d.data(); 
+                    if(data.commission_awarded === undefined) data.commission_awarded = 0; 
+                    if(data.commission_paid === undefined) data.commission_paid = 0;
+                    allUsers.push({id: d.id, ...data});
+                });
+                renderTeamRoster();
+            });
+
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'hr_tickets'), (snap) => {
+                allTickets = []; snap.forEach(d => allTickets.push({id: d.id, ...d.data()}));
+                allTickets.sort((a,b) => b.timestamp - a.timestamp);
+                renderTickets();
             });
         }
 
-        function renderAll() {
-            renderDashboard(); renderReviewQueue(); renderMasterTable();
-        }
-
-        // --- DASHBOARD ---
-        function renderDashboard() {
-            let prog = 0, rev = 0, revw = 0, comp = 0;
-            const currentMonth = new Date().getMonth();
-            const formatCounts = {};
+        // ================= RENDERERS =================
+        function renderOverview() {
+            let totalPipe=0, totalWon=0;
+            allLeads.forEach(l => {
+                const v = Number(l.value)||0;
+                if(l.status === 'Closed Won') totalWon+=v; else if(l.status !== 'Closed Lost') totalPipe+=v;
+            });
             
-            allCreatives.forEach(p => {
-                if(p.status === 'In Progress' || p.status === 'Awaiting Assets') prog++;
-                if(p.status === 'Revision Requested') rev++;
-                if(p.status === 'Internal Review') revw++; // specifically Internal Review for Director
-                if(p.status === 'Approved & Completed') {
-                    if(new Date(p.timestamp).getMonth() === currentMonth) comp++;
-                }
-                
-                if(p.status !== 'Approved & Completed') {
-                    formatCounts[p.assignee] = (formatCounts[p.assignee] || 0) + 1; 
-                }
-            });
+            let crtAct=0;
+            allCreatives.forEach(c => { if(c.status !== 'Approved & Completed') crtAct++; });
 
-            document.getElementById('kpi-progress').innerText = prog;
-            document.getElementById('kpi-revisions').innerText = rev;
-            document.getElementById('kpi-review').innerText = revw;
-            document.getElementById('kpi-completed').innerText = comp;
+            document.getElementById('kpi-pipeline').innerText = "₹" + totalPipe.toLocaleString('en-IN');
+            document.getElementById('kpi-won').innerText = "₹" + totalWon.toLocaleString('en-IN');
+            document.getElementById('kpi-creative').innerText = crtAct;
 
-            // Update Badge
-            const badge = document.getElementById('nav-badge-review');
-            if(revw > 0) { badge.innerText = revw; badge.classList.remove('hidden'); } else { badge.classList.add('hidden'); }
-
-            // Deadlines
-            const upcoming = allCreatives.filter(p => p.status !== 'Approved & Completed').sort((a,b) => new Date(a.deadline) - new Date(b.deadline)).slice(0, 5);
-            document.getElementById('deadline-list').innerHTML = upcoming.map(p => {
-                const isLate = new Date(p.deadline) < new Date();
-                return `
-                <div class="bg-black/30 border border-white/5 rounded-xl p-3 md:p-4 flex justify-between items-center group cursor-pointer hover:bg-white/5 transition-colors" onclick="openTimeline('${p.id}')">
-                    <div class="flex-1 pr-2">
-                        <p class="font-bold text-white text-xs md:text-sm line-clamp-1 group-hover:text-indigo-300 transition-colors">${p.title}</p>
-                        <p class="text-[9px] md:text-[10px] text-slate-400 font-mono mt-1 line-clamp-1">${p.assignee} • ${p.client}</p>
-                    </div>
-                    <span class="px-2 py-1 md:px-3 rounded font-bold border text-[8px] md:text-[10px] uppercase tracking-wide shrink-0 ${isLate ? 'bg-red-500/20 text-red-400 border-red-500/30' : 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30'}">
-                        ${isLate ? 'OVERDUE' : new Date(p.deadline).toLocaleDateString()}
-                    </span>
-                </div>`
-            }).join('') || '<p class="text-sm text-slate-500 italic p-2 text-center mt-10">No upcoming deadlines.</p>';
-
-            // Chart (Workload by Assignee)
-            const ctx = document.getElementById('workloadChart');
+            // Chart (Sales vs Creative Volume)
             if(chartInstance) chartInstance.destroy();
-            
-            chartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(formatCounts),
-                    datasets: [{ 
-                        label: 'Active Tasks',
-                        data: Object.values(formatCounts), 
-                        backgroundColor: '#6366f1', 
-                        borderRadius: 4
-                    }]
+            chartInstance = new Chart(document.getElementById('agencyChart'), {
+                type: 'doughnut', 
+                data: { 
+                    labels: ['Active Sales Deals', 'Active Creative Projects'], 
+                    datasets: [{ data: [allLeads.filter(l=>l.status!=='Closed Won'&&l.status!=='Closed Lost').length, crtAct], backgroundColor: ['#10b981', '#06b6d4'], borderWidth: 0 }] 
                 },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { 
-                        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, border: {display: false}, ticks: { color: '#94a3b8', stepSize: 1 } }, 
-                        x: { grid: { display: false }, border: {display: false}, ticks: { color: '#94a3b8', font: {size: 10, family: 'JetBrains Mono'} } } 
-                    }
-                }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#94a3b8', font: {family: 'JetBrains Mono', size: 10} } } }, cutout: '75%' }
             });
+
+            // Master Pulse Feed
+            let masterHistory = [];
+            allLeads.forEach(l => { if(l.history) { l.history.forEach(h => masterHistory.push({ ...h, itemType: 'Sales', itemName: l.company, id: l.id })); } });
+            allCreatives.forEach(c => { if(c.history) { c.history.forEach(h => masterHistory.push({ ...h, itemType: 'Creative', itemName: c.title, id: c.id })); } });
+            
+            masterHistory.sort((a,b) => new Date(b.date) - new Date(a.date));
+            
+            document.getElementById('ops-feed').innerHTML = masterHistory.slice(0, 15).map(h => {
+                const iconColor = h.itemType === 'Sales' ? 'text-emerald-400' : 'text-cyan-400';
+                return `
+                <div class="bg-black/30 border border-white/5 rounded-lg p-3 hover:bg-white/5 transition-colors cursor-pointer" onclick="openTimeline('${h.id}', '${h.itemType.toLowerCase()}')">
+                    <p class="text-xs font-bold text-white mb-1.5">${h.note}</p>
+                    <div class="flex justify-between items-center mt-1">
+                        <span class="text-[9px] font-mono text-slate-400 bg-white/5 px-2 py-0.5 rounded"><i class="fa-solid fa-circle text-[6px] ${iconColor} mr-1"></i>${h.itemName}</span>
+                        <span class="text-[9px] font-mono text-slate-500">${new Date(h.date).toLocaleDateString()} • ${h.user}</span>
+                    </div>
+                </div>
+            `}).join('') || '<p class="text-sm text-slate-500 italic">No activity yet.</p>';
         }
 
-        // --- APPROVAL QUEUE ---
-        function renderReviewQueue() {
-            const reviews = allCreatives.filter(c => c.status === 'Internal Review');
-            
-            document.getElementById('review-table-body').innerHTML = reviews.map(p => {
-                const isLate = new Date(p.deadline) < new Date();
+        function renderTeamRoster() {
+            document.getElementById('roster-list').innerHTML = allUsers.map(user => {
                 return `
-                <div class="responsive-grid review-grid group border-l-2 border-indigo-500 bg-indigo-500/5 hover:bg-indigo-500/10">
-                    <div class="md:col-span-4 flex flex-col justify-center">
-                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-1">Project Brief</span>
-                        <p class="font-bold text-white leading-tight text-sm md:text-base">${p.title}</p>
-                        <p class="text-[10px] text-cyan-400 font-mono mt-1"><i class="fa-solid fa-user-pen mr-1.5 opacity-70"></i>${p.assignee}</p>
-                        ${p.submit_notes ? `<p class="text-[10px] text-slate-400 mt-2 bg-black/40 p-2 rounded border border-white/5"><i class="fa-solid fa-quote-left opacity-50 mr-1"></i>${p.submit_notes}</p>` : ''}
-                    </div>
-                    
-                    <div class="md:col-span-2 flex md:flex-col justify-between md:justify-center items-center md:items-start">
-                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase tracking-wider">Client</span>
-                        <span class="font-bold text-slate-300 text-xs md:text-sm">${p.client}</span>
-                        <span class="text-[10px] text-slate-500 mt-1 hidden md:block">${p.type}</span>
-                    </div>
-                    
-                    <div class="md:col-span-2 flex md:flex-col justify-between md:justify-center items-center md:items-start">
-                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase tracking-wider">Deadline</span>
-                        <span class="text-xs font-mono ${isLate ? 'text-red-400 font-bold' : 'text-slate-400'}">${new Date(p.deadline).toLocaleDateString()}</span>
-                    </div>
-                    
-                    <div class="md:col-span-2 flex md:flex-col justify-between md:justify-center items-center md:items-start">
-                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase tracking-wider">Status</span>
-                        <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider px-2 py-1 rounded bg-indigo-500/20 border border-indigo-500/30 w-full text-center md:text-left md:w-auto">Needs Review</span>
-                    </div>
-                    
-                    <div class="md:col-span-2 flex flex-col sm:flex-row justify-end gap-2 items-center mt-2 md:mt-0 pt-3 md:pt-0 border-t border-white/5 md:border-none w-full">
-                        <a href="${p.final_link}" target="_blank" class="w-full sm:w-auto text-center bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors shadow-lg" title="View Asset"><i class="fa-solid fa-play mr-1"></i> View Asset</a>
-                        
-                        <div class="flex gap-2 w-full sm:w-auto">
-                            <button onclick="approveProject('${p.id}')" class="flex-1 sm:flex-none bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-400 px-3 py-2 rounded-lg text-xs font-bold transition-colors border border-emerald-500/30" title="Approve"><i class="fa-solid fa-check"></i></button>
-                            <button onclick="openRejectModal('${p.id}', '${p.title.replace(/'/g, "\\'")}')" class="flex-1 sm:flex-none bg-rose-500/20 hover:bg-rose-500/40 text-rose-400 px-3 py-2 rounded-lg text-xs font-bold transition-colors border border-rose-500/30" title="Reject / Revision"><i class="fa-solid fa-xmark"></i></button>
+                <div class="flex items-center justify-between p-3 bg-white/5 border border-white/5 rounded-lg mb-2">
+                    <div class="flex items-center gap-3">
+                        <img src="https://ui-avatars.com/api/?name=${user.name.replace(/ /g, '+')}&background=0f172a&color=fff" class="w-8 h-8 rounded-full border border-slate-600 shrink-0">
+                        <div>
+                            <p class="font-bold text-white text-sm">${user.name}</p>
+                            <p class="text-[9px] text-slate-400 font-mono mt-0.5">${user.role}</p>
                         </div>
                     </div>
-                </div>
-            `}).join('');
-            
-            if(reviews.length === 0) {
-                document.getElementById('review-table-body').innerHTML = '<div class="py-16 text-center text-slate-500"><div class="flex flex-col items-center"><i class="fa-solid fa-glass-cheers text-5xl mb-4 opacity-20 text-emerald-500"></i><p class="text-lg font-bold">Queue is clear.</p><p class="text-xs mt-1">No assets require your approval right now.</p></div></div>';
-            }
+                    <span class="px-2 py-1 rounded text-[9px] font-bold uppercase ${user.status==='Active' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}">${user.status}</span>
+                </div>`
+            }).join('') || '<div class="py-4 text-slate-500 text-sm">No staff members found.</div>';
         }
 
-        // --- MASTER BRIEFS TABLE ---
-        function renderMasterTable() {
-            const filterText = document.getElementById('search-projects').value.toLowerCase();
-            const filtered = allCreatives.filter(c => (c.title||'').toLowerCase().includes(filterText) || (c.client||'').toLowerCase().includes(filterText) || (c.assignee||'').toLowerCase().includes(filterText));
-            
-            const html = filtered.map(p => {
-                const statusColor = getStatusColor(p.status);
-                
+        // --- SALES DB ---
+        function getSalesColor(s) {
+            const map = { 'New Lead': 'text-blue-400', 'Contacted': 'text-yellow-400', 'Meeting Set': 'text-purple-400', 'Proposal Sent': 'text-orange-400', 'Closed Won': 'text-emerald-400', 'Closed Lost': 'text-red-400' };
+            return map[s] || 'text-slate-400';
+        }
+
+        window.renderSalesPipeline = function() {
+            const filterText = document.getElementById('search-sales').value.toLowerCase();
+            const filtered = allLeads.filter(l => (l.company||'').toLowerCase().includes(filterText) || (l.rep||'').toLowerCase().includes(filterText) || (l.status||'').toLowerCase().includes(filterText));
+
+            document.getElementById('sales-table-body').innerHTML = filtered.map(l => `
+                <div class="responsive-grid sales-grid hover:bg-white/5 border-l-2 border-transparent hover:border-emerald-500/50">
+                    <div>
+                        <p class="font-bold text-white leading-tight text-sm">${l.company}</p>
+                        <p class="text-[10px] text-slate-400 font-mono mt-1"><i class="fa-solid fa-phone text-emerald-400 mr-1 opacity-70"></i>${l.phone}</p>
+                    </div>
+                    <div class="font-mono font-bold text-emerald-400 text-sm"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Value</span>₹${Number(l.value).toLocaleString('en-IN')}</div>
+                    <div><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Rep</span><span class="text-xs font-bold text-slate-300">${l.rep || 'Unassigned'}</span></div>
+                    <div><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Status</span><span class="font-bold text-[10px] uppercase tracking-wider px-2 py-1 rounded bg-white/5 border border-white/5 ${getSalesColor(l.status)}">${l.status}</span></div>
+                    <div class="flex justify-end gap-2 whitespace-nowrap">
+                        <button onclick="openTimeline('${l.id}', 'sales')" class="bg-white/5 hover:bg-white/20 text-slate-300 px-3 py-1.5 rounded-lg text-xs transition-colors" title="View Timeline / Notes"><i class="fa-solid fa-clock-rotate-left"></i> Log</button>
+                    </div>
+                </div>`
+            ).join('') || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-folder-open text-3xl mb-2 opacity-20"></i><p>No sales deals match.</p></div>';
+        }
+        document.getElementById('search-sales').addEventListener('input', renderSalesPipeline);
+
+        // --- CREATIVE DB ---
+        function getCreativeColor(s) {
+            const map = { 'In Progress': 'text-cyan-400', 'Internal Review': 'text-indigo-400', 'Client Review': 'text-purple-400', 'Revision Requested': 'text-rose-400', 'Approved & Completed': 'text-emerald-400' };
+            return map[s] || 'text-slate-400';
+        }
+
+        window.renderCreativePipeline = function() {
+            const filterText = document.getElementById('search-creative').value.toLowerCase();
+            const filtered = allCreatives.filter(c => (c.title||'').toLowerCase().includes(filterText) || (c.assignee||'').toLowerCase().includes(filterText) || (c.status||'').toLowerCase().includes(filterText));
+
+            document.getElementById('creative-table-body').innerHTML = filtered.map(c => `
+                <div class="responsive-grid creative-grid hover:bg-white/5 border-l-2 ${c.status==='Approved & Completed'?'border-l-emerald-500':'border-l-cyan-500'}">
+                    <div>
+                        <p class="font-bold text-white leading-tight text-sm">${c.title}</p>
+                        <p class="text-[10px] text-slate-400 font-mono mt-1"><i class="fa-solid fa-user-tag text-purple-400 mr-1 opacity-70"></i>${c.assignee || 'Unassigned'}</p>
+                    </div>
+                    <div class="text-xs text-slate-300"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Client</span>${c.client}<br><span class="text-[9px] text-slate-500 mt-1 inline-block bg-white/5 px-1 rounded">${c.type}</span></div>
+                    <div class="text-xs font-mono text-slate-400"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Deadline</span>${new Date(c.deadline).toLocaleDateString()}</div>
+                    <div><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Status</span><span class="font-bold text-[10px] uppercase tracking-wider px-2 py-1 rounded bg-white/5 border border-white/5 ${getCreativeColor(c.status)}">${c.status}</span></div>
+                    <div class="flex justify-end gap-2 items-center flex-wrap">
+                        <a href="${c.raw_link}" target="_blank" class="bg-blue-500/10 hover:bg-blue-500/30 transition-colors text-blue-400 px-3 py-1.5 rounded-lg text-xs" title="Raw Assets"><i class="fa-solid fa-folder-open"></i></a>
+                        ${c.final_link ? `<a href="${c.final_link}" target="_blank" class="bg-emerald-500/10 hover:bg-emerald-500/30 transition-colors text-emerald-400 px-3 py-1.5 rounded-lg text-xs" title="Final Link"><i class="fa-solid fa-play"></i></a>` : ''}
+                        <button onclick="openTimeline('${c.id}', 'creative')" class="bg-white/5 hover:bg-white/20 text-slate-300 px-3 py-1.5 rounded-lg text-xs transition-colors" title="Timeline"><i class="fa-solid fa-clock-rotate-left"></i> Log</button>
+                    </div>
+                </div>`
+            ).join('') || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-clapperboard text-3xl mb-2 opacity-20"></i><p>No creative briefs match.</p></div>';
+        }
+        document.getElementById('search-creative').addEventListener('input', renderCreativePipeline);
+
+        // --- HR TICKETS ---
+        function renderTickets() {
+            let openC = 0;
+            const html = allTickets.map(t => {
+                if(t.status === 'Open') openC++;
+                const statusColor = t.status === 'Open' ? 'text-yellow-400 bg-yellow-500/10' : (t.status === 'Resolved' ? 'text-emerald-400 bg-emerald-500/10' : 'text-blue-400 bg-blue-500/10');
                 return `
-                <div class="responsive-grid master-grid hover:bg-white/5 border-l-2 border-transparent hover:border-slate-500/50">
-                    <div class="md:col-span-4 flex flex-col justify-center">
-                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-1">Project Brief</span>
-                        <p class="font-bold text-white leading-tight text-sm md:text-base">${p.title}</p>
-                        <p class="text-[10px] text-cyan-400 font-mono mt-1"><i class="fa-solid fa-user-pen mr-1.5 opacity-70"></i>${p.assignee || 'Unassigned'}</p>
+                <div class="responsive-grid hr-grid hover:bg-white/5">
+                    <div class="font-mono text-[10px] text-slate-400"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Date</span>${new Date(t.timestamp).toLocaleDateString()}</div>
+                    <div>
+                        <p class="font-bold text-white text-sm leading-tight">${t.subject}</p>
+                        <p class="text-[10px] text-purple-400 font-mono mt-1"><i class="fa-solid fa-user mr-1"></i>${t.rep}</p>
                     </div>
-                    
-                    <div class="md:col-span-2 flex md:flex-col justify-between md:justify-center items-center md:items-start">
-                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase tracking-wider">Format</span>
-                        <span class="font-bold text-slate-300 text-xs md:text-sm">${p.client}</span>
-                        <span class="bg-white/5 px-2.5 py-1 rounded-md border border-white/5 text-[9px] md:text-[10px] text-slate-400 mt-1 hidden md:block">${p.type}</span>
+                    <div class="text-xs text-slate-300"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Category</span><span class="bg-white/5 px-2.5 py-1 rounded-md border border-white/5">${t.category}</span></div>
+                    <div><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Status</span><span class="px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider ${statusColor}">${t.status}</span></div>
+                    <div class="text-right">
+                        <button onclick="openManageTicket('${t.id}')" class="bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 px-4 py-2 rounded-lg text-xs font-bold transition-colors w-full md:w-auto border border-blue-500/20">Manage</button>
                     </div>
-                    
-                    <div class="md:col-span-2 flex md:flex-col justify-between md:justify-center items-center md:items-start">
-                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase tracking-wider">Deadline</span>
-                        <span class="text-xs font-mono text-slate-400">${new Date(p.deadline).toLocaleDateString()}</span>
-                    </div>
-                    
-                    <div class="md:col-span-2 flex md:flex-col justify-between md:justify-center items-center md:items-start">
-                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase tracking-wider">Status</span>
-                        <select onchange="updateProjectStatus('${p.id}', this.value)" class="bg-black/60 border border-white/10 rounded-lg px-2 py-1.5 text-[10px] md:text-xs font-bold ${statusColor.text} focus:outline-none cursor-pointer appearance-none w-32 md:w-full shadow-inner text-right md:text-left">
-                            ${generateStatusOptions(p.status)}
-                        </select>
-                    </div>
-                    
-                    <div class="md:col-span-2 flex justify-end gap-2 items-center mt-2 md:mt-0 pt-3 md:pt-0 border-t border-white/5 md:border-none">
-                        ${p.final_link ? `<a href="${p.final_link}" target="_blank" class="bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-400 px-3 py-2 rounded-lg text-xs font-bold transition-colors border border-emerald-500/20" title="Final Delivery"><i class="fa-solid fa-play"></i></a>` : ''}
-                        <button onclick="openTimeline('${p.id}')" class="text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 px-3 py-2 rounded-lg transition-colors border border-transparent hover:border-white/10" title="Timeline Logs"><i class="fa-solid fa-clock-rotate-left"></i></button>
-                    </div>
-                </div>
-            `}).join('');
-            document.getElementById('master-table-body').innerHTML = html || '<div class="py-12 text-center text-slate-500"><p>No projects match search.</p></div>';
+                </div>`
+            }).join('');
+            document.getElementById('hr-tickets-body').innerHTML = html || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-check-circle text-3xl mb-2 opacity-20"></i><p>No open tickets.</p></div>';
+            document.getElementById('hr-badge').innerText = openC;
+            document.getElementById('kpi-tickets').innerText = openC;
         }
-        
-        document.getElementById('search-projects').addEventListener('input', renderMasterTable);
 
-        window.updateProjectStatus = async (id, newStatus) => {
-            try { 
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'creative_tasks', id), { 
-                    status: newStatus,
-                    history: arrayUnion({ note: `Director updated status to ${newStatus}`, date: new Date().toISOString(), user: "Creative Director" })
-                }); 
-                showToast("Status Override Applied"); 
-            } catch(e) { showToast("Error updating", true); }
+        window.openManageTicket = (id) => {
+            const t = allTickets.find(x=>x.id===id); if(!t) return;
+            document.getElementById('mng-tk-id').value = id; document.getElementById('mng-tk-subject').innerText = t.subject;
+            document.getElementById('mng-tk-rep').innerText = `${t.rep} • ${t.category}`; document.getElementById('mng-tk-details').innerText = t.details;
+            document.getElementById('mng-tk-status').value = t.status;
+            document.getElementById('modal-manage-ticket').classList.add('active');
         };
-
-        // --- REVIEW ACTIONS ---
-        window.approveProject = async (id) => {
-            if(confirm("Approve this asset? It will be marked as 'Approved & Completed'.")) {
-                try {
-                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'creative_tasks', id), { 
-                        status: 'Approved & Completed',
-                        history: arrayUnion({ note: `Asset Approved by Creative Director.`, date: new Date().toISOString(), user: "Creative Director" })
-                    });
-                    showToast("Asset Approved!");
-                } catch(e) { showToast("Error", true); }
-            }
-        };
-
-        window.openRejectModal = (id, title) => {
-            document.getElementById('rej-id').value = id;
-            document.getElementById('rej-title').innerText = title;
-            document.getElementById('rej-notes').value = '';
-            document.getElementById('modal-reject').classList.add('active');
-        };
-
-        document.getElementById('form-reject-deliverable').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('rej-id').value;
-            const notes = document.getElementById('rej-notes').value.trim();
-
+        document.getElementById('form-manage-ticket').addEventListener('submit', async (e) => {
+            e.preventDefault(); const id = document.getElementById('mng-tk-id').value; const ns = document.getElementById('mng-tk-status').value;
             try {
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'creative_tasks', id), { 
-                    status: 'Revision Requested',
-                    feedback: notes, // Store specific feedback to show on editor's dashboard
-                    history: arrayUnion({ note: `Revision Requested: ${notes}`, date: new Date().toISOString(), user: "Creative Director" })
-                });
-                showToast("Revision Sent to Editor"); closeModals();
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'hr_tickets', id), { status: ns }); 
+                showToast("Ticket Resolved"); closeModals();
             } catch(e) { showToast("Error", true); }
         });
 
+        // --- CEO BRIEFING ---
+        document.getElementById('form-ceo-report').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-report'); btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Transmitting...';
+            
+            const report = {
+                type: document.getElementById('rep-type').value, date: document.getElementById('rep-date').value,
+                summary: document.getElementById('rep-summary').value.trim(), timestamp: Date.now()
+            };
+
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'agency_reports'), report);
+                showToast("Report Transmitted to CEO."); document.getElementById('form-ceo-report').reset(); document.getElementById('rep-date').value = new Date().toISOString().split('T')[0];
+            } catch(e) { showToast("Failed to transmit", true); } finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-satellite-dish"></i> Transmit to CEO'; }
+        });
+
         // --- TIMELINE ---
-        window.openTimeline = (id) => {
-            const l = allCreatives.find(x => x.id === id); if(!l) return;
-            document.getElementById('tl-lead-id').value = id;
-            document.getElementById('tl-company').innerText = l.title;
-            document.getElementById('tl-contact').innerHTML = `<i class="fa-solid fa-user-pen mr-1.5 text-cyan-400"></i> <span>${l.assignee || 'Unassigned'}</span>`;
+        window.openTimeline = (id, type) => {
+            document.getElementById('tl-id').value = id; document.getElementById('tl-type').value = type;
+            let title='', meta1='', meta2='', hist=[];
+
+            if(type === 'sales') {
+                const l = allLeads.find(x => x.id === id); if(!l) return;
+                title = l.company; meta1 = `<i class="fa-solid fa-user mr-1.5 text-purple-400"></i>${l.rep || 'Unassigned'}`; meta2 = `<i class="fa-solid fa-money-bill mr-1.5 text-emerald-400"></i>₹${Number(l.value).toLocaleString('en-IN')}`; hist = l.history || [];
+            } else {
+                const c = allCreatives.find(x => x.id === id); if(!c) return;
+                title = c.title; meta1 = `<i class="fa-solid fa-user-pen mr-1.5 text-cyan-400"></i>${c.assignee || 'Unassigned'}`; meta2 = `<i class="fa-solid fa-briefcase mr-1.5 text-indigo-400"></i>${c.client}`; hist = c.history || [];
+            }
+
+            document.getElementById('tl-title').innerText = title;
+            document.getElementById('tl-meta').innerHTML = `
+                <span class="flex items-center bg-white/5 px-2.5 py-1.5 rounded-lg border border-white/10">${meta1}</span>
+                <span class="flex items-center bg-white/5 px-2.5 py-1.5 rounded-lg border border-white/10">${meta2}</span>
+            `;
             
-            const history = l.history || [];
-            document.getElementById('tl-history-list').innerHTML = history.slice().reverse().map(h => {
-                const isDirector = h.user === 'Creative Director' || h.user.includes('Admin');
-                const borderColor = isDirector ? 'border-indigo-500/50' : 'border-cyan-500/50';
-                const dotColor = isDirector ? 'bg-indigo-500 shadow-[0_0_10px_#6366f1]' : 'bg-cyan-500 shadow-[0_0_10px_#06b6d4]';
-                
-                return `
-                <div class="pl-6 border-l-2 ${borderColor} relative py-1 group">
-                    <div class="absolute w-3 h-3 ${dotColor} rounded-full -left-[7px] top-2 transition-transform"></div>
-                    <p class="text-sm font-bold text-white">${h.note}</p>
-                    <p class="text-[10px] text-slate-400 font-mono mt-1.5 bg-black/30 inline-block px-2 py-0.5 rounded border border-white/5"><i class="fa-regular fa-clock mr-1"></i>${new Date(h.date).toLocaleString()} • <i class="fa-solid fa-user-pen ml-2 mr-1"></i>${h.user}</p>
-                </div>
-            `}).join('') || '<p class="text-sm text-slate-500 italic p-4 bg-white/5 rounded-xl border border-white/5 text-center">No history logged yet.</p>';
+            document.getElementById('tl-history-list').innerHTML = hist.slice().reverse().map(h => `<div class="pl-6 border-l-2 border-amber-500/50 relative py-1 group"><div class="absolute w-3 h-3 bg-amber-500 rounded-full -left-[7px] top-2 shadow-[0_0_10px_#f59e0b] group-hover:scale-125 transition-transform"></div><p class="text-sm font-bold text-white">${h.note}</p><p class="text-[10px] text-slate-400 font-mono mt-1.5 bg-black/30 inline-block px-2 py-0.5 rounded border border-white/5"><i class="fa-regular fa-clock mr-1"></i>${new Date(h.date).toLocaleString()} • <i class="fa-solid fa-user-pen ml-2 mr-1"></i>${h.user}</p></div>`).join('') || '<p class="text-sm text-slate-500 italic p-4 bg-white/5 rounded-xl border border-white/5 text-center">No history logged yet.</p>';
             
-            document.getElementById('tl-new-note').value = '';
-            document.getElementById('modal-timeline').classList.add('active');
+            document.getElementById('tl-new-note').value = ''; document.getElementById('modal-timeline').classList.add('active');
         };
 
         window.addTimelineEvent = async () => {
-            const id = document.getElementById('tl-lead-id').value;
-            const note = document.getElementById('tl-new-note').value.trim();
-            if(!note) return;
-            
+            const id = document.getElementById('tl-id').value; const type = document.getElementById('tl-type').value; const note = document.getElementById('tl-new-note').value.trim(); if(!note) return;
+            const collectionName = type === 'sales' ? 'sales_leads' : 'creative_tasks';
             try {
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'creative_tasks', id), { 
-                    history: arrayUnion({ note: note, date: new Date().toISOString(), user: "Creative Director" }) 
-                });
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', collectionName, id), { history: arrayUnion({ note: note, date: new Date().toISOString(), user: "Head of Operations" }) });
                 document.getElementById('tl-new-note').value = '';
             } catch(e) { showToast("Error logging interaction", true); }
         };
-
-        // --- HELPERS ---
-        function getStatusColor(s) {
-            const map = { 'In Progress': 'text-cyan-400', 'Awaiting Assets': 'text-slate-400', 'Internal Review': 'text-indigo-400', 'Client Review': 'text-purple-400', 'Revision Requested': 'text-rose-400', 'Approved & Completed': 'text-emerald-400' };
-            return { text: map[s] || 'text-slate-400' };
-        }
-        function generateStatusOptions(curr) { return CREATIVE_STATUSES.map(s => `<option value="${s}" ${s === curr ? 'selected' : ''} class="bg-slate-900 text-white">${s}</option>`).join(''); }
 
     </script>
 </body>
