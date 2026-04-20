@@ -96,6 +96,7 @@
             }
             .mobile-label { display: none; }
             .team-grid { grid-template-columns: 2fr 1fr 1.5fr 1fr 1fr; }
+            .attendance-grid { grid-template-columns: 1.5fr 1.5fr 1.5fr 1fr 1fr; }
             .sales-grid { grid-template-columns: 2.5fr 1fr 1fr 1.5fr 1.5fr; }
             .creative-grid { grid-template-columns: 2fr 1.5fr 1fr 1.5fr 1.5fr; }
             .hr-grid { grid-template-columns: 1fr 2fr 1.5fr 1fr 1fr; }
@@ -144,6 +145,9 @@
             </button>
             <button onclick="switchTab('team')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
                 <i class="fa-solid fa-users-viewfinder w-5 text-center"></i> Roster & Access
+            </button>
+            <button onclick="switchTab('attendance')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
+                <i class="fa-solid fa-user-clock w-5 text-center text-indigo-400"></i> Time & Attendance
             </button>
             <div class="px-6 py-2 mt-2">
                 <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Divisions</p>
@@ -257,6 +261,31 @@
                             <div class="text-right">Actions</div>
                         </div>
                         <div id="team-table-body" class="flex flex-col mt-2 md:mt-0"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-attendance" class="tab-content">
+                <div class="card-ceo p-4 md:p-6 flex flex-col min-h-[600px] w-full">
+                    <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-6 border-b border-white/10 pb-6">
+                        <div>
+                            <h3 class="text-lg font-bold text-indigo-400 font-heading"><i class="fa-solid fa-user-clock mr-2"></i>Time & Attendance</h3>
+                            <p class="text-xs text-slate-400">Live monitoring of staff shifts and historical logs.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="bg-indigo-500/20 border border-indigo-500/30 text-indigo-400 px-4 py-2 rounded-lg text-sm font-bold"><span id="active-shifts-count">0</span> Active Shifts</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 pb-4">
+                        <div class="hidden lg:grid attendance-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-bold text-slate-500 uppercase tracking-wider rounded-t-xl">
+                            <div>Staff Member</div>
+                            <div>Punch In</div>
+                            <div>Punch Out</div>
+                            <div>Duration</div>
+                            <div class="text-right">Status</div>
+                        </div>
+                        <div id="attendance-body" class="flex flex-col mt-2 md:mt-0"></div>
                     </div>
                 </div>
             </div>
@@ -672,7 +701,7 @@
         let currentSalesFilter = 'All';
         let currentCreativeFilter = 'All';
         let activeUserRecord = null;
-        let allLeads = [], allUsers = [], allTickets = [], allCreatives = [];
+        let allLeads = [], allUsers = [], allTickets = [], allCreatives = [], allAttendance = [];
 
         // Safe DOM Utilities (Prevents completely crashing on null errors)
         const safeHTML = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
@@ -694,7 +723,7 @@
                 event.currentTarget.classList.add('active');
             }
 
-            const titles = { 'overview': "God's Eye View", 'team': 'Personnel Roster', 'sales-pipeline': 'Sales Database', 'creative-pipeline': 'Creative Engine', 'payroll': 'Global Payroll Engine', 'logs': 'System Audit Logs', 'hr': 'Support Desk', 'playbook': 'Master Sales Playbook' };
+            const titles = { 'overview': "God's Eye View", 'team': 'Personnel Roster', 'attendance': 'Time & Attendance', 'sales-pipeline': 'Sales Database', 'creative-pipeline': 'Creative Engine', 'payroll': 'Global Payroll Engine', 'logs': 'System Audit Logs', 'hr': 'Support Desk', 'playbook': 'Master Sales Playbook' };
             safeText('page-title', titles[tabId] || '');
 
             if(window.innerWidth < 768) {
@@ -824,6 +853,14 @@
                     renderTickets();
                 } catch(e) { console.error("Error rendering tickets", e); }
             });
+
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'attendance_logs'), (snap) => {
+                try {
+                    allAttendance = []; snap.forEach(d => allAttendance.push({id: d.id, ...d.data()}));
+                    allAttendance.sort((a,b) => (b.clockIn||0) - (a.clockIn||0));
+                    renderAttendance();
+                } catch(e) { console.error("Error rendering attendance", e); }
+            });
         }
 
         // ================= RENDERERS =================
@@ -913,6 +950,45 @@
                 }).join('') || '<div class="py-8 text-center text-slate-500">No staff members found.</div>';
                 safeHTML('team-table-body', html);
             } catch(e) { console.error("Render Roster Error", e); }
+        }
+
+        // --- ATTENDANCE ---
+        function renderAttendance() {
+            try {
+                let activeCount = 0;
+                const html = allAttendance.map(a => {
+                    if (a.status === 'Active') activeCount++;
+                    const statusColor = a.status === 'Active' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-slate-400 bg-slate-500/10 border-slate-500/20';
+                    
+                    const clockInStr = a.clockIn ? new Date(a.clockIn).toLocaleString() : '--';
+                    const clockOutStr = a.clockOut ? new Date(a.clockOut).toLocaleString() : '--';
+                    
+                    let durationStr = '--';
+                    if (a.status === 'Completed' && a.totalTimeMs) {
+                        const h = Math.floor(a.totalTimeMs / 3600000);
+                        const m = Math.floor((a.totalTimeMs % 3600000) / 60000);
+                        durationStr = `${h}h ${m}m`;
+                    } else if (a.status === 'Active' && a.clockIn) {
+                        durationStr = `<span class="text-emerald-400 animate-pulse">In Progress...</span>`;
+                    }
+
+                    return `
+                    <div class="responsive-grid attendance-grid hover:bg-white/5 border-l-2 ${a.status==='Active'?'border-l-emerald-500':'border-transparent'}">
+                        <div>
+                            <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Staff</span>
+                            <p class="font-bold text-white text-sm">${a.rep||'Unknown'}</p>
+                        </div>
+                        <div class="text-xs font-mono text-slate-300"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">In</span>${clockInStr}</div>
+                        <div class="text-xs font-mono text-slate-400"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Out</span>${clockOutStr}</div>
+                        <div class="text-xs font-bold text-indigo-300"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Duration</span>${durationStr}</div>
+                        <div class="text-right"><span class="px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border ${statusColor}">${a.status}</span></div>
+                    </div>
+                    `;
+                }).join('');
+                
+                safeText('active-shifts-count', activeCount);
+                safeHTML('attendance-body', html || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-clock text-3xl mb-2 opacity-20"></i><p>No attendance logs found.</p></div>');
+            } catch(e) { console.error("Render Attendance Error", e); }
         }
 
         // --- SALES DB ---
@@ -1098,6 +1174,7 @@
                         </div>
                     </div>`
                 }).join('');
+                safeText('hr-open-count', openC);
                 safeHTML('hr-tickets-body', html || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-check-circle text-3xl mb-2 opacity-20"></i><p>No open tickets.</p></div>');
             } catch(e) { console.error("Render Ticket Error", e); }
         }
@@ -1274,38 +1351,4 @@
 
         window.releasePayment = async (id, amt, name) => {
             if(amt<=0) return;
-            if(confirm(`Mark ₹${amt.toLocaleString('en-IN')} as PAID to ${name}?`)) {
-                const u = allUsers.find(x=>x.id===id); if(!u) return;
-                try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', id), { commission_paid: (Number(u.commission_paid)||0) + amt }); logAudit(`Cleared liability ₹${amt} for ${name}`); showToast("Released"); } catch(e) {}
-            }
-        };
-
-        window.openManageTicket = (id) => {
-            const t = allTickets.find(x=>x.id===id); if(!t) return;
-            document.getElementById('mng-tk-id').value = id; safeText('mng-tk-subject', t.subject||'--');
-            safeText('mng-tk-rep', `${t.rep||'--'} • ${t.category||'--'}`); safeText('mng-tk-details', t.details||'--');
-            document.getElementById('mng-tk-status').value = t.status || 'Open';
-            safeShowModal('modal-manage-ticket');
-        };
-        
-        const formMngTk = document.getElementById('form-manage-ticket');
-        if(formMngTk) {
-            formMngTk.addEventListener('submit', async (e) => {
-                e.preventDefault(); const id = document.getElementById('mng-tk-id').value; const ns = document.getElementById('mng-tk-status').value;
-                try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'hr_tickets', id), { status: ns }); logAudit(`Updated HR Ticket to ${ns}`); showToast("Ticket Updated"); closeModals(); } catch(e) {}
-            });
-        }
-
-        window.exportGlobalCSV = () => {
-            if(!allLeads.length && !allCreatives.length) return showToast("No data to export", true);
-            const headers = ['Type', 'Company/Project', 'Contact/Client', 'Phone/Format', 'Value/Deadline', 'Status', 'Assignee'];
-            const csvRows = [headers.join(',')];
-            allLeads.forEach(l => csvRows.push([ '"Sales"', `"${l.company||''}"`, `"${l.contact||''}"`, `"${l.phone||''}"`, l.value||0, `"${l.status||''}"`, `"${l.rep||''}"` ].join(',')));
-            allCreatives.forEach(c => csvRows.push([ '"Creative"', `"${c.title||''}"`, `"${c.client||''}"`, `"${c.type||''}"`, `"${c.deadline||''}"`, `"${c.status||''}"`, `"${c.assignee||''}"` ].join(',')));
-            const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
-            const a = document.createElement('a'); a.setAttribute('href', window.URL.createObjectURL(blob)); a.setAttribute('download', `Master_DB_${new Date().toLocaleDateString()}.csv`);
-            document.body.appendChild(a); a.click(); document.body.removeChild(a); logAudit('Exported Master Database');
-        };
-    </script>
-</body>
-</html>
+            if(confirm(`Mark ₹${
