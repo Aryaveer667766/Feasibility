@@ -17,147 +17,114 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #020617; /* Deepest slate */
+            background-color: #020617;
             color: #f8fafc;
             overflow: hidden;
+            /* Purple/Blue Sales Gradient */
             background-image: 
-                radial-gradient(circle at 15% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 45%), 
-                radial-gradient(circle at 85% 100%, rgba(16, 185, 129, 0.05) 0%, transparent 45%);
+                radial-gradient(circle at 0% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 40%), 
+                radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
         }
         .font-heading { font-family: 'Outfit', sans-serif; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
 
         /* Premium Glassmorphism */
-        .glass-panel { 
-            background: rgba(15, 23, 42, 0.75); 
-            backdrop-filter: blur(24px); 
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            border-top: 1px solid rgba(255, 255, 255, 0.15); /* Top highlight for depth */
-        }
+        .glass-panel { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); border-top: 1px solid rgba(255, 255, 255, 0.15); }
         .glass-card { 
             background: linear-gradient(180deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.6) 100%);
-            border: 1px solid rgba(255,255,255,0.06); 
-            border-top: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 1.25rem; 
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            border: 1px solid rgba(255,255,255,0.06); border-top: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 1.25rem; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); transition: all 0.3s; 
         }
-        .glass-card:hover { 
-            background: linear-gradient(180deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.8) 100%);
-            border-color: rgba(139, 92, 246, 0.4); 
-            box-shadow: 0 15px 35px -10px rgba(0,0,0,0.6), 0 0 15px rgba(139, 92, 246, 0.1);
-            transform: translateY(-2px);
-        }
+        .glass-card:hover { border-color: rgba(139, 92, 246, 0.4); transform: translateY(-2px); }
 
-        /* Inputs & Form Controls */
-        input, select, textarea { 
-            background: rgba(2, 6, 23, 0.6); 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            color: white; 
-            transition: all 0.2s ease-in-out; 
-            border-radius: 0.75rem;
-        }
-        input:focus, select:focus, textarea:focus { 
-            outline: none; 
-            border-color: #8b5cf6; 
-            background: rgba(2, 6, 23, 0.9);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25); 
-        }
+        /* Inputs */
+        input, select, textarea { background: rgba(2, 6, 23, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.2s; border-radius: 0.75rem; width: 100%; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #8b5cf6; background: rgba(2, 6, 23, 0.9); box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25); }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        /* Scrollbars */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #8b5cf6; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.5); }
 
-        /* Navigation */
+        /* Tabs */
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes fadeUp { 
-            from { opacity: 0; transform: translateY(15px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
+        .tab-content.active { display: block; animation: fadeUp 0.3s forwards; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        .nav-btn { 
-            border-left: 3px solid transparent; 
-            color: #94a3b8; 
-            transition: all 0.2s ease-in-out; 
-            border-radius: 0 0.75rem 0.75rem 0;
-            margin-right: 1rem;
-        }
-        .nav-btn.active { 
-            background: linear-gradient(90deg, rgba(139, 92, 246, 0.2) 0%, transparent 100%); 
-            border-left-color: #8b5cf6; 
-            color: #fff; 
-            font-weight: 700; 
-        }
-        .nav-btn:hover:not(.active) { 
-            color: white; 
-            background: rgba(255,255,255,0.03); 
-        }
+        .nav-btn { border-left: 3px solid transparent; color: #94a3b8; transition: all 0.2s; border-radius: 0 0.75rem 0.75rem 0; margin-right: 1rem;}
+        .nav-btn.active { background: linear-gradient(90deg, rgba(139, 92, 246, 0.2) 0%, transparent 100%); border-left-color: #8b5cf6; color: #fff; font-weight: 700; }
+        .nav-btn:hover:not(.active) { color: white; background: rgba(255,255,255,0.03); }
 
-        .btn-primary { 
-            background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%); 
-            color: white; 
-            font-weight: 800; 
-            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4); 
-            transition: all 0.2s ease-in-out; 
-        }
-        .btn-primary:hover:not(:disabled) { 
-            transform: translateY(-2px) scale(1.01); 
-            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.6); 
-        }
-        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-primary { background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%); color: white; font-weight: 800; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3); transition: all 0.2s; }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px) scale(1.01); box-shadow: 0 8px 25px rgba(139, 92, 246, 0.5); }
 
-        /* Modals */
         .modal { opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 100; }
         .modal.active { opacity: 1; pointer-events: auto; }
+
+        /* Mobile-First Responsive Grids */
+        .responsive-grid {
+            display: flex; flex-direction: column; gap: 0.75rem; padding: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02);
+            border-radius: 0.75rem; margin-bottom: 0.75rem; transition: background 0.2s;
+        }
+        .responsive-grid:hover { background: rgba(255,255,255,0.05); }
         
-        /* Table Styles */
-        th { letter-spacing: 0.05em; }
-        tr { transition: background-color 0.2s; }
+        @media (min-width: 1024px) {
+            .responsive-grid {
+                display: grid; gap: 1rem; padding: 1rem 1.25rem;
+                background: transparent; border-radius: 0; margin-bottom: 0; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+            .mobile-label { display: none; }
+            .sales-grid { grid-template-columns: 2fr 1fr 1.5fr 1fr 1.5fr; }
+            .hr-grid { grid-template-columns: 1fr 2fr 1.5fr 1fr; }
+            .leaderboard-grid { grid-template-columns: 0.5fr 2fr 1.5fr 1fr 1.5fr; }
+        }
     </style>
 </head>
 <body class="h-screen w-full relative flex flex-col md:flex-row">
 
-    <div id="login-screen" class="absolute inset-0 z-50 flex items-center justify-center backdrop-blur-xl bg-[#020617]/95 p-4">
-        <div class="glass-panel p-8 md:p-12 w-full max-w-md relative overflow-hidden rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+    <div id="login-screen" class="absolute inset-0 z-50 flex items-center justify-center backdrop-blur-xl bg-[#020617]/95 p-4 md:p-0">
+        <div class="glass-panel p-6 sm:p-8 md:p-12 w-full max-w-md relative overflow-hidden rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
             <div class="absolute -top-32 -right-32 w-64 h-64 bg-purple-600/20 rounded-full blur-[60px] pointer-events-none"></div>
             <div class="absolute -bottom-32 -left-32 w-64 h-64 bg-blue-600/20 rounded-full blur-[60px] pointer-events-none"></div>
             
-            <div class="text-center mb-10 relative z-10">
-                <div class="w-16 h-16 mx-auto bg-gradient-to-br from-white to-slate-300 text-slate-900 flex items-center justify-center rounded-2xl text-3xl font-black shadow-[0_0_30px_rgba(255,255,255,0.15)] mb-6">F</div>
-                <h2 class="text-3xl font-black text-white font-heading tracking-tight">Sales Engine</h2>
+            <div class="text-center mb-8 relative z-10">
+                <div class="w-16 h-16 mx-auto bg-gradient-to-br from-purple-500 to-blue-600 text-white flex items-center justify-center rounded-2xl text-3xl font-black shadow-[0_0_30px_rgba(139,92,246,0.3)] mb-6">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-black text-white font-heading tracking-tight">Sales Engine</h2>
                 <p class="text-xs text-purple-400 font-bold uppercase tracking-widest mt-2">Feasibility Media</p>
             </div>
 
-            <form id="login-form" class="space-y-6 relative z-10">
+            <form id="login-form" class="space-y-5 relative z-10">
                 <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Registered Email</label>
+                    <label class="block text-[11px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Registered Email</label>
                     <div class="relative">
                         <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-slate-500"></i>
-                        <input type="email" id="login-email" required class="w-full pl-11 pr-4 py-3 text-sm" placeholder="hq@feasibility.com">
+                        <input type="email" id="login-email" required class="w-full pl-11 pr-4 py-3 text-sm">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Access Password</label>
+                    <label class="block text-[11px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Access Password</label>
                     <div class="relative">
                         <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-500"></i>
-                        <input type="password" id="login-pwd" required class="w-full pl-11 pr-4 py-3 text-sm" placeholder="••••••••">
+                        <input type="password" id="login-pwd" required class="w-full pl-11 pr-4 py-3 text-sm">
                     </div>
                 </div>
-                
                 <div id="login-error" class="hidden bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold text-center py-3 rounded-xl backdrop-blur-sm">
                     Invalid credentials or access revoked.
                 </div>
-                
-                <button type="submit" id="btn-login" class="btn-primary w-full py-4 rounded-xl text-sm tracking-widest uppercase flex items-center justify-center gap-3 mt-4">
-                    <span>Initialize Uplink</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                <button type="submit" id="btn-login" class="btn-primary w-full py-3.5 sm:py-4 rounded-xl text-sm tracking-widest uppercase flex items-center justify-center gap-3 mt-4">
+                    <span>Initialize Workspace</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>
                 </button>
             </form>
             
-            <div class="mt-8 text-center border-t border-white/10 pt-6">
+            <div class="mt-6 sm:mt-8 text-center border-t border-white/10 pt-5 sm:pt-6 relative z-10">
                 <div class="flex items-center justify-center gap-2 text-xs text-slate-500 font-mono bg-black/30 w-fit mx-auto px-4 py-2 rounded-full border border-white/5">
                     <div class="w-2 h-2 rounded-full bg-slate-500 animate-pulse" id="login-db-indicator"></div>
                     <span id="login-db-status">Connecting to secure core...</span>
@@ -170,10 +137,10 @@
         
         <div class="md:hidden flex h-16 border-b border-white/10 glass-panel justify-between items-center px-4 shrink-0 z-30 shadow-md">
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-gradient-to-br from-white to-slate-200 text-black flex items-center justify-center rounded-lg text-sm font-black shadow">F</div>
+                <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-600 text-white flex items-center justify-center rounded-lg text-sm font-black shadow"><i class="fa-solid fa-bolt"></i></div>
                 <span class="text-white font-bold tracking-tight font-heading">Feasibility</span>
             </div>
-            <button onclick="toggleSidebar()" class="text-white p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors"><i class="fa-solid fa-bars text-xl"></i></button>
+            <button onclick="toggleSidebar()" class="text-white p-2 bg-white/5 rounded-lg"><i class="fa-solid fa-bars text-xl"></i></button>
         </div>
 
         <div id="mobile-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 hidden md:hidden" onclick="toggleSidebar()"></div>
@@ -181,7 +148,7 @@
         <aside id="sidebar" class="w-64 glass-panel border-r border-white/10 flex flex-col z-50 shrink-0 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 shadow-2xl md:shadow-none">
             <div class="p-4 md:p-6 border-b border-white/10 flex justify-between items-center bg-black/20">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-white to-slate-200 text-black items-center justify-center rounded-xl text-lg font-black hidden md:flex shadow-lg">F</div>
+                    <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-600 text-white items-center justify-center rounded-xl text-lg font-black hidden md:flex shadow-lg"><i class="fa-solid fa-bolt text-sm"></i></div>
                     <div class="flex flex-col leading-none">
                         <span class="text-white font-bold tracking-tight text-lg font-heading">Feasibility</span>
                         <span class="text-[10px] text-purple-400 font-bold uppercase tracking-widest mt-1">Sales Engine</span>
@@ -190,17 +157,17 @@
                 <button onclick="toggleSidebar()" class="md:hidden text-slate-400 bg-white/5 p-2 rounded-lg"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
 
-            <div class="flex p-6 pb-4 border-b border-white/10 items-center gap-4 bg-gradient-to-b from-white/5 to-transparent">
-                <div class="w-12 h-12 rounded-full border-2 border-purple-500 overflow-hidden shadow-[0_0_15px_rgba(147,51,234,0.4)] shrink-0">
+            <div class="flex p-5 md:p-6 pb-4 border-b border-white/10 items-center gap-4 bg-gradient-to-b from-white/5 to-transparent">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-purple-500 overflow-hidden shadow-[0_0_15px_rgba(139,92,246,0.4)] shrink-0">
                     <img id="desk-avatar" src="" class="w-full h-full object-cover">
                 </div>
                 <div class="overflow-hidden">
                     <p id="desk-user-name" class="text-sm font-bold text-white leading-tight truncate">Loading...</p>
-                    <p id="desk-user-role" class="text-[10px] text-emerald-400 uppercase tracking-wider font-bold truncate mt-1">Fetching Role</p>
+                    <p id="desk-user-role" class="text-[10px] text-emerald-400 uppercase tracking-wider font-bold truncate mt-1">Sales Executive</p>
                 </div>
             </div>
 
-            <nav id="nav-menu" class="flex flex-col flex-1 py-6 space-y-1 overflow-y-auto">
+            <nav id="nav-menu" class="flex flex-col flex-1 py-4 md:py-6 space-y-1 overflow-y-auto custom-scrollbar">
                 <button onclick="switchTab('dashboard')" class="nav-btn active w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
                     <i class="fa-solid fa-chart-pie w-5 text-center text-lg"></i> <span class="tab-label">My Analytics</span>
                 </button>
@@ -213,12 +180,12 @@
                 <button onclick="switchTab('hr')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left border-t border-white/10 mt-3 pt-4">
                     <i class="fa-solid fa-headset w-5 text-center text-lg text-blue-400"></i> <span class="tab-label">Support Desk</span>
                 </button>
-                <button id="nav-leaderboard-desk" onclick="switchTab('leaderboard')" class="nav-btn hidden w-full items-center gap-4 px-6 py-3.5 text-sm text-left border-t border-white/10 mt-3 pt-4">
+                <button onclick="switchTab('leaderboard')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
                     <i class="fa-solid fa-trophy w-5 text-center text-lg text-yellow-500"></i> <span class="tab-label">Leaderboard</span>
                 </button>
                 
                 <div class="mt-auto border-t border-white/10 pt-4 mb-4">
-                    <button onclick="logout()" class="w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-colors mr-4 rounded-r-xl">
+                    <button onclick="logout()" class="w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors mr-4 rounded-r-xl">
                         <i class="fa-solid fa-power-off w-5 text-center text-lg"></i> Secure Logout
                     </button>
                 </div>
@@ -226,142 +193,137 @@
         </aside>
 
         <main class="flex-1 h-full flex flex-col relative z-10 overflow-hidden">
-            <header class="flex h-16 md:h-20 border-b border-white/10 glass-panel justify-between items-center px-4 md:px-8 shrink-0 bg-black/20">
-                <h1 id="page-title" class="text-xl md:text-2xl font-bold text-white font-heading truncate pr-4 drop-shadow-md">My Analytics</h1>
+            <header class="flex h-14 md:h-20 border-b border-white/10 glass-panel justify-between items-center px-4 md:px-8 shrink-0 bg-black/20">
+                <h1 id="page-title" class="text-lg md:text-2xl font-bold text-white font-heading truncate pr-4 drop-shadow-md">My Analytics</h1>
                 <div class="flex items-center gap-4">
-                    <button id="btn-export" onclick="exportDataCSV()" class="hidden md:flex bg-slate-800 hover:bg-slate-700 border border-white/10 text-white px-4 py-2 rounded-lg text-xs font-bold items-center gap-2 transition-colors shadow-lg">
-                        <i class="fa-solid fa-file-csv text-emerald-400"></i> Export CSV
-                    </button>
-                    <div class="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 px-4 py-2 rounded-full shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.1)]">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-widest hidden sm:inline">Live Sync</span>
+                    <div class="flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 md:px-4 md:py-2 rounded-full shrink-0 shadow-[0_0_10px_rgba(139,92,246,0.1)]">
+                        <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+                        <span class="text-[9px] md:text-[10px] text-purple-400 font-bold uppercase tracking-widest hidden sm:inline">Live Sync</span>
+                        <span class="text-[9px] text-purple-400 font-bold uppercase tracking-widest sm:hidden">Synced</span>
                     </div>
                 </div>
             </header>
 
-            <div class="flex-1 overflow-y-auto p-4 md:p-8">
+            <div class="flex-1 overflow-y-auto p-3 md:p-8 custom-scrollbar">
                 
-                <div id="tab-dashboard" class="tab-content active space-y-6">
-                    <div class="grid grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
-                        <div class="glass-card p-5 md:p-6 border-t-4 border-t-purple-500 relative overflow-hidden group">
-                            <div class="absolute -right-6 -top-6 text-purple-500/10 text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-chart-line"></i></div>
-                            <p id="kpi-pipeline-title" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 relative z-10">My Active Pipeline</p>
+                <div id="tab-dashboard" class="tab-content active space-y-4 md:space-y-6">
+                    <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 md:gap-6">
+                        <div class="glass-card p-4 md:p-6 border-t-4 border-t-purple-500 relative overflow-hidden group">
+                            <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-purple-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-chart-line"></i></div>
+                            <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">My Active Pipeline</p>
                             <h3 id="kpi-pipeline" class="text-2xl md:text-4xl font-black text-white font-mono relative z-10 drop-shadow-md">₹0</h3>
+                            <p class="text-[8px] md:text-[9px] text-purple-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">Deals in progress</p>
                         </div>
-                        <div class="glass-card p-5 md:p-6 border-t-4 border-t-emerald-500 relative overflow-hidden group">
-                            <div class="absolute -right-6 -top-6 text-emerald-500/10 text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-check-double"></i></div>
-                            <p id="kpi-won-title" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 relative z-10">My Deals Won</p>
+                        <div class="glass-card p-4 md:p-6 border-t-4 border-t-emerald-500 relative overflow-hidden group">
+                            <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-emerald-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-check-double"></i></div>
+                            <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">My Deals Won</p>
                             <h3 id="kpi-won" class="text-2xl md:text-4xl font-black text-emerald-400 font-mono relative z-10 drop-shadow-md">₹0</h3>
+                            <p class="text-[8px] md:text-[9px] text-emerald-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">Total revenue generated</p>
                         </div>
-                        <div class="glass-card p-5 md:p-6 border-t-4 border-t-blue-500 relative overflow-hidden group">
-                            <div class="absolute -right-6 -top-6 text-blue-500/10 text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-award"></i></div>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 relative z-10">Commission Awarded</p>
-                            <h3 id="kpi-awarded" class="text-2xl md:text-4xl font-black text-blue-400 font-mono relative z-10 drop-shadow-md">₹0</h3>
+                        <div class="glass-card p-4 md:p-6 border-t-4 border-t-yellow-500 relative overflow-hidden group">
+                            <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-yellow-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-sack-dollar"></i></div>
+                            <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">Projected Commission</p>
+                            <h3 id="kpi-projected" class="text-2xl md:text-4xl font-black text-yellow-400 font-mono relative z-10 drop-shadow-md">₹0</h3>
+                            <p class="text-[8px] md:text-[9px] text-yellow-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">10% of Late Stage Deals</p>
                         </div>
-                        <div class="glass-card p-5 md:p-6 border-t-4 border-t-rose-500 relative overflow-hidden group">
-                            <div class="absolute -right-6 -top-6 text-rose-500/10 text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-wallet"></i></div>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 relative z-10">Pending Payout</p>
-                            <h3 id="kpi-pending" class="text-2xl md:text-4xl font-black text-rose-400 font-mono relative z-10 drop-shadow-md">₹0</h3>
+                        <div class="glass-card p-4 md:p-6 border-t-4 border-t-blue-500 relative overflow-hidden group">
+                            <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-blue-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-wallet"></i></div>
+                            <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">Pending Payout</p>
+                            <h3 id="kpi-pending" class="text-2xl md:text-4xl font-black text-blue-400 font-mono relative z-10 drop-shadow-md">₹0</h3>
+                            <p class="text-[8px] md:text-[9px] text-blue-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">Commission awarded</p>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="glass-card p-6 lg:col-span-2">
-                            <h3 class="text-lg font-bold text-white font-heading mb-6 border-b border-white/10 pb-4">Pipeline Distribution by Status</h3>
-                            <div class="relative h-64 w-full">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+                        <div class="glass-card p-4 md:p-6 lg:col-span-2">
+                            <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3">My Pipeline Distribution</h3>
+                            <div class="relative h-48 md:h-64 w-full">
                                 <canvas id="pipelineChart"></canvas>
                             </div>
                         </div>
 
-                        <div class="glass-card p-6 flex flex-col h-full max-h-[350px]">
-                            <h3 class="text-lg font-bold text-white font-heading mb-6 border-b border-white/10 pb-4 text-rose-400 flex items-center"><i class="fa-solid fa-fire mr-2"></i> Priority Follow-ups</h3>
-                            <div class="overflow-y-auto flex-1 pr-2 space-y-3" id="task-list">
+                        <div class="glass-card p-4 md:p-6 flex flex-col h-full max-h-[350px]">
+                            <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3 text-rose-400 flex items-center"><i class="fa-solid fa-fire mr-2"></i> Priority Follow-ups</h3>
+                            <div class="overflow-y-auto flex-1 pr-2 space-y-3 custom-scrollbar" id="task-list">
                                 </div>
                         </div>
                     </div>
                 </div>
 
                 <div id="tab-leads" class="tab-content">
-                    <div class="glass-card p-4 md:p-6 flex flex-col min-h-[500px]">
-                        <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-6">
-                            <div class="relative w-full lg:w-72">
-                                <i class="fa-solid fa-search absolute left-4 top-3 text-slate-500 text-sm"></i>
-                                <input type="text" id="search-leads" placeholder="Search accounts, names..." class="w-full pl-10 pr-4 py-2.5 text-sm bg-black/40 shadow-inner">
+                    <div class="glass-card p-3 md:p-6 flex flex-col min-h-[500px]">
+                        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 md:gap-4 mb-4 md:mb-6 px-1 md:px-0">
+                            <div class="relative w-full sm:w-72">
+                                <i class="fa-solid fa-search absolute left-4 top-3 md:top-3.5 text-slate-500 text-xs md:text-sm"></i>
+                                <input type="text" id="search-leads" placeholder="Search accounts..." class="w-full pl-10 pr-4 py-2 md:py-2.5 text-sm bg-black/40 shadow-inner">
                             </div>
                         </div>
-                        <div class="overflow-x-auto flex-1 pb-4">
-                            <table class="w-full text-left whitespace-nowrap min-w-[800px]">
-                                <thead>
-                                    <tr class="text-[10px] font-bold text-slate-400 uppercase border-b border-white/10 bg-black/20">
-                                        <th class="py-4 px-5 rounded-tl-xl">Company & Rep</th>
-                                        <th class="py-4 px-5">Value (₹)</th>
-                                        <th class="py-4 px-5">Source</th>
-                                        <th class="py-4 px-5">Next Action</th>
-                                        <th class="py-4 px-5 text-right rounded-tr-xl">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="my-leads-body" class="text-sm text-slate-200">
-                                </tbody>
-                            </table>
+                        
+                        <div class="flex-1 pb-4">
+                            <div class="hidden lg:grid sales-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-bold text-slate-400 uppercase tracking-wider rounded-t-xl">
+                                <div>Company</div>
+                                <div>Value (₹)</div>
+                                <div>Deadline</div>
+                                <div>Status</div>
+                                <div class="text-right">Quick Actions</div>
+                            </div>
+                            <div id="my-leads-body" class="flex flex-col">
+                                </div>
                         </div>
                     </div>
                 </div>
 
                 <div id="tab-add-lead" class="tab-content">
-                    <div class="max-w-4xl mx-auto glass-card p-6 md:p-10 w-full relative overflow-hidden">
-                        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-500 to-blue-500"></div>
-                        <h3 class="text-2xl font-bold text-white font-heading mb-2 mt-2">Initialize New Lead</h3>
-                        <p class="text-sm text-slate-400 mb-8 border-b border-white/10 pb-6">Log inbound/outbound prospects. Ensure complete data for accurate timeline tracking.</p>
+                    <div class="max-w-4xl mx-auto glass-card p-4 sm:p-6 md:p-10 w-full relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1.5 md:h-2 bg-gradient-to-r from-purple-500 to-blue-500"></div>
+                        <h3 class="text-xl md:text-2xl font-bold text-white font-heading mb-1 md:mb-2 mt-2">Initialize New Lead</h3>
+                        <p class="text-xs md:text-sm text-slate-400 mb-6 border-b border-white/10 pb-4">Log inbound/outbound prospects. Ensure complete data for accurate tracking.</p>
                         
-                        <form id="form-add-lead" class="space-y-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <form id="form-add-lead" class="space-y-4 md:space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Company / Brand Name *</label>
-                                    <input type="text" id="ld-company" required class="w-full px-4 py-3 text-sm">
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Company / Brand Name *</label>
+                                    <input type="text" id="ld-company" required class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm">
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Contact Person</label>
-                                    <input type="text" id="ld-contact" class="w-full px-4 py-3 text-sm">
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Contact Person</label>
+                                    <input type="text" id="ld-contact" class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm">
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Phone / WhatsApp *</label>
-                                    <input type="tel" id="ld-phone" required class="w-full px-4 py-3 text-sm font-mono">
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Phone / WhatsApp *</label>
+                                    <input type="tel" id="ld-phone" required class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm font-mono">
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Est. Deal Value (₹) *</label>
-                                    <input type="number" id="ld-value" required min="0" class="w-full px-4 py-3 text-sm font-mono">
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Est. Deal Value (₹) *</label>
+                                    <input type="number" id="ld-value" required min="0" class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm font-mono">
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Lead Source</label>
-                                    <select id="ld-source" class="w-full px-4 py-3 text-sm bg-slate-900">
-                                        <option>Cold Email</option>
-                                        <option>LinkedIn Inbound</option>
-                                        <option>Referral / Network</option>
-                                        <option>Website Contact Form</option>
-                                        <option>YouTube Channel</option>
-                                        <option>Direct Call</option>
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Lead Source</label>
+                                    <select id="ld-source" class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm bg-slate-900">
+                                        <option>Cold Email</option> <option>LinkedIn Inbound</option> <option>Referral / Network</option>
+                                        <option>Website Contact Form</option> <option>YouTube Channel</option> <option>Direct Call</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Next Action Date</label>
-                                    <input type="date" id="ld-next-action" required class="w-full px-4 py-3 text-sm text-slate-300">
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Next Action Date</label>
+                                    <input type="date" id="ld-next-action" required class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm text-slate-300">
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Assigned Rep</label>
-                                    <input type="text" id="ld-rep" readonly class="w-full px-4 py-3 text-sm bg-slate-900/50 text-slate-500 cursor-not-allowed">
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Assigned Rep</label>
+                                    <input type="text" id="ld-rep" readonly class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm bg-slate-900/50 text-slate-500 cursor-not-allowed">
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Initial Status</label>
-                                    <select id="ld-status" class="w-full px-4 py-3 text-sm font-bold bg-slate-900"></select>
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Initial Status</label>
+                                    <select id="ld-status" class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm font-bold bg-slate-900"></select>
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Initial Discovery Notes</label>
-                                <textarea id="ld-notes" rows="4" class="w-full px-4 py-3 text-sm resize-none"></textarea>
+                                <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Initial Discovery Notes</label>
+                                <textarea id="ld-notes" rows="4" class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm resize-none"></textarea>
                             </div>
-                            <div class="pt-6 border-t border-white/10 flex justify-end">
-                                <button type="submit" id="btn-submit-lead" class="btn-primary w-full md:w-auto px-10 py-4 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-3">
-                                    <i class="fa-solid fa-paper-plane text-lg"></i> Deploy to Pipeline
+                            <div class="pt-4 md:pt-6 border-t border-white/10 flex justify-end">
+                                <button type="submit" class="btn-primary w-full md:w-auto px-6 py-3 md:px-10 md:py-4 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-3">
+                                    <i class="fa-solid fa-paper-plane"></i> Deploy Lead
                                 </button>
                             </div>
                         </form>
@@ -370,48 +332,39 @@
 
                 <div id="tab-hr" class="tab-content">
                     <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-                        <div class="glass-card p-6 xl:col-span-1 h-fit">
-                            <h3 class="text-lg font-bold text-white font-heading mb-2">Raise Support Ticket</h3>
-                            <p class="text-xs text-slate-400 mb-6 border-b border-white/10 pb-4">Need help from leadership? Submit a formal request here.</p>
-                            <form id="form-hr-ticket" class="space-y-5">
+                        <div class="glass-card p-4 md:p-6 xl:col-span-1 h-fit">
+                            <h3 class="text-base md:text-lg font-bold text-white font-heading mb-1">Raise Support Ticket</h3>
+                            <p class="text-[11px] md:text-xs text-slate-400 mb-4 border-b border-white/10 pb-3">Need help from leadership? Submit a formal request here.</p>
+                            <form id="form-hr-ticket" class="space-y-4">
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Subject *</label>
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Subject *</label>
                                     <input type="text" id="tk-subject" required class="w-full px-3 py-2.5 text-sm" placeholder="Brief issue summary">
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Category *</label>
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Category *</label>
                                     <select id="tk-category" class="w-full px-3 py-2.5 text-sm font-bold bg-slate-900">
                                         <option value="Payroll / Commission">Payroll / Commission</option>
                                         <option value="Technical Issue">Technical Issue</option>
                                         <option value="Client Dispute">Client Dispute</option>
                                         <option value="Leave Request">Leave Request</option>
-                                        <option value="Other">Other</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Details *</label>
-                                    <textarea id="tk-details" rows="5" required class="w-full px-3 py-2.5 text-sm resize-none" placeholder="Provide full context..."></textarea>
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Details *</label>
+                                    <textarea id="tk-details" rows="4" required class="w-full px-3 py-2.5 text-sm resize-none"></textarea>
                                 </div>
-                                <button type="submit" id="btn-submit-ticket" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3.5 rounded-xl text-sm font-bold tracking-wide flex items-center justify-center gap-2 transition-all shadow-[0_4px_15px_rgba(37,99,235,0.4)] hover:shadow-[0_8px_25px_rgba(37,99,235,0.6)]">
+                                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl text-sm font-bold tracking-wide flex items-center justify-center gap-2 transition-colors">
                                     <i class="fa-solid fa-paper-plane"></i> Submit Ticket
                                 </button>
                             </form>
                         </div>
-                        <div class="glass-card p-6 xl:col-span-2 flex flex-col min-h-[500px]">
-                            <h3 class="text-lg font-bold text-white font-heading mb-6 border-b border-white/10 pb-4">My Support History</h3>
-                            <div class="overflow-x-auto flex-1">
-                                <table class="w-full text-left whitespace-nowrap min-w-[500px]">
-                                    <thead>
-                                        <tr class="text-[10px] font-bold text-slate-400 uppercase border-b border-white/10 bg-black/20">
-                                            <th class="py-4 px-4 rounded-tl-lg">Date</th>
-                                            <th class="py-4 px-4">Subject</th>
-                                            <th class="py-4 px-4">Category</th>
-                                            <th class="py-4 px-4 text-right rounded-tr-lg">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="my-tickets-body" class="text-sm text-slate-200">
-                                    </tbody>
-                                </table>
+                        <div class="glass-card p-3 md:p-6 xl:col-span-2 flex flex-col min-h-[400px]">
+                            <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3 px-2 md:px-0">My Support History</h3>
+                            <div class="flex-1 pb-4">
+                                <div class="hidden lg:grid hr-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-bold text-slate-400 uppercase tracking-wider rounded-t-xl">
+                                    <div>Date</div> <div>Subject</div> <div>Category</div> <div>Status</div>
+                                </div>
+                                <div id="my-tickets-body" class="flex flex-col mt-2 md:mt-0"></div>
                             </div>
                         </div>
                     </div>
@@ -419,7 +372,7 @@
 
                 <div id="tab-leaderboard" class="tab-content">
                     <div class="glass-card p-6 md:p-10 flex flex-col min-h-[500px]">
-                        <h3 class="text-xl font-bold text-yellow-500 font-heading mb-6 border-b border-white/10 pb-4 flex items-center"><i class="fa-solid fa-trophy mr-3 text-2xl"></i> Team Leaderboard</h3>
+                        <h3 class="text-xl font-bold text-yellow-500 font-heading mb-6 border-b border-white/10 pb-4 flex items-center"><i class="fa-solid fa-trophy mr-3 text-2xl"></i> Agency Leaderboard</h3>
                         <div class="overflow-x-auto flex-1">
                             <table class="w-full text-left whitespace-nowrap min-w-[600px]">
                                 <thead>
@@ -436,53 +389,47 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </main>
     </div>
 
     <div id="modal-timeline" class="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center modal z-[100] p-4">
-        <div class="glass-panel border border-white/10 rounded-3xl w-full max-w-2xl p-6 md:p-8 shadow-2xl flex flex-col max-h-[90vh]">
-            <div class="flex justify-between items-start mb-6 border-b border-white/10 pb-6">
+        <div class="glass-panel border border-white/10 rounded-3xl w-full max-w-2xl p-5 md:p-8 shadow-2xl flex flex-col max-h-[90vh]">
+            <div class="flex justify-between items-start mb-4 md:mb-6 border-b border-white/10 pb-4 md:pb-6">
                 <div>
-                    <h2 id="tl-company" class="text-2xl md:text-3xl font-bold text-white font-heading tracking-tight">Company Name</h2>
-                    <div class="flex flex-wrap gap-4 md:gap-6 text-sm text-slate-300 font-mono mt-3">
-                        <span id="tl-contact" class="flex items-center bg-white/5 px-3 py-1.5 rounded-lg border border-white/10"><i class="fa-solid fa-user mr-2 text-purple-400"></i> <span>Contact</span></span>
-                        <span id="tl-phone" class="flex items-center bg-white/5 px-3 py-1.5 rounded-lg border border-white/10"><i class="fa-solid fa-phone mr-2 text-blue-400"></i> <span>Phone</span></span>
-                        <span id="tl-val" class="text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/20 ml-auto md:ml-0">₹0</span>
+                    <h2 id="tl-company" class="text-xl md:text-3xl font-bold text-white font-heading tracking-tight">Company Name</h2>
+                    <div class="flex flex-wrap gap-2 md:gap-6 text-[10px] md:text-sm text-slate-300 font-mono mt-2 md:mt-3">
+                        <span id="tl-contact" class="flex items-center bg-white/5 px-2.5 md:px-3 py-1 md:py-1.5 rounded-lg border border-white/10"><i class="fa-solid fa-user mr-1.5 md:mr-2 text-purple-400"></i> <span>Contact</span></span>
+                        <span id="tl-phone" class="flex items-center bg-white/5 px-2.5 md:px-3 py-1 md:py-1.5 rounded-lg border border-white/10"><i class="fa-solid fa-phone mr-1.5 md:mr-2 text-blue-400"></i> <span>Phone</span></span>
                     </div>
                 </div>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-white text-2xl bg-white/5 w-10 h-10 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white text-lg md:text-2xl bg-white/5 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <div class="flex-1 overflow-y-auto pr-4 space-y-5 mb-6 custom-scrollbar" id="tl-history-list">
-                </div>
+            <div class="flex-1 overflow-y-auto pr-2 md:pr-4 space-y-4 md:space-y-5 mb-4 md:mb-6 custom-scrollbar" id="tl-history-list"></div>
 
-            <div class="bg-gradient-to-r from-slate-900 to-black p-5 rounded-2xl border border-white/10 shrink-0 shadow-inner">
+            <div class="bg-gradient-to-r from-slate-900 to-black p-3 md:p-5 rounded-2xl border border-white/10 shrink-0 shadow-inner">
                 <input type="hidden" id="tl-lead-id">
-                <label class="block text-[11px] font-bold text-purple-400 uppercase tracking-wider mb-3">Log Interaction / Update Note</label>
-                <div class="flex gap-3">
-                    <input type="text" id="tl-new-note" class="flex-1 px-4 py-3 text-sm bg-black focus:border-purple-500" placeholder="e.g. Left voicemail, updating proposal...">
-                    <button onclick="addTimelineEvent()" class="btn-primary px-6 py-3 rounded-xl text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-plus"></i> Log</button>
+                <label class="block text-[9px] md:text-[11px] font-bold text-purple-400 uppercase tracking-wider mb-2 md:mb-3">Log Interaction / Update Note</label>
+                <div class="flex flex-col sm:flex-row gap-2 md:gap-3">
+                    <input type="text" id="tl-new-note" class="flex-1 px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm bg-black focus:border-purple-500" placeholder="e.g. Left voicemail, sending proposal...">
+                    <button onclick="addTimelineEvent()" class="btn-primary w-full sm:w-auto px-4 md:px-6 py-2.5 md:py-3 rounded-xl text-xs md:text-sm font-bold flex items-center justify-center gap-2"><i class="fa-solid fa-plus"></i> Log</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="toast" class="fixed bottom-6 right-6 md:right-8 text-white px-6 py-4 rounded-xl shadow-2xl font-bold text-sm transform translate-y-32 opacity-0 transition-all duration-400 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md">
-        <i class="fa-solid fa-check-circle text-xl"></i> <span id="toast-msg">Success</span>
+    <div id="toast" class="fixed bottom-6 right-4 md:right-8 text-white px-5 md:px-6 py-3 md:py-4 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] font-bold text-xs md:text-sm transform translate-y-32 opacity-0 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md">
+        <i class="fa-solid fa-check-circle text-lg md:text-xl"></i> <span id="toast-msg">Success</span>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, getDocs, addDoc, onSnapshot, doc, updateDoc, deleteDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, addDoc, onSnapshot, doc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // GLOBAL CONFIG
-        const LEAD_STATUSES = [
-            'New Lead', 'Attempted Contact', 'Discovery Call', 
-            'Meeting Set', 'Proposal Sent', 'In Negotiation', 
-            'Closed Won', 'Closed Lost'
-        ];
+        const LEAD_STATUSES = ['New Lead', 'Attempted Contact', 'Discovery Call', 'Meeting Set', 'Proposal Sent', 'In Negotiation', 'Closed Won', 'Closed Lost'];
 
         let db, auth, chartInstance;
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -492,27 +439,17 @@
 
         // UI HELPERS
         window.toggleSidebar = () => {
-            const sb = document.getElementById('sidebar');
-            const ov = document.getElementById('mobile-overlay');
-            sb.classList.toggle('-translate-x-full');
-            ov.classList.toggle('hidden');
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            document.getElementById('mobile-overlay').classList.toggle('hidden');
         };
 
         window.switchTab = (tabId) => {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
-            
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
             if(event && event.currentTarget.classList.contains('nav-btn')) event.currentTarget.classList.add('active');
-
-            const isSenior = activeUserRecord && (activeUserRecord.role === 'Senior Executive' || activeUserRecord.role === 'Head of Sales');
-            const titles = { 
-                'dashboard': isSenior ? "Agency Analytics" : "My Analytics", 
-                'leads': isSenior ? "Master Database" : "Data Engine", 
-                'add-lead': 'Initialize Prospect', 
-                'hr': 'Support Desk',
-                'leaderboard': 'Team Leaderboard'
-            };
+            
+            const titles = { 'dashboard': "My Analytics", 'leads': "Data Engine", 'add-lead': 'Initialize Prospect', 'hr': 'Support Desk', 'leaderboard': 'Agency Leaderboard' };
             document.getElementById('page-title').innerText = titles[tabId] || '';
 
             if(window.innerWidth < 768) {
@@ -523,14 +460,14 @@
 
         window.showToast = (msg, isError=false) => {
             const toast = document.getElementById('toast');
-            toast.className = `fixed bottom-6 right-6 md:right-8 text-white px-6 py-4 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] font-bold text-sm transform translate-y-0 opacity-100 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md ${isError ? 'bg-red-600/90' : 'bg-emerald-600/90'}`;
+            toast.className = `fixed bottom-6 right-4 md:right-8 text-white px-5 md:px-6 py-3 md:py-4 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] font-bold text-xs md:text-sm transform translate-y-0 opacity-100 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md ${isError ? 'bg-red-600/90' : 'bg-purple-600/90'}`;
             document.getElementById('toast-msg').innerText = msg;
             setTimeout(() => { toast.classList.replace('translate-y-0', 'translate-y-32'); toast.classList.replace('opacity-100', 'opacity-0'); }, 3000);
         };
 
         window.closeModal = () => { document.getElementById('modal-timeline').classList.remove('active'); };
 
-        // INIT
+        // INIT FIREBASE
         try {
             const fbConfig = {
               apiKey: "AIzaSyAAgcIprurHXdo9tztkqVzLsIzJCWhqWwc", 
@@ -541,47 +478,33 @@
               messagingSenderId: "166006393145", 
               appId: "1:166006393145:web:6bb64d5ee1a0578a7200e8"
             };
-            
             const app = initializeApp(fbConfig);
-            db = getFirestore(app); 
-            auth = getAuth(app);
+            db = getFirestore(app); auth = getAuth(app);
+            signInAnonymously(auth).then(() => setDbStatus(true)).catch(e => setDbStatus(false, e));
+        } catch (e) { setDbStatus(false, e); }
 
-            const initSystem = async () => {
-                try {
-                    await signInAnonymously(auth);
-                    setDbStatus(true);
-                } catch (error) {
-                    console.error("AUTH ERROR:", error);
-                    setDbStatus(false);
-                    const errDiv = document.getElementById('login-error');
-                    errDiv.innerText = "Connection Failed: " + error.message;
-                    errDiv.classList.remove('hidden');
-                }
-            };
-            initSystem();
-
-        } catch (e) { 
-            console.error("CRITICAL INIT ERROR:", e);
-            setDbStatus(false); 
-        }
-
-        function setDbStatus(isOnline) {
-            document.getElementById('login-db-indicator').className = `w-2 h-2 rounded-full ${isOnline ? 'bg-emerald-500 shadow-[0_0_8px_#10b981]' : 'bg-red-500 animate-pulse'}`;
-            document.getElementById('login-db-status').innerText = isOnline ? 'Secure connection established.' : 'Connection Error.';
+        function setDbStatus(isOnline, err) {
+            const ind = document.getElementById('login-db-indicator');
+            if(ind) {
+                ind.className = `w-2 h-2 rounded-full ${isOnline ? 'bg-purple-500 shadow-[0_0_8px_#a855f7]' : 'bg-red-500 animate-pulse'}`;
+                document.getElementById('login-db-status').innerText = isOnline ? 'Engine Connected' : 'Connection Error';
+            }
         }
 
         // LOGIN
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('btn-login');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...'; btn.disabled = true;
+            const btn = document.getElementById('btn-login'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...'; btn.disabled = true;
             
+            const email = document.getElementById('login-email').value.trim();
+            const pwd = document.getElementById('login-pwd').value.trim();
+
             try {
                 const snapshot = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'team_users'));
                 let u = null;
                 snapshot.forEach(doc => {
                     const d = doc.data();
-                    if(d.email.toLowerCase() === document.getElementById('login-email').value.trim().toLowerCase() && d.password === document.getElementById('login-pwd').value.trim()) { u = { id: doc.id, ...d }; }
+                    if(d.email.toLowerCase() === email.toLowerCase() && d.password === pwd) { u = { id: doc.id, ...d }; }
                 });
 
                 if (u && u.status !== 'Suspended') {
@@ -590,15 +513,13 @@
                     document.getElementById('app-screen').classList.remove('hidden'); document.getElementById('app-screen').classList.add('flex');
                     showToast(`Welcome back, ${u.name}`);
                 } else {
-                    const errDiv = document.getElementById('login-error');
-                    errDiv.innerText = "Invalid credentials or access revoked.";
-                    errDiv.classList.remove('hidden');
-                    btn.innerHTML = '<span>Initialize Uplink</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>'; btn.disabled = false;
+                    document.getElementById('login-error').classList.remove('hidden');
+                    btn.innerHTML = '<span>Initialize Workspace</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>'; btn.disabled = false;
                 }
             } catch (e) { 
                 document.getElementById('login-error').innerText = "Database connection failed.";
                 document.getElementById('login-error').classList.remove('hidden');
-                btn.innerHTML = '<span>Initialize Uplink</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>'; btn.disabled = false; 
+                btn.innerHTML = '<span>Initialize Workspace</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>'; btn.disabled = false; 
             }
         });
 
@@ -617,39 +538,32 @@
             document.getElementById('ld-rep').value = activeUserRecord.name;
             document.getElementById('ld-status').innerHTML = LEAD_STATUSES.map(s => `<option value="${s}">${s}</option>`).join('');
 
-            const isSenior = activeUserRecord.role === 'Head of Sales' || activeUserRecord.role === 'Senior Executive';
-            document.getElementById('kpi-pipeline-title').innerText = isSenior ? 'Agency Pipeline' : 'My Pipeline';
-            document.getElementById('kpi-won-title').innerText = isSenior ? 'Agency Won' : 'My Won';
-            document.getElementById('ld-rep').readOnly = !isSenior;
-            
-            if(isSenior) {
-                document.getElementById('nav-leaderboard-desk').classList.remove('hidden'); document.getElementById('btn-export').classList.remove('hidden');
-                document.getElementById('ld-rep').classList.replace('bg-slate-900/50', 'bg-black/40');
-                document.getElementById('ld-rep').classList.remove('cursor-not-allowed');
-            }
-
+            // Financial Sub
             unsubscribeUser = onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', activeUserRecord.id), (snap) => {
                 if(!snap.exists() || snap.data().status === 'Suspended') return logout();
                 const d = snap.data();
-                document.getElementById('kpi-awarded').innerText = "₹" + (Number(d.commission_awarded)||0).toLocaleString('en-IN');
-                document.getElementById('kpi-pending').innerText = "₹" + Math.max(0, (Number(d.commission_awarded)||0) - (Number(d.commission_paid)||0)).toLocaleString('en-IN');
+                const awarded = Number(d.commission_awarded)||0; const paid = Number(d.commission_paid)||0;
+                document.getElementById('kpi-awarded').innerText = "₹" + awarded.toLocaleString('en-IN');
+                document.getElementById('kpi-pending').innerText = "₹" + Math.max(0, awarded - paid).toLocaleString('en-IN');
             });
 
+            // Leads
             unsubscribeLeads = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), (snap) => {
                 myLeads = []; allAgencyLeads = [];
                 snap.forEach(d => {
                     const data = {id: d.id, ...d.data()}; allAgencyLeads.push(data);
-                    if(isSenior || data.rep === activeUserRecord.name) myLeads.push(data);
+                    if(data.rep === activeUserRecord.name) myLeads.push(data);
                 });
                 myLeads.sort((a,b) => b.timestamp - a.timestamp);
                 renderAll();
             });
 
+            // Tickets FIX: Strict Data Isolation
             unsubscribeTickets = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'hr_tickets'), (snap) => {
                 myTickets = [];
                 snap.forEach(d => {
                     const data = {id: d.id, ...d.data()};
-                    if(isSenior || data.rep === activeUserRecord.name) myTickets.push(data);
+                    if(data.rep === activeUserRecord.name) myTickets.push(data); // <--- Bug Fixed Here
                 });
                 myTickets.sort((a,b) => b.timestamp - a.timestamp);
                 renderTickets();
@@ -657,176 +571,104 @@
         }
 
         function renderAll() {
-            renderDashboard(); renderTasks(); renderChart(); renderTable();
-            if (activeUserRecord.role === 'Head of Sales' || activeUserRecord.role === 'Senior Executive') renderLeaderboard();
+            renderDashboard(); renderTable(); renderLeaderboard();
         }
 
-        // --- DASHBOARD & CHART & TASKS ---
+        // --- DASHBOARD ---
         function renderDashboard() {
-            let pipe=0, won=0;
+            let pipe=0, won=0, projComm=0;
+            
             myLeads.forEach(l => {
                 const v = Number(l.value)||0;
-                if(l.status === 'Closed Won') won+=v; else if(l.status !== 'Closed Lost') pipe+=v;
+                if(l.status === 'Closed Won') won+=v; 
+                else if(l.status !== 'Closed Lost') {
+                    pipe+=v;
+                    // Projector Feature: Calculate 10% of late stage deals
+                    if(l.status === 'Proposal Sent' || l.status === 'In Negotiation') projComm += (v * 0.10);
+                }
             });
+
             document.getElementById('kpi-pipeline').innerText = "₹" + pipe.toLocaleString('en-IN');
             document.getElementById('kpi-won').innerText = "₹" + won.toLocaleString('en-IN');
-        }
+            document.getElementById('kpi-projected').innerText = "₹" + projComm.toLocaleString('en-IN'); // Motivation feature
 
-        function renderTasks() {
+            // Tasks
             const todayStr = new Date().toISOString().split('T')[0];
             const tasks = myLeads.filter(l => l.nextAction && l.nextAction <= todayStr && !l.status.includes('Closed'));
-            
-            const html = tasks.map(l => `
-                <div class="bg-black/30 border border-white/5 rounded-xl p-4 flex justify-between items-center hover:bg-white/10 transition-colors group">
-                    <div class="cursor-pointer flex-1" onclick="openTimeline('${l.id}')">
+            document.getElementById('task-list').innerHTML = tasks.map(l => `
+                <div class="bg-black/30 border border-white/5 rounded-xl p-4 flex justify-between items-center hover:bg-white/10 transition-colors group cursor-pointer" onclick="openTimeline('${l.id}')">
+                    <div class="flex-1">
                         <p class="font-bold text-white text-sm line-clamp-1 group-hover:text-purple-300 transition-colors">${l.company}</p>
                         <p class="text-[11px] text-slate-400 font-mono mt-2"><span class="bg-rose-500/20 text-rose-400 px-2 py-1 rounded font-bold border border-rose-500/20">Due: ${new Date(l.nextAction).toLocaleDateString()}</span></p>
                     </div>
-                    <a href="tel:${l.phone}" class="ml-4 bg-emerald-500/20 hover:bg-emerald-500 hover:text-white text-emerald-400 w-10 h-10 flex items-center justify-center rounded-full transition-all shrink-0 border border-emerald-500/30" title="Call Prospect"><i class="fa-solid fa-phone"></i></a>
+                    <a href="tel:${l.phone}" class="ml-4 bg-emerald-500/20 hover:bg-emerald-500 hover:text-white text-emerald-400 w-10 h-10 flex items-center justify-center rounded-full transition-all shrink-0 border border-emerald-500/30" title="Call"><i class="fa-solid fa-phone"></i></a>
                 </div>
-            `).join('');
-            document.getElementById('task-list').innerHTML = html || '<div class="flex flex-col items-center justify-center h-full opacity-50"><i class="fa-solid fa-check-circle text-4xl text-emerald-500 mb-3"></i><p class="text-sm text-slate-300 font-bold">Inbox Zero</p></div>';
-        }
+            `).join('') || '<div class="flex flex-col items-center justify-center h-full opacity-50"><i class="fa-solid fa-check-circle text-4xl text-emerald-500 mb-3"></i><p class="text-sm text-slate-300 font-bold">Inbox Zero</p></div>';
 
-        function renderChart() {
+            // Chart
             const ctx = document.getElementById('pipelineChart');
             if(chartInstance) chartInstance.destroy();
-            
             const statusCounts = {}; LEAD_STATUSES.forEach(s => statusCounts[s]=0);
             myLeads.forEach(l => { if(statusCounts[l.status] !== undefined) statusCounts[l.status] += (Number(l.value)||0); });
             
             chartInstance = new Chart(ctx, {
                 type: 'bar',
-                data: {
-                    labels: Object.keys(statusCounts),
-                    datasets: [{ 
-                        label: 'Pipeline Value (₹)', 
-                        data: Object.values(statusCounts), 
-                        backgroundColor: '#8b5cf6', 
-                        hoverBackgroundColor: '#a855f7',
-                        borderRadius: 6,
-                        borderSkipped: false
-                    }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, tooltip: { backgroundColor: 'rgba(15,23,42,0.9)', titleFont: {family: 'Outfit'}, bodyFont: {family: 'JetBrains Mono'}, padding: 12, cornerRadius: 8, borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1 } },
-                    scales: { 
-                        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, border: {display: false}, ticks: { color: '#94a3b8', font: {family: 'JetBrains Mono', size: 10} } }, 
-                        x: { grid: { display: false }, border: {display: false}, ticks: { color: '#94a3b8', font: {size: 11, weight: 'bold'} } } 
-                    }
-                }
+                data: { labels: Object.keys(statusCounts), datasets: [{ data: Object.values(statusCounts), backgroundColor: '#8b5cf6', hoverBackgroundColor: '#a855f7', borderRadius: 6 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8', font: {size: 10} } } } }
             });
         }
 
         // --- DATA TABLE ---
+        function getStatusColor(s) {
+            const map = { 'New Lead': 'text-blue-400', 'Attempted Contact': 'text-slate-400', 'Discovery Call': 'text-indigo-400', 'Meeting Set': 'text-purple-400', 'Proposal Sent': 'text-orange-400', 'In Negotiation': 'text-pink-400', 'Closed Won': 'text-emerald-400', 'Closed Lost': 'text-red-400' };
+            return map[s] || 'text-slate-400';
+        }
+        function generateStatusOptions(curr) { return LEAD_STATUSES.map(s => `<option value="${s}" ${s === curr ? 'selected' : ''} class="bg-slate-900 text-white">${s}</option>`).join(''); }
+
         function renderTable() {
             const html = myLeads.map(l => {
                 const statusColor = getStatusColor(l.status);
-                const isSenior = activeUserRecord.role === 'Senior Executive' || activeUserRecord.role === 'Head of Sales';
-                const assignedRepHtml = isSenior ? `<p class="text-[10px] text-purple-400 font-mono mt-1.5"><i class="fa-solid fa-user-tag mr-1.5 opacity-70"></i>${l.rep || 'Unassigned'}</p>` : '';
-                
                 return `
-                <tr class="border-b border-white/5 hover:bg-white/5 group">
-                    <td class="py-4 px-5 whitespace-normal min-w-[250px]">
+                <div class="responsive-grid sales-grid hover:bg-white/5 border-l-2 border-transparent hover:border-purple-500/50 group">
+                    <div>
+                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-1">Company</span>
                         <p class="font-bold text-white leading-tight text-base group-hover:text-purple-300 transition-colors">${l.company}</p>
-                        ${assignedRepHtml}
-                        <p class="text-[11px] text-slate-500 line-clamp-1 mt-1.5" title="${l.notes}"><i class="fa-solid fa-comment-dots opacity-50 mr-1"></i> ${l.notes || 'No discovery notes'}</p>
-                    </td>
-                    <td class="py-4 px-5 font-mono font-bold text-emerald-400 text-sm">₹${Number(l.value).toLocaleString('en-IN')}</td>
-                    <td class="py-4 px-5 text-xs text-slate-300"><span class="bg-white/5 px-2.5 py-1 rounded-md border border-white/5">${l.source || '--'}</span></td>
-                    <td class="py-4 px-5 text-xs font-mono text-blue-300">${l.nextAction ? new Date(l.nextAction).toLocaleDateString() : '--'}</td>
-                    <td class="py-4 px-5 text-right whitespace-nowrap">
-                        <div class="flex justify-end gap-2 items-center">
-                            <a href="tel:${l.phone}" class="bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-400 px-3 py-2 rounded-lg text-xs font-bold transition-colors flex items-center gap-2 border border-emerald-500/20" title="Call Now"><i class="fa-solid fa-phone"></i> <span class="hidden lg:inline">Call</span></a>
-                            <select onchange="updateLeadStatus('${l.id}', this.value)" class="bg-black/60 border border-white/10 rounded-lg px-3 py-2 text-xs font-bold ${statusColor.text} focus:outline-none cursor-pointer appearance-none w-32 shadow-inner">
-                                ${generateStatusOptions(l.status)}
-                            </select>
-                            <button onclick="openTimeline('${l.id}')" class="text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 px-3 py-2 rounded-lg transition-colors border border-transparent hover:border-white/10" title="View Timeline"><i class="fa-solid fa-clock-rotate-left"></i></button>
-                        </div>
-                    </td>
-                </tr>
+                        <p class="text-[11px] text-slate-500 line-clamp-1 mt-1"><i class="fa-solid fa-comment-dots opacity-50 mr-1"></i> ${l.notes || 'No discovery notes'}</p>
+                    </div>
+                    <div class="font-mono font-bold text-emerald-400 text-sm"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Value</span>₹${Number(l.value).toLocaleString('en-IN')}</div>
+                    <div class="text-xs font-mono text-blue-300"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Deadline</span>${l.nextAction ? new Date(l.nextAction).toLocaleDateString() : '--'}</div>
+                    <div>
+                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Status</span>
+                        <select onchange="updateLeadStatus('${l.id}', this.value)" class="bg-black/60 border border-white/10 rounded-lg px-2 py-1.5 text-xs font-bold ${statusColor} focus:outline-none cursor-pointer appearance-none w-32 md:w-full shadow-inner text-right md:text-left">
+                            ${generateStatusOptions(l.status)}
+                        </select>
+                    </div>
+                    <div class="flex justify-end gap-2 items-center mt-2 md:mt-0 pt-3 md:pt-0 border-t border-white/5 md:border-none">
+                        <button onclick="quickLog('${l.id}', 'Called Prospect')" class="bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-400 px-3 py-2 rounded-lg text-xs font-bold transition-colors border border-emerald-500/20" title="Quick Log: Call"><i class="fa-solid fa-phone"></i></button>
+                        <button onclick="quickLog('${l.id}', 'Sent Email')" class="bg-blue-500/10 hover:bg-blue-500/30 text-blue-400 px-3 py-2 rounded-lg text-xs font-bold transition-colors border border-blue-500/20" title="Quick Log: Email"><i class="fa-solid fa-envelope"></i></button>
+                        <button onclick="openTimeline('${l.id}')" class="text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 px-3 py-2 rounded-lg transition-colors border border-transparent hover:border-white/10" title="Timeline"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                    </div>
+                </div>
             `}).join('');
-            document.getElementById('my-leads-body').innerHTML = html || '<tr><td colspan="5" class="py-12 text-center text-slate-500"><div class="flex flex-col items-center"><i class="fa-solid fa-folder-open text-4xl mb-3 opacity-20"></i><p>No records found in database.</p></div></td></tr>';
+            document.getElementById('my-leads-body').innerHTML = html || '<div class="py-12 text-center text-slate-500"><div class="flex flex-col items-center"><i class="fa-solid fa-folder-open text-4xl mb-3 opacity-20"></i><p>No prospects found.</p></div></div>';
         }
-        
         document.getElementById('search-leads').addEventListener('input', (e) => {
             const filterText = e.target.value.toLowerCase();
             const filtered = myLeads.filter(l => (l.company||'').toLowerCase().includes(filterText) || (l.rep||'').toLowerCase().includes(filterText));
-            const tempLeads = myLeads; myLeads = filtered; renderTable(); myLeads = tempLeads;
+            const temp = myLeads; myLeads = filtered; renderTable(); myLeads = temp;
         });
 
-        // --- HR TICKETS ---
-        document.getElementById('form-hr-ticket').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('btn-submit-ticket'); btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
-            
-            const ticket = {
-                subject: document.getElementById('tk-subject').value.trim(),
-                category: document.getElementById('tk-category').value,
-                details: document.getElementById('tk-details').value.trim(),
-                rep: activeUserRecord.name,
-                status: 'Open',
-                timestamp: Date.now()
-            };
-
+        // Quick Log Action
+        window.quickLog = async (id, action) => {
             try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'hr_tickets'), ticket);
-                showToast("Ticket submitted to Leadership."); document.getElementById('form-hr-ticket').reset();
-            } catch(e) { showToast("Failed to submit ticket", true); } finally {
-                btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Ticket';
-            }
-        });
-
-        function renderTickets() {
-            const html = myTickets.map(t => {
-                const statusColor = t.status === 'Open' ? 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20' : (t.status === 'Resolved' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-slate-400 bg-slate-500/10 border-slate-500/20');
-                const repInfo = (activeUserRecord.role === 'Senior Executive' || activeUserRecord.role === 'Head of Sales') ? `<p class="text-[10px] text-purple-400 font-mono mt-1.5"><i class="fa-solid fa-user-tag mr-1.5 opacity-70"></i>${t.rep}</p>` : '';
-                return `
-                <tr class="border-b border-white/5 hover:bg-white/5">
-                    <td class="py-4 px-4 font-mono text-[11px] text-slate-400">${new Date(t.timestamp).toLocaleDateString()}</td>
-                    <td class="py-4 px-4 whitespace-normal min-w-[250px]"><p class="font-bold text-white text-sm leading-tight">${t.subject}</p>${repInfo}</td>
-                    <td class="py-4 px-4 text-xs text-slate-300"><span class="bg-white/5 px-2.5 py-1 rounded-md border border-white/5">${t.category}</span></td>
-                    <td class="py-4 px-4 text-right"><span class="px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border ${statusColor}">${t.status}</span></td>
-                </tr>
-            `}).join('');
-            document.getElementById('my-tickets-body').innerHTML = html || '<tr><td colspan="4" class="py-12 text-center text-slate-500"><div class="flex flex-col items-center"><i class="fa-solid fa-check-circle text-4xl mb-3 opacity-20"></i><p>No open tickets.</p></div></td></tr>';
-        }
-
-        // --- TIMELINE MODAL ---
-        window.openTimeline = (id) => {
-            const l = myLeads.find(x => x.id === id); if(!l) return;
-            document.getElementById('tl-lead-id').value = id;
-            document.getElementById('tl-company').innerText = l.company;
-            document.getElementById('tl-contact').innerHTML = `<i class="fa-solid fa-user mr-2 text-purple-400"></i> <span>${l.contact || 'No Contact Person'}</span>`;
-            document.getElementById('tl-phone').innerHTML = `<i class="fa-solid fa-phone mr-2 text-blue-400"></i> <a href="tel:${l.phone}" class="hover:text-white transition-colors">${l.phone}</a>`;
-            document.getElementById('tl-val').innerText = `₹${Number(l.value).toLocaleString('en-IN')}`;
-            
-            const history = l.history || [];
-            document.getElementById('tl-history-list').innerHTML = history.slice().reverse().map(h => `
-                <div class="pl-6 border-l-2 border-purple-500/50 relative py-1 group">
-                    <div class="absolute w-3 h-3 bg-purple-500 rounded-full -left-[7px] top-2 shadow-[0_0_10px_#a855f7] group-hover:scale-125 transition-transform"></div>
-                    <p class="text-sm font-bold text-white">${h.note}</p>
-                    <p class="text-[10px] text-slate-400 font-mono mt-1.5 bg-black/30 inline-block px-2 py-0.5 rounded border border-white/5"><i class="fa-regular fa-clock mr-1"></i>${new Date(h.date).toLocaleString()} • <i class="fa-solid fa-user-pen ml-2 mr-1"></i>${h.user}</p>
-                </div>
-            `).join('') || '<p class="text-sm text-slate-500 italic p-4 bg-white/5 rounded-xl border border-white/5 text-center">No history logged yet.</p>';
-            
-            document.getElementById('tl-new-note').value = '';
-            document.getElementById('modal-timeline').classList.add('active');
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), { 
+                    history: arrayUnion({ note: `Quick Log: ${action}`, date: new Date().toISOString(), user: activeUserRecord.name }) 
+                });
+                showToast(`${action} logged!`);
+            } catch(e) { showToast("Error logging", true); }
         };
 
-        window.addTimelineEvent = async () => {
-            const id = document.getElementById('tl-lead-id').value;
-            const note = document.getElementById('tl-new-note').value.trim();
-            if(!note) return;
-            const entry = { note: note, date: new Date().toISOString(), user: activeUserRecord.name };
-            try {
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), { history: arrayUnion(entry) });
-                document.getElementById('tl-new-note').value = '';
-            } catch(e) { showToast("Error logging interaction", true); }
-        };
-
-        // --- ACTIONS & EXPORT ---
+        // --- ACTIONS ---
         document.getElementById('form-add-lead').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btn-submit-lead'); const originalBtnContent = btn.innerHTML;
@@ -838,14 +680,11 @@
                 source: document.getElementById('ld-source').value, nextAction: document.getElementById('ld-next-action').value,
                 rep: document.getElementById('ld-rep').value.trim(), status: document.getElementById('ld-status').value, notes: document.getElementById('ld-notes').value.trim(),
                 timestamp: Date.now(),
-                history: [{ note: `Lead created & placed in ${document.getElementById('ld-status').value}`, date: new Date().toISOString(), user: activeUserRecord.name }]
+                history: [{ note: `Lead created in ${document.getElementById('ld-status').value}`, date: new Date().toISOString(), user: activeUserRecord.name }]
             };
             try {
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), newLead);
-                showToast("Lead successfully deployed to pipeline!"); 
-                document.getElementById('form-add-lead').reset(); 
-                document.getElementById('ld-rep').value = activeUserRecord.name; 
-                switchTab('leads');
+                showToast("Lead initialized!"); document.getElementById('form-add-lead').reset(); document.getElementById('ld-rep').value = activeUserRecord.name; switchTab('leads');
             } catch (err) { showToast("Failed to add", true); } finally { btn.innerHTML = originalBtnContent; btn.disabled = false; }
         });
 
@@ -855,32 +694,48 @@
                     status: newStatus, 
                     history: arrayUnion({ note: `Status updated to ${newStatus}`, date: new Date().toISOString(), user: activeUserRecord.name }) 
                 }); 
-                showToast("Pipeline Status Updated"); 
+                showToast("Status Updated"); 
             } catch(e) { showToast("Error updating", true); }
         };
 
-        window.exportDataCSV = () => {
-            const data = myLeads;
-            if(!data.length) return showToast("No data to export", true);
-            const headers = ['Company', 'Contact', 'Phone', 'Value', 'Source', 'Status', 'Rep', 'Next Action Date'];
-            const csvRows = [headers.join(',')];
-            data.forEach(l => {
-                const row = [ `"${l.company||''}"`, `"${l.contact||''}"`, `"${l.phone||''}"`, l.value||0, `"${l.source||''}"`, `"${l.status||''}"`, `"${l.rep||''}"`, `"${l.nextAction||''}"` ];
-                csvRows.push(row.join(','));
-            });
-            const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.setAttribute('hidden', ''); a.setAttribute('href', url); a.setAttribute('download', `Pipeline_Export_${new Date().toLocaleDateString()}.csv`);
-            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        // --- HR TICKETS ---
+        document.getElementById('form-hr-ticket').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-ticket'); btn.disabled = true;
+            const ticket = { subject: document.getElementById('tk-subject').value.trim(), category: document.getElementById('tk-category').value, details: document.getElementById('tk-details').value.trim(), rep: activeUserRecord.name, status: 'Open', timestamp: Date.now() };
+            try { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'hr_tickets'), ticket); showToast("Ticket submitted."); document.getElementById('form-hr-ticket').reset(); } catch(e) { showToast("Failed", true); } finally { btn.disabled = false; }
+        });
+
+        function renderTickets() {
+            const html = myTickets.map(t => {
+                const statusColor = t.status === 'Open' ? 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20' : (t.status === 'Resolved' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-slate-400 bg-slate-500/10 border-slate-500/20');
+                return `
+                <div class="responsive-grid hr-grid hover:bg-white/5">
+                    <div class="font-mono text-[10px] text-slate-400"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Date</span>${new Date(t.timestamp).toLocaleDateString()}</div>
+                    <div><p class="font-bold text-white text-sm">${t.subject}</p></div>
+                    <div class="text-xs text-slate-300"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Category</span><span class="bg-white/5 px-2.5 py-1 rounded-md border border-white/5">${t.category}</span></div>
+                    <div class="text-right"><span class="px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border ${statusColor}">${t.status}</span></div>
+                </div>`
+            }).join('');
+            document.getElementById('my-tickets-body').innerHTML = html || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-check-circle text-4xl mb-3 opacity-20"></i><p>No open tickets.</p></div>';
+        }
+
+        // --- TIMELINE MODAL ---
+        window.openTimeline = (id) => {
+            const l = myLeads.find(x => x.id === id); if(!l) return;
+            document.getElementById('tl-lead-id').value = id; document.getElementById('tl-company').innerText = l.company;
+            document.getElementById('tl-contact').innerHTML = `<i class="fa-solid fa-user mr-2 text-purple-400"></i> <span>${l.contact || 'N/A'}</span>`;
+            const history = l.history || [];
+            document.getElementById('tl-history-list').innerHTML = history.slice().reverse().map(h => `<div class="pl-6 border-l-2 border-purple-500/50 relative py-1 group"><div class="absolute w-3 h-3 bg-purple-500 rounded-full -left-[7px] top-2 shadow-[0_0_10px_#a855f7] group-hover:scale-125 transition-transform"></div><p class="text-sm font-bold text-white">${h.note}</p><p class="text-[10px] text-slate-400 font-mono mt-1.5 bg-black/30 inline-block px-2 py-0.5 rounded border border-white/5">${new Date(h.date).toLocaleString()} • ${h.user}</p></div>`).join('') || '<p class="text-sm text-slate-500 italic p-4 text-center">No history.</p>';
+            document.getElementById('tl-new-note').value = ''; document.getElementById('modal-timeline').classList.add('active');
         };
 
-        // --- HELPERS ---
-        function getStatusColor(s) {
-            const map = { 'New Lead': 'text-blue-400', 'Attempted Contact': 'text-slate-400', 'Discovery Call': 'text-indigo-400', 'Meeting Set': 'text-purple-400', 'Proposal Sent': 'text-orange-400', 'In Negotiation': 'text-pink-400', 'Closed Won': 'text-emerald-400', 'Closed Lost': 'text-red-400' };
-            return { text: map[s] || 'text-slate-400' };
-        }
-        function generateStatusOptions(curr) { return LEAD_STATUSES.map(s => `<option value="${s}" ${s === curr ? 'selected' : ''} class="bg-slate-900 text-white">${s}</option>`).join(''); }
+        window.addTimelineEvent = async () => {
+            const id = document.getElementById('tl-lead-id').value; const note = document.getElementById('tl-new-note').value.trim(); if(!note) return;
+            try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), { history: arrayUnion({ note: note, date: new Date().toISOString(), user: activeUserRecord.name }) }); document.getElementById('tl-new-note').value = ''; } catch(e) { showToast("Error", true); }
+        };
 
+        // --- LEADERBOARD ---
         window.renderLeaderboard = function() {
             const repStats = {};
             allAgencyLeads.forEach(lead => {
@@ -897,19 +752,15 @@
                 if (idx === 2) rankVisual = `<i class="fa-solid fa-medal text-amber-600 text-2xl drop-shadow-[0_0_10px_rgba(217,119,6,0.5)]"></i>`;
 
                 return `
-                <tr class="border-b border-white/5 hover:bg-white/5 transition-colors group">
-                    <td class="py-4 px-5 text-center w-20">${rankVisual}</td>
-                    <td class="py-4 px-5 font-bold text-white flex items-center gap-4">
-                        <img src="https://ui-avatars.com/api/?name=${rep.name.replace(/ /g, '+')}&background=0f172a&color=fff" class="w-8 h-8 rounded-full border-2 border-slate-700 group-hover:border-purple-500 transition-colors shrink-0">
-                        <span class="truncate text-base">${rep.name}</span>
-                    </td>
-                    <td class="py-4 px-5 font-mono text-slate-400">₹${rep.pipeline.toLocaleString('en-IN')}</td>
-                    <td class="py-4 px-5 font-bold text-white text-base"><span class="bg-white/10 px-3 py-1 rounded-lg border border-white/5">${rep.wonCount}</span></td>
-                    <td class="py-4 px-5 font-mono font-black text-emerald-400 text-lg text-right">₹${rep.wonValue.toLocaleString('en-IN')}</td>
-                </tr>
-                `;
+                <div class="responsive-grid leaderboard-grid hover:bg-white/5 border-l-2 border-transparent group">
+                    <div class="text-center font-bold">${rankVisual}</div>
+                    <div class="font-bold text-white text-base">${rep.name}</div>
+                    <div class="font-mono text-slate-400">₹${rep.pipeline.toLocaleString('en-IN')}</div>
+                    <div class="font-bold text-white"><span class="bg-white/10 px-3 py-1 rounded-lg">${rep.wonCount} Deals</span></div>
+                    <div class="font-mono font-black text-emerald-400 text-lg md:text-right">₹${rep.wonValue.toLocaleString('en-IN')}</div>
+                </div>`;
             }).join('');
-            document.getElementById('leaderboard-body').innerHTML = html || '<tr><td colspan="5" class="py-12 text-center text-slate-500"><i class="fa-solid fa-ranking-star text-4xl mb-3 opacity-20"></i><p>No data available to rank.</p></td></tr>';
+            document.getElementById('leaderboard-body').innerHTML = html || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-ranking-star text-4xl mb-3 opacity-20"></i><p>No data to rank.</p></div>';
         }
     </script>
 </body>
