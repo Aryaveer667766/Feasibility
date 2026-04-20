@@ -191,20 +191,9 @@
                     <i class="fa-solid fa-headset w-5 text-center text-lg text-blue-400"></i> <span class="tab-label">Support Ticket</span>
                 </button>
                 
-                <div class="mt-auto border-t border-white/10 pt-4 mb-4 flex flex-col gap-2 px-4">
-                    <div id="attendance-widget" class="hidden bg-black/30 border border-white/5 rounded-xl p-3 text-center mb-1 transition-all">
-                        <p class="text-[9px] text-slate-400 uppercase tracking-widest font-bold mb-1 flex items-center justify-center gap-1.5">
-                            <span class="w-2 h-2 inline-block rounded-full bg-emerald-500 animate-pulse"></span> Active Shift
-                        </p>
-                        <p id="shift-timer" class="text-xl font-mono font-black text-white drop-shadow-md">00:00:00</p>
-                    </div>
-                    
-                    <button id="btn-clock-in-out" onclick="toggleAttendance()" class="w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 hover:shadow-[0_0_15px_rgba(16,185,129,0.2)] transition-all">
-                        <i class="fa-solid fa-play" id="clock-icon"></i> <span id="clock-text">Clock In</span>
-                    </button>
-                    
-                    <button onclick="logout()" class="w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm font-bold text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors mt-1">
-                        <i class="fa-solid fa-power-off"></i> System Logout
+                <div class="mt-auto border-t border-white/10 pt-4 mb-4">
+                    <button onclick="logout()" class="w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors mr-4 rounded-r-xl">
+                        <i class="fa-solid fa-power-off w-5 text-center text-lg"></i> Clock Out
                     </button>
                 </div>
             </nav>
@@ -488,12 +477,6 @@
         let activeUserRecord = null;
         let myLeads = [], allAgencyLeads = [], myTickets = [], agencySOPs = [];
         let unsubscribeLeads = null, unsubscribeUser = null, unsubscribeTickets = null, unsubscribeSOPs = null;
-        
-        // Attendance State Variables
-        let activeShiftId = null;
-        let shiftStartTime = null;
-        let shiftTimerInterval = null;
-        let unsubscribeAttendance = null;
 
         // UI HELPERS
         window.toggleSidebar = () => {
@@ -582,13 +565,7 @@
         });
 
         window.logout = () => {
-            if(unsubscribeLeads) unsubscribeLeads(); 
-            if(unsubscribeUser) unsubscribeUser(); 
-            if(unsubscribeTickets) unsubscribeTickets(); 
-            if(unsubscribeSOPs) unsubscribeSOPs();
-            if(unsubscribeAttendance) unsubscribeAttendance();
-            if(shiftTimerInterval) clearInterval(shiftTimerInterval);
-
+            if(unsubscribeLeads) unsubscribeLeads(); if(unsubscribeUser) unsubscribeUser(); if(unsubscribeTickets) unsubscribeTickets(); if(unsubscribeSOPs) unsubscribeSOPs();
             activeUserRecord = null; myLeads = []; myTickets = []; allAgencyLeads = [];
             document.getElementById('app-screen').classList.add('hidden'); document.getElementById('app-screen').classList.remove('flex');
             document.getElementById('login-screen').classList.remove('hidden'); document.getElementById('login-pwd').value = "";
@@ -646,96 +623,7 @@
                 agencySOPs = []; snap.forEach(d => agencySOPs.push({id: d.id, ...d.data()}));
                 renderPlaybook();
             });
-
-            // Attendance Tracker Subscription
-            unsubscribeAttendance = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'attendance_logs'), (snap) => {
-                let activeShift = null;
-                snap.forEach(d => {
-                    const data = { id: d.id, ...d.data() };
-                    // Find if the current user has an ongoing shift
-                    if(data.rep === activeUserRecord.name && data.status === 'Active') {
-                        activeShift = data;
-                    }
-                });
-
-                const btn = document.getElementById('btn-clock-in-out');
-                const icon = document.getElementById('clock-icon');
-                const text = document.getElementById('clock-text');
-                const widget = document.getElementById('attendance-widget');
-
-                if(activeShift) {
-                    // Shift is active: Switch to Clock Out mode
-                    activeShiftId = activeShift.id;
-                    shiftStartTime = activeShift.clockIn;
-                    
-                    widget.classList.remove('hidden');
-                    btn.className = "w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm font-bold text-rose-400 bg-rose-500/10 border border-rose-500/30 hover:bg-rose-500/20 hover:shadow-[0_0_15px_rgba(244,63,94,0.2)] transition-all";
-                    icon.className = "fa-solid fa-stop";
-                    text.innerText = "Clock Out";
-                    
-                    if(!shiftTimerInterval) {
-                        shiftTimerInterval = setInterval(updateShiftTimer, 1000);
-                        updateShiftTimer();
-                    }
-                } else {
-                    // No active shift: Switch to Clock In mode
-                    activeShiftId = null;
-                    shiftStartTime = null;
-                    
-                    widget.classList.add('hidden');
-                    btn.className = "w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 hover:shadow-[0_0_15px_rgba(16,185,129,0.2)] transition-all";
-                    icon.className = "fa-solid fa-play";
-                    text.innerText = "Clock In";
-                    
-                    if(shiftTimerInterval) {
-                        clearInterval(shiftTimerInterval);
-                        shiftTimerInterval = null;
-                    }
-                }
-            });
         }
-
-        // ATTENDANCE FUNCTIONS
-        window.updateShiftTimer = () => {
-            if(!shiftStartTime) return;
-            const diff = Date.now() - shiftStartTime;
-            
-            // Calculate Hours, Minutes, Seconds
-            const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
-            const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
-            const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
-            
-            document.getElementById('shift-timer').innerText = `${h}:${m}:${s}`;
-        };
-
-        window.toggleAttendance = async () => {
-            const btn = document.getElementById('btn-clock-in-out');
-            btn.disabled = true; // Prevent double-clicks
-            
-            try {
-                if(!activeShiftId) {
-                    // Initiate Clock In
-                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'attendance_logs'), {
-                        rep: activeUserRecord.name,
-                        clockIn: Date.now(),
-                        status: 'Active'
-                    });
-                    showToast("Clocked in successfully.");
-                } else {
-                    // Finalize Clock Out
-                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'attendance_logs', activeShiftId), {
-                        clockOut: Date.now(),
-                        status: 'Completed',
-                        totalTimeMs: Date.now() - shiftStartTime
-                    });
-                    showToast("Clocked out. Shift saved to ledger.");
-                }
-            } catch(e) {
-                showToast("Database sync error", true);
-            } finally {
-                btn.disabled = false;
-            }
-        };
 
         function renderAll() {
             renderDashboard(); renderTable(); renderLedger();
