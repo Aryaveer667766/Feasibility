@@ -174,7 +174,7 @@
         <div class="p-6 border-t border-white/5">
             <div class="flex items-center justify-between text-xs text-slate-500 font-mono">
                 <div class="flex items-center gap-2">
-                    <div class="w-2 h-2 rounded-full bg-slate-500 animate-pulse" id="db-indicator"></div>
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" id="db-indicator"></div>
                     <span id="db-status">Connecting...</span>
                 </div>
             </div>
@@ -1151,6 +1151,37 @@
         }
 
         // ================= MODAL ACTIONS =================
+
+        const addUserForm = document.getElementById('form-add-user');
+        if (addUserForm) {
+            addUserForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('btn-save-user');
+                if(btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authorizing...'; }
+                try {
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'team_users'), {
+                        name: document.getElementById('usr-name').value.trim(),
+                        email: document.getElementById('usr-email').value.trim(),
+                        role: document.getElementById('usr-role').value,
+                        upi: document.getElementById('usr-upi').value.trim(),
+                        password: document.getElementById('usr-pass').value.trim(),
+                        commission_awarded: 0,
+                        commission_paid: 0,
+                        status: 'Active',
+                        timestamp: Date.now()
+                    });
+                    logAudit(`Hired new staff: ${document.getElementById('usr-name').value}`);
+                    showToast("Staff Authorized Successfully");
+                    addUserForm.reset();
+                    closeModals();
+                } catch (err) {
+                    console.error(err);
+                    showToast("Error adding staff", true);
+                } finally {
+                    if(btn) { btn.disabled = false; btn.innerHTML = 'Grant System Access'; }
+                }
+            });
+        }
 
         window.toggleUserStatus = async (id, stat) => {
             const ns = stat === 'Active' ? 'Suspended' : 'Active';
