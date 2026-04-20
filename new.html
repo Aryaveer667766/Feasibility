@@ -192,19 +192,23 @@
                 </button>
                 
                 <div class="mt-auto border-t border-white/10 pt-4 mb-4 flex flex-col gap-2 px-4">
-                    <div id="attendance-widget" class="hidden bg-black/30 border border-white/5 rounded-xl p-3 text-center mb-1 transition-all">
-                        <p class="text-[9px] text-slate-400 uppercase tracking-widest font-bold mb-1 flex items-center justify-center gap-1.5">
-                            <span class="w-2 h-2 inline-block rounded-full bg-emerald-500 animate-pulse"></span> Active Shift
-                        </p>
-                        <p id="shift-timer" class="text-xl font-mono font-black text-white drop-shadow-md">00:00:00</p>
+                    <div id="duty-status-card" class="bg-black/40 border border-white/5 rounded-xl p-3 flex flex-col gap-1 transition-all duration-300">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span id="duty-dot" class="w-2 h-2 rounded-full bg-slate-600"></span>
+                                <span id="duty-text" class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Off Duty</span>
+                            </div>
+                            <i class="fa-solid fa-fingerprint text-slate-700 text-sm" id="duty-icon"></i>
+                        </div>
+                        <p id="duty-time" class="text-[10px] text-slate-500 font-mono pl-4 hidden"></p>
                     </div>
                     
-                    <button id="btn-clock-in-out" onclick="toggleAttendance()" class="w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 hover:shadow-[0_0_15px_rgba(16,185,129,0.2)] transition-all">
-                        <i class="fa-solid fa-play" id="clock-icon"></i> <span id="clock-text">Clock In</span>
+                    <button id="btn-clock-in-out" onclick="toggleAttendance()" class="w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm font-bold text-slate-300 bg-white/5 border border-white/10 hover:bg-white/10 hover:text-white transition-all duration-300">
+                        <i class="fa-solid fa-power-off" id="clock-icon"></i> <span id="clock-text">Initiate Shift</span>
                     </button>
                     
-                    <button onclick="logout()" class="w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm font-bold text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors mt-1">
-                        <i class="fa-solid fa-power-off"></i> System Logout
+                    <button onclick="logout()" class="w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm font-bold text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors mt-1">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> System Logout
                     </button>
                 </div>
             </nav>
@@ -492,7 +496,6 @@
         // Attendance State Variables
         let activeShiftId = null;
         let shiftStartTime = null;
-        let shiftTimerInterval = null;
         let unsubscribeAttendance = null;
 
         // UI HELPERS
@@ -587,7 +590,6 @@
             if(unsubscribeTickets) unsubscribeTickets(); 
             if(unsubscribeSOPs) unsubscribeSOPs();
             if(unsubscribeAttendance) unsubscribeAttendance();
-            if(shiftTimerInterval) clearInterval(shiftTimerInterval);
 
             activeUserRecord = null; myLeads = []; myTickets = []; allAgencyLeads = [];
             document.getElementById('app-screen').classList.add('hidden'); document.getElementById('app-screen').classList.remove('flex');
@@ -661,53 +663,58 @@
                 const btn = document.getElementById('btn-clock-in-out');
                 const icon = document.getElementById('clock-icon');
                 const text = document.getElementById('clock-text');
-                const widget = document.getElementById('attendance-widget');
+                
+                // New UI Elements
+                const statusCard = document.getElementById('duty-status-card');
+                const dutyDot = document.getElementById('duty-dot');
+                const dutyText = document.getElementById('duty-text');
+                const dutyIcon = document.getElementById('duty-icon');
+                const dutyTime = document.getElementById('duty-time');
 
                 if(activeShift) {
-                    // Shift is active: Switch to Clock Out mode
+                    // Shift is active: Switch to cinematic "On Duty" state
                     activeShiftId = activeShift.id;
                     shiftStartTime = activeShift.clockIn;
                     
-                    widget.classList.remove('hidden');
+                    // Format the time cleanly (e.g., "09:30 AM")
+                    const startTimeStr = new Date(shiftStartTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    
+                    statusCard.className = "bg-emerald-900/10 border border-emerald-500/30 rounded-xl p-3 flex flex-col gap-1 transition-all duration-300 shadow-[0_0_15px_rgba(16,185,129,0.1)]";
+                    dutyDot.className = "w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_#10b981]";
+                    dutyText.className = "text-[10px] font-bold text-emerald-400 uppercase tracking-widest";
+                    dutyText.innerText = "On Duty";
+                    dutyIcon.className = "fa-solid fa-fingerprint text-emerald-500/50 text-sm";
+                    
+                    dutyTime.classList.remove('hidden');
+                    dutyTime.innerText = `Since ${startTimeStr}`;
+                    dutyTime.className = "text-[10px] text-emerald-500/70 font-mono pl-4";
+                    
                     btn.className = "w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm font-bold text-rose-400 bg-rose-500/10 border border-rose-500/30 hover:bg-rose-500/20 hover:shadow-[0_0_15px_rgba(244,63,94,0.2)] transition-all";
                     icon.className = "fa-solid fa-stop";
-                    text.innerText = "Clock Out";
+                    text.innerText = "Terminate Shift";
                     
-                    if(!shiftTimerInterval) {
-                        shiftTimerInterval = setInterval(updateShiftTimer, 1000);
-                        updateShiftTimer();
-                    }
                 } else {
-                    // No active shift: Switch to Clock In mode
+                    // No active shift: Switch to neutral "Off Duty" state
                     activeShiftId = null;
                     shiftStartTime = null;
                     
-                    widget.classList.add('hidden');
-                    btn.className = "w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 hover:shadow-[0_0_15px_rgba(16,185,129,0.2)] transition-all";
-                    icon.className = "fa-solid fa-play";
-                    text.innerText = "Clock In";
+                    statusCard.className = "bg-black/40 border border-white/5 rounded-xl p-3 flex flex-col gap-1 transition-all duration-300";
+                    dutyDot.className = "w-2 h-2 rounded-full bg-slate-600";
+                    dutyText.className = "text-[10px] font-bold text-slate-500 uppercase tracking-widest";
+                    dutyText.innerText = "Off Duty";
+                    dutyIcon.className = "fa-solid fa-fingerprint text-slate-700 text-sm";
                     
-                    if(shiftTimerInterval) {
-                        clearInterval(shiftTimerInterval);
-                        shiftTimerInterval = null;
-                    }
+                    dutyTime.classList.add('hidden');
+                    dutyTime.innerText = "";
+                    
+                    btn.className = "w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm font-bold text-slate-300 bg-white/5 border border-white/10 hover:bg-white/10 hover:text-white transition-all duration-300";
+                    icon.className = "fa-solid fa-power-off";
+                    text.innerText = "Initiate Shift";
                 }
             });
         }
 
         // ATTENDANCE FUNCTIONS
-        window.updateShiftTimer = () => {
-            if(!shiftStartTime) return;
-            const diff = Date.now() - shiftStartTime;
-            
-            // Calculate Hours, Minutes, Seconds
-            const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
-            const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
-            const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
-            
-            document.getElementById('shift-timer').innerText = `${h}:${m}:${s}`;
-        };
-
         window.toggleAttendance = async () => {
             const btn = document.getElementById('btn-clock-in-out');
             btn.disabled = true; // Prevent double-clicks
@@ -720,7 +727,7 @@
                         clockIn: Date.now(),
                         status: 'Active'
                     });
-                    showToast("Clocked in successfully.");
+                    showToast("Shift initiated. Tracking started.");
                 } else {
                     // Finalize Clock Out
                     await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'attendance_logs', activeShiftId), {
@@ -728,7 +735,7 @@
                         status: 'Completed',
                         totalTimeMs: Date.now() - shiftStartTime
                     });
-                    showToast("Clocked out. Shift saved to ledger.");
+                    showToast("Shift terminated. Protocol saved to ledger.");
                 }
             } catch(e) {
                 console.error("FIREBASE ATTENDANCE ERROR:", e); // This will log the error to the browser console
