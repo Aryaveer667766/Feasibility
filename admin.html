@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;800;900&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
@@ -20,6 +20,7 @@
             background-color: #020617;
             color: #f8fafc;
             overflow: hidden;
+            /* Supreme Command Gradient */
             background-image: 
                 radial-gradient(circle at 100% 0%, rgba(225, 29, 72, 0.08) 0%, transparent 40%), 
                 radial-gradient(circle at 0% 100%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);
@@ -36,8 +37,12 @@
             border-radius: 1rem;
             transition: all 0.3s;
         }
+        .card-ceo:hover {
+            border-color: rgba(225, 29, 72, 0.3);
+            box-shadow: 0 15px 35px -10px rgba(0,0,0,0.6), 0 0 15px rgba(225, 29, 72, 0.1);
+        }
 
-        /* Scrollbar */
+        /* Scrollbars */
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
@@ -49,7 +54,7 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(225,29,72,0.5); }
 
         /* Inputs */
-        input, select, textarea { background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; border-radius: 0.5rem; }
+        input, select, textarea { background: rgba(2, 6, 23, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; border-radius: 0.5rem; }
         input:focus, select:focus, textarea:focus { outline: none; border-color: #e11d48; box-shadow: 0 0 0 2px rgba(225, 29, 72, 0.2); }
         input:disabled, select:disabled { opacity: 0.6; cursor: not-allowed; }
 
@@ -70,6 +75,12 @@
         /* Modals */
         .modal { opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 100; }
         .modal.active { opacity: 1; pointer-events: auto; }
+
+        /* Playbook Accordion */
+        .playbook-card { transition: all 0.3s; cursor: pointer; }
+        .playbook-card:hover { background: rgba(255,255,255,0.05); }
+        .playbook-content { display: none; }
+        .playbook-content.open { display: block; animation: fadeUp 0.2s ease-out forwards; }
 
         /* Mobile-First Responsive Grids */
         .responsive-grid {
@@ -93,8 +104,6 @@
     </style>
 </head>
 <body class="h-screen w-full flex flex-col md:flex-row relative">
-
-    <div class="fixed inset-0 z-0 pointer-events-none" style="background-image: radial-gradient(circle at 100% 0%, rgba(225, 29, 72, 0.08) 0%, transparent 40%), radial-gradient(circle at 0% 100%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);"></div>
 
     <div class="md:hidden flex h-16 border-b border-white/5 glass-panel justify-between items-center px-4 shrink-0 z-30">
         <div class="flex items-center gap-3">
@@ -120,10 +129,10 @@
 
         <div class="p-6 pb-2 border-b border-white/5 flex items-center gap-3">
             <div class="w-10 h-10 rounded-full border-2 border-rose-500 overflow-hidden shadow-[0_0_15px_rgba(225,29,72,0.4)] shrink-0">
-                <img src="https://ui-avatars.com/api/?name=CEO&background=0f172a&color=fff" class="w-full h-full">
+                <img src="https://ui-avatars.com/api/?name=Aryaveer+Mishra&background=0f172a&color=fff" class="w-full h-full">
             </div>
             <div class="overflow-hidden">
-                <p class="text-sm font-bold text-white leading-tight truncate">Chief Executive</p>
+                <p class="text-sm font-bold text-white leading-tight truncate">Aryaveer Mishra</p>
                 <p class="text-[10px] text-emerald-400 uppercase tracking-wider font-bold truncate"><i class="fa-solid fa-bolt mr-1"></i> God Mode Active</p>
             </div>
         </div>
@@ -147,21 +156,24 @@
             <div class="px-6 py-2 mt-2">
                 <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Operations</p>
             </div>
+            <button onclick="switchTab('playbook')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
+                <i class="fa-solid fa-book-open-reader w-5 text-center text-yellow-400"></i> Sales Playbook
+            </button>
             <button onclick="switchTab('hr')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
                 <i class="fa-solid fa-headset w-5 text-center text-blue-400"></i> HR Support Desk
             </button>
             <button onclick="switchTab('payroll')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
-                <i class="fa-solid fa-money-check-dollar w-5 text-center text-yellow-400"></i> Global Payroll
+                <i class="fa-solid fa-money-check-dollar w-5 text-center text-emerald-500"></i> Finance & Payroll
             </button>
             <button onclick="switchTab('logs')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
-                <i class="fa-solid fa-terminal w-5 text-center"></i> Audit Logs
+                <i class="fa-solid fa-terminal w-5 text-center text-slate-400"></i> Audit Logs
             </button>
         </nav>
         
         <div class="p-6 border-t border-white/5">
             <div class="flex items-center justify-between text-xs text-slate-500 font-mono">
                 <div class="flex items-center gap-2">
-                    <div class="w-2 h-2 rounded-full bg-slate-500 animate-pulse" id="db-indicator"></div>
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" id="db-indicator"></div>
                     <span id="db-status">Connecting...</span>
                 </div>
             </div>
@@ -200,13 +212,13 @@
                         <h3 id="kpi-total-won" class="text-xl md:text-3xl font-black text-blue-400 font-mono truncate">₹0</h3>
                         <p class="text-[9px] md:text-[10px] text-slate-500 mt-2">All time closed won</p>
                     </div>
-                    <div class="card-ceo p-4 md:p-6 border-t-2 border-cyan-500">
-                        <p class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 truncate">Creative Engine</p>
-                        <h3 id="kpi-creative-active" class="text-xl md:text-3xl font-black text-cyan-400 font-mono truncate">0</h3>
-                        <p class="text-[9px] md:text-[10px] text-slate-500 mt-2">Active projects in progress</p>
+                    <div class="card-ceo p-4 md:p-6 border-t-2 border-yellow-500">
+                        <p class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 truncate">30-Day Projection</p>
+                        <h3 id="kpi-projected" class="text-xl md:text-3xl font-black text-yellow-400 font-mono truncate">₹0</h3>
+                        <p class="text-[9px] md:text-[10px] text-slate-500 mt-2">Deals in negotiation</p>
                     </div>
                     <div class="card-ceo p-4 md:p-6 border-t-2 border-rose-500">
-                        <p class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 truncate">Pending Payroll</p>
+                        <p class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 truncate">Payroll Liability</p>
                         <h3 id="kpi-pending-payouts" class="text-xl md:text-3xl font-black text-rose-400 font-mono truncate">₹0</h3>
                         <p class="text-[9px] md:text-[10px] text-rose-500 mt-2 font-bold">Unpaid commissions/bonuses</p>
                     </div>
@@ -221,7 +233,7 @@
                     </div>
 
                     <div class="card-ceo p-6 flex flex-col h-full max-h-[350px]">
-                        <h3 class="text-lg font-bold text-white font-heading mb-4 text-purple-400"><i class="fa-solid fa-satellite-dish mr-2"></i> Agency Pulse</h3>
+                        <h3 class="text-lg font-bold text-white font-heading mb-4 text-rose-400"><i class="fa-solid fa-satellite-dish mr-2"></i> The War Room</h3>
                         <div class="overflow-y-auto flex-1 pr-2 space-y-3 custom-scrollbar" id="global-pulse-list">
                             </div>
                     </div>
@@ -313,6 +325,59 @@
                             <div class="text-right">Actions</div>
                         </div>
                         <div id="master-creative-body" class="flex flex-col mt-2 md:mt-0"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-playbook" class="tab-content">
+                <div class="card-ceo p-4 md:p-6 w-full min-h-[600px]">
+                    <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-yellow-400 font-heading">Master Sales Playbook</h3>
+                            <p class="text-xs text-slate-400">Standard operating procedures, scripts, and frameworks for the team.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-black/30 border border-white/5 rounded-xl p-5 playbook-card" onclick="togglePlaybook('pb1')">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-bold text-white flex items-center"><i class="fa-solid fa-phone text-emerald-400 mr-2"></i> Discovery Call Framework</h4>
+                                <i class="fa-solid fa-chevron-down text-slate-500 text-xs"></i>
+                            </div>
+                            <div id="pb1" class="playbook-content text-sm text-slate-300 mt-4 space-y-3">
+                                <p><strong class="text-white">1. The Hook (First 30s):</strong> "Hi [Name], I noticed [Specific compliment about their content/business]. I have an idea that could add [X result]. Do you have 2 minutes?"</p>
+                                <p><strong class="text-white">2. The Pain Identification:</strong> "What is the biggest bottleneck preventing you from scaling your content output right now?"</p>
+                                <p><strong class="text-white">3. The Pitch:</strong> "At Feasibility Media, we don't just edit; we build visual retention engines. We solve [Their Pain] by [Our Solution]."</p>
+                                <p><strong class="text-white">4. The Close:</strong> "Does it make sense to schedule a 15-minute deep dive on Tuesday to show you the exact strategy?"</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-black/30 border border-white/5 rounded-xl p-5 playbook-card" onclick="togglePlaybook('pb2')">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-bold text-white flex items-center"><i class="fa-solid fa-shield-halved text-rose-400 mr-2"></i> Objection Handling</h4>
+                                <i class="fa-solid fa-chevron-down text-slate-500 text-xs"></i>
+                            </div>
+                            <div id="pb2" class="playbook-content text-sm text-slate-300 mt-4 space-y-3">
+                                <p><strong class="text-white">"We don't have budget":</strong> "I completely understand. If budget wasn't an issue, is this a solution you feel would actually grow your business?" (If yes, negotiate scope. If no, they aren't sold on value).</p>
+                                <p><strong class="text-white">"We already have an agency":</strong> "That’s great. We aren't looking to replace them today. We are a specialized agency focusing purely on [Specific Niche]. Can we do a test run on your next campaign to see how we compare?"</p>
+                                <p><strong class="text-white">"Just send me an email":</strong> "I absolutely will. But just so I don't send you generic info, what is your #1 priority right now?" (Keep them talking).</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-black/30 border border-white/5 rounded-xl p-5 playbook-card" onclick="togglePlaybook('pb3')">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-bold text-white flex items-center"><i class="fa-solid fa-envelope text-blue-400 mr-2"></i> Cold Email Template</h4>
+                                <i class="fa-solid fa-chevron-down text-slate-500 text-xs"></i>
+                            </div>
+                            <div id="pb3" class="playbook-content text-sm text-slate-300 mt-4 space-y-3">
+                                <p><strong class="text-white">Subject:</strong> Quick idea for [Company Name]</p>
+                                <p>Hi [Name],</p>
+                                <p>I was checking out your recent campaign and loved [Specific Detail]. However, I noticed you might be leaving engagement on the table with your current video pacing.</p>
+                                <p>We are a specialized media agency that helps brands like yours increase retention by 40% through high-end editing.</p>
+                                <p>I actually put together a quick 2-minute loom video showing exactly how we would upgrade your next release. Worth a watch?</p>
+                                <p>Best,<br>Your Name</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -447,7 +512,6 @@
                         </div>
                         <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Next Action</label><input type="date" id="edit-ld-nextaction" class="w-full rounded-lg px-3 py-2 text-sm text-slate-300"></div>
                         <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Assigned Rep</label><select id="edit-ld-rep" class="w-full rounded-lg px-3 py-2 text-sm bg-slate-900"></select></div>
-                        <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Force Status</label><select id="edit-ld-status" class="w-full rounded-lg px-3 py-2 text-sm font-bold bg-slate-900"></select></div>
                     </div>
                     <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">CEO Notes</label><textarea id="edit-ld-notes" rows="3" class="w-full rounded-lg px-3 py-2 text-sm resize-none"></textarea></div>
                     <div class="flex gap-3 pt-2">
@@ -501,13 +565,12 @@
         </div>
     </div>
 
-    <div id="modal-timeline" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center modal z-[100] p-4">
+    <div id="modal-timeline" class="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center modal z-[100] p-4">
         <div class="glass-panel border border-white/10 rounded-3xl w-full max-w-2xl p-6 md:p-8 shadow-2xl flex flex-col max-h-[90vh]">
             <div class="flex justify-between items-start mb-6 border-b border-white/10 pb-6">
                 <div>
                     <h2 id="tl-company" class="text-xl md:text-3xl font-bold text-white font-heading tracking-tight">Project / Company</h2>
-                    <div class="flex flex-wrap gap-4 text-sm text-slate-300 font-mono mt-3" id="tl-meta-bar">
-                        </div>
+                    <div class="flex flex-wrap gap-4 text-sm text-slate-300 font-mono mt-3" id="tl-meta-bar"></div>
                 </div>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-white text-2xl bg-white/5 w-10 h-10 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
@@ -622,7 +685,7 @@
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
             if(event && event.currentTarget.classList.contains('nav-btn')) event.currentTarget.classList.add('active');
 
-            const titles = { 'overview': "God's Eye View", 'team': 'Personnel Roster', 'sales-pipeline': 'Sales Database', 'creative-pipeline': 'Creative Engine', 'payroll': 'Global Payroll Engine', 'logs': 'System Audit Logs', 'hr': 'Support Desk' };
+            const titles = { 'overview': "God's Eye View", 'team': 'Personnel Roster', 'sales-pipeline': 'Sales Database', 'creative-pipeline': 'Creative Engine', 'payroll': 'Global Payroll Engine', 'logs': 'System Audit Logs', 'hr': 'Support Desk', 'playbook': 'Master Sales Playbook' };
             document.getElementById('page-title').innerText = titles[tabId] || '';
 
             if(window.innerWidth < 768) {
@@ -630,6 +693,13 @@
                 document.getElementById('mobile-overlay').classList.add('hidden');
             }
         };
+
+        window.togglePlaybook = function(id) {
+            const content = document.getElementById(id);
+            const isOpen = content.classList.contains('open');
+            document.querySelectorAll('.playbook-content').forEach(el => el.classList.remove('open'));
+            if(!isOpen) content.classList.add('open');
+        }
 
         window.closeModals = function() { document.querySelectorAll('.modal').forEach(el => el.classList.remove('active')); };
         window.closeModal = function() { document.getElementById('modal-timeline').classList.remove('active'); };
@@ -738,21 +808,26 @@
 
         // ================= RENDERERS =================
         function renderOverview() {
-            let totalPipe=0, totalWon=0;
+            let totalPipe=0, totalWon=0, projected=0;
             allLeads.forEach(l => {
                 const v = Number(l.value)||0;
-                if(l.status === 'Closed Won') totalWon+=v; else if(l.status !== 'Closed Lost') totalPipe+=v;
+                if(l.status === 'Closed Won') totalWon+=v; 
+                else if(l.status !== 'Closed Lost') {
+                    totalPipe+=v;
+                    if(l.status === 'Proposal Sent' || l.status === 'In Negotiation') projected += v;
+                }
             });
-            let aw=0, liab=0;
-            allUsers.forEach(u => { aw += (Number(u.commission_awarded)||0); liab += Math.max(0, (Number(u.commission_awarded)||0) - (Number(u.commission_paid)||0)); });
+            
+            let liab=0;
+            allUsers.forEach(u => { liab += Math.max(0, (Number(u.commission_awarded)||0) - (Number(u.commission_paid)||0)); });
 
             let crtAct=0;
             allCreatives.forEach(c => { if(c.status !== 'Approved & Completed') crtAct++; });
 
             document.getElementById('kpi-total-pipe').innerText = "₹" + totalPipe.toLocaleString('en-IN');
             document.getElementById('kpi-total-won').innerText = "₹" + totalWon.toLocaleString('en-IN');
+            document.getElementById('kpi-projected').innerText = "₹" + projected.toLocaleString('en-IN');
             document.getElementById('kpi-creative-active').innerText = crtAct;
-            document.getElementById('kpi-total-awarded').innerText = "₹" + aw.toLocaleString('en-IN');
             document.getElementById('kpi-pending-payouts').innerText = "₹" + liab.toLocaleString('en-IN');
 
             // Chart (Sales)
@@ -775,10 +850,10 @@
                 const iconColor = h.itemType === 'Sales' ? 'text-emerald-400' : 'text-cyan-400';
                 return `
                 <div class="bg-black/40 border border-white/5 rounded-lg p-3 hover:bg-white/5 transition-colors cursor-pointer" onclick="openTimeline('${h.id}', '${h.itemType.toLowerCase()}')">
-                    <p class="text-xs font-bold text-white mb-1">${h.note}</p>
+                    <p class="text-xs font-bold text-white mb-1.5">${h.note}</p>
                     <div class="flex justify-between items-center mt-1">
-                        <span class="text-[9px] font-mono text-slate-400"><i class="fa-solid fa-circle text-[6px] ${iconColor} mr-1"></i>${h.itemName}</span>
-                        <span class="text-[9px] font-mono text-slate-500">${new Date(h.date).toLocaleString()} • ${h.user}</span>
+                        <span class="text-[9px] font-mono text-slate-400 bg-white/5 px-2 py-0.5 rounded"><i class="fa-solid fa-circle text-[6px] ${iconColor} mr-1"></i>${h.itemName}</span>
+                        <span class="text-[9px] font-mono text-slate-500">${new Date(h.date).toLocaleDateString()} • ${h.user}</span>
                     </div>
                 </div>
             `}).join('') || '<p class="text-sm text-slate-500 italic">No activity yet.</p>';
@@ -995,8 +1070,10 @@
 
         // --- PAYROLL ENGINE ---
         function renderPayroll() {
+            let totalAwarded = 0;
             document.getElementById('payroll-grid').innerHTML = allUsers.map(user => {
                 const aw = Number(user.commission_awarded)||0; const pd = Number(user.commission_paid)||0; const pen = Math.max(0, aw - pd);
+                totalAwarded += aw;
                 
                 // Show reference deals based on role
                 let referenceHtml = '';
@@ -1029,6 +1106,8 @@
                     <button onclick="releasePayment('${user.id}', ${pen}, '${user.name}')" ${pen<=0?'disabled':''} class="w-full py-3 rounded-xl text-sm font-bold transition-all ${pen>0?'bg-rose-600 hover:bg-rose-500 text-white shadow-lg':'bg-slate-800 text-slate-500'}"><i class="fa-solid fa-money-bill-transfer"></i> Clear Pending Balance</button>
                 </div>`
             }).join('') || '<p class="text-slate-500">No staff loaded.</p>';
+
+            document.getElementById('stat-all-awarded').innerText = "₹" + totalAwarded.toLocaleString('en-IN');
         }
 
         // ================= MODAL ACTIONS =================
@@ -1053,6 +1132,32 @@
         };
         window.deleteUser = async (id) => { if(confirm("CRITICAL: Delete staff permanently?")) { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', id)); logAudit(`Deleted staff ${id}`); showToast("Deleted"); } };
 
+        // SALES OVERRIDE
+        function populateRepDropdowns() {
+            const salesOpts = '<option value="">Unassigned</option>' + allUsers.filter(u => u.role.includes('Sales') || u.role.includes('Executive')).map(u => `<option value="${u.name}">${u.name}</option>`).join('');
+            document.getElementById('edit-ld-rep').innerHTML = salesOpts;
+        }
+
+        window.openEditLeadModal = (id) => {
+            const l = allLeads.find(x => x.id === id); if(!l) return;
+            document.getElementById('edit-ld-id').value = id;
+            document.getElementById('edit-ld-company').value = l.company || ''; document.getElementById('edit-ld-value').value = l.value || 0;
+            document.getElementById('edit-ld-contact').value = l.contact || ''; document.getElementById('edit-ld-phone').value = l.phone || '';
+            document.getElementById('edit-ld-source').value = l.source || 'Cold Email'; document.getElementById('edit-ld-nextaction').value = l.nextAction || '';
+            document.getElementById('edit-ld-rep').value = l.rep || ''; document.getElementById('edit-ld-status').value = l.status || 'New Lead';
+            document.getElementById('edit-ld-notes').value = l.notes || '';
+            document.getElementById('modal-edit-lead').classList.add('active');
+        };
+
+        document.getElementById('form-edit-lead').addEventListener('submit', async (e) => {
+            e.preventDefault(); const id = document.getElementById('edit-ld-id').value; const comp = document.getElementById('edit-ld-company').value;
+            const up = {
+                company: comp, value: Number(document.getElementById('edit-ld-value').value), contact: document.getElementById('edit-ld-contact').value, phone: document.getElementById('edit-ld-phone').value,
+                source: document.getElementById('edit-ld-source').value, nextAction: document.getElementById('edit-ld-nextaction').value,
+                rep: document.getElementById('edit-ld-rep').value, status: document.getElementById('edit-ld-status').value, notes: document.getElementById('edit-ld-notes').value.trim()
+            };
+            try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), up); logAudit(`Overrode sales deal: ${comp}`); showToast("Override Executed"); closeModals(); } catch(e) { showToast("Error", true); }
+        });
 
         window.deleteDocItem = async (collectionName, id) => { if(confirm("CRITICAL: Delete record permanently?")) { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', collectionName, id)); logAudit(`Deleted from ${collectionName}: ${id}`); } };
 
@@ -1115,7 +1220,7 @@
         };
         document.getElementById('form-manage-ticket').addEventListener('submit', async (e) => {
             e.preventDefault(); const id = document.getElementById('mng-tk-id').value; const ns = document.getElementById('mng-tk-status').value;
-            await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'hr_tickets', id), { status: ns }); logAudit(`Updated HR Ticket to ${ns}`); showToast("Ticket Updated"); closeModals();
+            try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'hr_tickets', id), { status: ns }); logAudit(`Updated HR Ticket to ${ns}`); showToast("Ticket Updated"); closeModals(); } catch(e) {}
         });
 
         window.exportGlobalCSV = () => {
