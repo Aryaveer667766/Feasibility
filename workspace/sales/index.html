@@ -1,831 +1,831 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sales Engine | Feasibility Media</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;800;900&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sales Engine | Feasibility Media</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;800;900&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #020617;
-            color: #f8fafc;
-            overflow: hidden;
-            /* Purple/Blue Sales Gradient */
-            background-image: 
-                radial-gradient(circle at 0% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 40%), 
-                radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
-        }
-        .font-heading { font-family: 'Outfit', sans-serif; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #020617;
+            color: #f8fafc;
+            overflow: hidden;
+            /* Purple/Blue Sales Gradient */
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 40%), 
+                radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
+        }
+        .font-heading { font-family: 'Outfit', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
 
-        /* Premium Glassmorphism */
-        .glass-panel { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); border-top: 1px solid rgba(255, 255, 255, 0.15); }
-        .glass-card { 
-            background: linear-gradient(180deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.6) 100%);
-            border: 1px solid rgba(255,255,255,0.06); border-top: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 1.25rem; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); transition: all 0.3s; 
-        }
-        .glass-card:hover { border-color: rgba(139, 92, 246, 0.4); transform: translateY(-2px); }
+        /* Premium Glassmorphism */
+        .glass-panel { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); border-top: 1px solid rgba(255, 255, 255, 0.15); }
+        .glass-card { 
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.6) 100%);
+            border: 1px solid rgba(255,255,255,0.06); border-top: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 1.25rem; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); transition: all 0.3s; 
+        }
+        .glass-card:hover { border-color: rgba(139, 92, 246, 0.4); transform: translateY(-2px); }
 
-        /* Inputs */
-        input, select, textarea { background: rgba(2, 6, 23, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.2s; border-radius: 0.75rem; width: 100%; }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: #8b5cf6; background: rgba(2, 6, 23, 0.9); box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25); }
+        /* Inputs */
+        input, select, textarea { background: rgba(2, 6, 23, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.2s; border-radius: 0.75rem; width: 100%; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #8b5cf6; background: rgba(2, 6, 23, 0.9); box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25); }
 
-        /* Scrollbars */
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #8b5cf6; }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.5); }
+        /* Scrollbars */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #8b5cf6; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.5); }
 
-        /* Tabs */
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeUp 0.3s forwards; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        /* Tabs */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeUp 0.3s forwards; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        .nav-btn { border-left: 3px solid transparent; color: #94a3b8; transition: all 0.2s; border-radius: 0 0.75rem 0.75rem 0; margin-right: 1rem;}
-        .nav-btn.active { background: linear-gradient(90deg, rgba(139, 92, 246, 0.2) 0%, transparent 100%); border-left-color: #8b5cf6; color: #fff; font-weight: 700; }
-        .nav-btn:hover:not(.active) { color: white; background: rgba(255,255,255,0.03); }
+        .nav-btn { border-left: 3px solid transparent; color: #94a3b8; transition: all 0.2s; border-radius: 0 0.75rem 0.75rem 0; margin-right: 1rem;}
+        .nav-btn.active { background: linear-gradient(90deg, rgba(139, 92, 246, 0.2) 0%, transparent 100%); border-left-color: #8b5cf6; color: #fff; font-weight: 700; }
+        .nav-btn:hover:not(.active) { color: white; background: rgba(255,255,255,0.03); }
 
-        .btn-primary { background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%); color: white; font-weight: 800; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3); transition: all 0.2s; }
-        .btn-primary:hover:not(:disabled) { transform: translateY(-2px) scale(1.01); box-shadow: 0 8px 25px rgba(139, 92, 246, 0.5); }
+        .btn-primary { background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%); color: white; font-weight: 800; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3); transition: all 0.2s; }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px) scale(1.01); box-shadow: 0 8px 25px rgba(139, 92, 246, 0.5); }
 
-        .modal { opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 100; }
-        .modal.active { opacity: 1; pointer-events: auto; }
+        .modal { opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 100; }
+        .modal.active { opacity: 1; pointer-events: auto; }
 
-        /* Mobile-First Responsive Grids */
-        .responsive-grid {
-            display: flex; flex-direction: column; gap: 0.75rem; padding: 1rem;
-            border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02);
-            border-radius: 0.75rem; margin-bottom: 0.75rem; transition: background 0.2s;
-        }
-        .responsive-grid:hover { background: rgba(255,255,255,0.05); }
-        
-        @media (min-width: 1024px) {
-            .responsive-grid {
-                display: grid; gap: 1rem; padding: 1rem 1.25rem;
-                background: transparent; border-radius: 0; margin-bottom: 0; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05);
-            }
-            .mobile-label { display: none; }
-            .sales-grid { grid-template-columns: 2fr 1fr 1.5fr 1fr 1.5fr; }
-            .ledger-grid { grid-template-columns: 2fr 1.5fr 1fr; }
-            .hr-grid { grid-template-columns: 1fr 2fr 1.5fr 1fr; }
-        }
-    </style>
+        /* Mobile-First Responsive Grids */
+        .responsive-grid {
+            display: flex; flex-direction: column; gap: 0.75rem; padding: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02);
+            border-radius: 0.75rem; margin-bottom: 0.75rem; transition: background 0.2s;
+        }
+        .responsive-grid:hover { background: rgba(255,255,255,0.05); }
+        
+        @media (min-width: 1024px) {
+            .responsive-grid {
+                display: grid; gap: 1rem; padding: 1rem 1.25rem;
+                background: transparent; border-radius: 0; margin-bottom: 0; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+            .mobile-label { display: none; }
+            .sales-grid { grid-template-columns: 2fr 1fr 1.5fr 1fr 1.5fr; }
+            .ledger-grid { grid-template-columns: 2fr 1.5fr 1fr; }
+            .hr-grid { grid-template-columns: 1fr 2fr 1.5fr 1fr; }
+        }
+    </style>
 </head>
 <body class="h-screen w-full relative flex flex-col md:flex-row">
 
-    <div id="login-screen" class="absolute inset-0 z-50 flex items-center justify-center backdrop-blur-xl bg-[#020617]/95 p-4 md:p-0">
-        <div class="glass-panel p-6 sm:p-8 md:p-12 w-full max-w-md relative overflow-hidden rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
-            <div class="absolute -top-32 -right-32 w-64 h-64 bg-purple-600/20 rounded-full blur-[60px] pointer-events-none"></div>
-            <div class="absolute -bottom-32 -left-32 w-64 h-64 bg-blue-600/20 rounded-full blur-[60px] pointer-events-none"></div>
-            
-            <div class="text-center mb-8 relative z-10">
-                <div class="w-16 h-16 mx-auto bg-gradient-to-br from-purple-500 to-blue-600 text-white flex items-center justify-center rounded-2xl text-3xl font-black shadow-[0_0_30px_rgba(139,92,246,0.3)] mb-6">
-                    <i class="fa-solid fa-bolt"></i>
-                </div>
-                <h2 class="text-2xl sm:text-3xl font-black text-white font-heading tracking-tight">Sales Workspace</h2>
-                <p class="text-xs text-purple-400 font-bold uppercase tracking-widest mt-2">Feasibility Media</p>
-            </div>
+    <div id="login-screen" class="absolute inset-0 z-50 flex items-center justify-center backdrop-blur-xl bg-[#020617]/95 p-4 md:p-0">
+        <div class="glass-panel p-6 sm:p-8 md:p-12 w-full max-w-md relative overflow-hidden rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+            <div class="absolute -top-32 -right-32 w-64 h-64 bg-purple-600/20 rounded-full blur-[60px] pointer-events-none"></div>
+            <div class="absolute -bottom-32 -left-32 w-64 h-64 bg-blue-600/20 rounded-full blur-[60px] pointer-events-none"></div>
+            
+            <div class="text-center mb-8 relative z-10">
+                <div class="w-16 h-16 mx-auto bg-gradient-to-br from-purple-500 to-blue-600 text-white flex items-center justify-center rounded-2xl text-3xl font-black shadow-[0_0_30px_rgba(139,92,246,0.3)] mb-6">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-black text-white font-heading tracking-tight">Sales Workspace</h2>
+                <p class="text-xs text-purple-400 font-bold uppercase tracking-widest mt-2">Feasibility Media</p>
+            </div>
 
-            <form id="login-form" class="space-y-5 relative z-10">
-                <div>
-                    <label class="block text-[11px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Registered Email</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-slate-500"></i>
-                        <input type="email" id="login-email" required class="w-full pl-11 pr-4 py-3 text-sm" placeholder="rep@feasibility.com">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-[11px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Access Password</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-500"></i>
-                        <input type="password" id="login-pwd" required class="w-full pl-11 pr-4 py-3 text-sm" placeholder="••••••••">
-                    </div>
-                </div>
-                <div id="login-error" class="hidden bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold text-center py-3 rounded-xl backdrop-blur-sm">
-                    Invalid credentials or access revoked.
-                </div>
-                <button type="submit" id="btn-login" class="btn-primary w-full py-3.5 sm:py-4 rounded-xl text-sm tracking-widest uppercase flex items-center justify-center gap-3 mt-4">
-                    <span>Enter Workspace</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                </button>
-            </form>
-            
-            <div class="mt-6 sm:mt-8 text-center border-t border-white/10 pt-5 sm:pt-6 relative z-10">
-                <div class="flex items-center justify-center gap-2 text-xs text-slate-500 font-mono bg-black/30 w-fit mx-auto px-4 py-2 rounded-full border border-white/5">
-                    <div class="w-2 h-2 rounded-full bg-slate-500 animate-pulse" id="login-db-indicator"></div>
-                    <span id="login-db-status">Connecting to secure core...</span>
-                </div>
-            </div>
-        </div>
-    </div>
+            <form id="login-form" class="space-y-5 relative z-10">
+                <div>
+                    <label class="block text-[11px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Registered Email</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-slate-500"></i>
+                        <input type="email" id="login-email" required class="w-full pl-11 pr-4 py-3 text-sm" placeholder="rep@feasibility.com">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Access Password</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-500"></i>
+                        <input type="password" id="login-pwd" required class="w-full pl-11 pr-4 py-3 text-sm" placeholder="••••••••">
+                    </div>
+                </div>
+                <div id="login-error" class="hidden bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold text-center py-3 rounded-xl backdrop-blur-sm">
+                    Invalid credentials or access revoked.
+                </div>
+                <button type="submit" id="btn-login" class="btn-primary w-full py-3.5 sm:py-4 rounded-xl text-sm tracking-widest uppercase flex items-center justify-center gap-3 mt-4">
+                    <span>Enter Workspace</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                </button>
+            </form>
+            
+            <div class="mt-6 sm:mt-8 text-center border-t border-white/10 pt-5 sm:pt-6 relative z-10">
+                <div class="flex items-center justify-center gap-2 text-xs text-slate-500 font-mono bg-black/30 w-fit mx-auto px-4 py-2 rounded-full border border-white/5">
+                    <div class="w-2 h-2 rounded-full bg-slate-500 animate-pulse" id="login-db-indicator"></div>
+                    <span id="login-db-status">Connecting to secure core...</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <div id="app-screen" class="hidden w-full h-full flex flex-col md:flex-row relative">
-        
-        <div class="md:hidden flex h-16 border-b border-white/10 glass-panel justify-between items-center px-4 shrink-0 z-30 shadow-md">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-600 text-white flex items-center justify-center rounded-lg text-sm font-black shadow"><i class="fa-solid fa-bolt"></i></div>
-                <span class="text-white font-bold tracking-tight font-heading">Feasibility</span>
-            </div>
-            <button onclick="toggleSidebar()" class="text-white p-2 bg-white/5 rounded-lg"><i class="fa-solid fa-bars text-xl"></i></button>
-        </div>
+    <div id="app-screen" class="hidden w-full h-full flex flex-col md:flex-row relative">
+        
+        <div class="md:hidden flex h-16 border-b border-white/10 glass-panel justify-between items-center px-4 shrink-0 z-30 shadow-md">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-600 text-white flex items-center justify-center rounded-lg text-sm font-black shadow"><i class="fa-solid fa-bolt"></i></div>
+                <span class="text-white font-bold tracking-tight font-heading">Feasibility</span>
+            </div>
+            <button onclick="toggleSidebar()" class="text-white p-2 bg-white/5 rounded-lg"><i class="fa-solid fa-bars text-xl"></i></button>
+        </div>
 
-        <div id="mobile-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 hidden md:hidden" onclick="toggleSidebar()"></div>
+        <div id="mobile-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 hidden md:hidden" onclick="toggleSidebar()"></div>
 
-        <aside id="sidebar" class="w-64 glass-panel border-r border-white/10 flex flex-col z-50 shrink-0 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 shadow-2xl md:shadow-none">
-            <div class="p-4 md:p-6 border-b border-white/10 flex justify-between items-center bg-black/20">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-600 text-white items-center justify-center rounded-xl text-lg font-black hidden md:flex shadow-lg"><i class="fa-solid fa-bolt text-sm"></i></div>
-                    <div class="flex flex-col leading-none">
-                        <span class="text-white font-bold tracking-tight text-lg font-heading">Feasibility</span>
-                        <span class="text-[10px] text-purple-400 font-bold uppercase tracking-widest mt-1">Virtual Office</span>
-                    </div>
-                </div>
-                <button onclick="toggleSidebar()" class="md:hidden text-slate-400 bg-white/5 p-2 rounded-lg"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
+        <aside id="sidebar" class="w-64 glass-panel border-r border-white/10 flex flex-col z-50 shrink-0 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 shadow-2xl md:shadow-none">
+            <div class="p-4 md:p-6 border-b border-white/10 flex justify-between items-center bg-black/20">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-600 text-white items-center justify-center rounded-xl text-lg font-black hidden md:flex shadow-lg"><i class="fa-solid fa-bolt text-sm"></i></div>
+                    <div class="flex flex-col leading-none">
+                        <span class="text-white font-bold tracking-tight text-lg font-heading">Feasibility</span>
+                        <span class="text-[10px] text-purple-400 font-bold uppercase tracking-widest mt-1">Virtual Office</span>
+                    </div>
+                </div>
+                <button onclick="toggleSidebar()" class="md:hidden text-slate-400 bg-white/5 p-2 rounded-lg"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
 
-            <div class="flex p-5 md:p-6 pb-4 border-b border-white/10 items-center gap-4 bg-gradient-to-b from-white/5 to-transparent">
-                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-purple-500 overflow-hidden shadow-[0_0_15px_rgba(139,92,246,0.4)] shrink-0">
-                    <img id="desk-avatar" src="" class="w-full h-full object-cover">
-                </div>
-                <div class="overflow-hidden">
-                    <p id="desk-user-name" class="text-sm font-bold text-white leading-tight truncate">Loading...</p>
-                    <p id="desk-user-role" class="text-[10px] text-emerald-400 uppercase tracking-wider font-bold truncate mt-1">Sales Executive</p>
-                </div>
-            </div>
+            <div class="flex p-5 md:p-6 pb-4 border-b border-white/10 items-center gap-4 bg-gradient-to-b from-white/5 to-transparent">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-purple-500 overflow-hidden shadow-[0_0_15px_rgba(139,92,246,0.4)] shrink-0">
+                    <img id="desk-avatar" src="" class="w-full h-full object-cover">
+                </div>
+                <div class="overflow-hidden">
+                    <p id="desk-user-name" class="text-sm font-bold text-white leading-tight truncate">Loading...</p>
+                    <p id="desk-user-role" class="text-[10px] text-emerald-400 uppercase tracking-wider font-bold truncate mt-1">Sales Executive</p>
+                </div>
+            </div>
 
-            <nav id="nav-menu" class="flex flex-col flex-1 py-4 md:py-6 space-y-1 overflow-y-auto custom-scrollbar">
-                <button onclick="switchTab('dashboard')" class="nav-btn active w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
-                    <i class="fa-solid fa-house-laptop w-5 text-center text-lg"></i> <span class="tab-label">My Desk</span>
-                </button>
-                <button onclick="switchTab('leads')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
-                    <i class="fa-solid fa-table-list w-5 text-center text-lg"></i> <span class="tab-label">My Pipeline</span>
-                </button>
-                <button onclick="switchTab('add-lead')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
-                    <i class="fa-solid fa-user-plus w-5 text-center text-lg"></i> <span class="tab-label">Log Prospect</span>
-                </button>
-                
-                <div class="px-6 py-2 mt-2">
-                    <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Office Tools</p>
-                </div>
-                <button onclick="switchTab('ledger')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
-                    <i class="fa-solid fa-file-invoice-dollar w-5 text-center text-lg text-emerald-400"></i> <span class="tab-label">Earnings Ledger</span>
-                </button>
-                <button onclick="switchTab('resources')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
-                    <i class="fa-solid fa-book-open-reader w-5 text-center text-lg text-yellow-400"></i> <span class="tab-label">Sales Playbook</span>
-                </button>
-                <button onclick="switchTab('hr')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
-                    <i class="fa-solid fa-headset w-5 text-center text-lg text-blue-400"></i> <span class="tab-label">Support Ticket</span>
-                </button>
-                
-                <div class="mt-auto border-t border-white/10 pt-4 mb-4">
-                    <button onclick="logout()" class="w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors mr-4 rounded-r-xl">
-                        <i class="fa-solid fa-power-off w-5 text-center text-lg"></i> Clock Out
-                    </button>
-                </div>
-            </nav>
-        </aside>
+            <nav id="nav-menu" class="flex flex-col flex-1 py-4 md:py-6 space-y-1 overflow-y-auto custom-scrollbar">
+                <button onclick="switchTab('dashboard')" class="nav-btn active w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
+                    <i class="fa-solid fa-house-laptop w-5 text-center text-lg"></i> <span class="tab-label">My Desk</span>
+                </button>
+                <button onclick="switchTab('leads')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
+                    <i class="fa-solid fa-table-list w-5 text-center text-lg"></i> <span class="tab-label">My Pipeline</span>
+                </button>
+                <button onclick="switchTab('add-lead')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
+                    <i class="fa-solid fa-user-plus w-5 text-center text-lg"></i> <span class="tab-label">Log Prospect</span>
+                </button>
+                
+                <div class="px-6 py-2 mt-2">
+                    <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Office Tools</p>
+                </div>
+                <button onclick="switchTab('ledger')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
+                    <i class="fa-solid fa-file-invoice-dollar w-5 text-center text-lg text-emerald-400"></i> <span class="tab-label">Earnings Ledger</span>
+                </button>
+                <button onclick="switchTab('resources')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
+                    <i class="fa-solid fa-book-open-reader w-5 text-center text-lg text-yellow-400"></i> <span class="tab-label">Sales Playbook</span>
+                </button>
+                <button onclick="switchTab('hr')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
+                    <i class="fa-solid fa-headset w-5 text-center text-lg text-blue-400"></i> <span class="tab-label">Support Ticket</span>
+                </button>
+                
+                <div class="mt-auto border-t border-white/10 pt-4 mb-4">
+                    <button onclick="logout()" class="w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors mr-4 rounded-r-xl">
+                        <i class="fa-solid fa-power-off w-5 text-center text-lg"></i> Clock Out
+                    </button>
+                </div>
+            </nav>
+        </aside>
 
-        <main class="flex-1 h-full flex flex-col relative z-10 overflow-hidden">
-            <header class="flex h-14 md:h-20 border-b border-white/10 glass-panel justify-between items-center px-4 md:px-8 shrink-0 bg-black/20">
-                <h1 id="page-title" class="text-lg md:text-2xl font-bold text-white font-heading truncate pr-4 drop-shadow-md">My Desk</h1>
-                <div class="flex items-center gap-4">
-                    <div class="flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 md:px-4 md:py-2 rounded-full shrink-0 shadow-[0_0_10px_rgba(139,92,246,0.1)]">
-                        <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
-                        <span class="text-[9px] md:text-[10px] text-purple-400 font-bold uppercase tracking-widest hidden sm:inline">Live Sync</span>
-                        <span class="text-[9px] text-purple-400 font-bold uppercase tracking-widest sm:hidden">Synced</span>
-                    </div>
-                </div>
-            </header>
+        <main class="flex-1 h-full flex flex-col relative z-10 overflow-hidden">
+            <header class="flex h-14 md:h-20 border-b border-white/10 glass-panel justify-between items-center px-4 md:px-8 shrink-0 bg-black/20">
+                <h1 id="page-title" class="text-lg md:text-2xl font-bold text-white font-heading truncate pr-4 drop-shadow-md">My Desk</h1>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 md:px-4 md:py-2 rounded-full shrink-0 shadow-[0_0_10px_rgba(139,92,246,0.1)]">
+                        <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+                        <span class="text-[9px] md:text-[10px] text-purple-400 font-bold uppercase tracking-widest hidden sm:inline">Live Sync</span>
+                        <span class="text-[9px] text-purple-400 font-bold uppercase tracking-widest sm:hidden">Synced</span>
+                    </div>
+                </div>
+            </header>
 
-            <div class="flex-1 overflow-y-auto p-3 md:p-8 custom-scrollbar">
-                
-                <div id="tab-dashboard" class="tab-content active space-y-4 md:space-y-6">
-                    <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 md:gap-6">
-                        <div class="glass-card p-4 md:p-6 border-t-4 border-t-purple-500 relative overflow-hidden group">
-                            <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-purple-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-chart-line"></i></div>
-                            <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">My Active Pipeline</p>
-                            <h3 id="kpi-pipeline" class="text-2xl md:text-4xl font-black text-white font-mono relative z-10 drop-shadow-md">₹0</h3>
-                            <p class="text-[8px] md:text-[9px] text-purple-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">Deals in progress</p>
-                        </div>
-                        <div class="glass-card p-4 md:p-6 border-t-4 border-t-emerald-500 relative overflow-hidden group">
-                            <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-emerald-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-check-double"></i></div>
-                            <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">My Deals Won</p>
-                            <h3 id="kpi-won" class="text-2xl md:text-4xl font-black text-emerald-400 font-mono relative z-10 drop-shadow-md">₹0</h3>
-                            <p class="text-[8px] md:text-[9px] text-emerald-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">Total revenue generated</p>
-                        </div>
-                        <div class="glass-card p-4 md:p-6 border-t-4 border-t-blue-500 relative overflow-hidden group" onclick="switchTab('ledger')" style="cursor:pointer">
-                            <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-blue-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-wallet"></i></div>
-                            <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">Pending Payout</p>
-                            <h3 id="kpi-pending" class="text-2xl md:text-4xl font-black text-blue-400 font-mono relative z-10 drop-shadow-md">₹0</h3>
-                            <p class="text-[8px] md:text-[9px] text-blue-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">View Ledger &rarr;</p>
-                        </div>
-                        <div class="glass-card p-4 md:p-6 border-t-4 border-t-yellow-500 relative overflow-hidden group">
-                            <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-yellow-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-fire-flame-curved"></i></div>
-                            <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">Projected Commission</p>
-                            <h3 id="kpi-projected" class="text-2xl md:text-4xl font-black text-yellow-400 font-mono relative z-10 drop-shadow-md">₹0</h3>
-                            <p class="text-[8px] md:text-[9px] text-yellow-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">Est. from Proposals Sent</p>
-                        </div>
-                    </div>
+            <div class="flex-1 overflow-y-auto p-3 md:p-8 custom-scrollbar">
+                
+                <div id="tab-dashboard" class="tab-content active space-y-4 md:space-y-6">
+                    <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 md:gap-6">
+                        <div class="glass-card p-4 md:p-6 border-t-4 border-t-purple-500 relative overflow-hidden group">
+                            <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-purple-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-chart-line"></i></div>
+                            <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">My Active Pipeline</p>
+                            <h3 id="kpi-pipeline" class="text-2xl md:text-4xl font-black text-white font-mono relative z-10 drop-shadow-md">₹0</h3>
+                            <p class="text-[8px] md:text-[9px] text-purple-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">Deals in progress</p>
+                        </div>
+                        <div class="glass-card p-4 md:p-6 border-t-4 border-t-emerald-500 relative overflow-hidden group">
+                            <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-emerald-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-check-double"></i></div>
+                            <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">My Deals Won</p>
+                            <h3 id="kpi-won" class="text-2xl md:text-4xl font-black text-emerald-400 font-mono relative z-10 drop-shadow-md">₹0</h3>
+                            <p class="text-[8px] md:text-[9px] text-emerald-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">Total revenue generated</p>
+                        </div>
+                        <div class="glass-card p-4 md:p-6 border-t-4 border-t-blue-500 relative overflow-hidden group" onclick="switchTab('ledger')" style="cursor:pointer">
+                            <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-blue-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-wallet"></i></div>
+                            <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">Pending Payout</p>
+                            <h3 id="kpi-pending" class="text-2xl md:text-4xl font-black text-blue-400 font-mono relative z-10 drop-shadow-md">₹0</h3>
+                            <p class="text-[8px] md:text-[9px] text-blue-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">View Ledger &rarr;</p>
+                        </div>
+                        <div class="glass-card p-4 md:p-6 border-t-4 border-t-yellow-500 relative overflow-hidden group">
+                            <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-yellow-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-fire-flame-curved"></i></div>
+                            <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">Projected Commission</p>
+                            <h3 id="kpi-projected" class="text-2xl md:text-4xl font-black text-yellow-400 font-mono relative z-10 drop-shadow-md">₹0</h3>
+                            <p class="text-[8px] md:text-[9px] text-yellow-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">Est. from Proposals Sent</p>
+                        </div>
+                    </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-                        <div class="glass-card p-4 md:p-6 lg:col-span-2">
-                            <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3 text-purple-400 flex items-center"><i class="fa-solid fa-satellite-dish mr-2"></i> Agency Bullpen (Live Feed)</h3>
-                            <div class="relative h-48 md:h-64 w-full overflow-y-auto custom-scrollbar pr-2" id="agency-feed">
-                                </div>
-                        </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+                        <div class="glass-card p-4 md:p-6 lg:col-span-2">
+                            <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3 text-purple-400 flex items-center"><i class="fa-solid fa-satellite-dish mr-2"></i> Agency Bullpen (Live Feed)</h3>
+                            <div class="relative h-48 md:h-64 w-full overflow-y-auto custom-scrollbar pr-2" id="agency-feed">
+                                </div>
+                        </div>
 
-                        <div class="glass-card p-4 md:p-6 flex flex-col h-full max-h-[350px]">
-                            <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3 text-rose-400 flex items-center"><i class="fa-solid fa-stopwatch mr-2"></i> Priority Follow-ups</h3>
-                            <div class="overflow-y-auto flex-1 pr-2 space-y-3 custom-scrollbar" id="task-list">
-                                </div>
-                        </div>
-                    </div>
-                </div>
+                        <div class="glass-card p-4 md:p-6 flex flex-col h-full max-h-[350px]">
+                            <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3 text-rose-400 flex items-center"><i class="fa-solid fa-stopwatch mr-2"></i> Priority Follow-ups</h3>
+                            <div class="overflow-y-auto flex-1 pr-2 space-y-3 custom-scrollbar" id="task-list">
+                                </div>
+                        </div>
+                    </div>
+                </div>
 
-                <div id="tab-leads" class="tab-content">
-                    <div class="glass-card p-3 md:p-6 flex flex-col min-h-[500px]">
-                        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 md:gap-4 mb-4 md:mb-6 px-1 md:px-0">
-                            <div class="relative w-full sm:w-72">
-                                <i class="fa-solid fa-search absolute left-4 top-3 md:top-3.5 text-slate-500 text-xs md:text-sm"></i>
-                                <input type="text" id="search-leads" placeholder="Search my accounts..." class="w-full pl-10 pr-4 py-2 md:py-2.5 text-sm bg-black/40 shadow-inner">
-                            </div>
-                        </div>
-                        
-                        <div class="flex-1 pb-4">
-                            <div class="hidden lg:grid sales-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-bold text-slate-400 uppercase tracking-wider rounded-t-xl">
-                                <div>Company</div>
-                                <div>Value (₹)</div>
-                                <div>Deadline</div>
-                                <div>Status</div>
-                                <div class="text-right">Quick Actions</div>
-                            </div>
-                            <div id="my-leads-body" class="flex flex-col">
-                                </div>
-                        </div>
-                    </div>
-                </div>
+                <div id="tab-leads" class="tab-content">
+                    <div class="glass-card p-3 md:p-6 flex flex-col min-h-[500px]">
+                        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 md:gap-4 mb-4 md:mb-6 px-1 md:px-0">
+                            <div class="relative w-full sm:w-72">
+                                <i class="fa-solid fa-search absolute left-4 top-3 md:top-3.5 text-slate-500 text-xs md:text-sm"></i>
+                                <input type="text" id="search-leads" placeholder="Search my accounts..." class="w-full pl-10 pr-4 py-2 md:py-2.5 text-sm bg-black/40 shadow-inner">
+                            </div>
+                        </div>
+                        
+                        <div class="flex-1 pb-4">
+                            <div class="hidden lg:grid sales-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-bold text-slate-400 uppercase tracking-wider rounded-t-xl">
+                                <div>Company</div>
+                                <div>Value (₹)</div>
+                                <div>Deadline</div>
+                                <div>Status</div>
+                                <div class="text-right">Quick Actions</div>
+                            </div>
+                            <div id="my-leads-body" class="flex flex-col">
+                                </div>
+                        </div>
+                    </div>
+                </div>
 
-                <div id="tab-add-lead" class="tab-content">
-                    <div class="max-w-4xl mx-auto glass-card p-4 sm:p-6 md:p-10 w-full relative overflow-hidden">
-                        <div class="absolute top-0 left-0 w-full h-1.5 md:h-2 bg-gradient-to-r from-purple-500 to-blue-500"></div>
-                        <h3 class="text-xl md:text-2xl font-bold text-white font-heading mb-1 md:mb-2 mt-2">Initialize New Prospect</h3>
-                        <p class="text-xs md:text-sm text-slate-400 mb-6 border-b border-white/10 pb-4">Log inbound/outbound prospects. Ensure complete data for accurate tracking.</p>
-                        
-                        <form id="form-add-lead" class="space-y-4 md:space-y-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                                <div>
-                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Company / Brand Name *</label>
-                                    <input type="text" id="ld-company" required class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Contact Person</label>
-                                    <input type="text" id="ld-contact" class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Phone / WhatsApp *</label>
-                                    <input type="tel" id="ld-phone" required class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm font-mono">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Est. Deal Value (₹) *</label>
-                                    <input type="number" id="ld-value" required min="0" class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm font-mono">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Lead Source</label>
-                                    <select id="ld-source" class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm bg-slate-900">
-                                        <option>Cold Email</option> <option>LinkedIn Inbound</option> <option>Referral / Network</option>
-                                        <option>Website Contact Form</option> <option>YouTube Channel</option> <option>Direct Call</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Next Action Date</label>
-                                    <input type="date" id="ld-next-action" required class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm text-slate-300">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Assigned Rep</label>
-                                    <input type="text" id="ld-rep" readonly class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm bg-slate-900/50 text-slate-500 cursor-not-allowed">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Initial Status</label>
-                                    <select id="ld-status" class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm font-bold bg-slate-900"></select>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Initial Discovery Notes</label>
-                                <textarea id="ld-notes" rows="4" class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm resize-none"></textarea>
-                            </div>
-                            <div class="pt-4 md:pt-6 border-t border-white/10 flex justify-end">
-                                <button type="submit" id="btn-submit-lead" class="btn-primary w-full md:w-auto px-6 py-3 md:px-10 md:py-4 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-3">
-                                    <i class="fa-solid fa-paper-plane"></i> Deploy Lead
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                <div id="tab-add-lead" class="tab-content">
+                    <div class="max-w-4xl mx-auto glass-card p-4 sm:p-6 md:p-10 w-full relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1.5 md:h-2 bg-gradient-to-r from-purple-500 to-blue-500"></div>
+                        <h3 class="text-xl md:text-2xl font-bold text-white font-heading mb-1 md:mb-2 mt-2">Initialize New Prospect</h3>
+                        <p class="text-xs md:text-sm text-slate-400 mb-6 border-b border-white/10 pb-4">Log inbound/outbound prospects. Ensure complete data for accurate tracking.</p>
+                        
+                        <form id="form-add-lead" class="space-y-4 md:space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                                <div>
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Company / Brand Name *</label>
+                                    <input type="text" id="ld-company" required class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Contact Person</label>
+                                    <input type="text" id="ld-contact" class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Phone / WhatsApp *</label>
+                                    <input type="tel" id="ld-phone" required class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm font-mono">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Est. Deal Value (₹) *</label>
+                                    <input type="number" id="ld-value" required min="0" class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm font-mono">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Lead Source</label>
+                                    <select id="ld-source" class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm bg-slate-900">
+                                        <option>Cold Email</option> <option>LinkedIn Inbound</option> <option>Referral / Network</option>
+                                        <option>Website Contact Form</option> <option>YouTube Channel</option> <option>Direct Call</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Next Action Date</label>
+                                    <input type="date" id="ld-next-action" required class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm text-slate-300">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Assigned Rep</label>
+                                    <input type="text" id="ld-rep" readonly class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm bg-slate-900/50 text-slate-500 cursor-not-allowed">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Initial Status</label>
+                                    <select id="ld-status" class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm font-bold bg-slate-900"></select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Initial Discovery Notes</label>
+                                <textarea id="ld-notes" rows="4" class="w-full px-3 py-2.5 md:px-4 md:py-3 text-sm resize-none"></textarea>
+                            </div>
+                            <div class="pt-4 md:pt-6 border-t border-white/10 flex justify-end">
+                                <button type="submit" id="btn-submit-lead" class="btn-primary w-full md:w-auto px-6 py-3 md:px-10 md:py-4 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-3">
+                                    <i class="fa-solid fa-paper-plane"></i> Deploy Lead
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
 
-                <div id="tab-ledger" class="tab-content">
-                    <div class="glass-card p-4 md:p-6 w-full min-h-[500px]">
-                        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 border-b border-white/10 pb-4">
-                            <div>
-                                <h3 class="text-xl md:text-2xl font-bold text-emerald-400 font-heading"><i class="fa-solid fa-file-invoice-dollar mr-2"></i> My Earnings Ledger</h3>
-                                <p class="text-xs text-slate-400 mt-1">Detailed breakdown of your commissions from Closed Won deals.</p>
-                            </div>
-                            <div class="bg-black/30 px-4 py-2 rounded-lg border border-white/5 mt-4 md:mt-0 text-right">
-                                <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Total Disbursed (All Time)</p>
-                                <p class="text-xl font-mono font-bold text-white" id="ledger-total-paid">₹0</p>
-                            </div>
-                        </div>
+                <div id="tab-ledger" class="tab-content">
+                    <div class="glass-card p-4 md:p-6 w-full min-h-[500px]">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 border-b border-white/10 pb-4">
+                            <div>
+                                <h3 class="text-xl md:text-2xl font-bold text-emerald-400 font-heading"><i class="fa-solid fa-file-invoice-dollar mr-2"></i> My Earnings Ledger</h3>
+                                <p class="text-xs text-slate-400 mt-1">Detailed breakdown of your commissions from Closed Won deals.</p>
+                            </div>
+                            <div class="bg-black/30 px-4 py-2 rounded-lg border border-white/5 mt-4 md:mt-0 text-right">
+                                <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Total Disbursed (All Time)</p>
+                                <p class="text-xl font-mono font-bold text-white" id="ledger-total-paid">₹0</p>
+                            </div>
+                        </div>
 
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                            <div class="lg:col-span-2">
-                                <div class="hidden lg:grid ledger-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-bold text-slate-400 uppercase tracking-wider rounded-t-xl">
-                                    <div>Deal / Company</div>
-                                    <div>Contract Value</div>
-                                    <div>Commission (Est. 10%)</div>
-                                </div>
-                                <div id="ledger-deals-body" class="flex flex-col custom-scrollbar overflow-y-auto max-h-[400px]">
-                                    </div>
-                            </div>
-                            <div class="bg-blue-900/10 border border-blue-500/20 p-5 rounded-xl h-fit">
-                                <h4 class="font-bold text-white border-b border-white/10 pb-2 mb-4">Payout Status</h4>
-                                <div class="space-y-4">
-                                    <div>
-                                        <p class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Approved by Admin</p>
-                                        <p class="text-lg font-mono font-bold text-emerald-400" id="ledger-awarded">₹0</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Paid to Account</p>
-                                        <p class="text-lg font-mono font-bold text-slate-300" id="ledger-paid">₹0</p>
-                                    </div>
-                                    <div class="pt-4 border-t border-white/10">
-                                        <p class="text-[10px] text-rose-400 uppercase tracking-wider font-bold mb-1">Pending Transfer</p>
-                                        <p class="text-2xl font-mono font-black text-rose-400" id="ledger-pending">₹0</p>
-                                    </div>
-                                </div>
-                                <p class="text-[9px] text-slate-500 mt-6 text-center italic">Note: Payouts are issued by Operations/CEO based on client invoice collection, not immediately upon closing.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div class="lg:col-span-2">
+                                <div class="hidden lg:grid ledger-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-bold text-slate-400 uppercase tracking-wider rounded-t-xl">
+                                    <div>Deal / Company</div>
+                                    <div>Contract Value</div>
+                                    <div>Commission (Est. 10%)</div>
+                                </div>
+                                <div id="ledger-deals-body" class="flex flex-col custom-scrollbar overflow-y-auto max-h-[400px]">
+                                    </div>
+                            </div>
+                            <div class="bg-blue-900/10 border border-blue-500/20 p-5 rounded-xl h-fit">
+                                <h4 class="font-bold text-white border-b border-white/10 pb-2 mb-4">Payout Status</h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <p class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Approved by Admin</p>
+                                        <p class="text-lg font-mono font-bold text-emerald-400" id="ledger-awarded">₹0</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Paid to Account</p>
+                                        <p class="text-lg font-mono font-bold text-slate-300" id="ledger-paid">₹0</p>
+                                    </div>
+                                    <div class="pt-4 border-t border-white/10">
+                                        <p class="text-[10px] text-rose-400 uppercase tracking-wider font-bold mb-1">Pending Transfer</p>
+                                        <p class="text-2xl font-mono font-black text-rose-400" id="ledger-pending">₹0</p>
+                                    </div>
+                                </div>
+                                <p class="text-[9px] text-slate-500 mt-6 text-center italic">Note: Payouts are issued by Operations/CEO based on client invoice collection, not immediately upon closing.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <div id="tab-resources" class="tab-content">
-                    <div class="glass-card p-4 md:p-6 w-full min-h-[500px]">
-                        <h3 class="text-xl md:text-2xl font-bold text-yellow-400 font-heading mb-2"><i class="fa-solid fa-book-open-reader mr-2"></i> The Sales Playbook</h3>
-                        <p class="text-xs text-slate-400 mb-6 border-b border-white/10 pb-4">Standard operating procedures, scripts, and links to help you close more deals.</p>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6" id="sops-grid">
-                            </div>
-                    </div>
-                </div>
+                <div id="tab-resources" class="tab-content">
+                    <div class="glass-card p-4 md:p-6 w-full min-h-[500px]">
+                        <h3 class="text-xl md:text-2xl font-bold text-yellow-400 font-heading mb-2"><i class="fa-solid fa-book-open-reader mr-2"></i> The Sales Playbook</h3>
+                        <p class="text-xs text-slate-400 mb-6 border-b border-white/10 pb-4">Standard operating procedures, scripts, and links to help you close more deals.</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6" id="sops-grid">
+                            </div>
+                    </div>
+                </div>
 
-                <div id="tab-hr" class="tab-content">
-                    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-                        <div class="glass-card p-4 md:p-6 xl:col-span-1 h-fit">
-                            <h3 class="text-base md:text-lg font-bold text-white font-heading mb-1">Raise Support Ticket</h3>
-                            <p class="text-[11px] md:text-xs text-slate-400 mb-4 border-b border-white/10 pb-3">Need help from leadership? Submit a formal request here.</p>
-                            <form id="form-hr-ticket" class="space-y-4">
-                                <div>
-                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Subject *</label>
-                                    <input type="text" id="tk-subject" required class="w-full px-3 py-2.5 text-sm" placeholder="Brief issue summary">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Category *</label>
-                                    <select id="tk-category" class="w-full px-3 py-2.5 text-sm font-bold bg-slate-900">
-                                        <option value="Payroll / Commission">Payroll / Commission</option>
-                                        <option value="Technical Issue">Technical Issue</option>
-                                        <option value="Client Dispute">Client Dispute</option>
-                                        <option value="Leave Request">Leave Request</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Details *</label>
-                                    <textarea id="tk-details" rows="4" required class="w-full px-3 py-2.5 text-sm resize-none"></textarea>
-                                </div>
-                                <button type="submit" id="btn-submit-ticket" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl text-sm font-bold tracking-wide flex items-center justify-center gap-2 transition-colors">
-                                    <i class="fa-solid fa-paper-plane"></i> Submit Ticket
-                                </button>
-                            </form>
-                        </div>
-                        <div class="glass-card p-3 md:p-6 xl:col-span-2 flex flex-col min-h-[400px]">
-                            <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3 px-2 md:px-0">My Support History</h3>
-                            <div class="flex-1 pb-4">
-                                <div class="hidden lg:grid hr-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-bold text-slate-400 uppercase tracking-wider rounded-t-xl">
-                                    <div>Date</div> <div>Subject</div> <div>Category</div> <div>Status</div>
-                                </div>
-                                <div id="my-tickets-body" class="flex flex-col mt-2 md:mt-0"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div id="tab-hr" class="tab-content">
+                    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                        <div class="glass-card p-4 md:p-6 xl:col-span-1 h-fit">
+                            <h3 class="text-base md:text-lg font-bold text-white font-heading mb-1">Raise Support Ticket</h3>
+                            <p class="text-[11px] md:text-xs text-slate-400 mb-4 border-b border-white/10 pb-3">Need help from leadership? Submit a formal request here.</p>
+                            <form id="form-hr-ticket" class="space-y-4">
+                                <div>
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Subject *</label>
+                                    <input type="text" id="tk-subject" required class="w-full px-3 py-2.5 text-sm" placeholder="Brief issue summary">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Category *</label>
+                                    <select id="tk-category" class="w-full px-3 py-2.5 text-sm font-bold bg-slate-900">
+                                        <option value="Payroll / Commission">Payroll / Commission</option>
+                                        <option value="Technical Issue">Technical Issue</option>
+                                        <option value="Client Dispute">Client Dispute</option>
+                                        <option value="Leave Request">Leave Request</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] md:text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Details *</label>
+                                    <textarea id="tk-details" rows="4" required class="w-full px-3 py-2.5 text-sm resize-none"></textarea>
+                                </div>
+                                <button type="submit" id="btn-submit-ticket" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl text-sm font-bold tracking-wide flex items-center justify-center gap-2 transition-colors">
+                                    <i class="fa-solid fa-paper-plane"></i> Submit Ticket
+                                </button>
+                            </form>
+                        </div>
+                        <div class="glass-card p-3 md:p-6 xl:col-span-2 flex flex-col min-h-[400px]">
+                            <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3 px-2 md:px-0">My Support History</h3>
+                            <div class="flex-1 pb-4">
+                                <div class="hidden lg:grid hr-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-bold text-slate-400 uppercase tracking-wider rounded-t-xl">
+                                    <div>Date</div> <div>Subject</div> <div>Category</div> <div>Status</div>
+                                </div>
+                                <div id="my-tickets-body" class="flex flex-col mt-2 md:mt-0"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            </div>
-        </main>
-    </div>
+            </div>
+        </main>
+    </div>
 
-    <div id="modal-timeline" class="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center modal z-[100] p-4">
-        <div class="glass-panel border border-white/10 rounded-3xl w-full max-w-2xl p-5 md:p-8 shadow-2xl flex flex-col max-h-[90vh]">
-            <div class="flex justify-between items-start mb-4 md:mb-6 border-b border-white/10 pb-4 md:pb-6">
-                <div>
-                    <h2 id="tl-company" class="text-xl md:text-3xl font-bold text-white font-heading tracking-tight">Company Name</h2>
-                    <div class="flex flex-wrap gap-2 md:gap-6 text-[10px] md:text-sm text-slate-300 font-mono mt-2 md:mt-3">
-                        <span id="tl-contact" class="flex items-center bg-white/5 px-2.5 md:px-3 py-1 md:py-1.5 rounded-lg border border-white/10"><i class="fa-solid fa-user mr-1.5 md:mr-2 text-purple-400"></i> <span>Contact</span></span>
-                        <span id="tl-phone" class="flex items-center bg-white/5 px-2.5 md:px-3 py-1 md:py-1.5 rounded-lg border border-white/10"><i class="fa-solid fa-phone mr-1.5 md:mr-2 text-blue-400"></i> <span>Phone</span></span>
-                    </div>
-                </div>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-white text-lg md:text-2xl bg-white/5 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            
-            <div class="flex-1 overflow-y-auto pr-2 md:pr-4 space-y-4 md:space-y-5 mb-4 md:mb-6 custom-scrollbar" id="tl-history-list"></div>
+    <div id="modal-timeline" class="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center modal z-[100] p-4">
+        <div class="glass-panel border border-white/10 rounded-3xl w-full max-w-2xl p-5 md:p-8 shadow-2xl flex flex-col max-h-[90vh]">
+            <div class="flex justify-between items-start mb-4 md:mb-6 border-b border-white/10 pb-4 md:pb-6">
+                <div>
+                    <h2 id="tl-company" class="text-xl md:text-3xl font-bold text-white font-heading tracking-tight">Company Name</h2>
+                    <div class="flex flex-wrap gap-2 md:gap-6 text-[10px] md:text-sm text-slate-300 font-mono mt-2 md:mt-3">
+                        <span id="tl-contact" class="flex items-center bg-white/5 px-2.5 md:px-3 py-1 md:py-1.5 rounded-lg border border-white/10"><i class="fa-solid fa-user mr-1.5 md:mr-2 text-purple-400"></i> <span>Contact</span></span>
+                        <span id="tl-phone" class="flex items-center bg-white/5 px-2.5 md:px-3 py-1 md:py-1.5 rounded-lg border border-white/10"><i class="fa-solid fa-phone mr-1.5 md:mr-2 text-blue-400"></i> <span>Phone</span></span>
+                    </div>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white text-lg md:text-2xl bg-white/5 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto pr-2 md:pr-4 space-y-4 md:space-y-5 mb-4 md:mb-6 custom-scrollbar" id="tl-history-list"></div>
 
-            <div class="bg-gradient-to-r from-slate-900 to-black p-3 md:p-5 rounded-2xl border border-white/10 shrink-0 shadow-inner">
-                <input type="hidden" id="tl-lead-id">
-                <label class="block text-[9px] md:text-[11px] font-bold text-purple-400 uppercase tracking-wider mb-2 md:mb-3">Log Interaction / Update Note</label>
-                <div class="flex flex-col sm:flex-row gap-2 md:gap-3">
-                    <input type="text" id="tl-new-note" class="flex-1 px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm bg-black focus:border-purple-500" placeholder="e.g. Left voicemail, sending proposal...">
-                    <button onclick="addTimelineEvent()" class="btn-primary w-full sm:w-auto px-4 md:px-6 py-2.5 md:py-3 rounded-xl text-xs md:text-sm font-bold flex items-center justify-center gap-2"><i class="fa-solid fa-plus"></i> Log</button>
-                </div>
-            </div>
-        </div>
-    </div>
+            <div class="bg-gradient-to-r from-slate-900 to-black p-3 md:p-5 rounded-2xl border border-white/10 shrink-0 shadow-inner">
+                <input type="hidden" id="tl-lead-id">
+                <label class="block text-[9px] md:text-[11px] font-bold text-purple-400 uppercase tracking-wider mb-2 md:mb-3">Log Interaction / Update Note</label>
+                <div class="flex flex-col sm:flex-row gap-2 md:gap-3">
+                    <input type="text" id="tl-new-note" class="flex-1 px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm bg-black focus:border-purple-500" placeholder="e.g. Left voicemail, sending proposal...">
+                    <button onclick="addTimelineEvent()" class="btn-primary w-full sm:w-auto px-4 md:px-6 py-2.5 md:py-3 rounded-xl text-xs md:text-sm font-bold flex items-center justify-center gap-2"><i class="fa-solid fa-plus"></i> Log</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <div id="toast" class="fixed bottom-6 right-4 md:right-8 text-white px-5 md:px-6 py-3 md:py-4 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] font-bold text-xs md:text-sm transform translate-y-32 opacity-0 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md">
-        <i class="fa-solid fa-check-circle text-lg md:text-xl"></i> <span id="toast-msg">Success</span>
-    </div>
+    <div id="toast" class="fixed bottom-6 right-4 md:right-8 text-white px-5 md:px-6 py-3 md:py-4 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] font-bold text-xs md:text-sm transform translate-y-32 opacity-0 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md">
+        <i class="fa-solid fa-check-circle text-lg md:text-xl"></i> <span id="toast-msg">Success</span>
+    </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, getDocs, addDoc, onSnapshot, doc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, getDocs, addDoc, onSnapshot, doc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const LEAD_STATUSES = ['New Lead', 'Attempted Contact', 'Discovery Call', 'Meeting Set', 'Proposal Sent', 'In Negotiation', 'Closed Won', 'Closed Lost'];
+        const LEAD_STATUSES = ['New Lead', 'Attempted Contact', 'Discovery Call', 'Meeting Set', 'Proposal Sent', 'In Negotiation', 'Closed Won', 'Closed Lost'];
 
-        let db, auth;
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        let activeUserRecord = null;
-        let myLeads = [], allAgencyLeads = [], myTickets = [], agencySOPs = [];
-        let unsubscribeLeads = null, unsubscribeUser = null, unsubscribeTickets = null, unsubscribeSOPs = null;
+        let db, auth;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        let activeUserRecord = null;
+        let myLeads = [], allAgencyLeads = [], myTickets = [], agencySOPs = [];
+        let unsubscribeLeads = null, unsubscribeUser = null, unsubscribeTickets = null, unsubscribeSOPs = null;
 
-        // UI HELPERS
-        window.toggleSidebar = () => {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
-            document.getElementById('mobile-overlay').classList.toggle('hidden');
-        };
+        // UI HELPERS
+        window.toggleSidebar = () => {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            document.getElementById('mobile-overlay').classList.toggle('hidden');
+        };
 
-        window.switchTab = (tabId) => {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('tab-' + tabId).classList.add('active');
-            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-            if(event && event.currentTarget.classList.contains('nav-btn')) event.currentTarget.classList.add('active');
-            
-            const titles = { 'dashboard': "My Desk", 'leads': "My Pipeline", 'add-lead': 'Initialize Prospect', 'hr': 'Support Desk', 'ledger': 'Earnings Ledger', 'resources': 'Sales Playbook' };
-            document.getElementById('page-title').innerText = titles[tabId] || '';
+        window.switchTab = (tabId) => {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            if(event && event.currentTarget.classList.contains('nav-btn')) event.currentTarget.classList.add('active');
+            
+            const titles = { 'dashboard': "My Desk", 'leads': "My Pipeline", 'add-lead': 'Initialize Prospect', 'hr': 'Support Desk', 'ledger': 'Earnings Ledger', 'resources': 'Sales Playbook' };
+            document.getElementById('page-title').innerText = titles[tabId] || '';
 
-            if(window.innerWidth < 768) {
-                document.getElementById('sidebar').classList.add('-translate-x-full');
-                document.getElementById('mobile-overlay').classList.add('hidden');
-            }
-        };
+            if(window.innerWidth < 768) {
+                document.getElementById('sidebar').classList.add('-translate-x-full');
+                document.getElementById('mobile-overlay').classList.add('hidden');
+            }
+        };
 
-        window.showToast = (msg, isError=false) => {
-            const toast = document.getElementById('toast');
-            toast.className = `fixed bottom-6 right-4 md:right-8 text-white px-5 md:px-6 py-3 md:py-4 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] font-bold text-xs md:text-sm transform translate-y-0 opacity-100 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md ${isError ? 'bg-red-600/90' : 'bg-purple-600/90'}`;
-            document.getElementById('toast-msg').innerText = msg;
-            setTimeout(() => { toast.classList.replace('translate-y-0', 'translate-y-32'); toast.classList.replace('opacity-100', 'opacity-0'); }, 3000);
-        };
+        window.showToast = (msg, isError=false) => {
+            const toast = document.getElementById('toast');
+            toast.className = `fixed bottom-6 right-4 md:right-8 text-white px-5 md:px-6 py-3 md:py-4 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] font-bold text-xs md:text-sm transform translate-y-0 opacity-100 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md ${isError ? 'bg-red-600/90' : 'bg-purple-600/90'}`;
+            document.getElementById('toast-msg').innerText = msg;
+            setTimeout(() => { toast.classList.replace('translate-y-0', 'translate-y-32'); toast.classList.replace('opacity-100', 'opacity-0'); }, 3000);
+        };
 
-        window.closeModal = () => { document.getElementById('modal-timeline').classList.remove('active'); };
+        window.closeModal = () => { document.getElementById('modal-timeline').classList.remove('active'); };
 
-        // INIT FIREBASE
-        try {
-            const fbConfig = {
-              apiKey: "AIzaSyAAgcIprurHXdo9tztkqVzLsIzJCWhqWwc", 
-              authDomain: "feasibility-44ca4.firebaseapp.com",
-              databaseURL: "https://feasibility-44ca4-default-rtdb.asia-southeast1.firebasedatabase.app",
-              projectId: "feasibility-44ca4", 
-              storageBucket: "feasibility-44ca4.firebasestorage.app",
-              messagingSenderId: "166006393145", 
-              appId: "1:166006393145:web:6bb64d5ee1a0578a7200e8"
-            };
-            const app = initializeApp(fbConfig);
-            db = getFirestore(app); auth = getAuth(app);
-            signInAnonymously(auth).then(() => setDbStatus(true)).catch(e => setDbStatus(false, e));
-        } catch (e) { setDbStatus(false, e); }
+        // INIT FIREBASE
+        try {
+            const fbConfig = {
+              apiKey: "AIzaSyAAgcIprurHXdo9tztkqVzLsIzJCWhqWwc", 
+              authDomain: "feasibility-44ca4.firebaseapp.com",
+              databaseURL: "https://feasibility-44ca4-default-rtdb.asia-southeast1.firebasedatabase.app",
+              projectId: "feasibility-44ca4", 
+              storageBucket: "feasibility-44ca4.firebasestorage.app",
+              messagingSenderId: "166006393145", 
+              appId: "1:166006393145:web:6bb64d5ee1a0578a7200e8"
+            };
+            const app = initializeApp(fbConfig);
+            db = getFirestore(app); auth = getAuth(app);
+            signInAnonymously(auth).then(() => setDbStatus(true)).catch(e => setDbStatus(false, e));
+        } catch (e) { setDbStatus(false, e); }
 
-        function setDbStatus(isOnline, err) {
-            const ind = document.getElementById('login-db-indicator');
-            if(ind) {
-                ind.className = `w-2 h-2 rounded-full ${isOnline ? 'bg-purple-500 shadow-[0_0_8px_#a855f7]' : 'bg-red-500 animate-pulse'}`;
-                document.getElementById('login-db-status').innerText = isOnline ? 'Engine Connected' : 'Connection Error';
-            }
-        }
+        function setDbStatus(isOnline, err) {
+            const ind = document.getElementById('login-db-indicator');
+            if(ind) {
+                ind.className = `w-2 h-2 rounded-full ${isOnline ? 'bg-purple-500 shadow-[0_0_8px_#a855f7]' : 'bg-red-500 animate-pulse'}`;
+                document.getElementById('login-db-status').innerText = isOnline ? 'Engine Connected' : 'Connection Error';
+            }
+        }
 
-        // LOGIN
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('btn-login'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...'; btn.disabled = true;
-            
-            const email = document.getElementById('login-email').value.trim();
-            const pwd = document.getElementById('login-pwd').value.trim();
+        // LOGIN
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-login'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...'; btn.disabled = true;
+            
+            const email = document.getElementById('login-email').value.trim();
+            const pwd = document.getElementById('login-pwd').value.trim();
 
-            try {
-                const snapshot = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'team_users'));
-                let u = null;
-                snapshot.forEach(doc => {
-                    const d = doc.data();
-                    if(d.email.toLowerCase() === email.toLowerCase() && d.password === pwd) { u = { id: doc.id, ...d }; }
-                });
+            try {
+                const snapshot = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'team_users'));
+                let u = null;
+                snapshot.forEach(doc => {
+                    const d = doc.data();
+                    if(d.email.toLowerCase() === email.toLowerCase() && d.password === pwd) { u = { id: doc.id, ...d }; }
+                });
 
-                if (u && u.status !== 'Suspended') {
-                    activeUserRecord = u; initializeAppWorkspace();
-                    document.getElementById('login-screen').classList.add('hidden');
-                    document.getElementById('app-screen').classList.remove('hidden'); document.getElementById('app-screen').classList.add('flex');
-                    showToast(`Welcome back, ${u.name}`);
-                } else {
-                    document.getElementById('login-error').classList.remove('hidden');
-                    btn.innerHTML = '<span>Initialize Workspace</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>'; btn.disabled = false;
-                }
-            } catch (e) { 
-                document.getElementById('login-error').innerText = "Database connection failed.";
-                document.getElementById('login-error').classList.remove('hidden');
-                btn.innerHTML = '<span>Initialize Workspace</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>'; btn.disabled = false; 
-            }
-        });
+                if (u && u.status !== 'Suspended') {
+                    activeUserRecord = u; initializeAppWorkspace();
+                    document.getElementById('login-screen').classList.add('hidden');
+                    document.getElementById('app-screen').classList.remove('hidden'); document.getElementById('app-screen').classList.add('flex');
+                    showToast(`Welcome back, ${u.name}`);
+                } else {
+                    document.getElementById('login-error').classList.remove('hidden');
+                    btn.innerHTML = '<span>Initialize Workspace</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>'; btn.disabled = false;
+                }
+            } catch (e) { 
+                document.getElementById('login-error').innerText = "Database connection failed.";
+                document.getElementById('login-error').classList.remove('hidden');
+                btn.innerHTML = '<span>Initialize Workspace</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>'; btn.disabled = false; 
+            }
+        });
 
-        window.logout = () => {
-            if(unsubscribeLeads) unsubscribeLeads(); if(unsubscribeUser) unsubscribeUser(); if(unsubscribeTickets) unsubscribeTickets(); if(unsubscribeSOPs) unsubscribeSOPs();
-            activeUserRecord = null; myLeads = []; myTickets = []; allAgencyLeads = [];
-            document.getElementById('app-screen').classList.add('hidden'); document.getElementById('app-screen').classList.remove('flex');
-            document.getElementById('login-screen').classList.remove('hidden'); document.getElementById('login-pwd').value = "";
-            document.querySelectorAll('.nav-btn')[0].click();
-        };
+        window.logout = () => {
+            if(unsubscribeLeads) unsubscribeLeads(); if(unsubscribeUser) unsubscribeUser(); if(unsubscribeTickets) unsubscribeTickets(); if(unsubscribeSOPs) unsubscribeSOPs();
+            activeUserRecord = null; myLeads = []; myTickets = []; allAgencyLeads = [];
+            document.getElementById('app-screen').classList.add('hidden'); document.getElementById('app-screen').classList.remove('flex');
+            document.getElementById('login-screen').classList.remove('hidden'); document.getElementById('login-pwd').value = "";
+            document.querySelectorAll('.nav-btn')[0].click();
+        };
 
-        function initializeAppWorkspace() {
-            document.getElementById('desk-user-name').innerText = activeUserRecord.name;
-            document.getElementById('desk-avatar').src = `https://ui-avatars.com/api/?name=${activeUserRecord.name.replace(/ /g, '+')}&background=0f172a&color=fff`;
-            document.getElementById('ld-rep').value = activeUserRecord.name;
-            document.getElementById('ld-status').innerHTML = LEAD_STATUSES.map(s => `<option value="${s}">${s}</option>`).join('');
+        function initializeAppWorkspace() {
+            document.getElementById('desk-user-name').innerText = activeUserRecord.name;
+            document.getElementById('desk-avatar').src = `https://ui-avatars.com/api/?name=${activeUserRecord.name.replace(/ /g, '+')}&background=0f172a&color=fff`;
+            document.getElementById('ld-rep').value = activeUserRecord.name;
+            document.getElementById('ld-status').innerHTML = LEAD_STATUSES.map(s => `<option value="${s}">${s}</option>`).join('');
 
-            // Financial Ledger Subscription
-            unsubscribeUser = onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', activeUserRecord.id), (snap) => {
-                if(!snap.exists() || snap.data().status === 'Suspended') return logout();
-                const d = snap.data();
-                const awarded = Number(d.commission_awarded)||0; const paid = Number(d.commission_paid)||0;
-                const pending = Math.max(0, awarded - paid);
-                
-                // Update KPIs
-                document.getElementById('kpi-pending').innerText = "₹" + pending.toLocaleString('en-IN');
-                
-                // Update Ledger Tab Details
-                document.getElementById('ledger-total-paid').innerText = "₹" + paid.toLocaleString('en-IN');
-                document.getElementById('ledger-awarded').innerText = "₹" + awarded.toLocaleString('en-IN');
-                document.getElementById('ledger-paid').innerText = "₹" + paid.toLocaleString('en-IN');
-                document.getElementById('ledger-pending').innerText = "₹" + pending.toLocaleString('en-IN');
-            });
+            // Financial Ledger Subscription
+            unsubscribeUser = onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', activeUserRecord.id), (snap) => {
+                if(!snap.exists() || snap.data().status === 'Suspended') return logout();
+                const d = snap.data();
+                const awarded = Number(d.commission_awarded)||0; const paid = Number(d.commission_paid)||0;
+                const pending = Math.max(0, awarded - paid);
+                
+                // Update KPIs
+                document.getElementById('kpi-pending').innerText = "₹" + pending.toLocaleString('en-IN');
+                
+                // Update Ledger Tab Details
+                document.getElementById('ledger-total-paid').innerText = "₹" + paid.toLocaleString('en-IN');
+                document.getElementById('ledger-awarded').innerText = "₹" + awarded.toLocaleString('en-IN');
+                document.getElementById('ledger-paid').innerText = "₹" + paid.toLocaleString('en-IN');
+                document.getElementById('ledger-pending').innerText = "₹" + pending.toLocaleString('en-IN');
+            });
 
-            // Leads & Agency Feed Subscription
-            unsubscribeLeads = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), (snap) => {
-                myLeads = []; allAgencyLeads = [];
-                snap.forEach(d => {
-                    const data = {id: d.id, ...d.data()}; allAgencyLeads.push(data);
-                    if(data.rep === activeUserRecord.name) myLeads.push(data);
-                });
-                myLeads.sort((a,b) => b.timestamp - a.timestamp);
-                allAgencyLeads.sort((a,b) => b.timestamp - a.timestamp);
-                renderAll();
-            });
+            // Leads & Agency Feed Subscription
+            unsubscribeLeads = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), (snap) => {
+                myLeads = []; allAgencyLeads = [];
+                snap.forEach(d => {
+                    const data = {id: d.id, ...d.data()}; allAgencyLeads.push(data);
+                    if(data.rep === activeUserRecord.name) myLeads.push(data);
+                });
+                myLeads.sort((a,b) => b.timestamp - a.timestamp);
+                allAgencyLeads.sort((a,b) => b.timestamp - a.timestamp);
+                renderAll();
+            });
 
-            // Tickets Subscription
-            unsubscribeTickets = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'hr_tickets'), (snap) => {
-                myTickets = [];
-                snap.forEach(d => {
-                    const data = {id: d.id, ...d.data()};
-                    if(data.rep === activeUserRecord.name) myTickets.push(data); 
-                });
-                myTickets.sort((a,b) => b.timestamp - a.timestamp);
-                renderTickets();
-            });
+            // Tickets Subscription
+            unsubscribeTickets = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'hr_tickets'), (snap) => {
+                myTickets = [];
+                snap.forEach(d => {
+                    const data = {id: d.id, ...d.data()};
+                    if(data.rep === activeUserRecord.name) myTickets.push(data); 
+                });
+                myTickets.sort((a,b) => b.timestamp - a.timestamp);
+                renderTickets();
+            });
 
-            // SOPs / Playbook Subscription
-            unsubscribeSOPs = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'agency_sops'), (snap) => {
-                agencySOPs = []; snap.forEach(d => agencySOPs.push({id: d.id, ...d.data()}));
-                renderPlaybook();
-            });
-        }
+            // SOPs / Playbook Subscription
+            unsubscribeSOPs = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'agency_sops'), (snap) => {
+                agencySOPs = []; snap.forEach(d => agencySOPs.push({id: d.id, ...d.data()}));
+                renderPlaybook();
+            });
+        }
 
-        function renderAll() {
-            renderDashboard(); renderTable(); renderLedger();
-        }
+        function renderAll() {
+            renderDashboard(); renderTable(); renderLedger();
+        }
 
-        // --- DASHBOARD ---
-        function renderDashboard() {
-            let pipe=0, won=0, projComm=0;
-            
-            myLeads.forEach(l => {
-                const v = Number(l.value)||0;
-                if(l.status === 'Closed Won') won+=v; 
-                else if(l.status !== 'Closed Lost') {
-                    pipe+=v;
-                    // Projector Feature: Calculate 10% of late stage deals
-                    if(l.status === 'Proposal Sent' || l.status === 'In Negotiation') projComm += (v * 0.10);
-                }
-            });
+        // --- DASHBOARD ---
+        function renderDashboard() {
+            let pipe=0, won=0, projComm=0;
+            
+            myLeads.forEach(l => {
+                const v = Number(l.value)||0;
+                if(l.status === 'Closed Won') won+=v; 
+                else if(l.status !== 'Closed Lost') {
+                    pipe+=v;
+                    // Projector Feature: Calculate 10% of late stage deals
+                    if(l.status === 'Proposal Sent' || l.status === 'In Negotiation') projComm += (v * 0.10);
+                }
+            });
 
-            document.getElementById('kpi-pipeline').innerText = "₹" + pipe.toLocaleString('en-IN');
-            document.getElementById('kpi-won').innerText = "₹" + won.toLocaleString('en-IN');
-            document.getElementById('kpi-projected').innerText = "₹" + projComm.toLocaleString('en-IN'); // Motivation feature
+            document.getElementById('kpi-pipeline').innerText = "₹" + pipe.toLocaleString('en-IN');
+            document.getElementById('kpi-won').innerText = "₹" + won.toLocaleString('en-IN');
+            document.getElementById('kpi-projected').innerText = "₹" + projComm.toLocaleString('en-IN'); // Motivation feature
 
-            // Priority Tasks
-            const todayStr = new Date().toISOString().split('T')[0];
-            const tasks = myLeads.filter(l => l.nextAction && l.nextAction <= todayStr && !l.status.includes('Closed'));
-            document.getElementById('task-list').innerHTML = tasks.map(l => `
-                <div class="bg-black/30 border border-white/5 rounded-xl p-4 flex justify-between items-center hover:bg-white/10 transition-colors group cursor-pointer" onclick="openTimeline('${l.id}')">
-                    <div class="flex-1">
-                        <p class="font-bold text-white text-sm line-clamp-1 group-hover:text-purple-300 transition-colors">${l.company}</p>
-                        <p class="text-[11px] text-slate-400 font-mono mt-2"><span class="bg-rose-500/20 text-rose-400 px-2 py-1 rounded font-bold border border-rose-500/20">Due: ${new Date(l.nextAction).toLocaleDateString()}</span></p>
-                    </div>
-                    <a href="tel:${l.phone}" class="ml-4 bg-emerald-500/20 hover:bg-emerald-500 hover:text-white text-emerald-400 w-10 h-10 flex items-center justify-center rounded-full transition-all shrink-0 border border-emerald-500/30" title="Call"><i class="fa-solid fa-phone"></i></a>
-                </div>
-            `).join('') || '<div class="flex flex-col items-center justify-center h-full opacity-50"><i class="fa-solid fa-check-circle text-4xl text-emerald-500 mb-3"></i><p class="text-sm text-slate-300 font-bold">Inbox Zero</p></div>';
+            // Priority Tasks
+            const todayStr = new Date().toISOString().split('T')[0];
+            const tasks = myLeads.filter(l => l.nextAction && l.nextAction <= todayStr && !l.status.includes('Closed'));
+            document.getElementById('task-list').innerHTML = tasks.map(l => `
+                <div class="bg-black/30 border border-white/5 rounded-xl p-4 flex justify-between items-center hover:bg-white/10 transition-colors group cursor-pointer" onclick="openTimeline('${l.id}')">
+                    <div class="flex-1">
+                        <p class="font-bold text-white text-sm line-clamp-1 group-hover:text-purple-300 transition-colors">${l.company}</p>
+                        <p class="text-[11px] text-slate-400 font-mono mt-2"><span class="bg-rose-500/20 text-rose-400 px-2 py-1 rounded font-bold border border-rose-500/20">Due: ${new Date(l.nextAction).toLocaleDateString()}</span></p>
+                    </div>
+                    <a href="tel:${l.phone}" class="ml-4 bg-emerald-500/20 hover:bg-emerald-500 hover:text-white text-emerald-400 w-10 h-10 flex items-center justify-center rounded-full transition-all shrink-0 border border-emerald-500/30" title="Call"><i class="fa-solid fa-phone"></i></a>
+                </div>
+            `).join('') || '<div class="flex flex-col items-center justify-center h-full opacity-50"><i class="fa-solid fa-check-circle text-4xl text-emerald-500 mb-3"></i><p class="text-sm text-slate-300 font-bold">Inbox Zero</p></div>';
 
-            // The Sales Bullpen (Live Agency Feed of Meeting Sets & Wins)
-            const bullpenWins = allAgencyLeads.filter(l => l.status === 'Closed Won' || l.status === 'Meeting Set').slice(0, 10);
-            document.getElementById('agency-feed').innerHTML = bullpenWins.map(l => {
-                const isWon = l.status === 'Closed Won';
-                const feedIcon = isWon ? '<i class="fa-solid fa-fire text-emerald-500"></i>' : '<i class="fa-solid fa-calendar-check text-purple-400"></i>';
-                const valStr = isWon ? `₹${Number(l.value).toLocaleString('en-IN')}` : 'Meeting Set';
-                return `
-                <div class="bg-black/20 border border-white/5 rounded-lg p-3 mb-2 flex items-center gap-3">
-                    <div class="text-xl w-8 text-center">${feedIcon}</div>
-                    <div class="flex-1">
-                        <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">${l.rep}</p>
-                        <p class="text-sm text-white font-bold leading-tight line-clamp-1">${isWon ? 'Closed' : 'Booked'} <span class="${isWon ? 'text-emerald-400' : 'text-purple-400'}">${l.company}</span></p>
-                    </div>
-                    <div class="font-mono text-xs font-bold text-slate-300 text-right">${valStr}</div>
-                </div>
-            `}).join('') || '<p class="text-xs text-slate-500 italic p-2">Waiting for the first win...</p>';
-        }
+            // The Sales Bullpen (Live Agency Feed of Meeting Sets & Wins)
+            const bullpenWins = allAgencyLeads.filter(l => l.status === 'Closed Won' || l.status === 'Meeting Set').slice(0, 10);
+            document.getElementById('agency-feed').innerHTML = bullpenWins.map(l => {
+                const isWon = l.status === 'Closed Won';
+                const feedIcon = isWon ? '<i class="fa-solid fa-fire text-emerald-500"></i>' : '<i class="fa-solid fa-calendar-check text-purple-400"></i>';
+                const valStr = isWon ? `₹${Number(l.value).toLocaleString('en-IN')}` : 'Meeting Set';
+                return `
+                <div class="bg-black/20 border border-white/5 rounded-lg p-3 mb-2 flex items-center gap-3">
+                    <div class="text-xl w-8 text-center">${feedIcon}</div>
+                    <div class="flex-1">
+                        <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">${l.rep}</p>
+                        <p class="text-sm text-white font-bold leading-tight line-clamp-1">${isWon ? 'Closed' : 'Booked'} <span class="${isWon ? 'text-emerald-400' : 'text-purple-400'}">${l.company}</span></p>
+                    </div>
+                    <div class="font-mono text-xs font-bold text-slate-300 text-right">${valStr}</div>
+                </div>
+            `}).join('') || '<p class="text-xs text-slate-500 italic p-2">Waiting for the first win...</p>';
+        }
 
-        // --- LEDGER ---
-        function renderLedger() {
-            const wonDeals = myLeads.filter(l => l.status === 'Closed Won');
-            document.getElementById('ledger-deals-body').innerHTML = wonDeals.map(l => {
-                const val = Number(l.value) || 0;
-                const estComm = val * 0.10; // Assumed 10% standard commission for rep ledger calculation
-                return `
-                <div class="responsive-grid ledger-grid hover:bg-white/5 group border-l-2 border-emerald-500/50">
-                    <div>
-                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-1">Company</span>
-                        <p class="font-bold text-white text-sm">${l.company}</p>
-                        <p class="text-[10px] text-slate-400 font-mono mt-0.5">Closed: ${new Date(l.timestamp).toLocaleDateString()}</p>
-                    </div>
-                    <div class="font-mono text-slate-300 text-sm"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Contract Value</span>₹${val.toLocaleString('en-IN')}</div>
-                    <div class="font-mono font-bold text-emerald-400 text-sm"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Est. Commission</span>₹${estComm.toLocaleString('en-IN')}</div>
-                </div>`
-            }).join('') || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-ghost text-4xl mb-3 opacity-20"></i><p>No closed won deals yet. Time to hunt.</p></div>';
-        }
+        // --- LEDGER ---
+        function renderLedger() {
+            const wonDeals = myLeads.filter(l => l.status === 'Closed Won');
+            document.getElementById('ledger-deals-body').innerHTML = wonDeals.map(l => {
+                const val = Number(l.value) || 0;
+                const estComm = val * 0.10; // Assumed 10% standard commission for rep ledger calculation
+                return `
+                <div class="responsive-grid ledger-grid hover:bg-white/5 group border-l-2 border-emerald-500/50">
+                    <div>
+                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-1">Company</span>
+                        <p class="font-bold text-white text-sm">${l.company}</p>
+                        <p class="text-[10px] text-slate-400 font-mono mt-0.5">Closed: ${new Date(l.timestamp).toLocaleDateString()}</p>
+                    </div>
+                    <div class="font-mono text-slate-300 text-sm"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Contract Value</span>₹${val.toLocaleString('en-IN')}</div>
+                    <div class="font-mono font-bold text-emerald-400 text-sm"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Est. Commission</span>₹${estComm.toLocaleString('en-IN')}</div>
+                </div>`
+            }).join('') || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-ghost text-4xl mb-3 opacity-20"></i><p>No closed won deals yet. Time to hunt.</p></div>';
+        }
 
-        // --- RESOURCE / PLAYBOOK ---
-        function renderPlaybook() {
-            document.getElementById('sops-grid').innerHTML = agencySOPs.map(s => `
-                <div class="glass-card p-5 relative group">
-                    <div class="w-10 h-10 rounded-full bg-white/5 text-slate-300 flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-bookmark"></i></div>
-                    <h4 class="font-bold text-white mb-1 text-sm">${s.title}</h4>
-                    <p class="text-xs text-slate-400 font-mono mb-3">${s.desc}</p>
-                    ${s.url ? `<a href="${s.url}" target="_blank" class="text-[10px] uppercase tracking-wider font-bold text-yellow-400 hover:text-yellow-300">Access Resource &rarr;</a>` : ''}
-                </div>
-            `).join('') || '<p class="text-slate-500 col-span-full">No playbook items uploaded by Operations yet.</p>';
-        }
+        // --- RESOURCE / PLAYBOOK ---
+        function renderPlaybook() {
+            document.getElementById('sops-grid').innerHTML = agencySOPs.map(s => `
+                <div class="glass-card p-5 relative group">
+                    <div class="w-10 h-10 rounded-full bg-white/5 text-slate-300 flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-bookmark"></i></div>
+                    <h4 class="font-bold text-white mb-1 text-sm">${s.title}</h4>
+                    <p class="text-xs text-slate-400 font-mono mb-3">${s.desc}</p>
+                    ${s.url ? `<a href="${s.url}" target="_blank" class="text-[10px] uppercase tracking-wider font-bold text-yellow-400 hover:text-yellow-300">Access Resource &rarr;</a>` : ''}
+                </div>
+            `).join('') || '<p class="text-slate-500 col-span-full">No playbook items uploaded by Operations yet.</p>';
+        }
 
-        // --- DATA TABLE ---
-        function getStatusColor(s) {
-            const map = { 'New Lead': 'text-blue-400', 'Attempted Contact': 'text-slate-400', 'Discovery Call': 'text-indigo-400', 'Meeting Set': 'text-purple-400', 'Proposal Sent': 'text-orange-400', 'In Negotiation': 'text-pink-400', 'Closed Won': 'text-emerald-400', 'Closed Lost': 'text-red-400' };
-            return map[s] || 'text-slate-400';
-        }
-        function generateStatusOptions(curr) { return LEAD_STATUSES.map(s => `<option value="${s}" ${s === curr ? 'selected' : ''} class="bg-slate-900 text-white">${s}</option>`).join(''); }
+        // --- DATA TABLE ---
+        function getStatusColor(s) {
+            const map = { 'New Lead': 'text-blue-400', 'Attempted Contact': 'text-slate-400', 'Discovery Call': 'text-indigo-400', 'Meeting Set': 'text-purple-400', 'Proposal Sent': 'text-orange-400', 'In Negotiation': 'text-pink-400', 'Closed Won': 'text-emerald-400', 'Closed Lost': 'text-red-400' };
+            return map[s] || 'text-slate-400';
+        }
+        function generateStatusOptions(curr) { return LEAD_STATUSES.map(s => `<option value="${s}" ${s === curr ? 'selected' : ''} class="bg-slate-900 text-white">${s}</option>`).join(''); }
 
-        function renderTable() {
-            const html = myLeads.map(l => {
-                const statusColor = getStatusColor(l.status);
-                return `
-                <div class="responsive-grid sales-grid hover:bg-white/5 border-l-2 border-transparent hover:border-purple-500/50 group">
-                    <div>
-                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-1">Company</span>
-                        <p class="font-bold text-white leading-tight text-base group-hover:text-purple-300 transition-colors">${l.company}</p>
-                        <p class="text-[11px] text-slate-500 line-clamp-1 mt-1"><i class="fa-solid fa-comment-dots opacity-50 mr-1"></i> ${l.notes || 'No discovery notes'}</p>
-                    </div>
-                    <div class="font-mono font-bold text-emerald-400 text-sm"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Value</span>₹${Number(l.value).toLocaleString('en-IN')}</div>
-                    <div class="text-xs font-mono text-blue-300"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Deadline</span>${l.nextAction ? new Date(l.nextAction).toLocaleDateString() : '--'}</div>
-                    <div>
-                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Status</span>
-                        <select onchange="updateLeadStatus('${l.id}', this.value)" class="bg-black/60 border border-white/10 rounded-lg px-2 py-1.5 text-xs font-bold ${statusColor} focus:outline-none cursor-pointer appearance-none w-32 md:w-full shadow-inner text-right md:text-left">
-                            ${generateStatusOptions(l.status)}
-                        </select>
-                    </div>
-                    <div class="flex justify-end gap-2 items-center mt-2 md:mt-0 pt-3 md:pt-0 border-t border-white/5 md:border-none">
-                        <button onclick="quickLog('${l.id}', 'Called Prospect')" class="bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-400 px-3 py-2 rounded-lg text-xs font-bold transition-colors border border-emerald-500/20" title="Quick Log: Call"><i class="fa-solid fa-phone"></i></button>
-                        <button onclick="quickLog('${l.id}', 'Sent Email')" class="bg-blue-500/10 hover:bg-blue-500/30 text-blue-400 px-3 py-2 rounded-lg text-xs font-bold transition-colors border border-blue-500/20" title="Quick Log: Email"><i class="fa-solid fa-envelope"></i></button>
-                        <button onclick="openTimeline('${l.id}')" class="text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 px-3 py-2 rounded-lg transition-colors border border-transparent hover:border-white/10" title="Timeline"><i class="fa-solid fa-clock-rotate-left"></i></button>
-                    </div>
-                </div>
-            `}).join('');
-            document.getElementById('my-leads-body').innerHTML = html || '<div class="py-12 text-center text-slate-500"><div class="flex flex-col items-center"><i class="fa-solid fa-folder-open text-4xl mb-3 opacity-20"></i><p>No prospects found.</p></div></div>';
-        }
-        document.getElementById('search-leads').addEventListener('input', (e) => {
-            const filterText = e.target.value.toLowerCase();
-            const filtered = myLeads.filter(l => (l.company||'').toLowerCase().includes(filterText));
-            const temp = myLeads; myLeads = filtered; renderTable(); myLeads = temp;
-        });
+        function renderTable() {
+            const html = myLeads.map(l => {
+                const statusColor = getStatusColor(l.status);
+                return `
+                <div class="responsive-grid sales-grid hover:bg-white/5 border-l-2 border-transparent hover:border-purple-500/50 group">
+                    <div>
+                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-1">Company</span>
+                        <p class="font-bold text-white leading-tight text-base group-hover:text-purple-300 transition-colors">${l.company}</p>
+                        <p class="text-[11px] text-slate-500 line-clamp-1 mt-1"><i class="fa-solid fa-comment-dots opacity-50 mr-1"></i> ${l.notes || 'No discovery notes'}</p>
+                    </div>
+                    <div class="font-mono font-bold text-emerald-400 text-sm"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Value</span>₹${Number(l.value).toLocaleString('en-IN')}</div>
+                    <div class="text-xs font-mono text-blue-300"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Deadline</span>${l.nextAction ? new Date(l.nextAction).toLocaleDateString() : '--'}</div>
+                    <div>
+                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Status</span>
+                        <select onchange="updateLeadStatus('${l.id}', this.value)" class="bg-black/60 border border-white/10 rounded-lg px-2 py-1.5 text-xs font-bold ${statusColor} focus:outline-none cursor-pointer appearance-none w-32 md:w-full shadow-inner text-right md:text-left">
+                            ${generateStatusOptions(l.status)}
+                        </select>
+                    </div>
+                    <div class="flex justify-end gap-2 items-center mt-2 md:mt-0 pt-3 md:pt-0 border-t border-white/5 md:border-none">
+                        <button onclick="quickLog('${l.id}', 'Called Prospect')" class="bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-400 px-3 py-2 rounded-lg text-xs font-bold transition-colors border border-emerald-500/20" title="Quick Log: Call"><i class="fa-solid fa-phone"></i></button>
+                        <button onclick="quickLog('${l.id}', 'Sent Email')" class="bg-blue-500/10 hover:bg-blue-500/30 text-blue-400 px-3 py-2 rounded-lg text-xs font-bold transition-colors border border-blue-500/20" title="Quick Log: Email"><i class="fa-solid fa-envelope"></i></button>
+                        <button onclick="openTimeline('${l.id}')" class="text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 px-3 py-2 rounded-lg transition-colors border border-transparent hover:border-white/10" title="Timeline"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                    </div>
+                </div>
+            `}).join('');
+            document.getElementById('my-leads-body').innerHTML = html || '<div class="py-12 text-center text-slate-500"><div class="flex flex-col items-center"><i class="fa-solid fa-folder-open text-4xl mb-3 opacity-20"></i><p>No prospects found.</p></div></div>';
+        }
+        document.getElementById('search-leads').addEventListener('input', (e) => {
+            const filterText = e.target.value.toLowerCase();
+            const filtered = myLeads.filter(l => (l.company||'').toLowerCase().includes(filterText));
+            const temp = myLeads; myLeads = filtered; renderTable(); myLeads = temp;
+        });
 
-        // Quick Log Action
-        window.quickLog = async (id, action) => {
-            try {
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), { 
-                    history: arrayUnion({ note: `Quick Log: ${action}`, date: new Date().toISOString(), user: activeUserRecord.name }) 
-                });
-                showToast(`${action} logged!`);
-            } catch(e) { showToast("Error logging", true); }
-        };
+        // Quick Log Action
+        window.quickLog = async (id, action) => {
+            try {
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), { 
+                    history: arrayUnion({ note: `Quick Log: ${action}`, date: new Date().toISOString(), user: activeUserRecord.name }) 
+                });
+                showToast(`${action} logged!`);
+            } catch(e) { showToast("Error logging", true); }
+        };
 
-        // --- ACTIONS ---
-        document.getElementById('form-add-lead').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('btn-submit-lead'); const originalBtnContent = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-lg"></i> Deploying...'; btn.disabled = true;
-            
-            const newLead = {
-                company: document.getElementById('ld-company').value.trim(), contact: document.getElementById('ld-contact').value.trim(),
-                phone: document.getElementById('ld-phone').value.trim(), value: Number(document.getElementById('ld-value').value),
-                source: document.getElementById('ld-source').value, nextAction: document.getElementById('ld-next-action').value,
-                rep: document.getElementById('ld-rep').value.trim(), status: document.getElementById('ld-status').value, notes: document.getElementById('ld-notes').value.trim(),
-                timestamp: Date.now(),
-                history: [{ note: `Lead created in ${document.getElementById('ld-status').value}`, date: new Date().toISOString(), user: activeUserRecord.name }]
-            };
-            try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), newLead);
-                showToast("Lead initialized!"); document.getElementById('form-add-lead').reset(); document.getElementById('ld-rep').value = activeUserRecord.name; switchTab('leads');
-            } catch (err) { showToast("Failed to add", true); } finally { btn.innerHTML = originalBtnContent; btn.disabled = false; }
-        });
+        // --- ACTIONS ---
+        document.getElementById('form-add-lead').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-lead'); const originalBtnContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-lg"></i> Deploying...'; btn.disabled = true;
+            
+            const newLead = {
+                company: document.getElementById('ld-company').value.trim(), contact: document.getElementById('ld-contact').value.trim(),
+                phone: document.getElementById('ld-phone').value.trim(), value: Number(document.getElementById('ld-value').value),
+                source: document.getElementById('ld-source').value, nextAction: document.getElementById('ld-next-action').value,
+                rep: document.getElementById('ld-rep').value.trim(), status: document.getElementById('ld-status').value, notes: document.getElementById('ld-notes').value.trim(),
+                timestamp: Date.now(),
+                history: [{ note: `Lead created in ${document.getElementById('ld-status').value}`, date: new Date().toISOString(), user: activeUserRecord.name }]
+            };
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), newLead);
+                showToast("Lead initialized!"); document.getElementById('form-add-lead').reset(); document.getElementById('ld-rep').value = activeUserRecord.name; switchTab('leads');
+            } catch (err) { showToast("Failed to add", true); } finally { btn.innerHTML = originalBtnContent; btn.disabled = false; }
+        });
 
-        window.updateLeadStatus = async (id, newStatus) => {
-            try { 
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), { 
-                    status: newStatus, 
-                    history: arrayUnion({ note: `Status updated to ${newStatus}`, date: new Date().toISOString(), user: activeUserRecord.name }) 
-                }); 
-                showToast("Status Updated"); 
-            } catch(e) { showToast("Error updating", true); }
-        };
+        window.updateLeadStatus = async (id, newStatus) => {
+            try { 
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), { 
+                    status: newStatus, 
+                    history: arrayUnion({ note: `Status updated to ${newStatus}`, date: new Date().toISOString(), user: activeUserRecord.name }) 
+                }); 
+                showToast("Status Updated"); 
+            } catch(e) { showToast("Error updating", true); }
+        };
 
-        // --- HR TICKETS ---
-        document.getElementById('form-hr-ticket').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('btn-submit-ticket'); btn.disabled = true;
-            const ticket = { subject: document.getElementById('tk-subject').value.trim(), category: document.getElementById('tk-category').value, details: document.getElementById('tk-details').value.trim(), rep: activeUserRecord.name, status: 'Open', timestamp: Date.now() };
-            try { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'hr_tickets'), ticket); showToast("Ticket submitted."); document.getElementById('form-hr-ticket').reset(); } catch(e) { showToast("Failed", true); } finally { btn.disabled = false; }
-        });
+        // --- HR TICKETS ---
+        document.getElementById('form-hr-ticket').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-ticket'); btn.disabled = true;
+            const ticket = { subject: document.getElementById('tk-subject').value.trim(), category: document.getElementById('tk-category').value, details: document.getElementById('tk-details').value.trim(), rep: activeUserRecord.name, status: 'Open', timestamp: Date.now() };
+            try { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'hr_tickets'), ticket); showToast("Ticket submitted."); document.getElementById('form-hr-ticket').reset(); } catch(e) { showToast("Failed", true); } finally { btn.disabled = false; }
+        });
 
-        function renderTickets() {
-            const html = myTickets.map(t => {
-                const statusColor = t.status === 'Open' ? 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20' : (t.status === 'Resolved' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-slate-400 bg-slate-500/10 border-slate-500/20');
-                return `
-                <div class="responsive-grid hr-grid hover:bg-white/5">
-                    <div class="font-mono text-[10px] text-slate-400"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Date</span>${new Date(t.timestamp).toLocaleDateString()}</div>
-                    <div><p class="font-bold text-white text-sm">${t.subject}</p></div>
-                    <div class="text-xs text-slate-300"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Category</span><span class="bg-white/5 px-2.5 py-1 rounded-md border border-white/5">${t.category}</span></div>
-                    <div class="text-right"><span class="px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border ${statusColor}">${t.status}</span></div>
-                </div>`
-            }).join('');
-            document.getElementById('my-tickets-body').innerHTML = html || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-check-circle text-4xl mb-3 opacity-20"></i><p>No open tickets.</p></div>';
-        }
+        function renderTickets() {
+            const html = myTickets.map(t => {
+                const statusColor = t.status === 'Open' ? 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20' : (t.status === 'Resolved' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-slate-400 bg-slate-500/10 border-slate-500/20');
+                return `
+                <div class="responsive-grid hr-grid hover:bg-white/5">
+                    <div class="font-mono text-[10px] text-slate-400"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Date</span>${new Date(t.timestamp).toLocaleDateString()}</div>
+                    <div><p class="font-bold text-white text-sm">${t.subject}</p></div>
+                    <div class="text-xs text-slate-300"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Category</span><span class="bg-white/5 px-2.5 py-1 rounded-md border border-white/5">${t.category}</span></div>
+                    <div class="text-right"><span class="px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border ${statusColor}">${t.status}</span></div>
+                </div>`
+            }).join('');
+            document.getElementById('my-tickets-body').innerHTML = html || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-check-circle text-4xl mb-3 opacity-20"></i><p>No open tickets.</p></div>';
+        }
 
-        // --- TIMELINE MODAL ---
-        window.openTimeline = (id) => {
-            const l = myLeads.find(x => x.id === id); if(!l) return;
-            document.getElementById('tl-lead-id').value = id; document.getElementById('tl-company').innerText = l.company;
-            document.getElementById('tl-contact').innerHTML = `<i class="fa-solid fa-user mr-2 text-purple-400"></i> <span>${l.contact || 'N/A'}</span>`;
-            const history = l.history || [];
-            document.getElementById('tl-history-list').innerHTML = history.slice().reverse().map(h => `<div class="pl-6 border-l-2 border-purple-500/50 relative py-1 group"><div class="absolute w-3 h-3 bg-purple-500 rounded-full -left-[7px] top-2 shadow-[0_0_10px_#a855f7] group-hover:scale-125 transition-transform"></div><p class="text-sm font-bold text-white">${h.note}</p><p class="text-[10px] text-slate-400 font-mono mt-1.5 bg-black/30 inline-block px-2 py-0.5 rounded border border-white/5">${new Date(h.date).toLocaleString()} • ${h.user}</p></div>`).join('') || '<p class="text-sm text-slate-500 italic p-4 text-center">No history.</p>';
-            document.getElementById('tl-new-note').value = ''; document.getElementById('modal-timeline').classList.add('active');
-        };
+        // --- TIMELINE MODAL ---
+        window.openTimeline = (id) => {
+            const l = myLeads.find(x => x.id === id); if(!l) return;
+            document.getElementById('tl-lead-id').value = id; document.getElementById('tl-company').innerText = l.company;
+            document.getElementById('tl-contact').innerHTML = `<i class="fa-solid fa-user mr-2 text-purple-400"></i> <span>${l.contact || 'N/A'}</span>`;
+            const history = l.history || [];
+            document.getElementById('tl-history-list').innerHTML = history.slice().reverse().map(h => `<div class="pl-6 border-l-2 border-purple-500/50 relative py-1 group"><div class="absolute w-3 h-3 bg-purple-500 rounded-full -left-[7px] top-2 shadow-[0_0_10px_#a855f7] group-hover:scale-125 transition-transform"></div><p class="text-sm font-bold text-white">${h.note}</p><p class="text-[10px] text-slate-400 font-mono mt-1.5 bg-black/30 inline-block px-2 py-0.5 rounded border border-white/5">${new Date(h.date).toLocaleString()} • ${h.user}</p></div>`).join('') || '<p class="text-sm text-slate-500 italic p-4 text-center">No history.</p>';
+            document.getElementById('tl-new-note').value = ''; document.getElementById('modal-timeline').classList.add('active');
+        };
 
-        window.addTimelineEvent = async () => {
-            const id = document.getElementById('tl-lead-id').value; const note = document.getElementById('tl-new-note').value.trim(); if(!note) return;
-            try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), { history: arrayUnion({ note: note, date: new Date().toISOString(), user: activeUserRecord.name }) }); document.getElementById('tl-new-note').value = ''; } catch(e) { showToast("Error", true); }
-        };
+        window.addTimelineEvent = async () => {
+            const id = document.getElementById('tl-lead-id').value; const note = document.getElementById('tl-new-note').value.trim(); if(!note) return;
+            try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), { history: arrayUnion({ note: note, date: new Date().toISOString(), user: activeUserRecord.name }) }); document.getElementById('tl-new-note').value = ''; } catch(e) { showToast("Error", true); }
+        };
 
-    </script>
+    </script>
 </body>
 </html>
