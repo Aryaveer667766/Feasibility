@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;800;900&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
@@ -20,7 +20,6 @@
             background-color: #020617;
             color: #f8fafc;
             overflow: hidden;
-            /* Supreme Command Gradient */
             background-image: 
                 radial-gradient(circle at 100% 0%, rgba(225, 29, 72, 0.08) 0%, transparent 40%), 
                 radial-gradient(circle at 0% 100%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);
@@ -54,13 +53,13 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(225,29,72,0.5); }
 
         /* Inputs */
-        input, select, textarea { background: rgba(2, 6, 23, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; border-radius: 0.5rem; }
+        input, select, textarea { background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; border-radius: 0.5rem; width: 100%; }
         input:focus, select:focus, textarea:focus { outline: none; border-color: #e11d48; box-shadow: 0 0 0 2px rgba(225, 29, 72, 0.2); }
         input:disabled, select:disabled { opacity: 0.6; cursor: not-allowed; }
 
         /* Tabs */
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeUp 0.3s ease-out; }
+        .tab-content.active { display: block; animation: fadeUp 0.3s ease-out forwards; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .nav-btn { border-left: 3px solid transparent; color: #94a3b8; transition: all 0.2s; border-radius: 0 0.75rem 0.75rem 0; margin-right: 1rem;}
@@ -72,15 +71,15 @@
         .filter-pill:hover { background: rgba(255,255,255,0.1); color: white; }
         .filter-pill.active { background: rgba(225, 29, 72, 0.2); border-color: rgba(225, 29, 72, 0.5); color: #f43f5e; }
 
-        /* Modals */
-        .modal { opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 100; }
-        .modal.active { opacity: 1; pointer-events: auto; }
-
         /* Playbook Accordion */
         .playbook-card { transition: all 0.3s; cursor: pointer; }
         .playbook-card:hover { background: rgba(255,255,255,0.05); }
         .playbook-content { display: none; }
         .playbook-content.open { display: block; animation: fadeUp 0.2s ease-out forwards; }
+
+        /* Modals */
+        .modal { opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 100; }
+        .modal.active { opacity: 1; pointer-events: auto; }
 
         /* Mobile-First Responsive Grids */
         .responsive-grid {
@@ -104,6 +103,8 @@
     </style>
 </head>
 <body class="h-screen w-full flex flex-col md:flex-row relative">
+
+    <div class="fixed inset-0 z-0 pointer-events-none" style="background-image: radial-gradient(circle at 100% 0%, rgba(225, 29, 72, 0.08) 0%, transparent 40%), radial-gradient(circle at 0% 100%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);"></div>
 
     <div class="md:hidden flex h-16 border-b border-white/5 glass-panel justify-between items-center px-4 shrink-0 z-30">
         <div class="flex items-center gap-3">
@@ -173,7 +174,7 @@
         <div class="p-6 border-t border-white/5">
             <div class="flex items-center justify-between text-xs text-slate-500 font-mono">
                 <div class="flex items-center gap-2">
-                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" id="db-indicator"></div>
+                    <div class="w-2 h-2 rounded-full bg-slate-500 animate-pulse" id="db-indicator"></div>
                     <span id="db-status">Connecting...</span>
                 </div>
             </div>
@@ -189,10 +190,10 @@
                 <button onclick="exportGlobalCSV()" class="hidden md:flex bg-slate-800 hover:bg-slate-700 border border-white/10 text-white px-3 py-2 rounded-lg text-xs font-bold items-center gap-2 transition-colors">
                     <i class="fa-solid fa-file-csv text-emerald-400"></i> Export DB
                 </button>
-                <button onclick="document.getElementById('modal-broadcast').classList.add('active')" class="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all shadow-lg flex items-center gap-2">
+                <button onclick="safeShowModal('modal-broadcast')" class="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all shadow-lg flex items-center gap-2">
                     <i class="fa-solid fa-bullhorn text-purple-400"></i> <span class="hidden md:inline">Broadcast</span>
                 </button>
-                <button onclick="document.getElementById('modal-add-user').classList.add('active')" class="bg-rose-600 hover:bg-rose-500 text-white px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all shadow-lg shadow-rose-900/30 flex items-center gap-2">
+                <button onclick="safeShowModal('modal-add-user')" class="bg-rose-600 hover:bg-rose-500 text-white px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all shadow-lg shadow-rose-900/30 flex items-center gap-2">
                     <i class="fa-solid fa-user-plus"></i> <span class="hidden md:inline">Hire Staff</span>
                 </button>
             </div>
@@ -420,8 +421,7 @@
                         </div>
                     </div>
                     
-                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6" id="payroll-grid">
-                        </div>
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6" id="payroll-grid"></div>
                 </div>
             </div>
 
@@ -512,6 +512,7 @@
                         </div>
                         <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Next Action</label><input type="date" id="edit-ld-nextaction" class="w-full rounded-lg px-3 py-2 text-sm text-slate-300"></div>
                         <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Assigned Rep</label><select id="edit-ld-rep" class="w-full rounded-lg px-3 py-2 text-sm bg-slate-900"></select></div>
+                        <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Force Status</label><select id="edit-ld-status" class="w-full rounded-lg px-3 py-2 text-sm font-bold bg-slate-900"></select></div>
                     </div>
                     <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">CEO Notes</label><textarea id="edit-ld-notes" rows="3" class="w-full rounded-lg px-3 py-2 text-sm resize-none"></textarea></div>
                     <div class="flex gap-3 pt-2">
@@ -673,6 +674,10 @@
         let activeUserRecord = null;
         let allLeads = [], allUsers = [], allTickets = [], allCreatives = [];
 
+        // Safe DOM Utilities (Prevents completely crashing on null errors)
+        const safeHTML = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+        const safeText = (id, text) => { const el = document.getElementById(id); if (el) el.innerText = text; };
+
         // UI Helpers
         window.toggleSidebar = function() {
             document.getElementById('sidebar').classList.toggle('-translate-x-full');
@@ -681,12 +686,16 @@
 
         window.switchTab = function(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('tab-' + tabId).classList.add('active');
+            const targetTab = document.getElementById('tab-' + tabId);
+            if(targetTab) targetTab.classList.add('active');
+
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-            if(event && event.currentTarget.classList.contains('nav-btn')) event.currentTarget.classList.add('active');
+            if(event && event.currentTarget && event.currentTarget.classList.contains('nav-btn')) {
+                event.currentTarget.classList.add('active');
+            }
 
             const titles = { 'overview': "God's Eye View", 'team': 'Personnel Roster', 'sales-pipeline': 'Sales Database', 'creative-pipeline': 'Creative Engine', 'payroll': 'Global Payroll Engine', 'logs': 'System Audit Logs', 'hr': 'Support Desk', 'playbook': 'Master Sales Playbook' };
-            document.getElementById('page-title').innerText = titles[tabId] || '';
+            safeText('page-title', titles[tabId] || '');
 
             if(window.innerWidth < 768) {
                 document.getElementById('sidebar').classList.add('-translate-x-full');
@@ -696,22 +705,29 @@
 
         window.togglePlaybook = function(id) {
             const content = document.getElementById(id);
+            if(!content) return;
             const isOpen = content.classList.contains('open');
             document.querySelectorAll('.playbook-content').forEach(el => el.classList.remove('open'));
             if(!isOpen) content.classList.add('open');
         }
 
+        window.safeShowModal = function(id) {
+            const modal = document.getElementById(id);
+            if(modal) modal.classList.add('active');
+        }
+
         window.closeModals = function() { document.querySelectorAll('.modal').forEach(el => el.classList.remove('active')); };
-        window.closeModal = function() { document.getElementById('modal-timeline').classList.remove('active'); };
+        window.closeModal = function() { const m = document.getElementById('modal-timeline'); if(m) m.classList.remove('active'); };
 
         window.showToast = function(msg, isError=false) {
             const toast = document.getElementById('toast');
+            if(!toast) return;
             toast.className = `fixed bottom-6 right-6 text-white px-6 py-4 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] font-bold text-sm transform translate-y-0 opacity-100 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md ${isError ? 'bg-red-600/90' : 'bg-emerald-600/90'}`;
-            document.getElementById('toast-msg').innerText = msg;
+            safeText('toast-msg', msg);
             setTimeout(() => { toast.classList.replace('translate-y-0', 'translate-y-32'); toast.classList.replace('opacity-100', 'opacity-0'); }, 3000);
         };
 
-        // Audit Logs (Local memory)
+        // Audit Logs
         let auditLogs = [];
         window.logAudit = function(action) {
             const time = new Date().toLocaleTimeString();
@@ -720,9 +736,8 @@
         };
         window.clearAuditLogs = function() { auditLogs = []; renderAuditLogs(); showToast("Logs wiped"); };
         function renderAuditLogs() {
-            const container = document.getElementById('audit-log-container');
-            if(auditLogs.length === 0) return container.innerHTML = '<div class="text-slate-500 italic py-4 text-center">No logs recorded yet.</div>';
-            container.innerHTML = auditLogs.map(log => `<div class="mb-2 text-rose-400 border-b border-white/5 pb-1">${log}</div>`).join('');
+            if(auditLogs.length === 0) return safeHTML('audit-log-container', '<div class="text-slate-500 italic py-4 text-center">No logs recorded yet.</div>');
+            safeHTML('audit-log-container', auditLogs.map(log => `<div class="mb-2 text-rose-400 border-b border-white/5 pb-1">${log}</div>`).join(''));
         }
 
         // Firebase Initialization
@@ -749,8 +764,9 @@
                     setDbStatus(true);
                     
                     // AUTO LOGIN BYPASS FOR ADMIN
-                    document.getElementById('edit-ld-status').innerHTML = SALES_STATUSES.map(s => `<option value="${s}">${s}</option>`).join('');
-                    activeUserRecord = { name: "Chief Executive" }; // required for timeline notes
+                    safeHTML('edit-ld-status', SALES_STATUSES.map(s => `<option value="${s}">${s}</option>`).join(''));
+                    safeHTML('crt-assignee', ''); // Prevent crash if used before loading users
+                    activeUserRecord = { name: "Aryaveer Mishra", role: "CEO" };
                     
                     loadData();
                     logAudit("System Initialized. God Mode Active.");
@@ -772,230 +788,246 @@
         }
 
         function loadData() {
-            // Listen to Sales Leads
             onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), (snap) => {
-                allLeads = []; snap.forEach(d => allLeads.push({id: d.id, ...d.data()}));
-                allLeads.sort((a, b) => b.timestamp - a.timestamp);
-                renderOverview(); renderSalesPipeline();
+                try {
+                    allLeads = []; snap.forEach(d => allLeads.push({id: d.id, ...d.data()}));
+                    allLeads.sort((a, b) => (b.timestamp||0) - (a.timestamp||0));
+                    renderOverview(); renderSalesPipeline();
+                } catch(e) { console.error("Error rendering leads", e); }
             });
 
-            // Listen to Creative Tasks
             onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'creative_tasks'), (snap) => {
-                allCreatives = []; snap.forEach(d => allCreatives.push({id: d.id, ...d.data()}));
-                allCreatives.sort((a, b) => b.timestamp - a.timestamp);
-                renderOverview(); renderCreativePipeline();
+                try {
+                    allCreatives = []; snap.forEach(d => allCreatives.push({id: d.id, ...d.data()}));
+                    allCreatives.sort((a, b) => (b.timestamp||0) - (a.timestamp||0));
+                    renderOverview(); renderCreativePipeline();
+                } catch(e) { console.error("Error rendering creatives", e); }
             });
 
-            // Listen to Users (Roster)
             onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'team_users'), (snap) => {
-                allUsers = [];
-                snap.forEach(d => {
-                    const data = d.data(); 
-                    if(data.commission_awarded === undefined) data.commission_awarded = 0; 
-                    if(data.commission_paid === undefined) data.commission_paid = 0;
-                    allUsers.push({id: d.id, ...data});
-                });
-                renderTeamRoster(); renderPayroll(); populateRepDropdowns();
+                try {
+                    allUsers = [];
+                    snap.forEach(d => {
+                        const data = d.data(); 
+                        if(data.commission_awarded === undefined) data.commission_awarded = 0; 
+                        if(data.commission_paid === undefined) data.commission_paid = 0;
+                        allUsers.push({id: d.id, ...data});
+                    });
+                    renderTeamRoster(); renderPayroll(); populateRepDropdowns();
+                } catch(e) { console.error("Error rendering users", e); }
             });
 
-            // Listen to HR Tickets
             onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'hr_tickets'), (snap) => {
-                allTickets = []; snap.forEach(d => allTickets.push({id: d.id, ...d.data()}));
-                allTickets.sort((a,b) => b.timestamp - a.timestamp);
-                renderTickets();
+                try {
+                    allTickets = []; snap.forEach(d => allTickets.push({id: d.id, ...d.data()}));
+                    allTickets.sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
+                    renderTickets();
+                } catch(e) { console.error("Error rendering tickets", e); }
             });
         }
 
         // ================= RENDERERS =================
         function renderOverview() {
-            let totalPipe=0, totalWon=0, projected=0;
-            allLeads.forEach(l => {
-                const v = Number(l.value)||0;
-                if(l.status === 'Closed Won') totalWon+=v; 
-                else if(l.status !== 'Closed Lost') {
-                    totalPipe+=v;
-                    if(l.status === 'Proposal Sent' || l.status === 'In Negotiation') projected += v;
+            try {
+                let totalPipe=0, totalWon=0, projected=0;
+                allLeads.forEach(l => {
+                    const v = Number(l.value)||0;
+                    if(l.status === 'Closed Won') totalWon+=v; 
+                    else if(l.status !== 'Closed Lost') {
+                        totalPipe+=v;
+                        if(l.status === 'Proposal Sent' || l.status === 'In Negotiation') projected += v;
+                    }
+                });
+                
+                let liab=0;
+                allUsers.forEach(u => { liab += Math.max(0, (Number(u.commission_awarded)||0) - (Number(u.commission_paid)||0)); });
+
+                let crtAct=0;
+                allCreatives.forEach(c => { if(c.status !== 'Approved & Completed') crtAct++; });
+
+                safeText('kpi-total-pipe', "₹" + totalPipe.toLocaleString('en-IN'));
+                safeText('kpi-total-won', "₹" + totalWon.toLocaleString('en-IN'));
+                safeText('kpi-projected', "₹" + projected.toLocaleString('en-IN'));
+                safeText('kpi-creative-active', crtAct);
+                safeText('kpi-pending-payouts', "₹" + liab.toLocaleString('en-IN'));
+
+                // Chart (Sales)
+                const ctxEl = document.getElementById('globalPipelineChart');
+                if(ctxEl) {
+                    if(chartInstance) chartInstance.destroy();
+                    const statusCounts = {}; SALES_STATUSES.forEach(s => statusCounts[s]=0);
+                    allLeads.forEach(l => { if(statusCounts[l.status] !== undefined) statusCounts[l.status] += (Number(l.value)||0); });
+                    chartInstance = new Chart(ctxEl, {
+                        type: 'bar', data: { labels: Object.keys(statusCounts), datasets: [{ label: 'Global Sales Pipeline (₹)', data: Object.values(statusCounts), backgroundColor: '#10b981', borderRadius: 4 }] },
+                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8', font: {size: 10} } } } }
+                    });
                 }
-            });
-            
-            let liab=0;
-            allUsers.forEach(u => { liab += Math.max(0, (Number(u.commission_awarded)||0) - (Number(u.commission_paid)||0)); });
 
-            let crtAct=0;
-            allCreatives.forEach(c => { if(c.status !== 'Approved & Completed') crtAct++; });
-
-            document.getElementById('kpi-total-pipe').innerText = "₹" + totalPipe.toLocaleString('en-IN');
-            document.getElementById('kpi-total-won').innerText = "₹" + totalWon.toLocaleString('en-IN');
-            document.getElementById('kpi-projected').innerText = "₹" + projected.toLocaleString('en-IN');
-            document.getElementById('kpi-creative-active').innerText = crtAct;
-            document.getElementById('kpi-pending-payouts').innerText = "₹" + liab.toLocaleString('en-IN');
-
-            // Chart (Sales)
-            if(chartInstance) chartInstance.destroy();
-            const statusCounts = {}; SALES_STATUSES.forEach(s => statusCounts[s]=0);
-            allLeads.forEach(l => { if(statusCounts[l.status] !== undefined) statusCounts[l.status] += (Number(l.value)||0); });
-            chartInstance = new Chart(document.getElementById('globalPipelineChart'), {
-                type: 'bar', data: { labels: Object.keys(statusCounts), datasets: [{ label: 'Global Sales Pipeline (₹)', data: Object.values(statusCounts), backgroundColor: '#10b981', borderRadius: 4 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8', font: {size: 10} } } } }
-            });
-
-            // Master Pulse Feed
-            let masterHistory = [];
-            allLeads.forEach(l => { if(l.history) { l.history.forEach(h => masterHistory.push({ ...h, itemType: 'Sales', itemName: l.company, id: l.id })); } });
-            allCreatives.forEach(c => { if(c.history) { c.history.forEach(h => masterHistory.push({ ...h, itemType: 'Creative', itemName: c.title, id: c.id })); } });
-            
-            masterHistory.sort((a,b) => new Date(b.date) - new Date(a.date));
-            
-            document.getElementById('global-pulse-list').innerHTML = masterHistory.slice(0, 15).map(h => {
-                const iconColor = h.itemType === 'Sales' ? 'text-emerald-400' : 'text-cyan-400';
-                return `
-                <div class="bg-black/40 border border-white/5 rounded-lg p-3 hover:bg-white/5 transition-colors cursor-pointer" onclick="openTimeline('${h.id}', '${h.itemType.toLowerCase()}')">
-                    <p class="text-xs font-bold text-white mb-1.5">${h.note}</p>
-                    <div class="flex justify-between items-center mt-1">
-                        <span class="text-[9px] font-mono text-slate-400 bg-white/5 px-2 py-0.5 rounded"><i class="fa-solid fa-circle text-[6px] ${iconColor} mr-1"></i>${h.itemName}</span>
-                        <span class="text-[9px] font-mono text-slate-500">${new Date(h.date).toLocaleDateString()} • ${h.user}</span>
+                // Master Pulse Feed
+                let masterHistory = [];
+                allLeads.forEach(l => { if(l.history) { l.history.forEach(h => masterHistory.push({ ...h, itemType: 'Sales', itemName: l.company || 'Unknown', id: l.id })); } });
+                allCreatives.forEach(c => { if(c.history) { c.history.forEach(h => masterHistory.push({ ...h, itemType: 'Creative', itemName: c.title || 'Unknown', id: c.id })); } });
+                
+                masterHistory.sort((a,b) => new Date(b.date || 0) - new Date(a.date || 0));
+                
+                const feedHtml = masterHistory.slice(0, 15).map(h => {
+                    const iconColor = h.itemType === 'Sales' ? 'text-emerald-400' : 'text-cyan-400';
+                    return `
+                    <div class="bg-black/40 border border-white/5 rounded-lg p-3 hover:bg-white/5 transition-colors cursor-pointer" onclick="openTimeline('${h.id}', '${h.itemType.toLowerCase()}')">
+                        <p class="text-xs font-bold text-white mb-1.5">${h.note || 'Update logged'}</p>
+                        <div class="flex justify-between items-center mt-1">
+                            <span class="text-[9px] font-mono text-slate-400 bg-white/5 px-2 py-0.5 rounded"><i class="fa-solid fa-circle text-[6px] ${iconColor} mr-1"></i>${h.itemName}</span>
+                            <span class="text-[9px] font-mono text-slate-500">${h.date ? new Date(h.date).toLocaleDateString() : '--'} • ${h.user || 'System'}</span>
+                        </div>
                     </div>
-                </div>
-            `}).join('') || '<p class="text-sm text-slate-500 italic">No activity yet.</p>';
+                `}).join('') || '<p class="text-sm text-slate-500 italic">No activity yet.</p>';
+                safeHTML('global-pulse-list', feedHtml);
+            } catch(e) { console.error("Render Overview Error", e); }
         }
 
         function renderTeamRoster() {
-            document.getElementById('team-count').innerText = allUsers.length;
-            document.getElementById('team-table-body').innerHTML = allUsers.map(user => {
-                const isSusp = user.status === 'Suspended';
-                return `
-                <div class="responsive-grid team-grid group ${isSusp ? 'opacity-50' : ''}">
-                    <div class="flex items-center gap-3">
-                        <img src="https://ui-avatars.com/api/?name=${user.name.replace(/ /g, '+')}&background=0f172a&color=fff" class="w-8 h-8 rounded-full border border-slate-600 shrink-0">
-                        <span class="font-bold text-white">${user.name}</span>
-                    </div>
-                    <div><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase">Role</span><span class="text-purple-400 font-bold text-xs uppercase tracking-wider">${user.role}</span></div>
-                    <div class="text-xs font-mono"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase">Credentials</span><div class="text-slate-400">${user.email}</div><div class="text-rose-300 mt-1">Pwd: ${user.password}</div></div>
-                    <div><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase">Status</span><span class="px-2 py-1 rounded text-[10px] font-bold uppercase ${isSusp ? 'status-suspended' : 'status-active'}">${user.status}</span></div>
-                    <div class="flex justify-end gap-2">
-                        <button onclick="toggleUserStatus('${user.id}', '${user.status}')" class="text-slate-400 hover:text-white p-2 bg-white/5 rounded" title="${isSusp?'Reactivate':'Suspend'}"><i class="fa-solid ${isSusp?'fa-play':'fa-pause'}"></i></button>
-                        <button onclick="deleteUser('${user.id}')" class="text-slate-500 hover:text-red-400 p-2 bg-white/5 rounded" title="Delete Permanent"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                </div>`
-            }).join('') || '<div class="py-8 text-center text-slate-500">No staff members found.</div>';
+            try {
+                safeText('team-count', allUsers.length);
+                const html = allUsers.map(user => {
+                    const isSusp = user.status === 'Suspended';
+                    const name = user.name || 'Unknown';
+                    const role = user.role || '--';
+                    const email = user.email || '--';
+                    const pwd = user.password || '--';
+                    const status = user.status || 'Active';
+
+                    return `
+                    <div class="responsive-grid team-grid group ${isSusp ? 'opacity-50' : ''}">
+                        <div class="flex items-center gap-3">
+                            <img src="https://ui-avatars.com/api/?name=${name.replace(/ /g, '+')}&background=0f172a&color=fff" class="w-8 h-8 rounded-full border border-slate-600 shrink-0">
+                            <span class="font-bold text-white">${name}</span>
+                        </div>
+                        <div><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase">Role</span><span class="text-purple-400 font-bold text-xs uppercase tracking-wider">${role}</span></div>
+                        <div class="text-xs font-mono"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase">Credentials</span><div class="text-slate-400">${email}</div><div class="text-rose-300 mt-1">Pwd: ${pwd}</div></div>
+                        <div><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase">Status</span><span class="px-2 py-1 rounded text-[10px] font-bold uppercase ${isSusp ? 'status-suspended' : 'status-active'}">${status}</span></div>
+                        <div class="flex justify-end gap-2">
+                            <button onclick="toggleUserStatus('${user.id}', '${status}')" class="text-slate-400 hover:text-white p-2 bg-white/5 rounded" title="${isSusp?'Reactivate':'Suspend'}"><i class="fa-solid ${isSusp?'fa-play':'fa-pause'}"></i></button>
+                            <button onclick="deleteUser('${user.id}')" class="text-slate-500 hover:text-red-400 p-2 bg-white/5 rounded" title="Delete Permanent"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>`
+                }).join('') || '<div class="py-8 text-center text-slate-500">No staff members found.</div>';
+                safeHTML('team-table-body', html);
+            } catch(e) { console.error("Render Roster Error", e); }
         }
 
         // --- SALES DB ---
         window.setSalesFilter = function(filter) {
             currentSalesFilter = filter;
-            document.getElementById('sf-all').classList.remove('active');
-            document.getElementById('sf-active').classList.remove('active');
-            document.getElementById('sf-won').classList.remove('active');
-            
+            document.querySelectorAll('#tab-sales-pipeline .filter-pill').forEach(el => el.classList.remove('active'));
             if(filter === 'All') document.getElementById('sf-all').classList.add('active');
             if(filter === 'Active') document.getElementById('sf-active').classList.add('active');
             if(filter === 'Closed Won') document.getElementById('sf-won').classList.add('active');
-            
             renderSalesPipeline();
         }
 
         function getSalesColor(s) {
             const map = { 'New Lead': 'text-blue-400', 'Contacted': 'text-yellow-400', 'Meeting Set': 'text-purple-400', 'Proposal Sent': 'text-orange-400', 'Closed Won': 'text-emerald-400', 'Closed Lost': 'text-red-400' };
-            return map[s] || 'text-slate-400';
+            return map[s||''] || 'text-slate-400';
         }
-
         function getSalesStatusOptions(curr) { return SALES_STATUSES.map(s => `<option value="${s}" ${s === curr ? 'selected' : ''} class="bg-slate-900 text-white">${s}</option>`).join(''); }
 
         window.renderSalesPipeline = function() {
-            const filterText = document.getElementById('search-leads').value.toLowerCase();
-            
-            const filtered = allLeads.filter(l => {
-                const textMatch = (l.company||'').toLowerCase().includes(filterText) || (l.rep||'').toLowerCase().includes(filterText) || (l.status||'').toLowerCase().includes(filterText) || (l.source||'').toLowerCase().includes(filterText);
+            try {
+                const searchEl = document.getElementById('search-leads');
+                const filterText = searchEl ? searchEl.value.toLowerCase() : '';
                 
-                let statusMatch = true;
-                if(currentSalesFilter === 'Active') statusMatch = l.status !== 'Closed Won' && l.status !== 'Closed Lost';
-                if(currentSalesFilter === 'Closed Won') statusMatch = l.status === 'Closed Won';
+                const filtered = allLeads.filter(l => {
+                    const textMatch = (l.company||'').toLowerCase().includes(filterText) || (l.rep||'').toLowerCase().includes(filterText) || (l.status||'').toLowerCase().includes(filterText) || (l.source||'').toLowerCase().includes(filterText);
+                    let statusMatch = true;
+                    if(currentSalesFilter === 'Active') statusMatch = l.status !== 'Closed Won' && l.status !== 'Closed Lost';
+                    if(currentSalesFilter === 'Closed Won') statusMatch = l.status === 'Closed Won';
+                    return textMatch && statusMatch;
+                });
 
-                return textMatch && statusMatch;
-            });
-
-            document.getElementById('master-leads-body').innerHTML = filtered.map(l => `
-                <div class="responsive-grid sales-grid hover:bg-white/5 border-l-2 border-transparent hover:border-emerald-500/50">
-                    <div>
-                        <p class="font-bold text-white leading-tight text-sm">${l.company}</p>
-                        <p class="text-[10px] text-slate-400 font-mono mt-1"><i class="fa-solid fa-phone text-blue-400 mr-1"></i>${l.phone} • ${l.source||'--'}</p>
-                    </div>
-                    <div class="font-mono font-bold text-emerald-400 text-sm"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Value</span>₹${Number(l.value).toLocaleString('en-IN')}</div>
-                    <div><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Rep</span><span class="text-xs font-bold text-slate-300">${l.rep || 'Unassigned'}</span></div>
-                    <div>
-                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Status</span>
-                        <select onchange="updateInlineStatus('${l.id}', 'sales', this.value)" class="bg-black/60 border border-white/10 rounded-lg px-2 py-1.5 text-[10px] md:text-xs font-bold ${getSalesColor(l.status)} focus:outline-none cursor-pointer appearance-none w-full shadow-inner">
-                            ${getSalesStatusOptions(l.status)}
-                        </select>
-                    </div>
-                    <div class="flex justify-end gap-2 whitespace-nowrap">
-                        <button onclick="openEditLeadModal('${l.id}')" class="bg-rose-500/20 text-rose-400 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors hover:bg-rose-500/40" title="Override"><i class="fa-solid fa-pen"></i></button>
-                        <button onclick="openTimeline('${l.id}', 'sales')" class="bg-white/5 hover:bg-white/20 text-slate-300 px-3 py-1.5 rounded-lg text-xs transition-colors" title="Timeline"><i class="fa-solid fa-clock-rotate-left"></i></button>
-                        <button onclick="deleteDocItem('sales_leads', '${l.id}')" class="text-slate-500 hover:text-red-400 p-2" title="Delete"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                </div>`
-            ).join('') || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-folder-open text-3xl mb-2 opacity-20"></i><p>No sales deals match.</p></div>';
+                const html = filtered.map(l => `
+                    <div class="responsive-grid sales-grid hover:bg-white/5 border-l-2 border-transparent hover:border-emerald-500/50">
+                        <div>
+                            <p class="font-bold text-white leading-tight text-sm">${l.company || 'Unknown'}</p>
+                            <p class="text-[10px] text-slate-400 font-mono mt-1"><i class="fa-solid fa-phone text-blue-400 mr-1"></i>${l.phone || '--'} • ${l.source||'--'}</p>
+                        </div>
+                        <div class="font-mono font-bold text-emerald-400 text-sm"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Value</span>₹${(Number(l.value)||0).toLocaleString('en-IN')}</div>
+                        <div><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Rep</span><span class="text-xs font-bold text-slate-300">${l.rep || 'Unassigned'}</span></div>
+                        <div>
+                            <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Status</span>
+                            <select onchange="updateInlineStatus('${l.id}', 'sales', this.value)" class="bg-black/60 border border-white/10 rounded-lg px-2 py-1.5 text-[10px] md:text-xs font-bold ${getSalesColor(l.status)} focus:outline-none cursor-pointer appearance-none w-full shadow-inner">
+                                ${getSalesStatusOptions(l.status)}
+                            </select>
+                        </div>
+                        <div class="flex justify-end gap-2 whitespace-nowrap">
+                            <button onclick="openEditLeadModal('${l.id}')" class="bg-rose-500/20 text-rose-400 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors hover:bg-rose-500/40" title="Override"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="openTimeline('${l.id}', 'sales')" class="bg-white/5 hover:bg-white/20 text-slate-300 px-3 py-1.5 rounded-lg text-xs transition-colors" title="Timeline"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                            <button onclick="deleteDocItem('sales_leads', '${l.id}')" class="text-slate-500 hover:text-red-400 p-2" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>`
+                ).join('') || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-folder-open text-3xl mb-2 opacity-20"></i><p>No sales deals match.</p></div>';
+                safeHTML('master-leads-body', html);
+            } catch(e) { console.error("Render Sales Error", e); }
         }
-        document.getElementById('search-leads').addEventListener('input', () => renderSalesPipeline());
+        const slSearch = document.getElementById('search-leads');
+        if(slSearch) slSearch.addEventListener('input', () => renderSalesPipeline());
 
         // --- CREATIVE DB ---
         window.setCreativeFilter = function(filter) {
             currentCreativeFilter = filter;
-            document.getElementById('cf-all').classList.remove('active');
-            document.getElementById('cf-active').classList.remove('active');
-            document.getElementById('cf-review').classList.remove('active');
-            
+            document.querySelectorAll('#tab-creative-pipeline .filter-pill').forEach(el => el.classList.remove('active'));
             if(filter === 'All') document.getElementById('cf-all').classList.add('active');
             if(filter === 'In Progress') document.getElementById('cf-active').classList.add('active');
             if(filter === 'Review') document.getElementById('cf-review').classList.add('active');
-            
             renderCreativePipeline();
         }
 
         function getCreativeColor(s) {
             const map = { 'In Progress': 'text-cyan-400', 'Internal Review': 'text-indigo-400', 'Client Review': 'text-purple-400', 'Revision Requested': 'text-rose-400', 'Approved & Completed': 'text-emerald-400' };
-            return map[s] || 'text-slate-400';
+            return map[s||''] || 'text-slate-400';
         }
         function getCreativeStatusOptions(curr) { return CREATIVE_STATUSES.map(s => `<option value="${s}" ${s === curr ? 'selected' : ''} class="bg-slate-900 text-white">${s}</option>`).join(''); }
 
         window.renderCreativePipeline = function() {
-            const filterText = document.getElementById('search-creative').value.toLowerCase();
-            
-            const filtered = allCreatives.filter(c => {
-                const textMatch = (c.title||'').toLowerCase().includes(filterText) || (c.assignee||'').toLowerCase().includes(filterText) || (c.client||'').toLowerCase().includes(filterText) || (c.status||'').toLowerCase().includes(filterText);
+            try {
+                const searchEl = document.getElementById('search-creative');
+                const filterText = searchEl ? searchEl.value.toLowerCase() : '';
                 
-                let statusMatch = true;
-                if(currentCreativeFilter === 'In Progress') statusMatch = c.status === 'In Progress' || c.status === 'Revision Requested' || c.status === 'Awaiting Assets';
-                if(currentCreativeFilter === 'Review') statusMatch = c.status === 'Internal Review' || c.status === 'Client Review';
+                const filtered = allCreatives.filter(c => {
+                    const textMatch = (c.title||'').toLowerCase().includes(filterText) || (c.assignee||'').toLowerCase().includes(filterText) || (c.client||'').toLowerCase().includes(filterText) || (c.status||'').toLowerCase().includes(filterText);
+                    let statusMatch = true;
+                    if(currentCreativeFilter === 'In Progress') statusMatch = c.status === 'In Progress' || c.status === 'Revision Requested' || c.status === 'Awaiting Assets';
+                    if(currentCreativeFilter === 'Review') statusMatch = c.status === 'Internal Review' || c.status === 'Client Review';
+                    return textMatch && statusMatch;
+                });
 
-                return textMatch && statusMatch;
-            });
-
-            document.getElementById('master-creative-body').innerHTML = filtered.map(c => `
-                <div class="responsive-grid creative-grid hover:bg-white/5 border-l-2 ${c.status==='Approved & Completed'?'border-l-emerald-500':'border-l-cyan-500'}">
-                    <div>
-                        <p class="font-bold text-white leading-tight text-sm">${c.title}</p>
-                        <p class="text-[10px] text-slate-400 font-mono mt-1"><i class="fa-solid fa-user-tag text-purple-400 mr-1"></i>${c.assignee || 'Unassigned'}</p>
-                    </div>
-                    <div class="text-xs text-slate-300"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Format</span>${c.type}<br><span class="text-[10px] text-slate-500 mt-1 inline-block">${c.client}</span></div>
-                    <div class="text-xs font-mono text-slate-400"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Deadline</span>${new Date(c.deadline).toLocaleDateString()}</div>
-                    <div>
-                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Status</span>
-                        <select onchange="updateInlineStatus('${c.id}', 'creative', this.value)" class="bg-black/60 border border-white/10 rounded-lg px-2 py-1.5 text-[10px] md:text-xs font-bold ${getCreativeColor(c.status)} focus:outline-none cursor-pointer appearance-none w-full shadow-inner">
-                            ${getCreativeStatusOptions(c.status)}
-                        </select>
-                    </div>
-                    <div class="flex justify-end gap-2 items-center flex-wrap">
-                        <a href="${c.raw_link}" target="_blank" class="bg-blue-500/10 hover:bg-blue-500/30 transition-colors text-blue-400 px-3 py-1.5 rounded-lg text-xs" title="Raw Assets"><i class="fa-solid fa-folder-open"></i></a>
-                        ${c.inspiration ? `<a href="${c.inspiration}" target="_blank" class="bg-yellow-500/10 hover:bg-yellow-500/30 transition-colors text-yellow-400 px-3 py-1.5 rounded-lg text-xs" title="Inspiration Reference"><i class="fa-solid fa-lightbulb"></i></a>` : ''}
-                        ${c.final_link ? `<a href="${c.final_link}" target="_blank" class="bg-emerald-500/10 hover:bg-emerald-500/30 transition-colors text-emerald-400 px-3 py-1.5 rounded-lg text-xs" title="Final Link"><i class="fa-solid fa-play"></i></a>` : ''}
-                        <button onclick="openTimeline('${c.id}', 'creative')" class="bg-white/5 hover:bg-white/20 text-slate-300 px-3 py-1.5 rounded-lg text-xs transition-colors" title="Timeline"><i class="fa-solid fa-clock-rotate-left"></i></button>
-                        <button onclick="deleteDocItem('creative_tasks', '${c.id}')" class="text-slate-500 hover:text-red-400 p-2" title="Delete"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                </div>`
-            ).join('') || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-clapperboard text-3xl mb-2 opacity-20"></i><p>No creative briefs match.</p></div>';
+                const html = filtered.map(c => `
+                    <div class="responsive-grid creative-grid hover:bg-white/5 border-l-2 ${c.status==='Approved & Completed'?'border-l-emerald-500':'border-l-cyan-500'}">
+                        <div>
+                            <p class="font-bold text-white leading-tight text-sm">${c.title || 'Untitled'}</p>
+                            <p class="text-[10px] text-slate-400 font-mono mt-1"><i class="fa-solid fa-user-tag text-purple-400 mr-1"></i>${c.assignee || 'Unassigned'}</p>
+                        </div>
+                        <div class="text-xs text-slate-300"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Format</span>${c.type||'--'}<br><span class="text-[10px] text-slate-500 mt-1 inline-block">${c.client||'--'}</span></div>
+                        <div class="text-xs font-mono text-slate-400"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Deadline</span>${c.deadline ? new Date(c.deadline).toLocaleDateString() : '--'}</div>
+                        <div>
+                            <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Status</span>
+                            <select onchange="updateInlineStatus('${c.id}', 'creative', this.value)" class="bg-black/60 border border-white/10 rounded-lg px-2 py-1.5 text-[10px] md:text-xs font-bold ${getCreativeColor(c.status)} focus:outline-none cursor-pointer appearance-none w-full shadow-inner">
+                                ${getCreativeStatusOptions(c.status)}
+                            </select>
+                        </div>
+                        <div class="flex justify-end gap-2 items-center flex-wrap">
+                            <a href="${c.raw_link}" target="_blank" class="bg-blue-500/10 hover:bg-blue-500/30 transition-colors text-blue-400 px-3 py-1.5 rounded-lg text-xs" title="Raw Assets"><i class="fa-solid fa-folder-open"></i></a>
+                            ${c.inspiration ? `<a href="${c.inspiration}" target="_blank" class="bg-yellow-500/10 hover:bg-yellow-500/30 transition-colors text-yellow-400 px-3 py-1.5 rounded-lg text-xs" title="Inspiration"><i class="fa-solid fa-lightbulb"></i></a>` : ''}
+                            ${c.final_link ? `<a href="${c.final_link}" target="_blank" class="bg-emerald-500/10 hover:bg-emerald-500/30 transition-colors text-emerald-400 px-3 py-1.5 rounded-lg text-xs" title="Final Link"><i class="fa-solid fa-play"></i></a>` : ''}
+                            <button onclick="openTimeline('${c.id}', 'creative')" class="bg-white/5 hover:bg-white/20 text-slate-300 px-3 py-1.5 rounded-lg text-xs transition-colors" title="Timeline"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                            <button onclick="deleteDocItem('creative_tasks', '${c.id}')" class="text-slate-500 hover:text-red-400 p-2" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>`
+                ).join('') || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-clapperboard text-3xl mb-2 opacity-20"></i><p>No creative briefs match.</p></div>';
+                safeHTML('master-creative-body', html);
+            } catch(e) { console.error("Render Creative Error", e); }
         }
-        document.getElementById('search-creative').addEventListener('input', () => renderCreativePipeline());
+        const crSearch = document.getElementById('search-creative');
+        if(crSearch) crSearch.addEventListener('input', () => renderCreativePipeline());
 
         window.updateInlineStatus = async (id, type, newStatus) => {
             const collectionName = type === 'sales' ? 'sales_leads' : 'creative_tasks';
@@ -1009,133 +1041,131 @@
         };
 
         window.openAssignCreativeModal = () => {
-            const select = document.getElementById('crt-assignee');
-            const creatives = allUsers.filter(u => u.role.includes('Editor') || u.role.includes('Designer') || u.role.includes('Creative'));
-            select.innerHTML = '<option value="">Unassigned</option>' + creatives.map(u => `<option value="${u.name}">${u.name} (${u.role})</option>`).join('');
-            document.getElementById('form-creative-project').reset();
+            const creatives = allUsers.filter(u => (u.role||'').includes('Editor') || (u.role||'').includes('Designer') || (u.role||'').includes('Creative'));
+            safeHTML('crt-assignee', '<option value="">Unassigned</option>' + creatives.map(u => `<option value="${u.name}">${u.name} (${u.role})</option>`).join(''));
+            const form = document.getElementById('form-creative-project');
+            if(form) form.reset();
             document.getElementById('crt-id').value = '';
-            document.getElementById('crt-modal-title').innerHTML = '<i class="fa-solid fa-wand-magic-sparkles text-cyan-500 mr-2"></i> Assign Creative Brief';
-            document.getElementById('modal-creative-project').classList.add('active');
+            safeShowModal('modal-creative-project');
         }
 
-        document.getElementById('form-creative-project').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('crt-id').value;
-            const data = {
-                title: document.getElementById('crt-title').value.trim(), client: document.getElementById('crt-client').value.trim(),
-                type: document.getElementById('crt-type').value, deadline: document.getElementById('crt-deadline').value,
-                raw_link: document.getElementById('crt-raw').value.trim(), inspiration: document.getElementById('crt-inspiration').value.trim(),
-                assignee: document.getElementById('crt-assignee').value, status: document.getElementById('crt-status').value, 
-                notes: document.getElementById('crt-notes').value.trim()
-            };
+        const crtForm = document.getElementById('form-creative-project');
+        if(crtForm) {
+            crtForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = document.getElementById('crt-id').value;
+                const data = {
+                    title: document.getElementById('crt-title').value.trim(), client: document.getElementById('crt-client').value.trim(),
+                    type: document.getElementById('crt-type').value, deadline: document.getElementById('crt-deadline').value,
+                    raw_link: document.getElementById('crt-raw').value.trim(), inspiration: document.getElementById('crt-inspiration').value.trim(),
+                    assignee: document.getElementById('crt-assignee').value, status: document.getElementById('crt-status').value, 
+                    notes: document.getElementById('crt-notes').value.trim()
+                };
 
-            try {
-                if(id) {
-                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'creative_tasks', id), data);
-                    logAudit(`Updated Creative Brief: ${data.title}`);
-                } else {
-                    data.timestamp = Date.now();
-                    data.history = [{ note: `Brief assigned by Admin`, date: new Date().toISOString(), user: 'Chief Executive' }];
-                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'creative_tasks'), data);
-                    logAudit(`Assigned New Brief: ${data.title} to ${data.assignee}`);
-                }
-                showToast("Brief deployed!"); closeModals();
-            } catch(e) { showToast("Error saving brief", true); }
-        });
-
+                try {
+                    if(id) {
+                        await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'creative_tasks', id), data);
+                        logAudit(`Updated Creative Brief: ${data.title}`);
+                    } else {
+                        data.timestamp = Date.now();
+                        data.history = [{ note: `Brief assigned by Admin`, date: new Date().toISOString(), user: 'Chief Executive' }];
+                        await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'creative_tasks'), data);
+                        logAudit(`Assigned New Brief: ${data.title} to ${data.assignee}`);
+                    }
+                    showToast("Brief deployed!"); closeModals();
+                } catch(e) { showToast("Error saving brief", true); }
+            });
+        }
 
         // --- HR TICKETS ---
         function renderTickets() {
-            let openC = 0;
-            const html = allTickets.map(t => {
-                if(t.status === 'Open') openC++;
-                const statusColor = t.status === 'Open' ? 'text-yellow-400 bg-yellow-500/10' : (t.status === 'Resolved' ? 'text-emerald-400 bg-emerald-500/10' : 'text-blue-400 bg-blue-500/10');
-                return `
-                <div class="responsive-grid hr-grid hover:bg-white/5">
-                    <div class="font-mono text-[10px] text-slate-400"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Date</span>${new Date(t.timestamp).toLocaleDateString()}</div>
-                    <div>
-                        <p class="font-bold text-white text-sm leading-tight">${t.subject}</p>
-                        <p class="text-[10px] text-purple-400 font-mono mt-1"><i class="fa-solid fa-user mr-1"></i>${t.rep}</p>
-                    </div>
-                    <div class="text-xs text-slate-300"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Category</span><span class="bg-white/5 px-2.5 py-1 rounded-md border border-white/5">${t.category}</span></div>
-                    <div><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Status</span><span class="px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider ${statusColor}">${t.status}</span></div>
-                    <div class="text-right">
-                        <button onclick="openManageTicket('${t.id}')" class="bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 px-4 py-2 rounded-lg text-xs font-bold transition-colors w-full md:w-auto border border-blue-500/20">Manage</button>
-                    </div>
-                </div>`
-            }).join('');
-            document.getElementById('hr-tickets-body').innerHTML = html || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-check-circle text-3xl mb-2 opacity-20"></i><p>No open tickets.</p></div>';
-            document.getElementById('hr-open-count').innerText = openC;
+            try {
+                let openC = 0;
+                const html = allTickets.map(t => {
+                    if(t.status === 'Open') openC++;
+                    const statusColor = t.status === 'Open' ? 'text-yellow-400 bg-yellow-500/10' : (t.status === 'Resolved' ? 'text-emerald-400 bg-emerald-500/10' : 'text-blue-400 bg-blue-500/10');
+                    return `
+                    <div class="responsive-grid hr-grid hover:bg-white/5">
+                        <div class="font-mono text-[10px] text-slate-400"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Date</span>${new Date(t.timestamp).toLocaleDateString()}</div>
+                        <div>
+                            <p class="font-bold text-white text-sm leading-tight">${t.subject||'--'}</p>
+                            <p class="text-[10px] text-purple-400 font-mono mt-1"><i class="fa-solid fa-user mr-1"></i>${t.rep||'--'}</p>
+                        </div>
+                        <div class="text-xs text-slate-300"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Category</span><span class="bg-white/5 px-2.5 py-1 rounded-md border border-white/5">${t.category||'--'}</span></div>
+                        <div><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Status</span><span class="px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider ${statusColor}">${t.status||'--'}</span></div>
+                        <div class="text-right">
+                            <button onclick="openManageTicket('${t.id}')" class="bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 px-4 py-2 rounded-lg text-xs font-bold transition-colors w-full md:w-auto border border-blue-500/20">Manage</button>
+                        </div>
+                    </div>`
+                }).join('');
+                safeHTML('hr-tickets-body', html || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-check-circle text-3xl mb-2 opacity-20"></i><p>No open tickets.</p></div>');
+            } catch(e) { console.error("Render Ticket Error", e); }
         }
 
         // --- PAYROLL ENGINE ---
         function renderPayroll() {
-            let totalAwarded = 0;
-            document.getElementById('payroll-grid').innerHTML = allUsers.map(user => {
-                const aw = Number(user.commission_awarded)||0; const pd = Number(user.commission_paid)||0; const pen = Math.max(0, aw - pd);
-                totalAwarded += aw;
-                
-                // Show reference deals based on role
-                let referenceHtml = '';
-                if(user.role.includes('Sales')) {
-                    const won = allLeads.filter(l => l.rep === user.name && l.status === 'Closed Won').map(d => `<div class="flex justify-between text-[10px] text-slate-400 border-b border-white/5 pb-1 mb-1"><span>${d.company}</span><span class="font-mono text-emerald-400">₹${Number(d.value).toLocaleString('en-IN')}</span></div>`).join('');
-                    referenceHtml = `<p class="text-[9px] text-slate-500 uppercase font-bold mb-2">Closed Won Deals:</p><div class="max-h-20 overflow-y-auto pr-2 custom-scrollbar">${won || '<p class="text-xs text-slate-600 italic">No won deals.</p>'}</div>`;
-                } else {
-                    const comp = allCreatives.filter(c => c.assignee === user.name && c.status === 'Approved & Completed').map(d => `<div class="flex justify-between text-[10px] text-slate-400 border-b border-white/5 pb-1 mb-1"><span>${d.title}</span><span class="font-mono text-cyan-400">${d.type}</span></div>`).join('');
-                    referenceHtml = `<p class="text-[9px] text-slate-500 uppercase font-bold mb-2">Completed Briefs:</p><div class="max-h-20 overflow-y-auto pr-2 custom-scrollbar">${comp || '<p class="text-xs text-slate-600 italic">No completed briefs.</p>'}</div>`;
-                }
+            try {
+                let totalAwarded = 0;
+                const html = allUsers.map(user => {
+                    const aw = Number(user.commission_awarded)||0; 
+                    const pd = Number(user.commission_paid)||0; 
+                    const pen = Math.max(0, aw - pd);
+                    totalAwarded += aw;
+                    const role = user.role || '';
+                    const name = user.name || 'Unknown Staff';
+                    
+                    let referenceHtml = '';
+                    if(role.includes('Sales') || role.includes('Executive')) {
+                        const won = allLeads.filter(l => l.rep === name && l.status === 'Closed Won').map(d => `<div class="flex justify-between text-[10px] text-slate-400 border-b border-white/5 pb-1 mb-1"><span>${d.company||'--'}</span><span class="font-mono text-emerald-400">₹${(Number(d.value)||0).toLocaleString('en-IN')}</span></div>`).join('');
+                        referenceHtml = `<p class="text-[9px] text-slate-500 uppercase font-bold mb-2">Closed Won Deals:</p><div class="max-h-20 overflow-y-auto pr-2 custom-scrollbar">${won || '<p class="text-xs text-slate-600 italic">No won deals.</p>'}</div>`;
+                    } else {
+                        const comp = allCreatives.filter(c => c.assignee === name && c.status === 'Approved & Completed').map(d => `<div class="flex justify-between text-[10px] text-slate-400 border-b border-white/5 pb-1 mb-1"><span>${d.title||'--'}</span><span class="font-mono text-cyan-400">${d.type||'--'}</span></div>`).join('');
+                        referenceHtml = `<p class="text-[9px] text-slate-500 uppercase font-bold mb-2">Completed Briefs:</p><div class="max-h-20 overflow-y-auto pr-2 custom-scrollbar">${comp || '<p class="text-xs text-slate-600 italic">No completed briefs.</p>'}</div>`;
+                    }
 
-                return `
-                <div class="card-ceo p-5 border border-white/5 flex flex-col">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="flex items-center gap-3">
-                            <img src="https://ui-avatars.com/api/?name=${user.name.replace(/ /g, '+')}&background=0f172a&color=fff" class="w-10 h-10 rounded-full border border-slate-600 shrink-0">
-                            <div>
-                                <h4 class="font-bold text-white flex items-center gap-2">${user.name} <span class="text-[9px] bg-white/10 px-2 py-0.5 rounded text-slate-300 font-normal">${user.status}</span></h4>
-                                <p class="text-[10px] text-slate-400 font-mono">Role: ${user.role}</p>
+                    return `
+                    <div class="card-ceo p-5 border border-white/5 flex flex-col">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center gap-3">
+                                <img src="https://ui-avatars.com/api/?name=${name.replace(/ /g, '+')}&background=0f172a&color=fff" class="w-10 h-10 rounded-full border border-slate-600 shrink-0">
+                                <div>
+                                    <h4 class="font-bold text-white flex items-center gap-2">${name} <span class="text-[9px] bg-white/10 px-2 py-0.5 rounded text-slate-300 font-normal">${user.status||'--'}</span></h4>
+                                    <p class="text-[10px] text-slate-400 font-mono">Role: ${role}</p>
+                                </div>
                             </div>
+                            <button onclick="openAwardModal('${user.id}', '${name}')" class="bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-400 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors shrink-0 border border-emerald-500/20"><i class="fa-solid fa-plus"></i> Payout</button>
                         </div>
-                        <button onclick="openAwardModal('${user.id}', '${user.name}')" class="bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-400 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors shrink-0 border border-emerald-500/20"><i class="fa-solid fa-plus"></i> Payout</button>
-                    </div>
-                    <div class="flex-1 mb-4">${referenceHtml}</div>
-                    <div class="grid grid-cols-3 gap-2 mb-4 bg-black/40 p-3 rounded-xl border border-white/5">
-                        <div><p class="text-[9px] text-slate-500 uppercase font-bold">Awarded</p><p class="font-mono font-bold text-purple-400 text-sm">₹${aw.toLocaleString('en-IN')}</p></div>
-                        <div><p class="text-[9px] text-slate-500 uppercase font-bold">Paid</p><p class="font-mono font-bold text-slate-300 text-sm">₹${pd.toLocaleString('en-IN')}</p></div>
-                        <div><p class="text-[9px] text-rose-500 uppercase font-bold">Pending</p><p class="font-mono font-bold ${pen>0?'text-rose-400':'text-slate-500'} text-sm">₹${pen.toLocaleString('en-IN')}</p></div>
-                    </div>
-                    <button onclick="releasePayment('${user.id}', ${pen}, '${user.name}')" ${pen<=0?'disabled':''} class="w-full py-3 rounded-xl text-sm font-bold transition-all ${pen>0?'bg-rose-600 hover:bg-rose-500 text-white shadow-lg':'bg-slate-800 text-slate-500'}"><i class="fa-solid fa-money-bill-transfer"></i> Clear Pending Balance</button>
-                </div>`
-            }).join('') || '<p class="text-slate-500">No staff loaded.</p>';
-
-            document.getElementById('stat-all-awarded').innerText = "₹" + totalAwarded.toLocaleString('en-IN');
+                        <div class="flex-1 mb-4">${referenceHtml}</div>
+                        <div class="grid grid-cols-3 gap-2 mb-4 bg-black/40 p-3 rounded-xl border border-white/5">
+                            <div><p class="text-[9px] text-slate-500 uppercase font-bold">Awarded</p><p class="font-mono font-bold text-purple-400 text-sm">₹${aw.toLocaleString('en-IN')}</p></div>
+                            <div><p class="text-[9px] text-slate-500 uppercase font-bold">Paid</p><p class="font-mono font-bold text-slate-300 text-sm">₹${pd.toLocaleString('en-IN')}</p></div>
+                            <div><p class="text-[9px] text-rose-500 uppercase font-bold">Pending</p><p class="font-mono font-bold ${pen>0?'text-rose-400':'text-slate-500'} text-sm">₹${pen.toLocaleString('en-IN')}</p></div>
+                        </div>
+                        <button onclick="releasePayment('${user.id}', ${pen}, '${name}')" ${pen<=0?'disabled':''} class="w-full py-3 rounded-xl text-sm font-bold transition-all ${pen>0?'bg-rose-600 hover:bg-rose-500 text-white shadow-lg':'bg-slate-800 text-slate-500 cursor-not-allowed'}"><i class="fa-solid fa-money-bill-transfer"></i> Clear Pending Balance</button>
+                    </div>`
+                }).join('');
+                
+                safeHTML('payroll-grid', html || '<p class="text-slate-500 col-span-full py-8 text-center">No staff loaded.</p>');
+                safeText('stat-all-awarded', "₹" + totalAwarded.toLocaleString('en-IN'));
+            } catch(e) { console.error("Render Payroll Error", e); }
         }
 
         // ================= MODAL ACTIONS =================
 
-        // ADD USER
-        document.getElementById('form-add-user').addEventListener('submit', async (e) => {
-            e.preventDefault(); const btn = document.getElementById('btn-save-user'); btn.disabled = true;
-            try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'team_users'), {
-                    name: document.getElementById('usr-name').value.trim(), email: document.getElementById('usr-email').value.trim(), role: document.getElementById('usr-role').value,
-                    upi: document.getElementById('usr-upi').value.trim(), password: document.getElementById('usr-pass').value.trim(), commission_awarded: 0, commission_paid: 0, status: 'Active', timestamp: Date.now()
-                });
-                logAudit(`Hired new staff: ${document.getElementById('usr-name').value}`); showToast("Staff Authorized"); document.getElementById('form-add-user').reset(); closeModals();
-            } catch (err) { showToast("Error", true); } finally { btn.disabled = false; }
-        });
-
         window.toggleUserStatus = async (id, stat) => {
             const ns = stat === 'Active' ? 'Suspended' : 'Active';
             if(confirm(`Change status to ${ns}?`)) {
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', id), { status: ns }); logAudit(`Staff ${id} -> ${ns}`); showToast("Updated");
+                try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', id), { status: ns }); logAudit(`Staff ${id} -> ${ns}`); showToast("Updated"); } catch(e) {}
             }
         };
-        window.deleteUser = async (id) => { if(confirm("CRITICAL: Delete staff permanently?")) { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', id)); logAudit(`Deleted staff ${id}`); showToast("Deleted"); } };
+        window.deleteUser = async (id) => { if(confirm("CRITICAL: Delete staff permanently?")) { try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', id)); logAudit(`Deleted staff ${id}`); showToast("Deleted"); } catch(e){} } };
 
         // SALES OVERRIDE
         function populateRepDropdowns() {
-            const salesOpts = '<option value="">Unassigned</option>' + allUsers.filter(u => u.role.includes('Sales') || u.role.includes('Executive')).map(u => `<option value="${u.name}">${u.name}</option>`).join('');
-            document.getElementById('edit-ld-rep').innerHTML = salesOpts;
+            try {
+                const salesOpts = '<option value="">Unassigned</option>' + allUsers.filter(u => (u.role||'').includes('Sales') || (u.role||'').includes('Executive')).map(u => `<option value="${u.name}">${u.name}</option>`).join('');
+                safeHTML('edit-ld-rep', salesOpts);
+            } catch(e) {}
         }
 
         window.openEditLeadModal = (id) => {
@@ -1146,20 +1176,23 @@
             document.getElementById('edit-ld-source').value = l.source || 'Cold Email'; document.getElementById('edit-ld-nextaction').value = l.nextAction || '';
             document.getElementById('edit-ld-rep').value = l.rep || ''; document.getElementById('edit-ld-status').value = l.status || 'New Lead';
             document.getElementById('edit-ld-notes').value = l.notes || '';
-            document.getElementById('modal-edit-lead').classList.add('active');
+            safeShowModal('modal-edit-lead');
         };
 
-        document.getElementById('form-edit-lead').addEventListener('submit', async (e) => {
-            e.preventDefault(); const id = document.getElementById('edit-ld-id').value; const comp = document.getElementById('edit-ld-company').value;
-            const up = {
-                company: comp, value: Number(document.getElementById('edit-ld-value').value), contact: document.getElementById('edit-ld-contact').value, phone: document.getElementById('edit-ld-phone').value,
-                source: document.getElementById('edit-ld-source').value, nextAction: document.getElementById('edit-ld-nextaction').value,
-                rep: document.getElementById('edit-ld-rep').value, status: document.getElementById('edit-ld-status').value, notes: document.getElementById('edit-ld-notes').value.trim()
-            };
-            try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), up); logAudit(`Overrode sales deal: ${comp}`); showToast("Override Executed"); closeModals(); } catch(e) { showToast("Error", true); }
-        });
+        const editForm = document.getElementById('form-edit-lead');
+        if(editForm) {
+            editForm.addEventListener('submit', async (e) => {
+                e.preventDefault(); const id = document.getElementById('edit-ld-id').value; const comp = document.getElementById('edit-ld-company').value;
+                const up = {
+                    company: comp, value: Number(document.getElementById('edit-ld-value').value), contact: document.getElementById('edit-ld-contact').value, phone: document.getElementById('edit-ld-phone').value,
+                    source: document.getElementById('edit-ld-source').value, nextAction: document.getElementById('edit-ld-nextaction').value,
+                    rep: document.getElementById('edit-ld-rep').value, status: document.getElementById('edit-ld-status').value, notes: document.getElementById('edit-ld-notes').value.trim()
+                };
+                try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), up); logAudit(`Overrode sales deal: ${comp}`); showToast("Override Executed"); closeModals(); } catch(e) { showToast("Error", true); }
+            });
+        }
 
-        window.deleteDocItem = async (collectionName, id) => { if(confirm("CRITICAL: Delete record permanently?")) { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', collectionName, id)); logAudit(`Deleted from ${collectionName}: ${id}`); } };
+        window.deleteDocItem = async (collectionName, id) => { if(confirm("CRITICAL: Delete record permanently?")) { try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', collectionName, id)); logAudit(`Deleted from ${collectionName}: ${id}`); } catch(e){} } };
 
         // TIMELINE
         window.openTimeline = (id, type) => {
@@ -1168,22 +1201,23 @@
 
             if(type === 'sales') {
                 const l = allLeads.find(x => x.id === id); if(!l) return;
-                title = l.company; meta1 = `<i class="fa-solid fa-user mr-1.5 text-purple-400"></i>${l.contact || 'N/A'}`; meta2 = `<i class="fa-solid fa-phone mr-1.5 text-blue-400"></i><a href="tel:${l.phone}">${l.phone}</a>`; meta3 = `₹${Number(l.value).toLocaleString('en-IN')}`; hist = l.history || [];
+                title = l.company; meta1 = `<i class="fa-solid fa-user mr-1.5 text-purple-400"></i>${l.contact || 'N/A'}`; meta2 = `<i class="fa-solid fa-phone mr-1.5 text-blue-400"></i><a href="tel:${l.phone}">${l.phone||'--'}</a>`; meta3 = `₹${(Number(l.value)||0).toLocaleString('en-IN')}`; hist = l.history || [];
             } else {
                 const c = allCreatives.find(x => x.id === id); if(!c) return;
-                title = c.title; meta1 = `<i class="fa-solid fa-briefcase mr-1.5 text-cyan-400"></i>${c.client}`; meta2 = `<i class="fa-solid fa-film mr-1.5 text-indigo-400"></i>${c.type}`; meta3 = `Due: ${new Date(c.deadline).toLocaleDateString()}`; hist = c.history || [];
+                title = c.title; meta1 = `<i class="fa-solid fa-briefcase mr-1.5 text-cyan-400"></i>${c.client||'--'}`; meta2 = `<i class="fa-solid fa-film mr-1.5 text-indigo-400"></i>${c.type||'--'}`; meta3 = `Due: ${c.deadline ? new Date(c.deadline).toLocaleDateString() : '--'}`; hist = c.history || [];
             }
 
-            document.getElementById('tl-company').innerText = title;
-            document.getElementById('tl-meta-bar').innerHTML = `
+            safeText('tl-company', title || '--');
+            safeHTML('tl-meta-bar', `
                 <span class="flex items-center bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">${meta1}</span>
                 <span class="flex items-center bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">${meta2}</span>
                 <span class="font-bold bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-lg border border-emerald-500/20 ml-auto md:ml-0">${meta3}</span>
-            `;
+            `);
             
-            document.getElementById('tl-history-list').innerHTML = hist.slice().reverse().map(h => `<div class="pl-6 border-l-2 border-purple-500/50 relative py-1 group"><div class="absolute w-3 h-3 bg-purple-500 rounded-full -left-[7px] top-2 shadow-[0_0_10px_#a855f7] group-hover:scale-125 transition-transform"></div><p class="text-sm font-bold text-white">${h.note}</p><p class="text-[10px] text-slate-400 font-mono mt-1.5 bg-black/30 inline-block px-2 py-0.5 rounded border border-white/5"><i class="fa-regular fa-clock mr-1"></i>${new Date(h.date).toLocaleString()} • <i class="fa-solid fa-user-pen ml-2 mr-1"></i>${h.user}</p></div>`).join('') || '<p class="text-sm text-slate-500 italic p-4 bg-white/5 rounded-xl border border-white/5 text-center">No history logged yet.</p>';
+            const histHtml = hist.slice().reverse().map(h => `<div class="pl-6 border-l-2 border-purple-500/50 relative py-1 group"><div class="absolute w-3 h-3 bg-purple-500 rounded-full -left-[7px] top-2 shadow-[0_0_10px_#a855f7] group-hover:scale-125 transition-transform"></div><p class="text-sm font-bold text-white">${h.note}</p><p class="text-[10px] text-slate-400 font-mono mt-1.5 bg-black/30 inline-block px-2 py-0.5 rounded border border-white/5">${h.date ? new Date(h.date).toLocaleString() : '--'} • ${h.user||'--'}</p></div>`).join('');
+            safeHTML('tl-history-list', histHtml || '<p class="text-sm text-slate-500 italic p-4 bg-white/5 rounded-xl border border-white/5 text-center">No history logged yet.</p>');
             
-            document.getElementById('tl-new-note').value = ''; document.getElementById('modal-timeline').classList.add('active');
+            document.getElementById('tl-new-note').value = ''; safeShowModal('modal-timeline');
         };
 
         window.addTimelineEvent = async () => {
@@ -1196,36 +1230,43 @@
         };
 
         // PAYROLL & TICKETS
-        window.openAwardModal = (id, name) => { document.getElementById('award-user-id').value = id; document.getElementById('award-rep-name').innerText = name; document.getElementById('award-reason').value=''; document.getElementById('award-amount').value=''; document.getElementById('modal-award').classList.add('active'); };
-        document.getElementById('form-award').addEventListener('submit', async (e) => {
-            e.preventDefault(); const id = document.getElementById('award-user-id').value; const amt = Number(document.getElementById('award-amount').value); const rsn = document.getElementById('award-reason').value;
-            if(amt<=0) return; const u = allUsers.find(x=>x.id===id);
-            try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', id), { commission_awarded: (Number(u.commission_awarded)||0) + amt }); logAudit(`Awarded ₹${amt} to ${u.name}`); showToast("Awarded"); closeModals(); } catch(e) { showToast("Error", true); }
-        });
+        window.openAwardModal = (id, name) => { document.getElementById('award-user-id').value = id; safeText('award-rep-name', name); document.getElementById('award-reason').value=''; document.getElementById('award-amount').value=''; safeShowModal('modal-award'); };
+        
+        const formAward = document.getElementById('form-award');
+        if(formAward) {
+            formAward.addEventListener('submit', async (e) => {
+                e.preventDefault(); const id = document.getElementById('award-user-id').value; const amt = Number(document.getElementById('award-amount').value);
+                if(amt<=0) return; const u = allUsers.find(x=>x.id===id); if(!u) return;
+                try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', id), { commission_awarded: (Number(u.commission_awarded)||0) + amt }); logAudit(`Awarded ₹${amt} to ${u.name}`); showToast("Awarded"); closeModals(); } catch(e) { showToast("Error", true); }
+            });
+        }
 
         window.releasePayment = async (id, amt, name) => {
             if(amt<=0) return;
             if(confirm(`Mark ₹${amt.toLocaleString('en-IN')} as PAID to ${name}?`)) {
-                const u = allUsers.find(x=>x.id===id);
+                const u = allUsers.find(x=>x.id===id); if(!u) return;
                 try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', id), { commission_paid: (Number(u.commission_paid)||0) + amt }); logAudit(`Cleared liability ₹${amt} for ${name}`); showToast("Released"); } catch(e) {}
             }
         };
 
         window.openManageTicket = (id) => {
             const t = allTickets.find(x=>x.id===id); if(!t) return;
-            document.getElementById('mng-tk-id').value = id; document.getElementById('mng-tk-subject').innerText = t.subject;
-            document.getElementById('mng-tk-rep').innerText = `${t.rep} • ${t.category}`; document.getElementById('mng-tk-details').innerText = t.details;
-            document.getElementById('mng-tk-status').value = t.status;
-            document.getElementById('modal-manage-ticket').classList.add('active');
+            document.getElementById('mng-tk-id').value = id; safeText('mng-tk-subject', t.subject||'--');
+            safeText('mng-tk-rep', `${t.rep||'--'} • ${t.category||'--'}`); safeText('mng-tk-details', t.details||'--');
+            document.getElementById('mng-tk-status').value = t.status || 'Open';
+            safeShowModal('modal-manage-ticket');
         };
-        document.getElementById('form-manage-ticket').addEventListener('submit', async (e) => {
-            e.preventDefault(); const id = document.getElementById('mng-tk-id').value; const ns = document.getElementById('mng-tk-status').value;
-            try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'hr_tickets', id), { status: ns }); logAudit(`Updated HR Ticket to ${ns}`); showToast("Ticket Updated"); closeModals(); } catch(e) {}
-        });
+        
+        const formMngTk = document.getElementById('form-manage-ticket');
+        if(formMngTk) {
+            formMngTk.addEventListener('submit', async (e) => {
+                e.preventDefault(); const id = document.getElementById('mng-tk-id').value; const ns = document.getElementById('mng-tk-status').value;
+                try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'hr_tickets', id), { status: ns }); logAudit(`Updated HR Ticket to ${ns}`); showToast("Ticket Updated"); closeModals(); } catch(e) {}
+            });
+        }
 
         window.exportGlobalCSV = () => {
             if(!allLeads.length && !allCreatives.length) return showToast("No data to export", true);
-            // Exporting Sales DB for now, logic can be expanded
             const headers = ['Type', 'Company/Project', 'Contact/Client', 'Phone/Format', 'Value/Deadline', 'Status', 'Assignee'];
             const csvRows = [headers.join(',')];
             allLeads.forEach(l => csvRows.push([ '"Sales"', `"${l.company||''}"`, `"${l.contact||''}"`, `"${l.phone||''}"`, l.value||0, `"${l.status||''}"`, `"${l.rep||''}"` ].join(',')));
