@@ -81,8 +81,8 @@
             }
             .mobile-label { display: none; }
             .sales-grid { grid-template-columns: 2fr 1fr 1.5fr 1fr 1.5fr; }
+            .ledger-grid { grid-template-columns: 2fr 1.5fr 1fr; }
             .hr-grid { grid-template-columns: 1fr 2fr 1.5fr 1fr; }
-            .leaderboard-grid { grid-template-columns: 0.5fr 2fr 1.5fr 1fr 1.5fr; }
         }
     </style>
 </head>
@@ -106,21 +106,21 @@
                     <label class="block text-[11px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Registered Email</label>
                     <div class="relative">
                         <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-slate-500"></i>
-                        <input type="email" id="login-email" required class="w-full pl-11 pr-4 py-3 text-sm">
+                        <input type="email" id="login-email" required class="w-full pl-11 pr-4 py-3 text-sm" placeholder="rep@feasibility.com">
                     </div>
                 </div>
                 <div>
                     <label class="block text-[11px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Access Password</label>
                     <div class="relative">
                         <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-500"></i>
-                        <input type="password" id="login-pwd" required class="w-full pl-11 pr-4 py-3 text-sm">
+                        <input type="password" id="login-pwd" required class="w-full pl-11 pr-4 py-3 text-sm" placeholder="••••••••">
                     </div>
                 </div>
                 <div id="login-error" class="hidden bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold text-center py-3 rounded-xl backdrop-blur-sm">
                     Invalid credentials or access revoked.
                 </div>
                 <button type="submit" id="btn-login" class="btn-primary w-full py-3.5 sm:py-4 rounded-xl text-sm tracking-widest uppercase flex items-center justify-center gap-3 mt-4">
-                    <span>Initialize Workspace</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                    <span>Enter Workspace</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>
                 </button>
             </form>
             
@@ -151,7 +151,7 @@
                     <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-600 text-white items-center justify-center rounded-xl text-lg font-black hidden md:flex shadow-lg"><i class="fa-solid fa-bolt text-sm"></i></div>
                     <div class="flex flex-col leading-none">
                         <span class="text-white font-bold tracking-tight text-lg font-heading">Feasibility</span>
-                        <span class="text-[10px] text-purple-400 font-bold uppercase tracking-widest mt-1">Sales Engine</span>
+                        <span class="text-[10px] text-purple-400 font-bold uppercase tracking-widest mt-1">Virtual Office</span>
                     </div>
                 </div>
                 <button onclick="toggleSidebar()" class="md:hidden text-slate-400 bg-white/5 p-2 rounded-lg"><i class="fa-solid fa-xmark text-xl"></i></button>
@@ -169,24 +169,42 @@
 
             <nav id="nav-menu" class="flex flex-col flex-1 py-4 md:py-6 space-y-1 overflow-y-auto custom-scrollbar">
                 <button onclick="switchTab('dashboard')" class="nav-btn active w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
-                    <i class="fa-solid fa-chart-pie w-5 text-center text-lg"></i> <span class="tab-label">My Analytics</span>
+                    <i class="fa-solid fa-house-laptop w-5 text-center text-lg"></i> <span class="tab-label">My Desk</span>
                 </button>
                 <button onclick="switchTab('leads')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
-                    <i class="fa-solid fa-table-list w-5 text-center text-lg"></i> <span class="tab-label">Data Engine</span>
+                    <i class="fa-solid fa-table-list w-5 text-center text-lg"></i> <span class="tab-label">My Pipeline</span>
                 </button>
                 <button onclick="switchTab('add-lead')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
-                    <i class="fa-solid fa-user-plus w-5 text-center text-lg"></i> <span class="tab-label">New Prospect</span>
-                </button>
-                <button onclick="switchTab('hr')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left border-t border-white/10 mt-3 pt-4">
-                    <i class="fa-solid fa-headset w-5 text-center text-lg text-blue-400"></i> <span class="tab-label">Support Desk</span>
-                </button>
-                <button onclick="switchTab('leaderboard')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
-                    <i class="fa-solid fa-trophy w-5 text-center text-lg text-yellow-500"></i> <span class="tab-label">Leaderboard</span>
+                    <i class="fa-solid fa-user-plus w-5 text-center text-lg"></i> <span class="tab-label">Log Prospect</span>
                 </button>
                 
-                <div class="mt-auto border-t border-white/10 pt-4 mb-4">
-                    <button onclick="logout()" class="w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors mr-4 rounded-r-xl">
-                        <i class="fa-solid fa-power-off w-5 text-center text-lg"></i> Secure Logout
+                <div class="px-6 py-2 mt-2">
+                    <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Office Tools</p>
+                </div>
+                <button onclick="switchTab('ledger')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
+                    <i class="fa-solid fa-file-invoice-dollar w-5 text-center text-lg text-emerald-400"></i> <span class="tab-label">Earnings Ledger</span>
+                </button>
+                <button onclick="switchTab('resources')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
+                    <i class="fa-solid fa-book-open-reader w-5 text-center text-lg text-yellow-400"></i> <span class="tab-label">Sales Playbook</span>
+                </button>
+                <button onclick="switchTab('hr')" class="nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left">
+                    <i class="fa-solid fa-headset w-5 text-center text-lg text-blue-400"></i> <span class="tab-label">Support Ticket</span>
+                </button>
+                
+                <div class="mt-auto border-t border-white/10 pt-4 mb-4 flex flex-col gap-2 px-4">
+                    <div id="attendance-widget" class="hidden bg-black/30 border border-white/5 rounded-xl p-3 text-center mb-1 transition-all">
+                        <p class="text-[9px] text-slate-400 uppercase tracking-widest font-bold mb-1 flex items-center justify-center gap-1.5">
+                            <span class="w-2 h-2 inline-block rounded-full bg-emerald-500 animate-pulse"></span> Active Shift
+                        </p>
+                        <p id="shift-timer" class="text-xl font-mono font-black text-white drop-shadow-md">00:00:00</p>
+                    </div>
+                    
+                    <button id="btn-clock-in-out" onclick="toggleAttendance()" class="w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 hover:shadow-[0_0_15px_rgba(16,185,129,0.2)] transition-all">
+                        <i class="fa-solid fa-play" id="clock-icon"></i> <span id="clock-text">Clock In</span>
+                    </button>
+                    
+                    <button onclick="logout()" class="w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm font-bold text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors mt-1">
+                        <i class="fa-solid fa-power-off"></i> System Logout
                     </button>
                 </div>
             </nav>
@@ -194,7 +212,7 @@
 
         <main class="flex-1 h-full flex flex-col relative z-10 overflow-hidden">
             <header class="flex h-14 md:h-20 border-b border-white/10 glass-panel justify-between items-center px-4 md:px-8 shrink-0 bg-black/20">
-                <h1 id="page-title" class="text-lg md:text-2xl font-bold text-white font-heading truncate pr-4 drop-shadow-md">My Analytics</h1>
+                <h1 id="page-title" class="text-lg md:text-2xl font-bold text-white font-heading truncate pr-4 drop-shadow-md">My Desk</h1>
                 <div class="flex items-center gap-4">
                     <div class="flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 md:px-4 md:py-2 rounded-full shrink-0 shadow-[0_0_10px_rgba(139,92,246,0.1)]">
                         <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
@@ -207,21 +225,7 @@
             <div class="flex-1 overflow-y-auto p-3 md:p-8 custom-scrollbar">
                 
                 <div id="tab-dashboard" class="tab-content active space-y-4 md:space-y-6">
-                    
-                    <div class="glass-card p-4 md:p-6 border-t-4 border-t-indigo-500 flex flex-col sm:flex-row justify-between items-center gap-4">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xl shadow-[0_0_15px_rgba(99,102,241,0.2)]"><i class="fa-solid fa-business-time"></i></div>
-                            <div>
-                                <h3 class="text-base md:text-lg font-bold text-white font-heading leading-tight">Daily Attendance</h3>
-                                <p id="attendance-status" class="text-[10px] md:text-xs text-slate-400 font-mono mt-1">Status: Checking...</p>
-                            </div>
-                        </div>
-                        <button id="btn-punch" onclick="toggleAttendance()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-xl text-sm font-bold transition-all shadow-[0_4px_15px_rgba(99,102,241,0.4)] flex items-center gap-2 w-full sm:w-auto justify-center hidden">
-                            <i class="fa-solid fa-fingerprint"></i> <span id="btn-punch-text">Punch In</span>
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6">
+                    <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 md:gap-6">
                         <div class="glass-card p-4 md:p-6 border-t-4 border-t-purple-500 relative overflow-hidden group">
                             <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-purple-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-chart-line"></i></div>
                             <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">My Active Pipeline</p>
@@ -234,24 +238,29 @@
                             <h3 id="kpi-won" class="text-2xl md:text-4xl font-black text-emerald-400 font-mono relative z-10 drop-shadow-md">₹0</h3>
                             <p class="text-[8px] md:text-[9px] text-emerald-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">Total revenue generated</p>
                         </div>
-                        <div class="glass-card p-4 md:p-6 border-t-4 border-t-yellow-500 relative overflow-hidden group col-span-2 xl:col-span-1">
-                            <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-yellow-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-sack-dollar"></i></div>
+                        <div class="glass-card p-4 md:p-6 border-t-4 border-t-blue-500 relative overflow-hidden group" onclick="switchTab('ledger')" style="cursor:pointer">
+                            <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-blue-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-wallet"></i></div>
+                            <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">Pending Payout</p>
+                            <h3 id="kpi-pending" class="text-2xl md:text-4xl font-black text-blue-400 font-mono relative z-10 drop-shadow-md">₹0</h3>
+                            <p class="text-[8px] md:text-[9px] text-blue-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">View Ledger &rarr;</p>
+                        </div>
+                        <div class="glass-card p-4 md:p-6 border-t-4 border-t-yellow-500 relative overflow-hidden group">
+                            <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-yellow-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-fire-flame-curved"></i></div>
                             <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 md:mb-2 relative z-10">Projected Commission</p>
                             <h3 id="kpi-projected" class="text-2xl md:text-4xl font-black text-yellow-400 font-mono relative z-10 drop-shadow-md">₹0</h3>
-                            <p class="text-[8px] md:text-[9px] text-yellow-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">10% of Late Stage Deals</p>
+                            <p class="text-[8px] md:text-[9px] text-yellow-400 mt-1 md:mt-2 font-bold relative z-10 hidden sm:block">Est. from Proposals Sent</p>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
                         <div class="glass-card p-4 md:p-6 lg:col-span-2">
-                            <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3">My Pipeline Distribution</h3>
-                            <div class="relative h-48 md:h-64 w-full">
-                                <canvas id="pipelineChart"></canvas>
-                            </div>
+                            <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3 text-purple-400 flex items-center"><i class="fa-solid fa-satellite-dish mr-2"></i> Agency Bullpen (Live Feed)</h3>
+                            <div class="relative h-48 md:h-64 w-full overflow-y-auto custom-scrollbar pr-2" id="agency-feed">
+                                </div>
                         </div>
 
                         <div class="glass-card p-4 md:p-6 flex flex-col h-full max-h-[350px]">
-                            <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3 text-rose-400 flex items-center"><i class="fa-solid fa-fire mr-2"></i> Priority Follow-ups</h3>
+                            <h3 class="text-base md:text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3 text-rose-400 flex items-center"><i class="fa-solid fa-stopwatch mr-2"></i> Priority Follow-ups</h3>
                             <div class="overflow-y-auto flex-1 pr-2 space-y-3 custom-scrollbar" id="task-list">
                                 </div>
                         </div>
@@ -263,7 +272,7 @@
                         <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 md:gap-4 mb-4 md:mb-6 px-1 md:px-0">
                             <div class="relative w-full sm:w-72">
                                 <i class="fa-solid fa-search absolute left-4 top-3 md:top-3.5 text-slate-500 text-xs md:text-sm"></i>
-                                <input type="text" id="search-leads" placeholder="Search accounts..." class="w-full pl-10 pr-4 py-2 md:py-2.5 text-sm bg-black/40 shadow-inner">
+                                <input type="text" id="search-leads" placeholder="Search my accounts..." class="w-full pl-10 pr-4 py-2 md:py-2.5 text-sm bg-black/40 shadow-inner">
                             </div>
                         </div>
                         
@@ -338,6 +347,61 @@
                     </div>
                 </div>
 
+                <div id="tab-ledger" class="tab-content">
+                    <div class="glass-card p-4 md:p-6 w-full min-h-[500px]">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 border-b border-white/10 pb-4">
+                            <div>
+                                <h3 class="text-xl md:text-2xl font-bold text-emerald-400 font-heading"><i class="fa-solid fa-file-invoice-dollar mr-2"></i> My Earnings Ledger</h3>
+                                <p class="text-xs text-slate-400 mt-1">Detailed breakdown of your commissions from Closed Won deals.</p>
+                            </div>
+                            <div class="bg-black/30 px-4 py-2 rounded-lg border border-white/5 mt-4 md:mt-0 text-right">
+                                <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Total Disbursed (All Time)</p>
+                                <p class="text-xl font-mono font-bold text-white" id="ledger-total-paid">₹0</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div class="lg:col-span-2">
+                                <div class="hidden lg:grid ledger-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-bold text-slate-400 uppercase tracking-wider rounded-t-xl">
+                                    <div>Deal / Company</div>
+                                    <div>Contract Value</div>
+                                    <div>Commission (Est. 10%)</div>
+                                </div>
+                                <div id="ledger-deals-body" class="flex flex-col custom-scrollbar overflow-y-auto max-h-[400px]">
+                                    </div>
+                            </div>
+                            <div class="bg-blue-900/10 border border-blue-500/20 p-5 rounded-xl h-fit">
+                                <h4 class="font-bold text-white border-b border-white/10 pb-2 mb-4">Payout Status</h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <p class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Approved by Admin</p>
+                                        <p class="text-lg font-mono font-bold text-emerald-400" id="ledger-awarded">₹0</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Paid to Account</p>
+                                        <p class="text-lg font-mono font-bold text-slate-300" id="ledger-paid">₹0</p>
+                                    </div>
+                                    <div class="pt-4 border-t border-white/10">
+                                        <p class="text-[10px] text-rose-400 uppercase tracking-wider font-bold mb-1">Pending Transfer</p>
+                                        <p class="text-2xl font-mono font-black text-rose-400" id="ledger-pending">₹0</p>
+                                    </div>
+                                </div>
+                                <p class="text-[9px] text-slate-500 mt-6 text-center italic">Note: Payouts are issued by Operations/CEO based on client invoice collection, not immediately upon closing.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-resources" class="tab-content">
+                    <div class="glass-card p-4 md:p-6 w-full min-h-[500px]">
+                        <h3 class="text-xl md:text-2xl font-bold text-yellow-400 font-heading mb-2"><i class="fa-solid fa-book-open-reader mr-2"></i> The Sales Playbook</h3>
+                        <p class="text-xs text-slate-400 mb-6 border-b border-white/10 pb-4">Standard operating procedures, scripts, and links to help you close more deals.</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6" id="sops-grid">
+                            </div>
+                    </div>
+                </div>
+
                 <div id="tab-hr" class="tab-content">
                     <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
                         <div class="glass-card p-4 md:p-6 xl:col-span-1 h-fit">
@@ -374,26 +438,6 @@
                                 </div>
                                 <div id="my-tickets-body" class="flex flex-col mt-2 md:mt-0"></div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="tab-leaderboard" class="tab-content">
-                    <div class="glass-card p-6 md:p-10 flex flex-col min-h-[500px]">
-                        <h3 class="text-xl font-bold text-yellow-500 font-heading mb-6 border-b border-white/10 pb-4 flex items-center"><i class="fa-solid fa-trophy mr-3 text-2xl"></i> Agency Leaderboard</h3>
-                        <div class="overflow-x-auto flex-1">
-                            <table class="w-full text-left whitespace-nowrap min-w-[600px]">
-                                <thead>
-                                    <tr class="text-[11px] font-bold text-slate-400 uppercase border-b border-white/10 bg-black/20">
-                                        <th class="py-4 px-5 rounded-tl-xl w-20 text-center">Rank</th>
-                                        <th class="py-4 px-5">Executive</th>
-                                        <th class="py-4 px-5">Pipeline</th>
-                                        <th class="py-4 px-5">Won</th>
-                                        <th class="py-4 px-5 text-emerald-400 rounded-tr-xl text-right">Total Revenue (₹)</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="leaderboard-body" class="text-sm text-slate-200"></tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
@@ -439,15 +483,17 @@
 
         const LEAD_STATUSES = ['New Lead', 'Attempted Contact', 'Discovery Call', 'Meeting Set', 'Proposal Sent', 'In Negotiation', 'Closed Won', 'Closed Lost'];
 
-        let db, auth, chartInstance;
+        let db, auth;
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         let activeUserRecord = null;
-        let myLeads = [], allAgencyLeads = [], myTickets = [];
-        let unsubscribeLeads = null, unsubscribeUser = null, unsubscribeTickets = null, unsubscribeAttendance = null;
+        let myLeads = [], allAgencyLeads = [], myTickets = [], agencySOPs = [];
+        let unsubscribeLeads = null, unsubscribeUser = null, unsubscribeTickets = null, unsubscribeSOPs = null;
         
-        let currentAttendanceDoc = null;
-        let isClockedIn = false;
-        let isShiftComplete = false;
+        // Attendance State Variables
+        let activeShiftId = null;
+        let shiftStartTime = null;
+        let shiftTimerInterval = null;
+        let unsubscribeAttendance = null;
 
         // UI HELPERS
         window.toggleSidebar = () => {
@@ -461,7 +507,7 @@
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
             if(event && event.currentTarget.classList.contains('nav-btn')) event.currentTarget.classList.add('active');
             
-            const titles = { 'dashboard': "My Analytics", 'leads': "Data Engine", 'add-lead': 'Initialize Prospect', 'hr': 'Support Desk', 'leaderboard': 'Agency Leaderboard' };
+            const titles = { 'dashboard': "My Desk", 'leads': "My Pipeline", 'add-lead': 'Initialize Prospect', 'hr': 'Support Desk', 'ledger': 'Earnings Ledger', 'resources': 'Sales Playbook' };
             document.getElementById('page-title').innerText = titles[tabId] || '';
 
             if(window.innerWidth < 768) {
@@ -536,7 +582,13 @@
         });
 
         window.logout = () => {
-            if(unsubscribeLeads) unsubscribeLeads(); if(unsubscribeUser) unsubscribeUser(); if(unsubscribeTickets) unsubscribeTickets(); if(unsubscribeAttendance) unsubscribeAttendance();
+            if(unsubscribeLeads) unsubscribeLeads(); 
+            if(unsubscribeUser) unsubscribeUser(); 
+            if(unsubscribeTickets) unsubscribeTickets(); 
+            if(unsubscribeSOPs) unsubscribeSOPs();
+            if(unsubscribeAttendance) unsubscribeAttendance();
+            if(shiftTimerInterval) clearInterval(shiftTimerInterval);
+
             activeUserRecord = null; myLeads = []; myTickets = []; allAgencyLeads = [];
             document.getElementById('app-screen').classList.add('hidden'); document.getElementById('app-screen').classList.remove('flex');
             document.getElementById('login-screen').classList.remove('hidden'); document.getElementById('login-pwd').value = "";
@@ -549,24 +601,24 @@
             document.getElementById('ld-rep').value = activeUserRecord.name;
             document.getElementById('ld-status').innerHTML = LEAD_STATUSES.map(s => `<option value="${s}">${s}</option>`).join('');
 
-            // Attendance Subscription
-            const todayStr = new Date().toISOString().split('T')[0];
-            unsubscribeAttendance = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'attendance_logs'), (snap) => {
-                currentAttendanceDoc = null;
-                isClockedIn = false;
-                isShiftComplete = false;
-                snap.forEach(d => {
-                    const data = {id: d.id, ...d.data()};
-                    if(data.rep === activeUserRecord.name && data.date === todayStr) {
-                        currentAttendanceDoc = data;
-                        if(data.punchIn && !data.punchOut) isClockedIn = true;
-                        if(data.punchIn && data.punchOut) isShiftComplete = true;
-                    }
-                });
-                renderAttendance();
+            // Financial Ledger Subscription
+            unsubscribeUser = onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', activeUserRecord.id), (snap) => {
+                if(!snap.exists() || snap.data().status === 'Suspended') return logout();
+                const d = snap.data();
+                const awarded = Number(d.commission_awarded)||0; const paid = Number(d.commission_paid)||0;
+                const pending = Math.max(0, awarded - paid);
+                
+                // Update KPIs
+                document.getElementById('kpi-pending').innerText = "₹" + pending.toLocaleString('en-IN');
+                
+                // Update Ledger Tab Details
+                document.getElementById('ledger-total-paid').innerText = "₹" + paid.toLocaleString('en-IN');
+                document.getElementById('ledger-awarded').innerText = "₹" + awarded.toLocaleString('en-IN');
+                document.getElementById('ledger-paid').innerText = "₹" + paid.toLocaleString('en-IN');
+                document.getElementById('ledger-pending').innerText = "₹" + pending.toLocaleString('en-IN');
             });
 
-            // Leads
+            // Leads & Agency Feed Subscription
             unsubscribeLeads = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), (snap) => {
                 myLeads = []; allAgencyLeads = [];
                 snap.forEach(d => {
@@ -574,10 +626,11 @@
                     if(data.rep === activeUserRecord.name) myLeads.push(data);
                 });
                 myLeads.sort((a,b) => b.timestamp - a.timestamp);
+                allAgencyLeads.sort((a,b) => b.timestamp - a.timestamp);
                 renderAll();
             });
 
-            // Tickets
+            // Tickets Subscription
             unsubscribeTickets = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'hr_tickets'), (snap) => {
                 myTickets = [];
                 snap.forEach(d => {
@@ -587,59 +640,107 @@
                 myTickets.sort((a,b) => b.timestamp - a.timestamp);
                 renderTickets();
             });
-        }
 
-        function renderAll() {
-            renderDashboard(); renderTable(); renderLeaderboard();
-        }
+            // SOPs / Playbook Subscription
+            unsubscribeSOPs = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'agency_sops'), (snap) => {
+                agencySOPs = []; snap.forEach(d => agencySOPs.push({id: d.id, ...d.data()}));
+                renderPlaybook();
+            });
 
-        // --- ATTENDANCE ---
-        function renderAttendance() {
-            const statusEl = document.getElementById('attendance-status');
-            const btnText = document.getElementById('btn-punch-text');
-            const btn = document.getElementById('btn-punch');
+            // Attendance Tracker Subscription
+            unsubscribeAttendance = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'attendance_logs'), (snap) => {
+                let activeShift = null;
+                snap.forEach(d => {
+                    const data = { id: d.id, ...d.data() };
+                    // Find if the current user has an ongoing shift
+                    if(data.rep === activeUserRecord.name && data.status === 'Active') {
+                        activeShift = data;
+                    }
+                });
 
-            if(isShiftComplete) {
-                statusEl.innerHTML = `<span class="text-emerald-400 font-bold"><i class="fa-solid fa-check-circle"></i> Shift Completed (${new Date(currentAttendanceDoc.punchOut).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})})</span>`;
-                btn.style.display = 'none';
-            } else if (isClockedIn) {
-                statusEl.innerHTML = `<span class="text-emerald-400 font-bold"><i class="fa-solid fa-circle-play"></i> Clocked In (${new Date(currentAttendanceDoc.punchIn).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})})</span>`;
-                btnText.innerText = "Punch Out";
-                btn.className = "bg-rose-600 hover:bg-rose-500 text-white px-6 py-3 rounded-xl text-sm font-bold transition-all shadow-[0_4px_15px_rgba(225,29,72,0.4)] flex items-center gap-2 w-full sm:w-auto justify-center";
-                btn.style.display = 'flex';
-            } else {
-                statusEl.innerHTML = `<span class="text-slate-400"><i class="fa-solid fa-circle-pause"></i> Currently Clocked Out</span>`;
-                btnText.innerText = "Punch In";
-                btn.className = "bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-xl text-sm font-bold transition-all shadow-[0_4px_15px_rgba(99,102,241,0.4)] flex items-center gap-2 w-full sm:w-auto justify-center";
-                btn.style.display = 'flex';
-            }
-        }
+                const btn = document.getElementById('btn-clock-in-out');
+                const icon = document.getElementById('clock-icon');
+                const text = document.getElementById('clock-text');
+                const widget = document.getElementById('attendance-widget');
 
-        window.toggleAttendance = async () => {
-            const todayStr = new Date().toISOString().split('T')[0];
-            const now = Date.now();
-            try {
-                if(!isClockedIn && !isShiftComplete) {
-                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'attendance_logs'), {
-                        rep: activeUserRecord.name,
-                        date: todayStr,
-                        punchIn: now,
-                        punchOut: null
-                    });
-                    showToast("Clocked In Successfully!");
-                } else if (isClockedIn) {
-                    if(confirm("Are you sure you want to end your shift? You cannot clock back in today.")) {
-                        await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'attendance_logs', currentAttendanceDoc.id), {
-                            punchOut: now
-                        });
-                        showToast("Shift Completed. Great work!");
+                if(activeShift) {
+                    // Shift is active: Switch to Clock Out mode
+                    activeShiftId = activeShift.id;
+                    shiftStartTime = activeShift.clockIn;
+                    
+                    widget.classList.remove('hidden');
+                    btn.className = "w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm font-bold text-rose-400 bg-rose-500/10 border border-rose-500/30 hover:bg-rose-500/20 hover:shadow-[0_0_15px_rgba(244,63,94,0.2)] transition-all";
+                    icon.className = "fa-solid fa-stop";
+                    text.innerText = "Clock Out";
+                    
+                    if(!shiftTimerInterval) {
+                        shiftTimerInterval = setInterval(updateShiftTimer, 1000);
+                        updateShiftTimer();
+                    }
+                } else {
+                    // No active shift: Switch to Clock In mode
+                    activeShiftId = null;
+                    shiftStartTime = null;
+                    
+                    widget.classList.add('hidden');
+                    btn.className = "w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 hover:shadow-[0_0_15px_rgba(16,185,129,0.2)] transition-all";
+                    icon.className = "fa-solid fa-play";
+                    text.innerText = "Clock In";
+                    
+                    if(shiftTimerInterval) {
+                        clearInterval(shiftTimerInterval);
+                        shiftTimerInterval = null;
                     }
                 }
-            } catch (e) {
-                showToast("Error updating timeclock", true);
+            });
+        }
+
+        // ATTENDANCE FUNCTIONS
+        window.updateShiftTimer = () => {
+            if(!shiftStartTime) return;
+            const diff = Date.now() - shiftStartTime;
+            
+            // Calculate Hours, Minutes, Seconds
+            const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
+            const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+            const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+            
+            document.getElementById('shift-timer').innerText = `${h}:${m}:${s}`;
+        };
+
+        window.toggleAttendance = async () => {
+            const btn = document.getElementById('btn-clock-in-out');
+            btn.disabled = true; // Prevent double-clicks
+            
+            try {
+                if(!activeShiftId) {
+                    // Initiate Clock In
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'attendance_logs'), {
+                        rep: activeUserRecord.name,
+                        clockIn: Date.now(),
+                        status: 'Active'
+                    });
+                    showToast("Clocked in successfully.");
+                } else {
+                    // Finalize Clock Out
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'attendance_logs', activeShiftId), {
+                        clockOut: Date.now(),
+                        status: 'Completed',
+                        totalTimeMs: Date.now() - shiftStartTime
+                    });
+                    showToast("Clocked out. Shift saved to ledger.");
+                }
+            } catch(e) {
+                console.error("FIREBASE ATTENDANCE ERROR:", e); // This will log the error to the browser console
+                showToast("Database sync error", true);
+            } finally {
+                btn.disabled = false;
             }
         };
 
+        function renderAll() {
+            renderDashboard(); renderTable(); renderLedger();
+        }
 
         // --- DASHBOARD ---
         function renderDashboard() {
@@ -650,14 +751,16 @@
                 if(l.status === 'Closed Won') won+=v; 
                 else if(l.status !== 'Closed Lost') {
                     pipe+=v;
+                    // Projector Feature: Calculate 10% of late stage deals
                     if(l.status === 'Proposal Sent' || l.status === 'In Negotiation') projComm += (v * 0.10);
                 }
             });
 
             document.getElementById('kpi-pipeline').innerText = "₹" + pipe.toLocaleString('en-IN');
             document.getElementById('kpi-won').innerText = "₹" + won.toLocaleString('en-IN');
-            document.getElementById('kpi-projected').innerText = "₹" + projComm.toLocaleString('en-IN'); 
+            document.getElementById('kpi-projected').innerText = "₹" + projComm.toLocaleString('en-IN'); // Motivation feature
 
+            // Priority Tasks
             const todayStr = new Date().toISOString().split('T')[0];
             const tasks = myLeads.filter(l => l.nextAction && l.nextAction <= todayStr && !l.status.includes('Closed'));
             document.getElementById('task-list').innerHTML = tasks.map(l => `
@@ -670,16 +773,53 @@
                 </div>
             `).join('') || '<div class="flex flex-col items-center justify-center h-full opacity-50"><i class="fa-solid fa-check-circle text-4xl text-emerald-500 mb-3"></i><p class="text-sm text-slate-300 font-bold">Inbox Zero</p></div>';
 
-            const ctx = document.getElementById('pipelineChart');
-            if(chartInstance) chartInstance.destroy();
-            const statusCounts = {}; LEAD_STATUSES.forEach(s => statusCounts[s]=0);
-            myLeads.forEach(l => { if(statusCounts[l.status] !== undefined) statusCounts[l.status] += (Number(l.value)||0); });
-            
-            chartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: { labels: Object.keys(statusCounts), datasets: [{ data: Object.values(statusCounts), backgroundColor: '#8b5cf6', hoverBackgroundColor: '#a855f7', borderRadius: 6 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8', font: {size: 10} } } } }
-            });
+            // The Sales Bullpen (Live Agency Feed of Meeting Sets & Wins)
+            const bullpenWins = allAgencyLeads.filter(l => l.status === 'Closed Won' || l.status === 'Meeting Set').slice(0, 10);
+            document.getElementById('agency-feed').innerHTML = bullpenWins.map(l => {
+                const isWon = l.status === 'Closed Won';
+                const feedIcon = isWon ? '<i class="fa-solid fa-fire text-emerald-500"></i>' : '<i class="fa-solid fa-calendar-check text-purple-400"></i>';
+                const valStr = isWon ? `₹${Number(l.value).toLocaleString('en-IN')}` : 'Meeting Set';
+                return `
+                <div class="bg-black/20 border border-white/5 rounded-lg p-3 mb-2 flex items-center gap-3">
+                    <div class="text-xl w-8 text-center">${feedIcon}</div>
+                    <div class="flex-1">
+                        <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">${l.rep}</p>
+                        <p class="text-sm text-white font-bold leading-tight line-clamp-1">${isWon ? 'Closed' : 'Booked'} <span class="${isWon ? 'text-emerald-400' : 'text-purple-400'}">${l.company}</span></p>
+                    </div>
+                    <div class="font-mono text-xs font-bold text-slate-300 text-right">${valStr}</div>
+                </div>
+            `}).join('') || '<p class="text-xs text-slate-500 italic p-2">Waiting for the first win...</p>';
+        }
+
+        // --- LEDGER ---
+        function renderLedger() {
+            const wonDeals = myLeads.filter(l => l.status === 'Closed Won');
+            document.getElementById('ledger-deals-body').innerHTML = wonDeals.map(l => {
+                const val = Number(l.value) || 0;
+                const estComm = val * 0.10; // Assumed 10% standard commission for rep ledger calculation
+                return `
+                <div class="responsive-grid ledger-grid hover:bg-white/5 group border-l-2 border-emerald-500/50">
+                    <div>
+                        <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-1">Company</span>
+                        <p class="font-bold text-white text-sm">${l.company}</p>
+                        <p class="text-[10px] text-slate-400 font-mono mt-0.5">Closed: ${new Date(l.timestamp).toLocaleDateString()}</p>
+                    </div>
+                    <div class="font-mono text-slate-300 text-sm"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Contract Value</span>₹${val.toLocaleString('en-IN')}</div>
+                    <div class="font-mono font-bold text-emerald-400 text-sm"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Est. Commission</span>₹${estComm.toLocaleString('en-IN')}</div>
+                </div>`
+            }).join('') || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-ghost text-4xl mb-3 opacity-20"></i><p>No closed won deals yet. Time to hunt.</p></div>';
+        }
+
+        // --- RESOURCE / PLAYBOOK ---
+        function renderPlaybook() {
+            document.getElementById('sops-grid').innerHTML = agencySOPs.map(s => `
+                <div class="glass-card p-5 relative group">
+                    <div class="w-10 h-10 rounded-full bg-white/5 text-slate-300 flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-bookmark"></i></div>
+                    <h4 class="font-bold text-white mb-1 text-sm">${s.title}</h4>
+                    <p class="text-xs text-slate-400 font-mono mb-3">${s.desc}</p>
+                    ${s.url ? `<a href="${s.url}" target="_blank" class="text-[10px] uppercase tracking-wider font-bold text-yellow-400 hover:text-yellow-300">Access Resource &rarr;</a>` : ''}
+                </div>
+            `).join('') || '<p class="text-slate-500 col-span-full">No playbook items uploaded by Operations yet.</p>';
         }
 
         // --- DATA TABLE ---
@@ -722,6 +862,7 @@
             const temp = myLeads; myLeads = filtered; renderTable(); myLeads = temp;
         });
 
+        // Quick Log Action
         window.quickLog = async (id, action) => {
             try {
                 await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), { 
@@ -798,33 +939,6 @@
             try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), { history: arrayUnion({ note: note, date: new Date().toISOString(), user: activeUserRecord.name }) }); document.getElementById('tl-new-note').value = ''; } catch(e) { showToast("Error", true); }
         };
 
-        // --- LEADERBOARD ---
-        window.renderLeaderboard = function() {
-            const repStats = {};
-            allAgencyLeads.forEach(lead => {
-                const repName = lead.rep || 'Unassigned';
-                if (!repStats[repName]) repStats[repName] = { name: repName, pipeline: 0, wonCount: 0, wonValue: 0 };
-                const val = Number(lead.value) || 0;
-                if (lead.status === 'Closed Won') { repStats[repName].wonCount++; repStats[repName].wonValue += val; } 
-                else if (lead.status !== 'Closed Lost') { repStats[repName].pipeline += val; }
-            });
-            const html = Object.values(repStats).sort((a, b) => b.wonValue - a.wonValue).map((rep, idx) => {
-                let rankVisual = `<span class="text-slate-500 font-black text-lg">${idx + 1}</span>`;
-                if (idx === 0) rankVisual = `<i class="fa-solid fa-medal text-yellow-400 text-2xl drop-shadow-[0_0_10px_rgba(250,204,21,0.5)]"></i>`;
-                if (idx === 1) rankVisual = `<i class="fa-solid fa-medal text-slate-300 text-2xl drop-shadow-[0_0_10px_rgba(203,213,225,0.5)]"></i>`;
-                if (idx === 2) rankVisual = `<i class="fa-solid fa-medal text-amber-600 text-2xl drop-shadow-[0_0_10px_rgba(217,119,6,0.5)]"></i>`;
-
-                return `
-                <div class="responsive-grid leaderboard-grid hover:bg-white/5 border-l-2 border-transparent group">
-                    <div class="text-center font-bold">${rankVisual}</div>
-                    <div class="font-bold text-white text-base">${rep.name}</div>
-                    <div class="font-mono text-slate-400">₹${rep.pipeline.toLocaleString('en-IN')}</div>
-                    <div class="font-bold text-white"><span class="bg-white/10 px-3 py-1 rounded-lg">${rep.wonCount} Deals</span></div>
-                    <div class="font-mono font-black text-emerald-400 text-lg md:text-right">₹${rep.wonValue.toLocaleString('en-IN')}</div>
-                </div>`;
-            }).join('');
-            document.getElementById('leaderboard-body').innerHTML = html || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-ranking-star text-4xl mb-3 opacity-20"></i><p>No data to rank.</p></div>';
-        }
     </script>
 </body>
 </html>
