@@ -1351,4 +1351,38 @@
 
         window.releasePayment = async (id, amt, name) => {
             if(amt<=0) return;
-            if(confirm(`Mark ₹${
+            if(confirm(`Mark ₹${amt.toLocaleString('en-IN')} as PAID to ${name}?`)) {
+                const u = allUsers.find(x=>x.id===id); if(!u) return;
+                try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', id), { commission_paid: (Number(u.commission_paid)||0) + amt }); logAudit(`Cleared liability ₹${amt} for ${name}`); showToast("Released"); } catch(e) {}
+            }
+        };
+
+        window.openManageTicket = (id) => {
+            const t = allTickets.find(x=>x.id===id); if(!t) return;
+            document.getElementById('mng-tk-id').value = id; safeText('mng-tk-subject', t.subject||'--');
+            safeText('mng-tk-rep', `${t.rep||'--'} • ${t.category||'--'}`); safeText('mng-tk-details', t.details||'--');
+            document.getElementById('mng-tk-status').value = t.status || 'Open';
+            safeShowModal('modal-manage-ticket');
+        };
+        
+        const formMngTk = document.getElementById('form-manage-ticket');
+        if(formMngTk) {
+            formMngTk.addEventListener('submit', async (e) => {
+                e.preventDefault(); const id = document.getElementById('mng-tk-id').value; const ns = document.getElementById('mng-tk-status').value;
+                try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'hr_tickets', id), { status: ns }); logAudit(`Updated HR Ticket to ${ns}`); showToast("Ticket Updated"); closeModals(); } catch(e) {}
+            });
+        }
+
+        window.exportGlobalCSV = () => {
+            if(!allLeads.length && !allCreatives.length) return showToast("No data to export", true);
+            const headers = ['Type', 'Company/Project', 'Contact/Client', 'Phone/Format', 'Value/Deadline', 'Status', 'Assignee'];
+            const csvRows = [headers.join(',')];
+            allLeads.forEach(l => csvRows.push([ '"Sales"', `"${l.company||''}"`, `"${l.contact||''}"`, `"${l.phone||''}"`, l.value||0, `"${l.status||''}"`, `"${l.rep||''}"` ].join(',')));
+            allCreatives.forEach(c => csvRows.push([ '"Creative"', `"${c.title||''}"`, `"${c.client||''}"`, `"${c.type||''}"`, `"${c.deadline||''}"`, `"${c.status||''}"`, `"${c.assignee||''}"` ].join(',')));
+            const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+            const a = document.createElement('a'); a.setAttribute('href', window.URL.createObjectURL(blob)); a.setAttribute('download', `Master_DB_${new Date().toLocaleDateString()}.csv`);
+            document.body.appendChild(a); a.click(); document.body.removeChild(a); logAudit('Exported Master Database');
+        };
+    </script>
+</body>
+</html>
