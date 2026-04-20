@@ -96,7 +96,6 @@
             }
             .mobile-label { display: none; }
             .team-grid { grid-template-columns: 2fr 1fr 1.5fr 1fr 1fr; }
-            .attendance-grid { grid-template-columns: 1.5fr 1.5fr 1.5fr 1fr 1fr; }
             .sales-grid { grid-template-columns: 2.5fr 1fr 1fr 1.5fr 1.5fr; }
             .creative-grid { grid-template-columns: 2fr 1.5fr 1fr 1.5fr 1.5fr; }
             .hr-grid { grid-template-columns: 1fr 2fr 1.5fr 1fr 1fr; }
@@ -147,7 +146,7 @@
                 <i class="fa-solid fa-users-viewfinder w-5 text-center"></i> Roster & Access
             </button>
             <button onclick="switchTab('attendance')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
-                <i class="fa-solid fa-user-clock w-5 text-center text-indigo-400"></i> Time & Attendance
+                <i class="fa-solid fa-calendar-days w-5 text-center text-indigo-400"></i> Time & Attendance
             </button>
             <div class="px-6 py-2 mt-2">
                 <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Divisions</p>
@@ -269,23 +268,52 @@
                 <div class="card-ceo p-4 md:p-6 flex flex-col min-h-[600px] w-full">
                     <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-6 border-b border-white/10 pb-6">
                         <div>
-                            <h3 class="text-lg font-bold text-indigo-400 font-heading"><i class="fa-solid fa-user-clock mr-2"></i>Time & Attendance</h3>
-                            <p class="text-xs text-slate-400">Live monitoring of staff shifts and historical logs.</p>
+                            <h3 class="text-lg font-bold text-indigo-400 font-heading"><i class="fa-solid fa-calendar-days mr-2"></i>Time & Attendance</h3>
+                            <p class="text-xs text-slate-400">Individual tracking and historical calendar logs.</p>
                         </div>
-                        <div class="flex gap-2">
-                            <span class="bg-indigo-500/20 border border-indigo-500/30 text-indigo-400 px-4 py-2 rounded-lg text-sm font-bold"><span id="active-shifts-count">0</span> Active Shifts</span>
+                        <div class="flex flex-col sm:flex-row gap-3 items-center">
+                            <select id="attendance-user-select" onchange="changeAttendanceUser(this.value)" class="w-full sm:w-64 rounded-lg px-3 py-2 text-sm bg-slate-900 border border-white/10 focus:border-indigo-500 shadow-inner text-white font-bold">
+                                <option value="">Select Staff Member...</option>
+                            </select>
+                            <div class="bg-indigo-500/20 border border-indigo-500/30 text-indigo-400 px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap w-full sm:w-auto text-center">
+                                <span id="active-shifts-count">0</span> Active Shifts
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="flex-1 pb-4">
-                        <div class="hidden lg:grid attendance-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-bold text-slate-500 uppercase tracking-wider rounded-t-xl">
-                            <div>Staff Member</div>
-                            <div>Punch In</div>
-                            <div>Punch Out</div>
-                            <div>Duration</div>
-                            <div class="text-right">Status</div>
+                    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 flex-1">
+                        <div class="xl:col-span-2 flex flex-col">
+                            <div class="flex justify-between items-center mb-4 px-2">
+                                <button onclick="changeMonth(-1)" class="text-slate-400 hover:text-white p-2 transition-colors"><i class="fa-solid fa-chevron-left"></i></button>
+                                <h4 id="calendar-month-year" class="font-bold text-white text-lg font-heading tracking-wide">April 2026</h4>
+                                <button onclick="changeMonth(1)" class="text-slate-400 hover:text-white p-2 transition-colors"><i class="fa-solid fa-chevron-right"></i></button>
+                            </div>
+                            <div class="grid grid-cols-7 gap-2 text-center mb-2">
+                                <div class="text-[10px] font-bold text-slate-500 uppercase">Sun</div>
+                                <div class="text-[10px] font-bold text-slate-500 uppercase">Mon</div>
+                                <div class="text-[10px] font-bold text-slate-500 uppercase">Tue</div>
+                                <div class="text-[10px] font-bold text-slate-500 uppercase">Wed</div>
+                                <div class="text-[10px] font-bold text-slate-500 uppercase">Thu</div>
+                                <div class="text-[10px] font-bold text-slate-500 uppercase">Fri</div>
+                                <div class="text-[10px] font-bold text-slate-500 uppercase">Sat</div>
+                            </div>
+                            <div id="calendar-grid" class="grid grid-cols-7 gap-2 flex-1">
+                                </div>
+                            <div class="flex flex-wrap gap-4 mt-6 justify-center text-[10px] text-slate-400 font-bold uppercase tracking-wider border-t border-white/5 pt-4">
+                                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Logged In</span>
+                                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-500 opacity-70"></span> Missed</span>
+                                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></span> Active Now</span>
+                            </div>
                         </div>
-                        <div id="attendance-body" class="flex flex-col mt-2 md:mt-0"></div>
+                        
+                        <div class="bg-black/30 border border-white/5 rounded-xl p-4 flex flex-col h-[500px] xl:h-auto">
+                            <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
+                                <h4 class="font-bold text-white text-sm" id="log-panel-title">Recent Logs</h4>
+                                <button onclick="filterLogsByDate(null)" id="btn-show-all-logs" class="hidden text-[9px] bg-white/5 hover:bg-white/10 px-2 py-1 rounded text-slate-300 font-bold uppercase tracking-wider transition-colors">Show All</button>
+                            </div>
+                            <div id="attendance-body" class="flex-1 overflow-y-auto custom-scrollbar space-y-3 pr-2">
+                                </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -702,6 +730,10 @@
         let currentCreativeFilter = 'All';
         let activeUserRecord = null;
         let allLeads = [], allUsers = [], allTickets = [], allCreatives = [], allAttendance = [];
+        
+        let currentCalendarDate = new Date();
+        let selectedAttendanceUser = '';
+        let filteredLogDate = null;
 
         // Safe DOM Utilities (Prevents completely crashing on null errors)
         const safeHTML = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
@@ -842,6 +874,7 @@
                         if(data.commission_paid === undefined) data.commission_paid = 0;
                         allUsers.push({id: d.id, ...data});
                     });
+                    updateAttendanceDropdown();
                     renderTeamRoster(); renderPayroll(); populateRepDropdowns();
                 } catch(e) { console.error("Error rendering users", e); }
             });
@@ -952,43 +985,171 @@
             } catch(e) { console.error("Render Roster Error", e); }
         }
 
-        // --- ATTENDANCE ---
+        // --- ATTENDANCE SYSTEM ---
+        function updateAttendanceDropdown() {
+            const select = document.getElementById('attendance-user-select');
+            if(!select) return;
+            const currentVal = select.value;
+            let options = '<option value="">Select Staff Member...</option>';
+            allUsers.forEach(u => {
+                options += `<option value="${u.name}" ${u.name === currentVal ? 'selected' : ''}>${u.name} (${u.role})</option>`;
+            });
+            select.innerHTML = options;
+        }
+
+        window.changeAttendanceUser = (user) => {
+            selectedAttendanceUser = user;
+            filteredLogDate = null; // reset filter on user change
+            renderAttendance();
+        };
+
+        window.changeMonth = (dir) => {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + dir);
+            renderAttendance();
+        };
+
+        window.filterLogsByDate = (dateStr) => {
+            filteredLogDate = dateStr;
+            renderAttendanceLogs();
+        };
+
         function renderAttendance() {
             try {
                 let activeCount = 0;
-                const html = allAttendance.map(a => {
-                    if (a.status === 'Active') activeCount++;
-                    const statusColor = a.status === 'Active' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-slate-400 bg-slate-500/10 border-slate-500/20';
-                    
-                    const clockInStr = a.clockIn ? new Date(a.clockIn).toLocaleString() : '--';
-                    const clockOutStr = a.clockOut ? new Date(a.clockOut).toLocaleString() : '--';
-                    
-                    let durationStr = '--';
-                    if (a.status === 'Completed' && a.totalTimeMs) {
-                        const h = Math.floor(a.totalTimeMs / 3600000);
-                        const m = Math.floor((a.totalTimeMs % 3600000) / 60000);
-                        durationStr = `${h}h ${m}m`;
-                    } else if (a.status === 'Active' && a.clockIn) {
-                        durationStr = `<span class="text-emerald-400 animate-pulse">In Progress...</span>`;
-                    }
-
-                    return `
-                    <div class="responsive-grid attendance-grid hover:bg-white/5 border-l-2 ${a.status==='Active'?'border-l-emerald-500':'border-transparent'}">
-                        <div>
-                            <span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Staff</span>
-                            <p class="font-bold text-white text-sm">${a.rep||'Unknown'}</p>
-                        </div>
-                        <div class="text-xs font-mono text-slate-300"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">In</span>${clockInStr}</div>
-                        <div class="text-xs font-mono text-slate-400"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Out</span>${clockOutStr}</div>
-                        <div class="text-xs font-bold text-indigo-300"><span class="mobile-label text-[9px] font-bold text-slate-500 uppercase mr-2">Duration</span>${durationStr}</div>
-                        <div class="text-right"><span class="px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border ${statusColor}">${a.status}</span></div>
-                    </div>
-                    `;
-                }).join('');
-                
+                allAttendance.forEach(a => { if(a.status === 'Active') activeCount++; });
                 safeText('active-shifts-count', activeCount);
-                safeHTML('attendance-body', html || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-clock text-3xl mb-2 opacity-20"></i><p>No attendance logs found.</p></div>');
+
+                renderCalendar();
+                renderAttendanceLogs();
             } catch(e) { console.error("Render Attendance Error", e); }
+        }
+
+        function renderCalendar() {
+            if(!selectedAttendanceUser) {
+                safeHTML('calendar-grid', '<div class="col-span-7 py-12 text-center text-slate-500 italic flex flex-col items-center"><i class="fa-solid fa-user text-3xl mb-3 opacity-20"></i><p>Select a staff member to view their calendar.</p></div>');
+                safeText('calendar-month-year', currentCalendarDate.toLocaleString('default', { month: 'long', year: 'numeric' }));
+                return;
+            }
+
+            const year = currentCalendarDate.getFullYear();
+            const month = currentCalendarDate.getMonth();
+            safeText('calendar-month-year', currentCalendarDate.toLocaleString('default', { month: 'long', year: 'numeric' }));
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+            // Create a normalized today date for strict comparison (ignoring time)
+            const strictToday = new Date(today.getFullYear(), today.getMonth(), today.getDate()); 
+
+            const userLogs = allAttendance.filter(a => a.rep === selectedAttendanceUser);
+            const logMap = {};
+            userLogs.forEach(log => {
+                if(!log.clockIn) return;
+                const d = new Date(log.clockIn);
+                const dateStr = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+                if(!logMap[dateStr]) logMap[dateStr] = [];
+                logMap[dateStr].push(log);
+            });
+
+            let html = '';
+            for(let i=0; i<firstDay; i++) {
+                html += `<div class="bg-black/10 rounded-lg border border-transparent"></div>`;
+            }
+
+            for(let day=1; day<=daysInMonth; day++) {
+                const cellDate = new Date(year, month, day);
+                const dateStr = `${year}-${month}-${day}`;
+                const dayLogs = logMap[dateStr] || [];
+                
+                let statusIndicator = '';
+                let borderClass = 'border-white/5';
+                let textClass = 'text-slate-400';
+
+                const isToday = cellDate.getTime() === strictToday.getTime();
+                if(isToday) borderClass = 'border-indigo-500/50 bg-indigo-900/10';
+
+                if(dayLogs.length > 0) {
+                    const hasActive = dayLogs.some(l => l.status === 'Active');
+                    if(hasActive) {
+                        statusIndicator = `<div class="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-indigo-500 animate-pulse mx-auto mt-1 md:mt-2 shadow-[0_0_8px_#6366f1]"></div>`;
+                    } else {
+                        statusIndicator = `<div class="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-emerald-500 mx-auto mt-1 md:mt-2 shadow-[0_0_8px_#10b981]"></div>`;
+                    }
+                    textClass = 'text-white font-bold';
+                } else if (cellDate < strictToday && cellDate.getDay() !== 0 && cellDate.getDay() !== 6) {
+                    statusIndicator = `<div class="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-red-500 mx-auto mt-1 md:mt-2 opacity-70"></div>`;
+                }
+
+                const isActiveFilter = filteredLogDate === dateStr;
+                if(isActiveFilter) borderClass = 'border-white bg-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)]';
+
+                html += `
+                <div class="bg-black/30 rounded-lg border ${borderClass} p-1 md:p-2 flex flex-col items-center justify-center aspect-square hover:bg-white/10 transition-all cursor-pointer" onclick="filterLogsByDate('${dateStr}')">
+                    <span class="text-xs md:text-sm ${textClass}">${day}</span>
+                    ${statusIndicator}
+                </div>`;
+            }
+            safeHTML('calendar-grid', html);
+        }
+
+        function renderAttendanceLogs() {
+            const btnShowAll = document.getElementById('btn-show-all-logs');
+
+            if(!selectedAttendanceUser) {
+                safeHTML('attendance-body', '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-user text-3xl mb-2 opacity-20"></i><p class="text-xs mt-2">Select user to view logs.</p></div>');
+                safeText('log-panel-title', 'Recent Logs');
+                if(btnShowAll) btnShowAll.classList.add('hidden');
+                return;
+            }
+
+            let logs = allAttendance.filter(a => a.rep === selectedAttendanceUser);
+            
+            if(filteredLogDate) {
+                const [y, m, d] = filteredLogDate.split('-').map(Number);
+                const filterTarget = new Date(y, m, d).toDateString();
+                logs = logs.filter(log => log.clockIn && new Date(log.clockIn).toDateString() === filterTarget);
+                safeText('log-panel-title', `Logs: ${new Date(y, m, d).toLocaleDateString()}`);
+                if(btnShowAll) btnShowAll.classList.remove('hidden');
+            } else {
+                safeText('log-panel-title', `Recent Logs: ${selectedAttendanceUser}`);
+                if(btnShowAll) btnShowAll.classList.add('hidden');
+            }
+
+            const html = logs.map(a => {
+                const statusColor = a.status === 'Active' ? 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20' : 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
+                
+                const clockInStr = a.clockIn ? new Date(a.clockIn).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '--';
+                const clockOutStr = a.clockOut ? new Date(a.clockOut).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '--';
+                const dateStr = a.clockIn ? new Date(a.clockIn).toLocaleDateString() : '--';
+                
+                let durationStr = '--';
+                if (a.status === 'Completed' && a.totalTimeMs) {
+                    const h = Math.floor(a.totalTimeMs / 3600000);
+                    const m = Math.floor((a.totalTimeMs % 3600000) / 60000);
+                    durationStr = `${h}h ${m}m`;
+                } else if (a.status === 'Active') {
+                    durationStr = `<span class="text-indigo-400 animate-pulse">Active Now</span>`;
+                }
+
+                return `
+                <div class="bg-black/40 border border-white/5 rounded-lg p-3 hover:border-white/20 transition-colors">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">${dateStr}</span>
+                        <span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${statusColor}">${a.status}</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-xs font-mono mt-3">
+                        <div><span class="text-slate-500 block text-[9px] uppercase tracking-wider mb-0.5">Punch In</span> <span class="text-white">${clockInStr}</span></div>
+                        <div><span class="text-slate-500 block text-[9px] uppercase tracking-wider mb-0.5">Punch Out</span> <span class="text-slate-300">${clockOutStr}</span></div>
+                        <div class="col-span-2 mt-1 border-t border-white/5 pt-2"><span class="text-slate-500 block text-[9px] uppercase tracking-wider mb-0.5">Duration</span> <span class="text-indigo-300 font-bold">${durationStr}</span></div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+            
+            safeHTML('attendance-body', html || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-calendar-xmark text-3xl mb-3 opacity-20"></i><p class="text-xs">No logs found.</p></div>');
+            
+            // Re-render calendar so the white border updates if a date was clicked
+            renderCalendar();
         }
 
         // --- SALES DB ---
