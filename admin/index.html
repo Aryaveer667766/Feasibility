@@ -736,6 +736,9 @@
         let allTickets = [];
 
         // UI Helpers
+        const safeHTML = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+        const safeText = (id, text) => { const el = document.getElementById(id); if (el) el.innerText = text; };
+
         window.toggleSidebar = () => {
             document.getElementById('sidebar').classList.toggle('-translate-x-full');
             document.getElementById('mobile-overlay').classList.toggle('hidden');
@@ -1415,6 +1418,14 @@
         }
         function getSalesStatusOptions(curr) { return SALES_STATUSES.map(s => `<option value="${s}" ${s === curr ? 'selected' : ''} class="bg-slate-900 text-white">${s}</option>`).join(''); }
 
+        function populateRepDropdowns() {
+            try {
+                const salesOpts = '<option value="">Unassigned</option>' + allUsers.filter(u => (u.role||'').includes('Sales') || (u.role||'').includes('Executive')).map(u => `<option value="${u.name}">${u.name}</option>`).join('');
+                const er = document.getElementById('edit-ld-rep');
+                if(er) er.innerHTML = salesOpts;
+            } catch(e) {}
+        }
+
         window.renderSalesPipeline = function() {
             try {
                 const searchEl = document.getElementById('search-leads');
@@ -1449,7 +1460,8 @@
                         </div>
                     </div>`
                 ).join('') || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-folder-open text-3xl mb-2 opacity-20"></i><p>No sales deals match.</p></div>';
-                safeHTML('master-leads-body', html);
+                const mlb = document.getElementById('master-leads-body');
+                if(mlb) mlb.innerHTML = html;
             } catch(e) { console.error("Render Sales Error", e); }
         }
         const slSearch = document.getElementById('search-leads');
@@ -1563,6 +1575,53 @@
 
         // --- Core Functions ---
 
+        function renderPayroll() {
+            try {
+                let totalAwarded = 0;
+                const html = allUsers.map(user => {
+                    const aw = Number(user.commission_awarded)||0; 
+                    const pd = Number(user.commission_paid)||0; 
+                    const pen = Math.max(0, aw - pd);
+                    totalAwarded += aw;
+                    const role = user.role || '';
+                    const name = user.name || 'Unknown Staff';
+                    
+                    let referenceHtml = '';
+                    if(role.includes('Sales') || role.includes('Executive')) {
+                        const won = allLeads.filter(l => l.rep === name && l.status === 'Closed Won').map(d => `<div class="flex justify-between text-[10px] text-slate-400 border-b border-white/5 pb-1 mb-1"><span>${d.company||'--'}</span><span class="font-mono text-emerald-400">₹${(Number(d.value)||0).toLocaleString('en-IN')}</span></div>`).join('');
+                        referenceHtml = `<p class="text-[9px] text-slate-500 uppercase font-semibold mb-2">Closed Won Deals:</p><div class="max-h-20 overflow-y-auto pr-2 custom-scrollbar">${won || '<p class="text-xs text-slate-600 italic">No won deals.</p>'}</div>`;
+                    } else {
+                        const comp = allCreatives.filter(c => c.assignee === name && c.status === 'Approved & Completed').map(d => `<div class="flex justify-between text-[10px] text-slate-400 border-b border-white/5 pb-1 mb-1"><span>${d.title||'--'}</span><span class="font-mono text-cyan-400">${d.type||'--'}</span></div>`).join('');
+                        referenceHtml = `<p class="text-[9px] text-slate-500 uppercase font-semibold mb-2">Completed Tasks:</p><div class="max-h-20 overflow-y-auto pr-2 custom-scrollbar">${comp || '<p class="text-xs text-slate-600 italic">No completed tasks.</p>'}</div>`;
+                    }
+
+                    return `
+                    <div class="card-panel p-5 border border-white/5 flex flex-col">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center gap-3">
+                                <img src="https://ui-avatars.com/api/?name=${name.replace(/ /g, '+')}&background=0f172a&color=fff" class="w-10 h-10 rounded-full border border-slate-600 shrink-0">
+                                <div>
+                                    <h4 class="font-semibold text-white flex items-center gap-2">${name} <span class="text-[9px] bg-white/10 px-2 py-0.5 rounded text-slate-300 font-normal">${user.status||'--'}</span></h4>
+                                    <p class="text-[10px] text-slate-400 font-mono">Role: ${role}</p>
+                                </div>
+                            </div>
+                            <button onclick="openAwardModal('${user.id}', '${name}')" class="bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-400 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors shrink-0 border border-emerald-500/20"><i class="fa-solid fa-plus"></i> Payout</button>
+                        </div>
+                        <div class="flex-1 mb-4">${referenceHtml}</div>
+                        <div class="grid grid-cols-3 gap-2 mb-4 bg-black/30 p-3 rounded-xl border border-white/5">
+                            <div><p class="text-[9px] text-slate-500 uppercase font-semibold">Awarded</p><p class="font-mono font-semibold text-indigo-400 text-sm">₹${aw.toLocaleString('en-IN')}</p></div>
+                            <div><p class="text-[9px] text-slate-500 uppercase font-semibold">Paid</p><p class="font-mono font-semibold text-slate-300 text-sm">₹${pd.toLocaleString('en-IN')}</p></div>
+                            <div><p class="text-[9px] text-indigo-500 uppercase font-semibold">Pending</p><p class="font-mono font-semibold ${pen>0?'text-indigo-400':'text-slate-500'} text-sm">₹${pen.toLocaleString('en-IN')}</p></div>
+                        </div>
+                        <button onclick="releasePayment('${user.id}', ${pen}, '${name}')" ${pen<=0?'disabled':''} class="w-full py-3 rounded-xl text-sm font-semibold transition-all ${pen>0?'bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg':'bg-slate-800 text-slate-500 cursor-not-allowed'}"><i class="fa-solid fa-money-bill-transfer"></i> Mark Balance as Paid</button>
+                    </div>`
+                }).join('');
+                
+                safeHTML('payroll-grid', html || '<p class="text-slate-500 col-span-full py-8 text-center">No staff records found.</p>');
+                safeText('stat-all-awarded', "₹" + totalAwarded.toLocaleString('en-IN'));
+            } catch(e) { console.error("Render Payroll Error", e); }
+        }
+
         // Add Client (Uses secondary app to prevent logging admin out)
         const formAddClient = document.getElementById('form-add-client');
         if(formAddClient) {
@@ -1608,6 +1667,40 @@
                 }
             });
         }
+
+        window.openTimeline = (id, type) => {
+            document.getElementById('tl-id').value = id; document.getElementById('tl-type').value = type;
+            let title='', meta1='', meta2='', meta3='', hist=[];
+
+            if(type === 'sales') {
+                const l = allLeads.find(x => x.id === id); if(!l) return;
+                title = l.company; meta1 = `<i class="fa-solid fa-user mr-1.5 text-indigo-400"></i>${l.contact || 'N/A'}`; meta2 = `<i class="fa-solid fa-phone mr-1.5 text-blue-400"></i><a href="tel:${l.phone}">${l.phone||'--'}</a>`; meta3 = `₹${(Number(l.value)||0).toLocaleString('en-IN')}`; hist = l.history || [];
+            } else {
+                const c = allCreatives.find(x => x.id === id); if(!c) return;
+                title = c.title; meta1 = `<i class="fa-solid fa-briefcase mr-1.5 text-cyan-400"></i>${c.client||'--'}`; meta2 = `<i class="fa-solid fa-film mr-1.5 text-indigo-400"></i>${c.type||'--'}`; meta3 = `Due: ${c.deadline ? new Date(c.deadline).toLocaleDateString() : '--'}`; hist = c.history || [];
+            }
+
+            safeText('tl-company', title || '--');
+            safeHTML('tl-meta-bar', `
+                <span class="flex items-center bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">${meta1}</span>
+                <span class="flex items-center bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">${meta2}</span>
+                <span class="font-semibold bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-lg border border-emerald-500/20 ml-auto md:ml-0">${meta3}</span>
+            `);
+            
+            const histHtml = hist.slice().reverse().map(h => `<div class="pl-6 border-l-2 border-indigo-500/50 relative py-1 group"><div class="absolute w-3 h-3 bg-indigo-500 rounded-full -left-[7px] top-2 shadow-[0_0_10px_#4f46e5] group-hover:scale-125 transition-transform"></div><p class="text-sm font-semibold text-white">${h.note}</p><p class="text-[10px] text-slate-400 font-mono mt-1.5 bg-black/30 inline-block px-2 py-0.5 rounded border border-white/5">${h.date ? new Date(h.date).toLocaleString() : '--'} • ${h.user||'--'}</p></div>`).join('');
+            safeHTML('tl-history-list', histHtml || '<p class="text-sm text-slate-500 italic p-4 bg-white/5 rounded-xl border border-white/5 text-center">No history logged yet.</p>');
+            
+            document.getElementById('tl-new-note').value = ''; safeShowModal('modal-timeline');
+        };
+
+        window.addTimelineEvent = async () => {
+            const id = document.getElementById('tl-id').value; const type = document.getElementById('tl-type').value; const note = document.getElementById('tl-new-note').value.trim(); if(!note) return;
+            const collectionName = type === 'sales' ? 'sales_leads' : 'creative_tasks';
+            try {
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', collectionName, id), { history: arrayUnion({ note: note, date: new Date().toISOString(), user: ADMIN_NAME }) });
+                document.getElementById('tl-new-note').value = '';
+            } catch(e) { showToast("Error logging interaction", true); }
+        };
 
         // Add Invoice
         window.openInvoiceModal = () => {
@@ -1691,6 +1784,43 @@
                 showToast("Project Updated");
                 closeModals();
             } catch(e) { showToast("Error updating project", true); }
+        };
+
+        window.openAwardModal = (id, name) => { 
+            document.getElementById('award-user-id').value = id; 
+            safeText('award-rep-name', name); 
+            document.getElementById('award-reason').value=''; 
+            document.getElementById('award-amount').value=''; 
+            safeShowModal('modal-award'); 
+        };
+
+        const formAward = document.getElementById('form-award');
+        if(formAward) {
+            formAward.addEventListener('submit', async (e) => {
+                e.preventDefault(); 
+                const id = document.getElementById('award-user-id').value; 
+                const amt = Number(document.getElementById('award-amount').value);
+                if(amt<=0) return; 
+                const u = allUsers.find(x=>x.id===id); if(!u) return;
+                try { 
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', id), { commission_awarded: (Number(u.commission_awarded)||0) + amt }); 
+                    logAudit(`Logged payout of ₹${amt} to ${u.name}`); 
+                    showToast("Payout Logged"); 
+                    closeModals(); 
+                } catch(e) { showToast("Error", true); }
+            });
+        }
+
+        window.releasePayment = async (id, amt, name) => {
+            if(amt<=0) return;
+            if(confirm(`Mark ₹${amt.toLocaleString('en-IN')} as PAID to ${name}?`)) {
+                const u = allUsers.find(x=>x.id===id); if(!u) return;
+                try { 
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', id), { commission_paid: (Number(u.commission_paid)||0) + amt }); 
+                    logAudit(`Cleared pending balance ₹${amt} for ${name}`); 
+                    showToast("Payment Marked as Paid"); 
+                } catch(e) {}
+            }
         };
 
         // Resolve Ticket
