@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Agency OS | Admin Portal</title>
+    <title>Admin Portal | Feasibility Media</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -11,14 +11,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #020617;
+            background-color: #020617; /* Deep slate */
             color: #f8fafc;
             overflow: hidden;
+            /* Professional, subtle blue/indigo lighting */
             background-image: 
                 radial-gradient(circle at 100% 0%, rgba(79, 70, 229, 0.08) 0%, transparent 40%), 
                 radial-gradient(circle at 0% 100%, rgba(56, 189, 248, 0.05) 0%, transparent 40%);
@@ -45,6 +47,7 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #4f46e5; }
+
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
@@ -53,7 +56,8 @@
         /* Inputs */
         input, select, textarea { background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; border-radius: 0.5rem; width: 100%; }
         input:focus, select:focus, textarea:focus { outline: none; border-color: #4f46e5; box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2); }
-        
+        input:disabled, select:disabled { opacity: 0.6; cursor: not-allowed; }
+
         /* Tabs */
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: fadeUp 0.3s ease-out forwards; }
@@ -63,16 +67,22 @@
         .nav-btn.active { background: linear-gradient(90deg, rgba(79, 70, 229, 0.15) 0%, transparent 100%); border-left-color: #4f46e5; color: #fff; font-weight: 600; }
         .nav-btn:hover:not(.active) { color: white; background: rgba(255,255,255,0.02); }
 
-        /* Status Badges */
-        .badge { padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
-        .badge-done { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
-        .badge-pending { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
-        .badge-active { background: rgba(99, 102, 241, 0.1); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.2); }
+        /* Quick Filters */
+        .filter-pill { padding: 0.35rem 1rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #94a3b8; transition: all 0.2s; }
+        .filter-pill:hover { background: rgba(255,255,255,0.1); color: white; }
+        .filter-pill.active { background: rgba(79, 70, 229, 0.2); border-color: rgba(99, 102, 241, 0.5); color: #818cf8; }
+
+        /* Playbook Accordion */
+        .playbook-card { transition: all 0.3s; cursor: pointer; }
+        .playbook-card:hover { background: rgba(255,255,255,0.05); }
+        .playbook-content { display: none; }
+        .playbook-content.open { display: block; animation: fadeUp 0.2s ease-out forwards; }
 
         /* Modals */
-        .modal { opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 100; backdrop-filter: blur(5px); }
+        .modal { opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 100; }
         .modal.active { opacity: 1; pointer-events: auto; }
-        
+
+        /* Mobile-First Responsive Grids */
         .responsive-grid {
             display: flex; flex-direction: column; gap: 0.75rem; padding: 1rem;
             border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02);
@@ -81,415 +91,666 @@
         .responsive-grid:hover { background: rgba(255,255,255,0.05); }
         
         @media (min-width: 1024px) {
-            .responsive-grid { display: grid; gap: 1rem; padding: 1rem 1.25rem; background: transparent; border-radius: 0; margin-bottom: 0; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+            .responsive-grid {
+                display: grid; gap: 1rem; padding: 1rem 1.25rem;
+                background: transparent; border-radius: 0; margin-bottom: 0; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
             .mobile-label { display: none; }
-            .client-grid { grid-template-columns: 2fr 2fr 1fr 1fr; }
-            .invoice-grid { grid-template-columns: 1fr 2fr 1.5fr 1fr 1fr; }
+            .team-grid { grid-template-columns: 2fr 1fr 1.5fr 1fr 1fr; }
+            .sales-grid { grid-template-columns: 2.5fr 1fr 1fr 1.5fr 1.5fr; }
+            .creative-grid { grid-template-columns: 2fr 1.5fr 1fr 1.5fr 1.5fr; }
+            .hr-grid { grid-template-columns: 1fr 2fr 1.5fr 1fr 1fr; }
         }
     </style>
 </head>
 <body class="h-screen w-full flex flex-col md:flex-row relative">
 
-    <!-- AUTHENTICATION SCREEN -->
-    <div id="auth-screen" class="fixed inset-0 z-[200] flex items-center justify-center bg-[#020617] bg-[radial-gradient(circle_at_50%_0%,rgba(79,70,229,0.15)_0%,transparent_50%)]">
-        <div class="card-panel p-8 w-full max-w-md mx-4 shadow-2xl">
-            <div class="text-center mb-8">
-                <div class="w-16 h-16 bg-gradient-to-br from-indigo-600 to-blue-500 text-white items-center justify-center rounded-2xl text-3xl font-bold shadow-lg shadow-indigo-500/30 mx-auto mb-4 flex">OS</div>
-                <h2 class="text-2xl font-bold text-white font-heading">Agency OS</h2>
-                <p class="text-sm text-slate-400 mt-2">Sign in to the central administrative portal.</p>
-            </div>
-            
-            <form id="login-form" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Admin Email</label>
-                    <input type="email" id="auth-email" required class="px-4 py-3" placeholder="admin@agency.com">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Password</label>
-                    <input type="password" id="auth-password" required class="px-4 py-3" placeholder="••••••••">
-                </div>
-                <div id="register-fields" class="hidden">
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Admin Name</label>
-                    <input type="text" id="auth-name" class="px-4 py-3" placeholder="Your Name">
-                </div>
-                <button type="submit" id="auth-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-lg font-semibold transition-colors mt-4 shadow-lg shadow-indigo-600/20">Sign In</button>
-            </form>
-            
-            <div class="mt-6 text-center">
-                <button id="toggle-auth-mode" class="text-xs text-slate-500 hover:text-indigo-400 transition-colors">First time setup? Register Admin Account</button>
-            </div>
+    <div class="fixed inset-0 z-0 pointer-events-none" style="background-image: radial-gradient(circle at 100% 0%, rgba(79, 70, 229, 0.08) 0%, transparent 40%), radial-gradient(circle at 0% 100%, rgba(56, 189, 248, 0.05) 0%, transparent 40%);"></div>
+
+    <div class="md:hidden flex h-16 border-b border-white/5 glass-panel justify-between items-center px-4 shrink-0 z-30">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-gradient-to-br from-indigo-600 to-blue-500 text-white flex items-center justify-center rounded-lg text-sm font-bold shadow-lg">F</div>
+            <span class="text-white font-semibold tracking-tight font-heading">Feasibility Media</span>
         </div>
+        <button onclick="toggleSidebar()" class="text-white p-2"><i class="fa-solid fa-bars text-xl"></i></button>
     </div>
 
-    <!-- MAIN APP WRAPPER -->
-    <div id="main-app" class="flex flex-col md:flex-row w-full h-full hidden opacity-0 transition-opacity duration-500">
-        
-        <!-- Mobile Header -->
-        <div class="md:hidden flex h-16 border-b border-white/5 glass-panel justify-between items-center px-4 shrink-0 z-30">
+    <div id="mobile-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 hidden md:hidden" onclick="toggleSidebar()"></div>
+
+    <aside id="sidebar" class="w-64 glass-panel border-r border-white/5 h-full flex flex-col z-50 shrink-0 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 hidden md:flex">
+        <div class="p-4 md:p-6 border-b border-white/5 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-gradient-to-br from-indigo-600 to-blue-500 text-white flex items-center justify-center rounded-lg text-sm font-bold shadow-lg">OS</div>
-                <span class="text-white font-semibold tracking-tight font-heading">Agency OS</span>
+                <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-blue-500 text-white items-center justify-center rounded-xl text-lg font-bold shadow-lg shadow-indigo-500/20 hidden md:flex">F</div>
+                <div class="flex flex-col leading-none">
+                    <span class="text-white font-semibold tracking-tight text-lg font-heading">Feasibility</span>
+                    <span class="text-[9px] text-indigo-400 font-semibold uppercase tracking-widest mt-1">Workspace</span>
+                </div>
             </div>
-            <button onclick="toggleSidebar()" class="text-white p-2"><i class="fa-solid fa-bars text-xl"></i></button>
+            <button onclick="toggleSidebar()" class="md:hidden text-slate-400"><i class="fa-solid fa-xmark text-xl"></i></button>
         </div>
 
-        <div id="mobile-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 hidden md:hidden" onclick="toggleSidebar()"></div>
-
-        <!-- Sidebar -->
-        <aside id="sidebar" class="w-64 glass-panel border-r border-white/5 h-full flex flex-col z-50 shrink-0 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 hidden md:flex">
-            <div class="p-4 md:p-6 border-b border-white/5 flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-blue-500 text-white items-center justify-center rounded-xl text-lg font-bold shadow-lg shadow-indigo-500/20 hidden md:flex">OS</div>
-                    <div class="flex flex-col leading-none">
-                        <span class="text-white font-semibold tracking-tight text-lg font-heading">Agency</span>
-                        <span class="text-[9px] text-indigo-400 font-semibold uppercase tracking-widest mt-1">Admin Portal</span>
-                    </div>
-                </div>
-                <button onclick="toggleSidebar()" class="md:hidden text-slate-400"><i class="fa-solid fa-xmark text-xl"></i></button>
+        <div class="p-6 pb-2 border-b border-white/5 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border-2 border-indigo-500 overflow-hidden shadow-[0_0_15px_rgba(79,70,229,0.3)] shrink-0">
+                <img src="https://ui-avatars.com/api/?name=Aryaveer+Mishra&background=0f172a&color=fff" class="w-full h-full">
             </div>
+            <div class="overflow-hidden">
+                <p class="text-sm font-semibold text-white leading-tight truncate">Aryaveer Mishra</p>
+                <p class="text-[10px] text-emerald-400 uppercase tracking-wider font-semibold truncate"><i class="fa-solid fa-shield-check mr-1"></i> System Administrator</p>
+            </div>
+        </div>
 
-            <nav class="flex-1 py-4 space-y-1 overflow-y-auto custom-scrollbar">
-                <div class="px-6 py-2">
-                    <p class="text-[9px] font-semibold text-slate-500 uppercase tracking-widest">Management</p>
-                </div>
-                <button onclick="switchTab('overview')" class="nav-btn active w-full flex items-center gap-3 px-6 py-3 text-sm text-left"><i class="fa-solid fa-chart-line w-5 text-center text-indigo-400"></i> Executive Overview</button>
-                <button onclick="switchTab('clients')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-sm text-left"><i class="fa-solid fa-building w-5 text-center text-emerald-400"></i> Client Directory</button>
-                <button onclick="switchTab('team')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-sm text-left"><i class="fa-solid fa-users w-5 text-center text-blue-400"></i> Internal Team</button>
-
-                <div class="px-6 py-2 mt-2">
-                    <p class="text-[9px] font-semibold text-slate-500 uppercase tracking-widest">Operations</p>
-                </div>
-                <button onclick="switchTab('creative-pipeline')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-sm text-left"><i class="fa-solid fa-layer-group w-5 text-center text-cyan-400"></i> Creative Projects</button>
-                <button onclick="switchTab('assets')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-sm text-left"><i class="fa-solid fa-folder-tree w-5 text-center text-amber-400"></i> Brand Assets</button>
-                <button onclick="switchTab('tickets')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-sm text-left"><i class="fa-solid fa-headset w-5 text-center text-rose-400"></i> Support Tickets</button>
-
-                <div class="px-6 py-2 mt-2">
-                    <p class="text-[9px] font-semibold text-slate-500 uppercase tracking-widest">Finance & Logs</p>
-                </div>
-                <button onclick="switchTab('invoices')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-sm text-left"><i class="fa-solid fa-file-invoice-dollar w-5 text-center text-emerald-500"></i> Client Invoices</button>
-                <button onclick="switchTab('logs')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 text-sm text-left"><i class="fa-solid fa-list-ol w-5 text-center text-slate-400"></i> Audit Logs</button>
-            </nav>
-            
-            <div class="p-6 border-t border-white/5 space-y-3">
-                <button id="btn-logout" class="w-full text-xs font-semibold text-rose-400 hover:text-rose-300 transition-colors py-2 flex items-center justify-center gap-2 bg-white/5 rounded-lg border border-white/5">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Lock System
-                </button>
-                <div class="flex items-center justify-center gap-2 text-xs text-slate-500 font-mono">
+        <nav class="flex-1 py-4 space-y-1 overflow-y-auto custom-scrollbar">
+            <button onclick="switchTab('overview')" class="nav-btn active w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
+                <i class="fa-solid fa-chart-line w-5 text-center"></i> Executive Overview
+            </button>
+            <button onclick="switchTab('team')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
+                <i class="fa-solid fa-users w-5 text-center"></i> Team Directory
+            </button>
+            <button onclick="switchTab('attendance')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
+                <i class="fa-solid fa-calendar-days w-5 text-center text-indigo-400"></i> Time & Attendance
+            </button>
+            <div class="px-6 py-2 mt-2">
+                <p class="text-[9px] font-semibold text-slate-500 uppercase tracking-widest">Divisions</p>
+            </div>
+            <button onclick="switchTab('sales-pipeline')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
+                <i class="fa-solid fa-globe w-5 text-center text-emerald-400"></i> Sales Pipeline
+            </button>
+            <button onclick="switchTab('creative-pipeline')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
+                <i class="fa-solid fa-layer-group w-5 text-center text-cyan-400"></i> Creative Projects
+            </button>
+            <div class="px-6 py-2 mt-2">
+                <p class="text-[9px] font-semibold text-slate-500 uppercase tracking-widest">Operations</p>
+            </div>
+            <button onclick="switchTab('playbook')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
+                <i class="fa-solid fa-book-open w-5 text-center text-amber-400"></i> Sales Playbook
+            </button>
+            <button onclick="switchTab('hr')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
+                <i class="fa-solid fa-headset w-5 text-center text-blue-400"></i> Support Tickets
+            </button>
+            <button onclick="switchTab('payroll')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
+                <i class="fa-solid fa-money-check-dollar w-5 text-center text-emerald-500"></i> Payroll Management
+            </button>
+            <button onclick="switchTab('logs')" class="nav-btn w-full flex items-center gap-3 px-6 py-3.5 text-sm text-left">
+                <i class="fa-solid fa-list-ol w-5 text-center text-slate-400"></i> Audit Logs
+            </button>
+        </nav>
+        
+        <div class="p-6 border-t border-white/5">
+            <div class="flex items-center justify-between text-xs text-slate-500 font-mono">
+                <div class="flex items-center gap-2">
                     <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" id="db-indicator"></div>
                     <span id="db-status">Connecting...</span>
                 </div>
             </div>
-        </aside>
-
-        <main class="flex-1 h-full flex flex-col relative z-10 overflow-hidden">
-            
-            <!-- Top Header -->
-            <header class="h-16 md:h-20 border-b border-white/5 glass-panel flex justify-between items-center px-4 md:px-8 shrink-0">
-                <h1 id="page-title" class="text-xl md:text-2xl font-semibold text-white font-heading truncate pr-4">Executive Overview</h1>
-                <div class="flex items-center gap-2 md:gap-4">
-                    <button onclick="safeShowModal('modal-add-client')" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-semibold transition-all shadow-lg flex items-center gap-2">
-                        <i class="fa-solid fa-building"></i> <span class="hidden md:inline">New Client</span>
-                    </button>
-                </div>
-            </header>
-
-            <div class="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
-                
-                <!-- TAB: Overview -->
-                <div id="tab-overview" class="tab-content active space-y-6 md:space-y-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                        <div class="card-panel p-4 md:p-6 border-t-2 border-cyan-500">
-                            <p class="text-[10px] md:text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2 truncate">Active Projects</p>
-                            <h3 id="kpi-projects" class="text-xl md:text-3xl font-semibold text-white font-mono truncate">0</h3>
-                        </div>
-                        <div class="card-panel p-4 md:p-6 border-t-2 border-emerald-500">
-                            <p class="text-[10px] md:text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2 truncate">Total Clients</p>
-                            <h3 id="kpi-clients" class="text-xl md:text-3xl font-semibold text-emerald-400 font-mono truncate">0</h3>
-                        </div>
-                        <div class="card-panel p-4 md:p-6 border-t-2 border-indigo-500">
-                            <p class="text-[10px] md:text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2 truncate">Pending Invoices</p>
-                            <h3 id="kpi-invoices" class="text-xl md:text-3xl font-semibold text-indigo-400 font-mono truncate">₹0</h3>
-                        </div>
-                        <div class="card-panel p-4 md:p-6 border-t-2 border-rose-500">
-                            <p class="text-[10px] md:text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2 truncate">Open Tickets</p>
-                            <h3 id="kpi-tickets" class="text-xl md:text-3xl font-semibold text-rose-400 font-mono truncate">0</h3>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="card-panel p-6 flex flex-col h-[400px]">
-                            <h3 class="text-lg font-semibold text-white font-heading mb-4 text-slate-200"><i class="fa-solid fa-list-ul mr-2 text-indigo-400"></i> Global Activity Feed</h3>
-                            <div class="overflow-y-auto flex-1 pr-2 space-y-3 custom-scrollbar" id="global-pulse-list"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB: Clients -->
-                <div id="tab-clients" class="tab-content">
-                    <div class="card-panel p-4 md:p-6 flex flex-col min-h-[600px] w-full">
-                        <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                            <div>
-                                <h3 class="text-lg font-semibold text-emerald-400 font-heading">Client Directory</h3>
-                                <p class="text-xs text-slate-400 mt-1">Manage portal access and profiles for your clients.</p>
-                            </div>
-                            <button onclick="safeShowModal('modal-add-client')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-lg shadow-emerald-900/30">
-                                <i class="fa-solid fa-plus mr-1"></i> Add Client
-                            </button>
-                        </div>
-                        
-                        <div class="flex-1 pb-4">
-                            <div class="hidden lg:grid client-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-semibold text-slate-500 uppercase tracking-wider rounded-t-xl">
-                                <div>Company / Client Name</div>
-                                <div>Portal Login (Email)</div>
-                                <div>Date Added</div>
-                                <div class="text-right">Actions</div>
-                            </div>
-                            <div id="clients-list" class="flex flex-col mt-2 md:mt-0"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB: Invoices -->
-                <div id="tab-invoices" class="tab-content">
-                    <div class="card-panel p-4 md:p-6 flex flex-col min-h-[600px] w-full">
-                        <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                            <div>
-                                <h3 class="text-lg font-semibold text-emerald-500 font-heading">Client Billing & Invoices</h3>
-                                <p class="text-xs text-slate-400 mt-1">Upload and track invoices. Visible in Client Portal.</p>
-                            </div>
-                            <button onclick="openInvoiceModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-lg">
-                                <i class="fa-solid fa-file-invoice mr-1"></i> Issue Invoice
-                            </button>
-                        </div>
-                        
-                        <div class="flex-1 pb-4">
-                            <div class="hidden lg:grid invoice-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-semibold text-slate-500 uppercase tracking-wider rounded-t-xl">
-                                <div>Date</div>
-                                <div>Client & Description</div>
-                                <div>Amount</div>
-                                <div>Status</div>
-                                <div class="text-right">Actions</div>
-                            </div>
-                            <div id="invoices-list" class="flex flex-col mt-2 md:mt-0"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB: Creative Projects -->
-                <div id="tab-creative-pipeline" class="tab-content">
-                    <div class="card-panel p-4 md:p-6 flex flex-col min-h-[600px] w-full">
-                        <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                            <div>
-                                <h3 class="text-lg font-semibold text-cyan-400 font-heading">Creative Engine</h3>
-                                <p class="text-xs text-slate-400 mt-1">Manage project briefs submitted by clients.</p>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4" id="master-creative-body"></div>
-                    </div>
-                </div>
-
-                <!-- TAB: Brand Assets -->
-                <div id="tab-assets" class="tab-content">
-                    <div class="card-panel p-4 md:p-6 flex flex-col min-h-[600px] w-full">
-                        <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                            <div>
-                                <h3 class="text-lg font-semibold text-amber-400 font-heading">Brand Assets Repository</h3>
-                                <p class="text-xs text-slate-400 mt-1">Centralized links provided by clients.</p>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4" id="assets-grid"></div>
-                    </div>
-                </div>
-
-                <!-- TAB: Tickets -->
-                <div id="tab-tickets" class="tab-content">
-                    <div class="card-panel p-4 md:p-6 flex flex-col min-h-[600px] w-full">
-                        <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                            <div>
-                                <h3 class="text-lg font-semibold text-rose-400 font-heading">Support Desk</h3>
-                                <p class="text-xs text-slate-400 mt-1">Resolve issues submitted from the Client Portal.</p>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 gap-4" id="hr-tickets-body"></div>
-                    </div>
-                </div>
-
-                <!-- TAB: Logs -->
-                <div id="tab-logs" class="tab-content">
-                    <div class="card-panel p-4 md:p-6 flex flex-col min-h-[600px] w-full">
-                        <div class="flex justify-between items-center mb-6">
-                            <div>
-                                <h3 class="text-lg font-semibold text-white font-heading">System Audit Logs</h3>
-                            </div>
-                            <button onclick="clearAuditLogs()" class="bg-red-600/10 hover:bg-red-600/20 text-red-500 border border-red-500/30 px-4 py-2 rounded-lg text-xs font-semibold transition-colors">Clear</button>
-                        </div>
-                        <div class="bg-black/30 border border-white/5 rounded-xl flex-1 p-4 font-mono text-xs overflow-y-auto custom-scrollbar" id="audit-log-container"></div>
-                    </div>
-                </div>
-
-                <!-- Placeholders for un-migrated tabs -->
-                <div id="tab-team" class="tab-content"><div class="card-panel p-8 text-center text-slate-500">Internal Team module logic goes here.</div></div>
-
-            </div>
-        </main>
-    </div> <!-- END MAIN APP -->
-
-    <!-- MODALS -->
-
-    <!-- Add Client Modal -->
-    <div id="modal-add-client" class="fixed inset-0 bg-slate-950/80 flex items-center justify-center modal p-4">
-        <div class="modal-content card-panel w-full max-w-md p-6 border-emerald-500/30 shadow-emerald-900/20">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-white font-heading">Register New Client</h2>
-                <button onclick="closeModals()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <form id="form-add-client" class="space-y-4">
-                <p class="text-xs text-slate-400 mb-4 bg-emerald-500/10 p-3 rounded border border-emerald-500/20">This will generate a portal login for the client and add them to the directory.</p>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Company / Client Name</label>
-                    <input type="text" id="ac-company" required class="px-4 py-3" placeholder="Acme Corp">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Login Email</label>
-                    <input type="email" id="ac-email" required class="px-4 py-3" placeholder="contact@acme.com">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Initial Password</label>
-                    <input type="text" id="ac-pass" required class="px-4 py-3 font-mono text-emerald-300" placeholder="e.g. Welcome2026!">
-                </div>
-                <button type="submit" id="btn-save-client" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-lg font-semibold transition-colors mt-2">Create Client Account</button>
-            </form>
         </div>
-    </div>
+    </aside>
 
-    <!-- Add Invoice Modal -->
-    <div id="modal-add-invoice" class="fixed inset-0 bg-slate-950/80 flex items-center justify-center modal p-4">
-        <div class="modal-content card-panel w-full max-w-lg p-6 border-indigo-500/30 shadow-indigo-900/20">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-white font-heading">Issue Invoice</h2>
-                <button onclick="closeModals()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+    <main class="flex-1 h-full flex flex-col relative z-10 overflow-hidden">
+        
+        <header class="h-16 md:h-20 border-b border-white/5 glass-panel flex justify-between items-center px-4 md:px-8 shrink-0">
+            <h1 id="page-title" class="text-xl md:text-2xl font-semibold text-white font-heading truncate pr-4">Executive Overview</h1>
+            
+            <div class="flex items-center gap-2 md:gap-4">
+                <button onclick="exportGlobalCSV()" class="hidden md:flex bg-slate-800 hover:bg-slate-700 border border-white/10 text-white px-3 py-2 rounded-lg text-xs font-semibold items-center gap-2 transition-colors">
+                    <i class="fa-solid fa-file-csv text-emerald-400"></i> Export Data
+                </button>
+                <button onclick="safeShowModal('modal-broadcast')" class="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-semibold transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-bullhorn text-indigo-400"></i> <span class="hidden md:inline">Announcement</span>
+                </button>
+                <button onclick="safeShowModal('modal-add-user')" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-semibold transition-all shadow-lg shadow-indigo-900/30 flex items-center gap-2">
+                    <i class="fa-solid fa-user-plus"></i> <span class="hidden md:inline">Add Staff</span>
+                </button>
             </div>
-            <form id="form-add-invoice" class="space-y-4">
-                <input type="hidden" id="ai-id">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Select Client</label>
-                    <select id="ai-client" required class="px-4 py-3 bg-slate-800"></select>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
+            
+            <div id="tab-overview" class="tab-content active space-y-6 md:space-y-8">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                    <div class="card-panel p-4 md:p-6 border-t-2 border-emerald-500">
+                        <p class="text-[10px] md:text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2 truncate">Sales Pipeline</p>
+                        <h3 id="kpi-total-pipe" class="text-xl md:text-3xl font-semibold text-white font-mono truncate">₹0</h3>
+                        <p class="text-[9px] md:text-[10px] text-emerald-400 mt-2 font-medium"><i class="fa-solid fa-arrow-trend-up mr-1"></i> Active deals</p>
+                    </div>
+                    <div class="card-panel p-4 md:p-6 border-t-2 border-blue-500">
+                        <p class="text-[10px] md:text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2 truncate">Gross Revenue Won</p>
+                        <h3 id="kpi-total-won" class="text-xl md:text-3xl font-semibold text-blue-400 font-mono truncate">₹0</h3>
+                        <p class="text-[9px] md:text-[10px] text-slate-500 mt-2">All time closed won</p>
+                    </div>
+                    <div class="card-panel p-4 md:p-6 border-t-2 border-amber-500">
+                        <p class="text-[10px] md:text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2 truncate">30-Day Projection</p>
+                        <h3 id="kpi-projected" class="text-xl md:text-3xl font-semibold text-amber-400 font-mono truncate">₹0</h3>
+                        <p class="text-[9px] md:text-[10px] text-slate-500 mt-2">Deals in negotiation</p>
+                    </div>
+                    <div class="card-panel p-4 md:p-6 border-t-2 border-indigo-500">
+                        <p class="text-[10px] md:text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2 truncate">Pending Payouts</p>
+                        <h3 id="kpi-pending-payouts" class="text-xl md:text-3xl font-semibold text-indigo-400 font-mono truncate">₹0</h3>
+                        <p class="text-[9px] md:text-[10px] text-indigo-400 mt-2 font-medium">Unpaid commissions/bonuses</p>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Description</label>
-                    <input type="text" id="ai-desc" required class="px-4 py-3" placeholder="e.g. Monthly Retainer - Sept">
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="card-panel p-6 lg:col-span-2">
+                        <h3 class="text-lg font-semibold text-white font-heading mb-4">Sales Distribution</h3>
+                        <div class="relative h-64 w-full">
+                            <canvas id="globalPipelineChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card-panel p-6 flex flex-col h-full max-h-[350px]">
+                        <h3 class="text-lg font-semibold text-white font-heading mb-4 text-slate-200"><i class="fa-solid fa-list-ul mr-2 text-indigo-400"></i> Activity Feed</h3>
+                        <div class="overflow-y-auto flex-1 pr-2 space-y-3 custom-scrollbar" id="global-pulse-list">
+                            </div>
+                    </div>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+            </div>
+
+            <div id="tab-team" class="tab-content">
+                <div class="card-panel p-4 md:p-6 flex flex-col min-h-[600px] w-full">
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
+                        <h3 class="text-lg font-semibold text-white font-heading">Team Directory</h3>
+                        <span class="text-xs text-slate-400 font-mono">Total Headcount: <span id="team-count" class="text-white font-semibold">0</span></span>
+                    </div>
+                    
+                    <div class="flex-1 pb-4">
+                        <div class="hidden lg:grid team-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-semibold text-slate-500 uppercase tracking-wider rounded-t-xl">
+                            <div>Staff Member</div>
+                            <div>Role</div>
+                            <div>Contact Info</div>
+                            <div>Status</div>
+                            <div class="text-right">Manage</div>
+                        </div>
+                        <div id="team-table-body" class="flex flex-col mt-2 md:mt-0"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-attendance" class="tab-content">
+                <div class="card-panel p-4 md:p-6 flex flex-col min-h-[600px] w-full">
+                    <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-6 border-b border-white/10 pb-6">
+                        <div>
+                            <h3 class="text-lg font-semibold text-indigo-400 font-heading"><i class="fa-solid fa-calendar-days mr-2"></i>Time & Attendance</h3>
+                            <p class="text-xs text-slate-400">Individual tracking and historical calendar logs.</p>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-3 items-center">
+                            <select id="attendance-user-select" onchange="changeAttendanceUser(this.value)" class="w-full sm:w-64 rounded-lg px-3 py-2 text-sm bg-slate-900 border border-white/10 focus:border-indigo-500 shadow-inner text-white font-medium">
+                                <option value="">Select Staff Member...</option>
+                            </select>
+                            <div class="bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap w-full sm:w-auto text-center">
+                                <span id="active-shifts-count">0</span> Active Shifts
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 flex-1">
+                        <div class="xl:col-span-2 flex flex-col">
+                            <div class="flex justify-between items-center mb-4 px-2">
+                                <button onclick="changeMonth(-1)" class="text-slate-400 hover:text-white p-2 transition-colors"><i class="fa-solid fa-chevron-left"></i></button>
+                                <h4 id="calendar-month-year" class="font-semibold text-white text-lg font-heading tracking-wide">April 2026</h4>
+                                <button onclick="changeMonth(1)" class="text-slate-400 hover:text-white p-2 transition-colors"><i class="fa-solid fa-chevron-right"></i></button>
+                            </div>
+                            <div class="grid grid-cols-7 gap-2 text-center mb-2">
+                                <div class="text-[10px] font-semibold text-slate-500 uppercase">Sun</div>
+                                <div class="text-[10px] font-semibold text-slate-500 uppercase">Mon</div>
+                                <div class="text-[10px] font-semibold text-slate-500 uppercase">Tue</div>
+                                <div class="text-[10px] font-semibold text-slate-500 uppercase">Wed</div>
+                                <div class="text-[10px] font-semibold text-slate-500 uppercase">Thu</div>
+                                <div class="text-[10px] font-semibold text-slate-500 uppercase">Fri</div>
+                                <div class="text-[10px] font-semibold text-slate-500 uppercase">Sat</div>
+                            </div>
+                            <div id="calendar-grid" class="grid grid-cols-7 gap-2 flex-1">
+                                </div>
+                            <div class="flex flex-wrap gap-4 mt-6 justify-center text-[10px] text-slate-400 font-semibold uppercase tracking-wider border-t border-white/5 pt-4">
+                                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Logged In</span>
+                                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-slate-500 opacity-70"></span> Missed</span>
+                                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></span> Active Now</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-black/20 border border-white/5 rounded-xl p-4 flex flex-col h-[500px] xl:h-auto">
+                            <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
+                                <h4 class="font-semibold text-white text-sm" id="log-panel-title">Recent Logs</h4>
+                                <button onclick="filterLogsByDate(null)" id="btn-show-all-logs" class="hidden text-[9px] bg-white/5 hover:bg-white/10 px-2 py-1 rounded text-slate-300 font-semibold uppercase tracking-wider transition-colors">Show All</button>
+                            </div>
+                            <div id="attendance-body" class="flex-1 overflow-y-auto custom-scrollbar space-y-3 pr-2">
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-sales-pipeline" class="tab-content">
+                <div class="card-panel p-4 md:p-6 flex flex-col min-h-[600px] w-full">
+                    <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-6 border-b border-white/10 pb-6">
+                        <div>
+                            <h3 class="text-lg font-semibold text-emerald-400 font-heading">Sales Pipeline</h3>
+                            <p class="text-xs text-slate-400">Visibility over revenue pipeline.</p>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                            <div class="flex flex-wrap gap-2 items-center w-full lg:w-auto">
+                                <button onclick="setSalesFilter('All')" class="filter-pill active" id="sf-all">All</button>
+                                <button onclick="setSalesFilter('Active')" class="filter-pill" id="sf-active">Active</button>
+                                <button onclick="setSalesFilter('Closed Won')" class="filter-pill" id="sf-won">Won</button>
+                            </div>
+                            <div class="relative w-full sm:w-64">
+                                <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-500 text-xs"></i>
+                                <input type="text" id="search-leads" placeholder="Search accounts..." class="w-full bg-slate-900 border border-white/10 rounded-lg pl-8 pr-3 py-1.5 text-sm text-white focus:border-emerald-500">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 pb-4">
+                        <div class="hidden lg:grid sales-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-semibold text-slate-500 uppercase tracking-wider rounded-t-xl">
+                            <div>Account Info</div>
+                            <div>Value</div>
+                            <div>Assignee</div>
+                            <div>Status</div>
+                            <div class="text-right">Actions</div>
+                        </div>
+                        <div id="master-leads-body" class="flex flex-col mt-2 md:mt-0"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-creative-pipeline" class="tab-content">
+                <div class="card-panel p-4 md:p-6 flex flex-col min-h-[600px] w-full">
+                    <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-6 border-b border-white/10 pb-6">
+                        <div>
+                            <h3 class="text-lg font-semibold text-cyan-400 font-heading">Creative Projects</h3>
+                            <p class="text-xs text-slate-400">Manage creative tasks and deliverables.</p>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                            <div class="flex flex-wrap gap-2 items-center w-full lg:w-auto">
+                                <button onclick="setCreativeFilter('All')" class="filter-pill active" id="cf-all">All</button>
+                                <button onclick="setCreativeFilter('In Progress')" class="filter-pill" id="cf-active">Active</button>
+                                <button onclick="setCreativeFilter('Review')" class="filter-pill" id="cf-review">Review</button>
+                            </div>
+                            <div class="relative w-full sm:w-56">
+                                <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-500 text-xs"></i>
+                                <input type="text" id="search-creative" placeholder="Search tasks..." class="w-full bg-slate-900 border border-white/10 rounded-lg pl-8 pr-3 py-1.5 text-sm text-white focus:border-cyan-500">
+                            </div>
+                            <button onclick="openAssignCreativeModal()" class="bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-2 rounded-lg text-xs font-semibold transition-colors shadow-lg shadow-cyan-900/30 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-plus"></i> Assign Task
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 pb-4">
+                        <div class="hidden lg:grid creative-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-semibold text-slate-500 uppercase tracking-wider rounded-t-xl">
+                            <div>Project Details</div>
+                            <div>Format / Client</div>
+                            <div>Deadline</div>
+                            <div>Status</div>
+                            <div class="text-right">Actions</div>
+                        </div>
+                        <div id="master-creative-body" class="flex flex-col mt-2 md:mt-0"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-playbook" class="tab-content">
+                <div class="card-panel p-4 md:p-6 w-full min-h-[600px]">
+                    <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-amber-400 font-heading">Sales Playbook</h3>
+                            <p class="text-xs text-slate-400">Standard operating procedures, scripts, and frameworks.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-black/20 border border-white/5 rounded-xl p-5 playbook-card" onclick="togglePlaybook('pb1')">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-semibold text-white flex items-center"><i class="fa-solid fa-phone text-emerald-400 mr-2"></i> Discovery Call Framework</h4>
+                                <i class="fa-solid fa-chevron-down text-slate-500 text-xs"></i>
+                            </div>
+                            <div id="pb1" class="playbook-content text-sm text-slate-300 mt-4 space-y-3">
+                                <p><strong class="text-white">1. The Hook (First 30s):</strong> "Hi [Name], I noticed [Specific compliment about their content/business]. I have an idea that could add [X result]. Do you have 2 minutes?"</p>
+                                <p><strong class="text-white">2. The Pain Identification:</strong> "What is the biggest bottleneck preventing you from scaling your content output right now?"</p>
+                                <p><strong class="text-white">3. The Pitch:</strong> "At Feasibility Media, we specialize in building visual retention engines. We solve [Their Pain] by [Our Solution]."</p>
+                                <p><strong class="text-white">4. The Close:</strong> "Does it make sense to schedule a 15-minute deep dive on Tuesday to show you the exact strategy?"</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-black/20 border border-white/5 rounded-xl p-5 playbook-card" onclick="togglePlaybook('pb2')">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-semibold text-white flex items-center"><i class="fa-solid fa-shield text-indigo-400 mr-2"></i> Objection Handling</h4>
+                                <i class="fa-solid fa-chevron-down text-slate-500 text-xs"></i>
+                            </div>
+                            <div id="pb2" class="playbook-content text-sm text-slate-300 mt-4 space-y-3">
+                                <p><strong class="text-white">"We don't have budget":</strong> "I completely understand. If budget wasn't an issue, is this a solution you feel would actually grow your business?" (If yes, negotiate scope. If no, establish value proposition first).</p>
+                                <p><strong class="text-white">"We already have an agency":</strong> "That’s great. We aren't looking to replace them today. We are a specialized agency focusing purely on [Specific Niche]. Can we do a test run on your next campaign to see how we compare?"</p>
+                                <p><strong class="text-white">"Just send me an email":</strong> "I absolutely will. But just so I don't send you generic info, what is your #1 priority right now?" (Keep them engaged).</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-black/20 border border-white/5 rounded-xl p-5 playbook-card" onclick="togglePlaybook('pb3')">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-semibold text-white flex items-center"><i class="fa-solid fa-envelope text-blue-400 mr-2"></i> Cold Email Template</h4>
+                                <i class="fa-solid fa-chevron-down text-slate-500 text-xs"></i>
+                            </div>
+                            <div id="pb3" class="playbook-content text-sm text-slate-300 mt-4 space-y-3">
+                                <p><strong class="text-white">Subject:</strong> Quick idea for [Company Name]</p>
+                                <p>Hi [Name],</p>
+                                <p>I was checking out your recent campaign and loved [Specific Detail]. However, I noticed you might be leaving engagement on the table with your current video pacing.</p>
+                                <p>We are a specialized media agency that helps brands like yours increase retention by 40% through high-end editing.</p>
+                                <p>I actually put together a quick 2-minute loom video showing exactly how we would upgrade your next release. Worth a watch?</p>
+                                <p>Best,<br>Your Name</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-hr" class="tab-content">
+                <div class="card-panel p-4 md:p-6 flex flex-col min-h-[600px] w-full">
+                    <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-6">
+                        <div>
+                            <h3 class="text-lg font-semibold text-white font-heading">Support Tickets</h3>
+                            <p class="text-xs text-slate-400">Manage internal team requests and issues.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="bg-amber-500/10 border border-amber-500/20 text-amber-400 px-3 py-1.5 rounded-lg text-xs font-semibold"><span id="hr-open-count">0</span> Open</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 pb-4">
+                        <div class="hidden lg:grid hr-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-semibold text-slate-500 uppercase tracking-wider rounded-t-xl">
+                            <div>Date</div>
+                            <div>Employee & Issue</div>
+                            <div>Category</div>
+                            <div>Status</div>
+                            <div class="text-right">Actions</div>
+                        </div>
+                        <div id="hr-tickets-body" class="flex flex-col mt-2 md:mt-0"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-payroll" class="tab-content">
+                <div class="card-panel p-4 md:p-6 flex flex-col min-h-[600px] w-full">
+                    <div class="mb-6 border-b border-white/5 pb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-white font-heading">Payroll Management</h3>
+                            <p class="text-sm text-slate-400">Manage commissions and compensation tracking.</p>
+                        </div>
+                        <div class="bg-slate-800/50 border border-slate-700 px-4 py-2 rounded-lg text-left md:text-right w-full md:w-auto">
+                            <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-widest">Total Issued All Time</p>
+                            <p class="text-xl font-mono font-semibold text-white" id="stat-all-awarded">₹0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6" id="payroll-grid"></div>
+                </div>
+            </div>
+
+            <div id="tab-logs" class="tab-content">
+                <div class="card-panel p-4 md:p-6 flex flex-col min-h-[600px] w-full">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h3 class="text-lg font-semibold text-white font-heading">Audit Logs</h3>
+                            <p class="text-xs text-slate-400">Secure ledger of administrative actions.</p>
+                        </div>
+                        <button onclick="clearAuditLogs()" class="bg-red-600/10 hover:bg-red-600/20 text-red-500 border border-red-500/30 px-4 py-2 rounded-lg text-xs font-semibold transition-colors">
+                            Clear Logs
+                        </button>
+                    </div>
+                    
+                    <div class="bg-black/30 border border-white/5 rounded-xl flex-1 p-4 font-mono text-xs overflow-y-auto custom-scrollbar" id="audit-log-container">
+                        <div class="text-slate-500 italic py-4 text-center">No logs recorded yet.</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <div id="modal-add-user" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center modal z-[100] p-4">
+        <div class="modal-content glass-panel border border-white/10 rounded-2xl w-full max-w-lg p-6 shadow-2xl shadow-black">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold text-white font-heading">Add Staff Member</h2>
+                <button onclick="closeModals()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form id="form-add-user" class="space-y-4">
+                <div>
+                    <label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Full Name</label>
+                    <input type="text" id="usr-name" required class="w-full rounded-lg px-3 py-2 text-sm">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Amount (₹)</label>
-                        <input type="number" id="ai-amount" required class="px-4 py-3 font-mono text-emerald-400" placeholder="25000">
+                        <label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Email</label>
+                        <input type="email" id="usr-email" required class="w-full rounded-lg px-3 py-2 text-sm">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Status</label>
-                        <select id="ai-status" class="px-4 py-3 bg-slate-800">
-                            <option value="Pending">Pending</option>
-                            <option value="Paid">Paid</option>
+                        <label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Role/Division</label>
+                        <select id="usr-role" required class="w-full rounded-lg px-3 py-2 text-sm">
+                            <option value="Sales Executive">Sales Executive</option>
+                            <option value="Senior Executive">Senior Executive (Sales)</option>
+                            <option value="Head of Sales">Head of Sales</option>
+                            <option value="Video Editor">Video Editor (Creative)</option>
+                            <option value="Graphic Designer">Graphic Designer (Creative)</option>
+                            <option value="Creative Director">Creative Director</option>
                         </select>
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Invoice PDF Link</label>
-                    <input type="url" id="ai-link" required class="px-4 py-3 font-mono text-indigo-300" placeholder="Drive / Dropbox link to PDF">
+                    <label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">UPI ID (For Payouts)</label>
+                    <input type="text" id="usr-upi" required class="w-full rounded-lg px-3 py-2 text-sm" placeholder="username@bank">
                 </div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-lg font-semibold transition-colors mt-2">Publish Invoice</button>
+                <div class="p-3 bg-slate-800/50 border border-slate-700 rounded-lg">
+                    <label class="block text-[10px] font-semibold text-indigo-400 uppercase tracking-wider mb-1">Initial Password</label>
+                    <input type="text" id="usr-pass" required class="w-full rounded-lg px-3 py-2 text-sm font-mono text-indigo-200" placeholder="e.g. Welcome2026">
+                </div>
+                <button type="submit" id="btn-save-user" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-lg text-sm mt-4 transition-colors">
+                    Create User Account
+                </button>
             </form>
         </div>
     </div>
 
-    <!-- Modal: View Project Details / Status Update -->
-    <div id="modal-view-project" class="fixed inset-0 bg-slate-950/80 flex items-center justify-center modal p-4">
-        <div class="modal-content card-panel w-full max-w-2xl p-0 overflow-hidden flex flex-col max-h-[90vh]">
-            <div class="bg-slate-800/50 p-6 border-b border-white/10 flex justify-between items-start">
-                <div>
-                    <div class="flex items-center gap-3 mb-2">
-                        <span id="mv-client" class="badge badge-active">Client</span>
-                        <span id="mv-type" class="text-xs text-slate-400 font-mono">Format</span>
-                    </div>
-                    <h2 id="mv-title" class="text-xl md:text-2xl font-bold text-white font-heading">Project Title</h2>
-                </div>
-                <button onclick="closeModals()" class="text-slate-400 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
+    <div id="modal-edit-lead" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center modal z-[100] p-4">
+        <div class="modal-content glass-panel border border-white/10 rounded-2xl w-full max-w-2xl p-6 shadow-2xl max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4 shrink-0">
+                <h2 class="text-xl font-semibold text-white font-heading"><i class="fa-solid fa-pen-to-square text-indigo-400 mr-2"></i> Edit Deal Details</h2>
+                <button onclick="closeModals()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
             
-            <div class="p-6 overflow-y-auto custom-scrollbar flex-1 space-y-6">
-                <input type="hidden" id="mv-id">
-                
-                <div class="grid grid-cols-2 gap-4 bg-black/20 p-4 rounded-xl border border-white/5">
-                    <div><p class="text-[10px] uppercase font-bold text-slate-500 mb-1">Target Deadline</p><p id="mv-deadline" class="text-sm font-medium text-white">--</p></div>
-                    <div>
-                        <p class="text-[10px] uppercase font-bold text-slate-500 mb-1">Assign To Editor</p>
-                        <input type="text" id="mv-assignee-input" class="px-2 py-1 text-xs border border-white/10 rounded" placeholder="Type name...">
+            <div class="overflow-y-auto pr-2 flex-1 custom-scrollbar">
+                <form id="form-edit-lead" class="space-y-4">
+                    <input type="hidden" id="edit-ld-id">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Account Name</label><input type="text" id="edit-ld-company" required class="w-full rounded-lg px-3 py-2 text-sm"></div>
+                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Value (₹)</label><input type="number" id="edit-ld-value" required class="w-full rounded-lg px-3 py-2 text-sm font-mono text-emerald-400"></div>
+                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Contact Person</label><input type="text" id="edit-ld-contact" class="w-full rounded-lg px-3 py-2 text-sm"></div>
+                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Phone</label><input type="text" id="edit-ld-phone" class="w-full rounded-lg px-3 py-2 text-sm font-mono"></div>
+                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Lead Source</label>
+                            <select id="edit-ld-source" class="w-full rounded-lg px-3 py-2 text-sm bg-slate-900">
+                                <option>Cold Email</option> <option>LinkedIn Inbound</option> <option>Referral / Network</option>
+                                <option>Website Contact Form</option> <option>YouTube Channel</option> <option>Direct Call</option>
+                            </select>
+                        </div>
+                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Next Action Date</label><input type="date" id="edit-ld-nextaction" class="w-full rounded-lg px-3 py-2 text-sm text-slate-300"></div>
+                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Assigned Rep</label><select id="edit-ld-rep" class="w-full rounded-lg px-3 py-2 text-sm bg-slate-900"></select></div>
+                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Status</label><select id="edit-ld-status" class="w-full rounded-lg px-3 py-2 text-sm font-semibold bg-slate-900"></select></div>
                     </div>
-                </div>
-
-                <div>
-                    <h4 class="text-sm font-bold text-white mb-2 border-b border-white/10 pb-2">Client Brief / Notes</h4>
-                    <p id="mv-notes" class="text-sm text-slate-300 whitespace-pre-wrap leading-relaxed italic">No notes provided.</p>
-                </div>
-
-                <div>
-                    <h4 class="text-sm font-bold text-white mb-2 border-b border-white/10 pb-2">Deliverable Upload</h4>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 mt-3">Final Video/Design Link</label>
-                    <input type="url" id="mv-final-link" class="px-4 py-3 font-mono text-emerald-300" placeholder="Link for client to review...">
-                </div>
-
-                <div>
-                    <h4 class="text-sm font-bold text-white mb-2 border-b border-white/10 pb-2">Update Status</h4>
-                    <select id="mv-status-select" class="px-4 py-3 bg-slate-800 w-full font-bold">
-                        <option value="In Progress">In Progress</option>
-                        <option value="Awaiting Assets">Awaiting Assets</option>
-                        <option value="Internal Review">Internal Review</option>
-                        <option value="Client Review">Client Review (Notifies Client)</option>
-                        <option value="Revision Requested">Revision Requested</option>
-                        <option value="Approved & Completed">Approved & Completed</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="p-6 bg-slate-800/50 border-t border-white/10 flex justify-end gap-3" id="mv-actions">
-                <button onclick="closeModals()" class="px-5 py-2.5 rounded-lg text-sm font-semibold text-slate-300 hover:bg-white/5 transition-colors border border-transparent">Cancel</button>
-                <button onclick="saveProjectUpdates()" class="px-5 py-2.5 rounded-lg text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition-colors border border-white/10">Save Updates</button>
+                    <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Internal Notes</label><textarea id="edit-ld-notes" rows="3" class="w-full rounded-lg px-3 py-2 text-sm resize-none"></textarea></div>
+                    <div class="flex gap-3 pt-2">
+                        <button type="button" onclick="closeModals()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 rounded-lg text-sm transition-colors">Cancel</button>
+                        <button type="submit" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-lg text-sm transition-colors">Save Changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-6 right-6 text-white px-6 py-4 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.4)] font-semibold text-sm transform translate-y-32 opacity-0 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md">
-        <i class="fa-solid fa-circle-info text-xl"></i> <span id="toast-msg">Notification</span>
+    <div id="modal-creative-project" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center modal z-[100] p-4">
+        <div class="modal-content glass-panel border border-white/10 rounded-2xl w-full max-w-2xl p-6 shadow-2xl max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4 shrink-0">
+                <h2 class="text-xl font-semibold text-white font-heading" id="crt-modal-title"><i class="fa-solid fa-layer-group text-cyan-500 mr-2"></i> Assign Creative Task</h2>
+                <button onclick="closeModals()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            
+            <div class="overflow-y-auto pr-2 flex-1 custom-scrollbar">
+                <form id="form-creative-project" class="space-y-4">
+                    <input type="hidden" id="crt-id">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Project Title *</label><input type="text" id="crt-title" required class="w-full rounded-lg px-3 py-2 text-sm" placeholder="e.g. TechWiser Reel"></div>
+                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Client / Brand</label><input type="text" id="crt-client" required class="w-full rounded-lg px-3 py-2 text-sm"></div>
+                        <div>
+                            <label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Format *</label>
+                            <select id="crt-type" class="w-full rounded-lg px-3 py-2 text-sm bg-slate-900">
+                                <option>YouTube Long-form</option> <option>Shorts / Reels</option> <option>Thumbnail Design</option>
+                                <option>Social Media Carousel</option> <option>Podcast Edit</option> <option>Other Graphic</option>
+                            </select>
+                        </div>
+                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Deadline *</label><input type="date" id="crt-deadline" required class="w-full rounded-lg px-3 py-2 text-sm text-slate-300"></div>
+                        <div class="sm:col-span-2"><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Assets Link *</label><input type="url" id="crt-raw" required class="w-full rounded-lg px-3 py-2 text-sm font-mono text-cyan-300" placeholder="Drive / Dropbox Link"></div>
+                        <div class="sm:col-span-2"><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Reference Link (Optional)</label><input type="url" id="crt-inspiration" class="w-full rounded-lg px-3 py-2 text-sm font-mono text-amber-300" placeholder="YouTube, Pinterest..."></div>
+                        <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Assign To *</label><select id="crt-assignee" required class="w-full rounded-lg px-3 py-2 text-sm bg-slate-900"></select></div>
+                        <div>
+                            <label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Status</label>
+                            <select id="crt-status" class="w-full rounded-lg px-3 py-2 text-sm font-semibold bg-slate-900">
+                                <option>In Progress</option> <option>Awaiting Assets</option> <option>Internal Review</option>
+                                <option>Client Review</option> <option>Revision Requested</option> <option>Approved & Completed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div><label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Project Directives / Notes</label><textarea id="crt-notes" rows="3" class="w-full rounded-lg px-3 py-2 text-sm resize-none" placeholder="Requirements, pacing, etc."></textarea></div>
+                    <div class="flex gap-3 pt-2">
+                        <button type="button" onclick="closeModals()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 rounded-lg text-sm transition-colors">Cancel</button>
+                        <button type="submit" class="flex-1 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-3 rounded-lg text-sm transition-colors" id="btn-save-creative">Assign Task</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-timeline" class="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center modal z-[100] p-4">
+        <div class="glass-panel border border-white/10 rounded-3xl w-full max-w-2xl p-6 md:p-8 shadow-2xl flex flex-col max-h-[90vh]">
+            <div class="flex justify-between items-start mb-6 border-b border-white/10 pb-6">
+                <div>
+                    <h2 id="tl-company" class="text-xl md:text-3xl font-semibold text-white font-heading tracking-tight">Project / Company</h2>
+                    <div class="flex flex-wrap gap-4 text-sm text-slate-300 font-mono mt-3" id="tl-meta-bar"></div>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white text-2xl bg-white/5 w-10 h-10 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto pr-4 space-y-5 mb-6 custom-scrollbar" id="tl-history-list"></div>
+
+            <div class="bg-slate-900 p-5 rounded-2xl border border-white/10 shrink-0 shadow-inner">
+                <input type="hidden" id="tl-id">
+                <input type="hidden" id="tl-type"> <label class="block text-[11px] font-semibold text-indigo-400 uppercase tracking-wider mb-3">Add Note / Log Activity</label>
+                <div class="flex gap-3">
+                    <input type="text" id="tl-new-note" class="flex-1 px-4 py-3 text-sm bg-black border-transparent focus:border-indigo-500" placeholder="Type an update...">
+                    <button onclick="addTimelineEvent()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-xl text-sm font-semibold flex items-center gap-2"><i class="fa-solid fa-plus"></i> Log</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-manage-ticket" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center modal z-[100] p-4">
+        <div class="glass-panel border border-white/10 rounded-2xl w-full max-w-lg p-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-white font-heading">Update Support Ticket</h2>
+                <button onclick="closeModals()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="bg-black/30 p-4 rounded-lg border border-white/5 mb-4">
+                <p class="text-[10px] font-semibold text-slate-400 uppercase mb-1">Details</p>
+                <p class="font-semibold text-white" id="mng-tk-subject">Subject</p>
+                <p class="text-xs text-blue-400 font-mono mt-1" id="mng-tk-rep">Rep Name • Category</p>
+                <p class="text-sm text-slate-300 mt-3 whitespace-pre-wrap" id="mng-tk-details">Details...</p>
+            </div>
+            <form id="form-manage-ticket" class="space-y-4">
+                <input type="hidden" id="mng-tk-id">
+                <div>
+                    <label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Update Status</label>
+                    <select id="mng-tk-status" class="w-full rounded-lg px-3 py-2 text-sm font-semibold bg-slate-900 focus:border-blue-500">
+                        <option value="Open">Open</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 rounded-lg text-sm mt-2 transition-colors">Update Ticket</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-award" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center modal z-[100] p-4">
+        <div class="modal-content glass-panel border border-white/10 rounded-2xl w-full max-w-sm p-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold text-white font-heading"><i class="fa-solid fa-money-bill-wave text-emerald-500 mr-2"></i> Log Payout</h2>
+                <button onclick="closeModals()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form id="form-award" class="space-y-4">
+                <input type="hidden" id="award-user-id">
+                <div class="bg-black/30 p-3 rounded-lg border border-white/5 mb-2 text-center">
+                    <p class="text-xs text-slate-400 uppercase tracking-wider">Recipient</p>
+                    <p class="text-lg font-semibold text-white" id="award-rep-name">Name</p>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Reference / Description</label>
+                    <input type="text" id="award-reason" required class="w-full rounded-lg px-3 py-2 text-sm" placeholder="e.g. Q3 Bonus or Comm">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-semibold text-emerald-400 uppercase tracking-wider mb-1">Amount (₹)</label>
+                    <input type="number" id="award-amount" required class="w-full rounded-lg px-3 py-3 text-lg font-mono font-semibold text-emerald-400 bg-emerald-900/10 border-emerald-500/30 focus:border-emerald-500" placeholder="5000">
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 rounded-lg text-sm mt-4 transition-colors">Confirm Payout</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-broadcast" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center modal z-[100] p-4">
+        <div class="modal-content glass-panel border border-white/10 rounded-2xl w-full max-w-lg p-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold text-white font-heading">Team Announcement</h2>
+                <button onclick="closeModals()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="space-y-4">
+                <p class="text-sm text-slate-300">Push a global announcement to all active users on the platform.</p>
+                <textarea rows="4" class="w-full rounded-lg px-3 py-2 text-sm resize-none" placeholder="Type message here..."></textarea>
+                <button onclick="logAudit('Broadcast announcement sent to team'); showToast('Announcement sent'); closeModals();" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-lg text-sm transition-colors">
+                    <i class="fa-solid fa-paper-plane mr-2"></i> Send Message
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-6 right-6 text-white px-6 py-4 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.3)] font-semibold text-sm transform translate-y-32 opacity-0 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md">
+        <i class="fa-solid fa-check-circle text-xl"></i> <span id="toast-msg">Success</span>
     </div>
 
     <script type="module">
-        // MAIN APP LOGIC
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, getDocs, addDoc, onSnapshot, doc, updateDoc, deleteDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Global Configuration
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        let ADMIN_NAME = ""; 
-        let currentUser = null;
+        const SALES_STATUSES = ['New Lead', 'Attempted Contact', 'Discovery Call', 'Meeting Set', 'Proposal Sent', 'In Negotiation', 'Closed Won', 'Closed Lost'];
+        const CREATIVE_STATUSES = ['In Progress', 'Awaiting Assets', 'Internal Review', 'Client Review', 'Revision Requested', 'Approved & Completed'];
 
-        // Data Arrays
-        let allClients = [];
-        let allInvoices = [];
-        let allCreatives = [];
-        let allAssets = [];
-        let allTickets = [];
+        let currentSalesFilter = 'All';
+        let currentCreativeFilter = 'All';
+        let activeUserRecord = null;
+        let allLeads = [], allUsers = [], allTickets = [], allCreatives = [], allAttendance = [];
+        
+        let currentCalendarDate = new Date();
+        let selectedAttendanceUser = '';
+        let filteredLogDate = null;
+
+        // Safe DOM Utilities (Prevents completely crashing on null errors)
+        const safeHTML = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+        const safeText = (id, text) => { const el = document.getElementById(id); if (el) el.innerText = text; };
 
         // UI Helpers
-        window.toggleSidebar = () => {
+        window.toggleSidebar = function() {
             document.getElementById('sidebar').classList.toggle('-translate-x-full');
             document.getElementById('mobile-overlay').classList.toggle('hidden');
         };
 
-        window.switchTab = (tabId) => {
+        window.switchTab = function(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            const target = document.getElementById('tab-' + tabId);
-            if(target) target.classList.add('active');
+            const targetTab = document.getElementById('tab-' + tabId);
+            if(targetTab) targetTab.classList.add('active');
 
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
             if(event && event.currentTarget && event.currentTarget.classList.contains('nav-btn')) {
@@ -497,16 +758,17 @@
             }
 
             const titles = { 
-                'overview': 'Executive Overview', 
-                'clients': 'Client Directory', 
-                'invoices': 'Client Billing & Invoices',
-                'creative-pipeline': 'Creative Engine',
-                'assets': 'Brand Assets',
-                'tickets': 'Support Desk',
-                'logs': 'Audit Logs'
+                'overview': "Executive Overview", 
+                'team': 'Team Directory', 
+                'attendance': 'Time & Attendance', 
+                'sales-pipeline': 'Sales Pipeline', 
+                'creative-pipeline': 'Creative Projects', 
+                'payroll': 'Payroll Management', 
+                'logs': 'Audit Logs', 
+                'hr': 'Support Tickets', 
+                'playbook': 'Sales Playbook' 
             };
-            const titleEl = document.getElementById('page-title');
-            if(titleEl) titleEl.innerText = titles[tabId] || 'Admin Portal';
+            safeText('page-title', titles[tabId] || '');
 
             if(window.innerWidth < 768) {
                 document.getElementById('sidebar').classList.add('-translate-x-full');
@@ -514,37 +776,49 @@
             }
         };
 
-        window.safeShowModal = (id) => {
+        window.togglePlaybook = function(id) {
+            const content = document.getElementById(id);
+            if(!content) return;
+            const isOpen = content.classList.contains('open');
+            document.querySelectorAll('.playbook-content').forEach(el => el.classList.remove('open'));
+            if(!isOpen) content.classList.add('open');
+        }
+
+        window.safeShowModal = function(id) {
             const modal = document.getElementById(id);
             if(modal) modal.classList.add('active');
-        };
-        window.closeModals = () => { document.querySelectorAll('.modal').forEach(el => el.classList.remove('active')); };
+        }
 
-        window.showToast = (msg, isError=false) => {
+        window.closeModals = function() { document.querySelectorAll('.modal').forEach(el => el.classList.remove('active')); };
+        window.closeModal = function() { const m = document.getElementById('modal-timeline'); if(m) m.classList.remove('active'); };
+
+        window.showToast = function(msg, isError=false) {
             const toast = document.getElementById('toast');
             if(!toast) return;
-            toast.className = `fixed bottom-6 right-6 text-white px-6 py-4 rounded-xl shadow-lg font-semibold text-sm transform translate-y-0 opacity-100 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md ${isError ? 'bg-red-600/90' : 'bg-emerald-600/90'}`;
-            document.getElementById('toast-msg').innerText = msg;
-            setTimeout(() => { toast.classList.replace('translate-y-0', 'translate-y-32'); toast.classList.replace('opacity-100', 'opacity-0'); }, 4000);
+            toast.className = `fixed bottom-6 right-6 text-white px-6 py-4 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.3)] font-semibold text-sm transform translate-y-0 opacity-100 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md ${isError ? 'bg-red-600/90' : 'bg-emerald-600/90'}`;
+            safeText('toast-msg', msg);
+            setTimeout(() => { toast.classList.replace('translate-y-0', 'translate-y-32'); toast.classList.replace('opacity-100', 'opacity-0'); }, 3000);
         };
 
         // Audit Logs
         let auditLogs = [];
-        window.logAudit = (action) => {
+        window.logAudit = function(action) {
             const time = new Date().toLocaleTimeString();
-            auditLogs.unshift(`[${time}] ADMIN: ${action}`);
+            auditLogs.unshift(`[${time}] LOG: ${action}`);
             renderAuditLogs();
         };
-        window.clearAuditLogs = () => { auditLogs = []; renderAuditLogs(); showToast("Logs cleared"); };
+        window.clearAuditLogs = function() { auditLogs = []; renderAuditLogs(); showToast("Logs cleared"); };
         function renderAuditLogs() {
-            if(auditLogs.length === 0) return document.getElementById('audit-log-container').innerHTML = '<div class="text-slate-500 italic py-4 text-center">No logs recorded yet.</div>';
-            document.getElementById('audit-log-container').innerHTML = auditLogs.map(log => `<div class="mb-2 text-indigo-300 border-b border-white/5 pb-1">${log}</div>`).join('');
+            if(auditLogs.length === 0) return safeHTML('audit-log-container', '<div class="text-slate-500 italic py-4 text-center">No logs recorded yet.</div>');
+            safeHTML('audit-log-container', auditLogs.map(log => `<div class="mb-2 text-indigo-300 border-b border-white/5 pb-1">${log}</div>`).join(''));
         }
 
-        // Firebase Configuration
-        let db, auth, fbConfig;
+        // Firebase Initialization
+        let db, auth, chartInstance;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
         try {
-            fbConfig = {
+            const fbConfig = {
               apiKey: "AIzaSyAAgcIprurHXdo9tztkqVzLsIzJCWhqWwc", 
               authDomain: "feasibility-44ca4.firebaseapp.com",
               databaseURL: "https://feasibility-44ca4-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -557,444 +831,723 @@
             db = getFirestore(app); 
             auth = getAuth(app);
 
-            // Auth State Listener
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    currentUser = user;
-                    ADMIN_NAME = user.displayName || "Admin";
-                    
-                    document.getElementById('auth-screen').classList.add('hidden', 'opacity-0');
-                    document.getElementById('main-app').classList.remove('hidden', 'opacity-0');
-                    document.getElementById('db-status').innerText = 'System Online';
-                    document.getElementById('db-indicator').classList.replace('bg-red-500', 'bg-emerald-500');
-                    
-                    setupDataListeners();
-                    logAudit("Admin logged in successfully.");
-                } else {
-                    currentUser = null;
-                    document.getElementById('main-app').classList.add('hidden');
-                    document.getElementById('main-app').classList.remove('opacity-100');
-                    document.getElementById('auth-screen').classList.remove('hidden', 'opacity-0');
-                }
-            });
-
-        } catch (e) { console.error("Firebase Init Error", e); }
-
-        // --- Auth Logic ---
-        let isLoginMode = true;
-        const toggleModeBtn = document.getElementById('toggle-auth-mode');
-        const authBtn = document.getElementById('auth-btn');
-        const regFields = document.getElementById('register-fields');
-
-        if(toggleModeBtn) {
-            toggleModeBtn.addEventListener('click', () => {
-                isLoginMode = !isLoginMode;
-                if(isLoginMode) {
-                    toggleModeBtn.innerText = "First time setup? Register Admin Account";
-                    authBtn.innerText = "Sign In";
-                    regFields.classList.add('hidden');
-                    document.getElementById('auth-name').removeAttribute('required');
-                } else {
-                    toggleModeBtn.innerText = "Already have an account? Sign In";
-                    authBtn.innerText = "Register Admin";
-                    regFields.classList.remove('hidden');
-                    document.getElementById('auth-name').setAttribute('required', 'true');
-                }
-            });
-        }
-
-        const loginForm = document.getElementById('login-form');
-        if(loginForm) {
-            loginForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const email = document.getElementById('auth-email').value.trim();
-                const password = document.getElementById('auth-password').value.trim();
-                authBtn.disabled = true;
-                authBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
-
+            const initSystem = async () => {
                 try {
-                    if(isLoginMode) {
-                        await signInWithEmailAndPassword(auth, email, password);
-                        showToast("Successfully logged in.");
-                    } else {
-                        const name = document.getElementById('auth-name').value.trim();
-                        const userCred = await createUserWithEmailAndPassword(auth, email, password);
-                        await updateProfile(userCred.user, { displayName: name });
-                        showToast("Admin account created!");
-                    }
-                } catch(error) {
-                    showToast(error.message, true);
-                    authBtn.disabled = false;
-                    authBtn.innerText = isLoginMode ? "Sign In" : "Register Admin";
+                    await signInAnonymously(auth);
+                    setDbStatus(true);
+                    
+                    safeHTML('edit-ld-status', SALES_STATUSES.map(s => `<option value="${s}">${s}</option>`).join(''));
+                    safeHTML('crt-assignee', ''); 
+                    activeUserRecord = { name: "Aryaveer Mishra", role: "Administrator" };
+                    
+                    loadData();
+                    logAudit("System Initialized. Administrative session started.");
+                    showToast("Access Granted");
+                } catch (error) {
+                    console.error("AUTH ERROR:", error);
+                    setDbStatus(false);
+                    showToast("Connection Failed: " + error.message, true);
                 }
-            });
+            };
+            initSystem();
+        } catch (e) { console.error(e); setDbStatus(false); }
+
+        function setDbStatus(isOnline) {
+            const ind = document.getElementById('db-indicator');
+            const txt = document.getElementById('db-status');
+            if(ind) ind.className = `w-2 h-2 rounded-full ${isOnline ? 'bg-emerald-500 shadow-[0_0_8px_#10b981]' : 'bg-red-500 animate-pulse'}`;
+            if(txt) txt.innerText = isOnline ? 'System Online' : 'Connection Error';
         }
 
-        const logoutBtn = document.getElementById('btn-logout');
-        if(logoutBtn) {
-            logoutBtn.addEventListener('click', async () => {
-                await signOut(auth);
-                showToast("Locked successfully.");
-                authBtn.disabled = false;
-                authBtn.innerText = "Sign In";
-                loginForm.reset();
-            });
-        }
-
-        // --- Data Fetching ---
-        function setupDataListeners() {
-            // Clients
-            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'clients'), (snap) => {
-                allClients = []; snap.forEach(d => allClients.push({id: d.id, ...d.data()}));
-                allClients.sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
-                
-                // Update dropdowns
-                const opts = '<option value="" disabled selected>Select Client...</option>' + allClients.map(c => `<option value="${c.company}">${c.company}</option>`).join('');
-                const invoiceSelect = document.getElementById('ai-client');
-                if(invoiceSelect) invoiceSelect.innerHTML = opts;
-
-                document.getElementById('kpi-clients').innerText = allClients.length;
-                renderClients();
+        function loadData() {
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), (snap) => {
+                try {
+                    allLeads = []; snap.forEach(d => allLeads.push({id: d.id, ...d.data()}));
+                    allLeads.sort((a, b) => (b.timestamp||0) - (a.timestamp||0));
+                    renderOverview(); renderSalesPipeline();
+                } catch(e) { console.error("Error rendering leads", e); }
             });
 
-            // Invoices
-            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'invoices'), (snap) => {
-                allInvoices = []; snap.forEach(d => allInvoices.push({id: d.id, ...d.data()}));
-                allInvoices.sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
-                
-                let pendingTotal = 0;
-                allInvoices.forEach(i => { if(i.status === 'Pending') pendingTotal += Number(i.amount)||0; });
-                document.getElementById('kpi-invoices').innerText = `₹${pendingTotal.toLocaleString('en-IN')}`;
-                
-                renderInvoices();
-            });
-
-            // Creative Tasks
             onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'creative_tasks'), (snap) => {
-                allCreatives = []; snap.forEach(d => allCreatives.push({id: d.id, ...d.data()}));
-                allCreatives.sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
-                
-                let act = 0;
-                allCreatives.forEach(c => { if(c.status !== 'Approved & Completed') act++; });
-                document.getElementById('kpi-projects').innerText = act;
-
-                renderCreative();
-            });
-
-            // Brand Assets
-            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'brand_assets'), (snap) => {
-                allAssets = []; snap.forEach(d => allAssets.push({id: d.id, ...d.data()}));
-                allAssets.sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
-                renderAssets();
-            });
-
-            // Support Tickets
-            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'hr_tickets'), (snap) => {
-                allTickets = []; snap.forEach(d => allTickets.push({id: d.id, ...d.data()}));
-                allTickets.sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
-                
-                let openC = 0;
-                allTickets.forEach(t => { if(t.status === 'Open') openC++; });
-                document.getElementById('kpi-tickets').innerText = openC;
-
-                renderTickets();
-            });
-        }
-
-        // --- Renderers ---
-        function renderClients() {
-            const list = document.getElementById('clients-list');
-            if(allClients.length === 0) {
-                list.innerHTML = `<div class="py-12 text-center text-slate-500">No clients registered yet.</div>`;
-                return;
-            }
-
-            list.innerHTML = allClients.map(c => `
-                <div class="responsive-grid client-grid hover:bg-white/5 border-l-2 border-transparent hover:border-emerald-500/50">
-                    <div>
-                        <p class="font-bold text-white text-sm">${c.company}</p>
-                    </div>
-                    <div><span class="mobile-label text-[9px] font-semibold text-slate-500 uppercase mr-2">Email</span><span class="text-xs text-slate-300 font-mono">${c.email}</span></div>
-                    <div><span class="mobile-label text-[9px] font-semibold text-slate-500 uppercase mr-2">Added</span><span class="text-xs text-slate-400 font-mono">${new Date(c.timestamp).toLocaleDateString()}</span></div>
-                    <div class="flex justify-end gap-2">
-                        <button onclick="deleteDocItem('clients', '${c.id}', 'Client Profile')" class="text-slate-500 hover:text-red-400 p-2" title="Delete Profile"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderInvoices() {
-            const list = document.getElementById('invoices-list');
-            if(allInvoices.length === 0) {
-                list.innerHTML = `<div class="py-12 text-center text-slate-500">No invoices issued.</div>`;
-                return;
-            }
-
-            list.innerHTML = allInvoices.map(i => {
-                const sBadge = i.status === 'Paid' ? '<span class="badge badge-done">Paid</span>' : '<span class="badge badge-pending">Pending</span>';
-                return `
-                <div class="responsive-grid invoice-grid hover:bg-white/5 border-l-2 border-transparent hover:border-indigo-500/50">
-                    <div><span class="text-xs text-slate-400 font-mono">${new Date(i.timestamp).toLocaleDateString()}</span></div>
-                    <div>
-                        <p class="font-bold text-white text-sm">${i.client}</p>
-                        <p class="text-[10px] text-indigo-300 font-mono mt-1">${i.description}</p>
-                    </div>
-                    <div class="font-mono font-bold text-emerald-400">₹${Number(i.amount).toLocaleString('en-IN')}</div>
-                    <div>${sBadge}</div>
-                    <div class="flex justify-end gap-2 items-center">
-                        ${i.link ? `<a href="${i.link}" target="_blank" class="bg-indigo-500/10 hover:bg-indigo-500/30 text-indigo-400 px-3 py-1.5 rounded-lg text-xs transition-colors"><i class="fa-solid fa-link"></i></a>` : ''}
-                        <button onclick="toggleInvoiceStatus('${i.id}', '${i.status}')" class="bg-white/5 hover:bg-white/20 text-slate-300 px-3 py-1.5 rounded-lg text-xs transition-colors" title="Toggle Status"><i class="fa-solid fa-rotate"></i></button>
-                        <button onclick="deleteDocItem('invoices', '${i.id}', 'Invoice')" class="text-slate-500 hover:text-red-400 p-2"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                </div>
-            `}).join('');
-        }
-
-        function renderCreative() {
-            const list = document.getElementById('master-creative-body');
-            const feed = document.getElementById('global-pulse-list');
-            let feedHtml = '';
-
-            if(allCreatives.length === 0) {
-                list.innerHTML = `<div class="col-span-full py-12 text-center text-slate-500">No creative projects submitted yet.</div>`;
-                feed.innerHTML = `<div class="text-center py-4 text-slate-500 text-sm italic">No recent activity.</div>`;
-                return;
-            }
-
-            list.innerHTML = allCreatives.map(p => {
-                let badge = '<span class="badge badge-active">In Progress</span>';
-                if(p.status === 'Approved & Completed') badge = '<span class="badge badge-done">Completed</span>';
-                if(p.status === 'Client Review' || p.status === 'Internal Review') badge = '<span class="badge badge-pending">Review</span>';
-
-                // build feed simultaneously
-                if(p.history) {
-                    p.history.forEach(h => {
-                        feedHtml += `
-                            <div class="bg-black/30 border border-white/5 rounded-lg p-3">
-                                <p class="text-xs font-semibold text-white mb-1.5">${h.note}</p>
-                                <div class="flex justify-between items-center mt-1">
-                                    <span class="text-[9px] font-mono text-cyan-400 bg-white/5 px-2 py-0.5 rounded">${p.client}: ${p.title}</span>
-                                    <span class="text-[9px] font-mono text-slate-500">${new Date(h.date).toLocaleDateString()} • ${h.user}</span>
-                                </div>
-                            </div>`;
-                    });
-                }
-
-                return `
-                <div class="card-panel p-5 flex flex-col justify-between hover:border-cyan-500/50 cursor-pointer" onclick="openManageProject('${p.id}')">
-                    <div>
-                        <div class="flex justify-between items-start mb-2">
-                            ${badge}
-                            <span class="text-[10px] text-slate-400 font-mono">${p.deadline ? new Date(p.deadline).toLocaleDateString() : '--'}</span>
-                        </div>
-                        <h4 class="text-lg font-bold text-white leading-tight mb-1">${p.title}</h4>
-                        <p class="text-xs text-cyan-400 font-mono mb-4">${p.client} • ${p.type}</p>
-                    </div>
-                    <div class="pt-3 border-t border-white/10 flex justify-between items-center text-xs">
-                        <span class="text-slate-400">Rep: ${p.assignee || 'Unassigned'}</span>
-                        <span class="text-indigo-400 font-semibold hover:text-indigo-300">Manage &rarr;</span>
-                    </div>
-                </div>
-            `}).join('');
-
-            feed.innerHTML = feedHtml || '<div class="text-center py-4 text-slate-500 text-sm italic">No recent activity.</div>';
-        }
-
-        function renderAssets() {
-            const grid = document.getElementById('assets-grid');
-            if(allAssets.length === 0) return grid.innerHTML = `<div class="col-span-full py-8 text-center text-slate-500">No brand assets uploaded by clients.</div>`;
-
-            grid.innerHTML = allAssets.map(a => `
-                <div class="card-panel p-4 flex flex-col items-center text-center">
-                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-3">
-                        <i class="fa-solid fa-link text-2xl text-amber-400"></i>
-                    </div>
-                    <h4 class="text-sm font-bold text-white w-full truncate mb-1" title="${a.client}">${a.client}</h4>
-                    <p class="text-[10px] text-slate-400 font-mono truncate w-full mb-3">${a.url.replace(/^https?:\/\//, '').split('/')[0]}</p>
-                    <div class="w-full flex gap-2">
-                        <a href="${a.url}" target="_blank" class="flex-1 bg-white/10 hover:bg-white/20 py-1.5 rounded-md text-xs font-semibold text-white transition-colors">Visit</a>
-                        <button onclick="deleteDocItem('brand_assets', '${a.id}', 'Asset')" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 px-3 py-1.5 rounded-md text-xs transition-colors"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderTickets() {
-            const list = document.getElementById('hr-tickets-body');
-            if(allTickets.length === 0) return list.innerHTML = `<div class="py-8 text-center text-slate-500">No open tickets.</div>`;
-
-            list.innerHTML = allTickets.map(t => {
-                const sColor = t.status === 'Open' ? 'text-amber-400 bg-amber-500/10' : 'text-emerald-400 bg-emerald-500/10';
-                return `
-                <div class="card-panel p-4 border-l-4 ${t.status === 'Open' ? 'border-l-amber-500' : 'border-l-emerald-500'} flex flex-col sm:flex-row justify-between gap-4">
-                    <div>
-                        <div class="flex gap-2 items-center mb-1">
-                            <span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase ${sColor}">${t.status}</span>
-                            <span class="text-[10px] text-slate-400 font-mono">${new Date(t.timestamp).toLocaleDateString()}</span>
-                        </div>
-                        <h4 class="font-bold text-white text-sm">${t.subject}</h4>
-                        <p class="text-xs text-rose-300 font-mono mt-1">Client: ${t.rep}</p>
-                        <p class="text-sm text-slate-300 mt-2">${t.details}</p>
-                    </div>
-                    <div class="flex items-start shrink-0">
-                        ${t.status === 'Open' ? `<button onclick="resolveTicket('${t.id}')" class="bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-400 border border-emerald-500/30 px-4 py-2 rounded-lg text-xs font-bold transition-colors">Mark Resolved</button>` : `<button onclick="deleteDocItem('hr_tickets', '${t.id}', 'Ticket')" class="text-slate-500 hover:text-red-400 p-2"><i class="fa-solid fa-trash"></i></button>`}
-                    </div>
-                </div>
-            `}).join('');
-        }
-
-        // --- Core Functions ---
-
-        // Add Client (Uses secondary app to prevent logging admin out)
-        const formAddClient = document.getElementById('form-add-client');
-        if(formAddClient) {
-            formAddClient.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const company = document.getElementById('ac-company').value.trim();
-                const email = document.getElementById('ac-email').value.trim();
-                const pass = document.getElementById('ac-pass').value.trim();
-                const btn = document.getElementById('btn-save-client');
-                
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
-
                 try {
-                    // 1. Create Auth Account using a secondary app instance
-                    const { initializeApp: initApp2 } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js");
-                    const { getAuth: getAuth2, createUserWithEmailAndPassword, updateProfile, signOut: signOut2 } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js");
-                    
-                    const app2 = initApp2(fbConfig, "ClientCreatorApp");
-                    const auth2 = getAuth2(app2);
-                    
-                    const userCred = await createUserWithEmailAndPassword(auth2, email, pass);
-                    await updateProfile(userCred.user, { displayName: company });
-                    await signOut2(auth2); // log out the secondary app instance
+                    allCreatives = []; snap.forEach(d => allCreatives.push({id: d.id, ...d.data()}));
+                    allCreatives.sort((a, b) => (b.timestamp||0) - (a.timestamp||0));
+                    renderOverview(); renderCreativePipeline();
+                } catch(e) { console.error("Error rendering creatives", e); }
+            });
 
-                    // 2. Add to Firestore for Admin Directory
-                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'clients'), {
-                        company: company,
-                        email: email,
-                        timestamp: Date.now()
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'team_users'), (snap) => {
+                try {
+                    allUsers = [];
+                    snap.forEach(d => {
+                        const data = d.data(); 
+                        if(data.commission_awarded === undefined) data.commission_awarded = 0; 
+                        if(data.commission_paid === undefined) data.commission_paid = 0;
+                        allUsers.push({id: d.id, ...data});
                     });
+                    updateAttendanceDropdown();
+                    renderTeamRoster(); renderPayroll(); populateRepDropdowns();
+                } catch(e) { console.error("Error rendering users", e); }
+            });
 
-                    logAudit(`Provisioned portal access for client: ${company}`);
-                    showToast("Client Account Created & Provisioned!");
-                    formAddClient.reset();
-                    closeModals();
-                } catch(error) {
-                    console.error(error);
-                    showToast(`Failed: ${error.message}`, true);
-                } finally {
-                    btn.disabled = false;
-                    btn.innerHTML = 'Create Client Account';
-                }
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'hr_tickets'), (snap) => {
+                try {
+                    allTickets = []; snap.forEach(d => allTickets.push({id: d.id, ...d.data()}));
+                    allTickets.sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
+                    renderTickets();
+                } catch(e) { console.error("Error rendering tickets", e); }
+            });
+
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'attendance_logs'), (snap) => {
+                try {
+                    allAttendance = []; snap.forEach(d => allAttendance.push({id: d.id, ...d.data()}));
+                    allAttendance.sort((a,b) => (b.clockIn||0) - (a.clockIn||0));
+                    renderAttendance();
+                } catch(e) { console.error("Error rendering attendance", e); }
             });
         }
 
-        // Add Invoice
-        window.openInvoiceModal = () => {
-            document.getElementById('form-add-invoice').reset();
-            document.getElementById('ai-id').value = '';
-            safeShowModal('modal-add-invoice');
+        // ================= RENDERERS =================
+        function renderOverview() {
+            try {
+                let totalPipe=0, totalWon=0, projected=0;
+                allLeads.forEach(l => {
+                    const v = Number(l.value)||0;
+                    if(l.status === 'Closed Won') totalWon+=v; 
+                    else if(l.status !== 'Closed Lost') {
+                        totalPipe+=v;
+                        if(l.status === 'Proposal Sent' || l.status === 'In Negotiation') projected += v;
+                    }
+                });
+                
+                let liab=0;
+                allUsers.forEach(u => { liab += Math.max(0, (Number(u.commission_awarded)||0) - (Number(u.commission_paid)||0)); });
+
+                safeText('kpi-total-pipe', "₹" + totalPipe.toLocaleString('en-IN'));
+                safeText('kpi-total-won', "₹" + totalWon.toLocaleString('en-IN'));
+                safeText('kpi-projected', "₹" + projected.toLocaleString('en-IN'));
+                safeText('kpi-pending-payouts', "₹" + liab.toLocaleString('en-IN'));
+
+                // Chart (Sales)
+                const ctxEl = document.getElementById('globalPipelineChart');
+                if(ctxEl) {
+                    if(chartInstance) chartInstance.destroy();
+                    const statusCounts = {}; SALES_STATUSES.forEach(s => statusCounts[s]=0);
+                    allLeads.forEach(l => { if(statusCounts[l.status] !== undefined) statusCounts[l.status] += (Number(l.value)||0); });
+                    chartInstance = new Chart(ctxEl, {
+                        type: 'bar', data: { labels: Object.keys(statusCounts), datasets: [{ label: 'Global Sales Pipeline (₹)', data: Object.values(statusCounts), backgroundColor: '#10b981', borderRadius: 4 }] },
+                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8', font: {size: 10} } } } }
+                    });
+                }
+
+                // Master Pulse Feed
+                let masterHistory = [];
+                allLeads.forEach(l => { if(l.history) { l.history.forEach(h => masterHistory.push({ ...h, itemType: 'Sales', itemName: l.company || 'Unknown', id: l.id })); } });
+                allCreatives.forEach(c => { if(c.history) { c.history.forEach(h => masterHistory.push({ ...h, itemType: 'Creative', itemName: c.title || 'Unknown', id: c.id })); } });
+                
+                masterHistory.sort((a,b) => new Date(b.date || 0) - new Date(a.date || 0));
+                
+                const feedHtml = masterHistory.slice(0, 15).map(h => {
+                    const iconColor = h.itemType === 'Sales' ? 'text-emerald-400' : 'text-cyan-400';
+                    return `
+                    <div class="bg-slate-900/50 border border-white/5 rounded-lg p-3 hover:bg-white/5 transition-colors cursor-pointer" onclick="openTimeline('${h.id}', '${h.itemType.toLowerCase()}')">
+                        <p class="text-xs font-semibold text-white mb-1.5">${h.note || 'Update logged'}</p>
+                        <div class="flex justify-between items-center mt-1">
+                            <span class="text-[9px] font-mono text-slate-400 bg-white/5 px-2 py-0.5 rounded"><i class="fa-solid fa-circle text-[6px] ${iconColor} mr-1"></i>${h.itemName}</span>
+                            <span class="text-[9px] font-mono text-slate-500">${h.date ? new Date(h.date).toLocaleDateString() : '--'} • ${h.user || 'System'}</span>
+                        </div>
+                    </div>
+                `}).join('') || '<p class="text-sm text-slate-500 italic">No activity yet.</p>';
+                safeHTML('global-pulse-list', feedHtml);
+            } catch(e) { console.error("Render Overview Error", e); }
         }
 
-        const formAddInvoice = document.getElementById('form-add-invoice');
-        if(formAddInvoice) {
-            formAddInvoice.addEventListener('submit', async (e) => {
+        function renderTeamRoster() {
+            try {
+                safeText('team-count', allUsers.length);
+                const html = allUsers.map(user => {
+                    const isSusp = user.status === 'Suspended';
+                    const name = user.name || 'Unknown';
+                    const role = user.role || '--';
+                    const email = user.email || '--';
+                    const pwd = user.password || '--';
+                    const status = user.status || 'Active';
+
+                    return `
+                    <div class="responsive-grid team-grid group ${isSusp ? 'opacity-50' : ''}">
+                        <div class="flex items-center gap-3">
+                            <img src="https://ui-avatars.com/api/?name=${name.replace(/ /g, '+')}&background=0f172a&color=fff" class="w-8 h-8 rounded-full border border-slate-600 shrink-0">
+                            <span class="font-semibold text-white">${name}</span>
+                        </div>
+                        <div><span class="mobile-label text-[9px] font-semibold text-slate-500 uppercase">Role</span><span class="text-indigo-400 font-semibold text-xs uppercase tracking-wider">${role}</span></div>
+                        <div class="text-xs font-mono"><span class="mobile-label text-[9px] font-semibold text-slate-500 uppercase">Contact Info</span><div class="text-slate-400">${email}</div></div>
+                        <div><span class="mobile-label text-[9px] font-semibold text-slate-500 uppercase">Status</span><span class="px-2 py-1 rounded text-[10px] font-semibold uppercase ${isSusp ? 'bg-slate-500/20 text-slate-400' : 'bg-emerald-500/20 text-emerald-400'}">${status}</span></div>
+                        <div class="flex justify-end gap-2">
+                            <button onclick="toggleUserStatus('${user.id}', '${status}')" class="text-slate-400 hover:text-white p-2 bg-white/5 rounded" title="${isSusp?'Activate':'Suspend'}"><i class="fa-solid ${isSusp?'fa-play':'fa-pause'}"></i></button>
+                            <button onclick="deleteUser('${user.id}')" class="text-slate-500 hover:text-red-400 p-2 bg-white/5 rounded" title="Remove User"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>`
+                }).join('') || '<div class="py-8 text-center text-slate-500">No staff members found.</div>';
+                safeHTML('team-table-body', html);
+            } catch(e) { console.error("Render Roster Error", e); }
+        }
+
+        // --- ATTENDANCE SYSTEM ---
+        function updateAttendanceDropdown() {
+            const select = document.getElementById('attendance-user-select');
+            if(!select) return;
+            const currentVal = select.value;
+            let options = '<option value="">Select Staff Member...</option>';
+            allUsers.forEach(u => {
+                options += `<option value="${u.name}" ${u.name === currentVal ? 'selected' : ''}>${u.name} (${u.role})</option>`;
+            });
+            select.innerHTML = options;
+        }
+
+        window.changeAttendanceUser = (user) => {
+            selectedAttendanceUser = user;
+            filteredLogDate = null; 
+            renderAttendance();
+        };
+
+        window.changeMonth = (dir) => {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + dir);
+            renderAttendance();
+        };
+
+        window.filterLogsByDate = (dateStr) => {
+            filteredLogDate = dateStr;
+            renderAttendanceLogs();
+        };
+
+        function renderAttendance() {
+            try {
+                let activeCount = 0;
+                allAttendance.forEach(a => { if(a.status === 'Active') activeCount++; });
+                safeText('active-shifts-count', activeCount);
+
+                renderCalendar();
+                renderAttendanceLogs();
+            } catch(e) { console.error("Render Attendance Error", e); }
+        }
+
+        function renderCalendar() {
+            if(!selectedAttendanceUser) {
+                safeHTML('calendar-grid', '<div class="col-span-7 py-12 text-center text-slate-500 italic flex flex-col items-center"><i class="fa-solid fa-user text-3xl mb-3 opacity-20"></i><p>Select a staff member to view their calendar.</p></div>');
+                safeText('calendar-month-year', currentCalendarDate.toLocaleString('default', { month: 'long', year: 'numeric' }));
+                return;
+            }
+
+            const year = currentCalendarDate.getFullYear();
+            const month = currentCalendarDate.getMonth();
+            safeText('calendar-month-year', currentCalendarDate.toLocaleString('default', { month: 'long', year: 'numeric' }));
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+            const strictToday = new Date(today.getFullYear(), today.getMonth(), today.getDate()); 
+
+            const userLogs = allAttendance.filter(a => a.rep === selectedAttendanceUser);
+            const logMap = {};
+            userLogs.forEach(log => {
+                if(!log.clockIn) return;
+                const d = new Date(log.clockIn);
+                const dateStr = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+                if(!logMap[dateStr]) logMap[dateStr] = [];
+                logMap[dateStr].push(log);
+            });
+
+            let html = '';
+            for(let i=0; i<firstDay; i++) {
+                html += `<div class="bg-black/10 rounded-lg border border-transparent"></div>`;
+            }
+
+            for(let day=1; day<=daysInMonth; day++) {
+                const cellDate = new Date(year, month, day);
+                const dateStr = `${year}-${month}-${day}`;
+                const dayLogs = logMap[dateStr] || [];
+                
+                let statusIndicator = '';
+                let borderClass = 'border-white/5';
+                let textClass = 'text-slate-400';
+
+                const isToday = cellDate.getTime() === strictToday.getTime();
+                if(isToday) borderClass = 'border-indigo-500/50 bg-indigo-900/10';
+
+                if(dayLogs.length > 0) {
+                    const hasActive = dayLogs.some(l => l.status === 'Active');
+                    if(hasActive) {
+                        statusIndicator = `<div class="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-indigo-500 animate-pulse mx-auto mt-1 md:mt-2 shadow-[0_0_8px_#6366f1]"></div>`;
+                    } else {
+                        statusIndicator = `<div class="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-emerald-500 mx-auto mt-1 md:mt-2 shadow-[0_0_8px_#10b981]"></div>`;
+                    }
+                    textClass = 'text-white font-semibold';
+                } else if (cellDate < strictToday && cellDate.getDay() !== 0 && cellDate.getDay() !== 6) {
+                    statusIndicator = `<div class="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-slate-500 mx-auto mt-1 md:mt-2 opacity-70"></div>`;
+                }
+
+                const isActiveFilter = filteredLogDate === dateStr;
+                if(isActiveFilter) borderClass = 'border-white bg-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)]';
+
+                html += `
+                <div class="bg-black/20 rounded-lg border ${borderClass} p-1 md:p-2 flex flex-col items-center justify-center aspect-square hover:bg-white/10 transition-all cursor-pointer" onclick="filterLogsByDate('${dateStr}')">
+                    <span class="text-xs md:text-sm ${textClass}">${day}</span>
+                    ${statusIndicator}
+                </div>`;
+            }
+            safeHTML('calendar-grid', html);
+        }
+
+        function renderAttendanceLogs() {
+            const btnShowAll = document.getElementById('btn-show-all-logs');
+
+            if(!selectedAttendanceUser) {
+                safeHTML('attendance-body', '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-user text-3xl mb-2 opacity-20"></i><p class="text-xs mt-2">Select user to view logs.</p></div>');
+                safeText('log-panel-title', 'Recent Logs');
+                if(btnShowAll) btnShowAll.classList.add('hidden');
+                return;
+            }
+
+            let logs = allAttendance.filter(a => a.rep === selectedAttendanceUser);
+            
+            if(filteredLogDate) {
+                const [y, m, d] = filteredLogDate.split('-').map(Number);
+                const filterTarget = new Date(y, m, d).toDateString();
+                logs = logs.filter(log => log.clockIn && new Date(log.clockIn).toDateString() === filterTarget);
+                safeText('log-panel-title', `Logs: ${new Date(y, m, d).toLocaleDateString()}`);
+                if(btnShowAll) btnShowAll.classList.remove('hidden');
+            } else {
+                safeText('log-panel-title', `Recent Logs: ${selectedAttendanceUser}`);
+                if(btnShowAll) btnShowAll.classList.add('hidden');
+            }
+
+            const html = logs.map(a => {
+                const statusColor = a.status === 'Active' ? 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20' : 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
+                
+                const clockInStr = a.clockIn ? new Date(a.clockIn).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '--';
+                const clockOutStr = a.clockOut ? new Date(a.clockOut).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '--';
+                const dateStr = a.clockIn ? new Date(a.clockIn).toLocaleDateString() : '--';
+                
+                let durationStr = '--';
+                if (a.status === 'Completed' && a.totalTimeMs) {
+                    const h = Math.floor(a.totalTimeMs / 3600000);
+                    const m = Math.floor((a.totalTimeMs % 3600000) / 60000);
+                    durationStr = `${h}h ${m}m`;
+                } else if (a.status === 'Active') {
+                    durationStr = `<span class="text-indigo-400 animate-pulse">Active Now</span>`;
+                }
+
+                return `
+                <div class="bg-black/30 border border-white/5 rounded-lg p-3 hover:border-white/20 transition-colors">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">${dateStr}</span>
+                        <span class="px-2 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border ${statusColor}">${a.status}</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-xs font-mono mt-3">
+                        <div><span class="text-slate-500 block text-[9px] uppercase tracking-wider mb-0.5">Punch In</span> <span class="text-white">${clockInStr}</span></div>
+                        <div><span class="text-slate-500 block text-[9px] uppercase tracking-wider mb-0.5">Punch Out</span> <span class="text-slate-300">${clockOutStr}</span></div>
+                        <div class="col-span-2 mt-1 border-t border-white/5 pt-2"><span class="text-slate-500 block text-[9px] uppercase tracking-wider mb-0.5">Duration</span> <span class="text-indigo-300 font-semibold">${durationStr}</span></div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+            
+            safeHTML('attendance-body', html || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-calendar-xmark text-3xl mb-3 opacity-20"></i><p class="text-xs">No logs found.</p></div>');
+            
+            renderCalendar();
+        }
+
+        // --- SALES DB ---
+        window.setSalesFilter = function(filter) {
+            currentSalesFilter = filter;
+            document.querySelectorAll('#tab-sales-pipeline .filter-pill').forEach(el => el.classList.remove('active'));
+            if(filter === 'All') document.getElementById('sf-all').classList.add('active');
+            if(filter === 'Active') document.getElementById('sf-active').classList.add('active');
+            if(filter === 'Closed Won') document.getElementById('sf-won').classList.add('active');
+            renderSalesPipeline();
+        }
+
+        function getSalesColor(s) {
+            const map = { 'New Lead': 'text-blue-400', 'Attempted Contact': 'text-slate-400', 'Discovery Call': 'text-yellow-400', 'Meeting Set': 'text-purple-400', 'Proposal Sent': 'text-amber-400', 'In Negotiation': 'text-indigo-400', 'Closed Won': 'text-emerald-400', 'Closed Lost': 'text-red-400' };
+            return map[s||''] || 'text-slate-400';
+        }
+        function getSalesStatusOptions(curr) { return SALES_STATUSES.map(s => `<option value="${s}" ${s === curr ? 'selected' : ''} class="bg-slate-900 text-white">${s}</option>`).join(''); }
+
+        window.renderSalesPipeline = function() {
+            try {
+                const searchEl = document.getElementById('search-leads');
+                const filterText = searchEl ? searchEl.value.toLowerCase() : '';
+                
+                const filtered = allLeads.filter(l => {
+                    const textMatch = (l.company||'').toLowerCase().includes(filterText) || (l.rep||'').toLowerCase().includes(filterText) || (l.status||'').toLowerCase().includes(filterText) || (l.source||'').toLowerCase().includes(filterText);
+                    let statusMatch = true;
+                    if(currentSalesFilter === 'Active') statusMatch = l.status !== 'Closed Won' && l.status !== 'Closed Lost';
+                    if(currentSalesFilter === 'Closed Won') statusMatch = l.status === 'Closed Won';
+                    return textMatch && statusMatch;
+                });
+
+                const html = filtered.map(l => `
+                    <div class="responsive-grid sales-grid hover:bg-white/5 border-l-2 border-transparent hover:border-emerald-500/50">
+                        <div>
+                            <p class="font-semibold text-white leading-tight text-sm">${l.company || 'Unknown'}</p>
+                            <p class="text-[10px] text-slate-400 font-mono mt-1"><i class="fa-solid fa-phone text-blue-400 mr-1"></i>${l.phone || '--'} • ${l.source||'--'}</p>
+                        </div>
+                        <div class="font-mono font-semibold text-emerald-400 text-sm"><span class="mobile-label text-[9px] font-semibold text-slate-500 uppercase mr-2">Value</span>₹${(Number(l.value)||0).toLocaleString('en-IN')}</div>
+                        <div><span class="mobile-label text-[9px] font-semibold text-slate-500 uppercase mr-2">Rep</span><span class="text-xs font-semibold text-slate-300">${l.rep || 'Unassigned'}</span></div>
+                        <div>
+                            <span class="mobile-label text-[9px] font-semibold text-slate-500 uppercase mr-2">Status</span>
+                            <select onchange="updateInlineStatus('${l.id}', 'sales', this.value)" class="bg-black/60 border border-white/10 rounded-lg px-2 py-1.5 text-[10px] md:text-xs font-semibold ${getSalesColor(l.status)} focus:outline-none cursor-pointer appearance-none w-full shadow-inner">
+                                ${getSalesStatusOptions(l.status)}
+                            </select>
+                        </div>
+                        <div class="flex justify-end gap-2 whitespace-nowrap">
+                            <button onclick="openEditLeadModal('${l.id}')" class="bg-blue-500/20 text-blue-400 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors hover:bg-blue-500/40" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="openTimeline('${l.id}', 'sales')" class="bg-white/5 hover:bg-white/20 text-slate-300 px-3 py-1.5 rounded-lg text-xs transition-colors" title="History"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                            <button onclick="deleteDocItem('sales_leads', '${l.id}')" class="text-slate-500 hover:text-red-400 p-2" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>`
+                ).join('') || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-folder-open text-3xl mb-2 opacity-20"></i><p>No sales deals match.</p></div>';
+                safeHTML('master-leads-body', html);
+            } catch(e) { console.error("Render Sales Error", e); }
+        }
+        const slSearch = document.getElementById('search-leads');
+        if(slSearch) slSearch.addEventListener('input', () => renderSalesPipeline());
+
+        // --- CREATIVE DB ---
+        window.setCreativeFilter = function(filter) {
+            currentCreativeFilter = filter;
+            document.querySelectorAll('#tab-creative-pipeline .filter-pill').forEach(el => el.classList.remove('active'));
+            if(filter === 'All') document.getElementById('cf-all').classList.add('active');
+            if(filter === 'In Progress') document.getElementById('cf-active').classList.add('active');
+            if(filter === 'Review') document.getElementById('cf-review').classList.add('active');
+            renderCreativePipeline();
+        }
+
+        function getCreativeColor(s) {
+            const map = { 'In Progress': 'text-cyan-400', 'Internal Review': 'text-indigo-400', 'Client Review': 'text-purple-400', 'Revision Requested': 'text-amber-400', 'Approved & Completed': 'text-emerald-400' };
+            return map[s||''] || 'text-slate-400';
+        }
+        function getCreativeStatusOptions(curr) { return CREATIVE_STATUSES.map(s => `<option value="${s}" ${s === curr ? 'selected' : ''} class="bg-slate-900 text-white">${s}</option>`).join(''); }
+
+        window.renderCreativePipeline = function() {
+            try {
+                const searchEl = document.getElementById('search-creative');
+                const filterText = searchEl ? searchEl.value.toLowerCase() : '';
+                
+                const filtered = allCreatives.filter(c => {
+                    const textMatch = (c.title||'').toLowerCase().includes(filterText) || (c.assignee||'').toLowerCase().includes(filterText) || (c.client||'').toLowerCase().includes(filterText) || (c.status||'').toLowerCase().includes(filterText);
+                    let statusMatch = true;
+                    if(currentCreativeFilter === 'In Progress') statusMatch = c.status === 'In Progress' || c.status === 'Revision Requested' || c.status === 'Awaiting Assets';
+                    if(currentCreativeFilter === 'Review') statusMatch = c.status === 'Internal Review' || c.status === 'Client Review';
+                    return textMatch && statusMatch;
+                });
+
+                const html = filtered.map(c => `
+                    <div class="responsive-grid creative-grid hover:bg-white/5 border-l-2 ${c.status==='Approved & Completed'?'border-l-emerald-500':'border-l-cyan-500'}">
+                        <div>
+                            <p class="font-semibold text-white leading-tight text-sm">${c.title || 'Untitled'}</p>
+                            <p class="text-[10px] text-slate-400 font-mono mt-1"><i class="fa-solid fa-user-tag text-indigo-400 mr-1"></i>${c.assignee || 'Unassigned'}</p>
+                        </div>
+                        <div class="text-xs text-slate-300"><span class="mobile-label text-[9px] font-semibold text-slate-500 uppercase mr-2">Format</span>${c.type||'--'}<br><span class="text-[10px] text-slate-500 mt-1 inline-block">${c.client||'--'}</span></div>
+                        <div class="text-xs font-mono text-slate-400"><span class="mobile-label text-[9px] font-semibold text-slate-500 uppercase mr-2">Deadline</span>${c.deadline ? new Date(c.deadline).toLocaleDateString() : '--'}</div>
+                        <div>
+                            <span class="mobile-label text-[9px] font-semibold text-slate-500 uppercase mr-2">Status</span>
+                            <select onchange="updateInlineStatus('${c.id}', 'creative', this.value)" class="bg-black/60 border border-white/10 rounded-lg px-2 py-1.5 text-[10px] md:text-xs font-semibold ${getCreativeColor(c.status)} focus:outline-none cursor-pointer appearance-none w-full shadow-inner">
+                                ${getCreativeStatusOptions(c.status)}
+                            </select>
+                        </div>
+                        <div class="flex justify-end gap-2 items-center flex-wrap">
+                            <a href="${c.raw_link}" target="_blank" class="bg-blue-500/10 hover:bg-blue-500/30 transition-colors text-blue-400 px-3 py-1.5 rounded-lg text-xs" title="Project Files"><i class="fa-solid fa-folder-open"></i></a>
+                            ${c.inspiration ? `<a href="${c.inspiration}" target="_blank" class="bg-amber-500/10 hover:bg-amber-500/30 transition-colors text-amber-400 px-3 py-1.5 rounded-lg text-xs" title="References"><i class="fa-solid fa-lightbulb"></i></a>` : ''}
+                            <button onclick="openTimeline('${c.id}', 'creative')" class="bg-white/5 hover:bg-white/20 text-slate-300 px-3 py-1.5 rounded-lg text-xs transition-colors" title="History"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                            <button onclick="deleteDocItem('creative_tasks', '${c.id}')" class="text-slate-500 hover:text-red-400 p-2" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>`
+                ).join('') || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-clapperboard text-3xl mb-2 opacity-20"></i><p>No creative tasks match.</p></div>';
+                safeHTML('master-creative-body', html);
+            } catch(e) { console.error("Render Creative Error", e); }
+        }
+        const crSearch = document.getElementById('search-creative');
+        if(crSearch) crSearch.addEventListener('input', () => renderCreativePipeline());
+
+        window.updateInlineStatus = async (id, type, newStatus) => {
+            const collectionName = type === 'sales' ? 'sales_leads' : 'creative_tasks';
+            try { 
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', collectionName, id), { 
+                    status: newStatus,
+                    history: arrayUnion({ note: `Status updated to ${newStatus}`, date: new Date().toISOString(), user: "System Admin" })
+                }); 
+                showToast("Status Updated"); 
+            } catch(e) { showToast("Error updating status", true); }
+        };
+
+        window.openAssignCreativeModal = () => {
+            const creatives = allUsers.filter(u => (u.role||'').includes('Editor') || (u.role||'').includes('Designer') || (u.role||'').includes('Creative'));
+            safeHTML('crt-assignee', '<option value="">Unassigned</option>' + creatives.map(u => `<option value="${u.name}">${u.name} (${u.role})</option>`).join(''));
+            const form = document.getElementById('form-creative-project');
+            if(form) form.reset();
+            document.getElementById('crt-id').value = '';
+            safeShowModal('modal-creative-project');
+        }
+
+        const crtForm = document.getElementById('form-creative-project');
+        if(crtForm) {
+            crtForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const id = document.getElementById('ai-id').value;
+                const id = document.getElementById('crt-id').value;
                 const data = {
-                    client: document.getElementById('ai-client').value,
-                    description: document.getElementById('ai-desc').value.trim(),
-                    amount: Number(document.getElementById('ai-amount').value),
-                    status: document.getElementById('ai-status').value,
-                    link: document.getElementById('ai-link').value.trim(),
-                    timestamp: Date.now(),
-                    date: new Date().toISOString()
+                    title: document.getElementById('crt-title').value.trim(), client: document.getElementById('crt-client').value.trim(),
+                    type: document.getElementById('crt-type').value, deadline: document.getElementById('crt-deadline').value,
+                    raw_link: document.getElementById('crt-raw').value.trim(), inspiration: document.getElementById('crt-inspiration').value.trim(),
+                    assignee: document.getElementById('crt-assignee').value, status: document.getElementById('crt-status').value, 
+                    notes: document.getElementById('crt-notes').value.trim()
                 };
 
                 try {
                     if(id) {
-                        await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'invoices', id), data);
-                        logAudit(`Updated invoice for ${data.client}`);
+                        await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'creative_tasks', id), data);
+                        logAudit(`Updated Task: ${data.title}`);
                     } else {
-                        await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'invoices'), data);
-                        logAudit(`Issued invoice of ₹${data.amount} to ${data.client}`);
+                        data.timestamp = Date.now();
+                        data.history = [{ note: `Task assigned by Admin`, date: new Date().toISOString(), user: 'System Admin' }];
+                        await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'creative_tasks'), data);
+                        logAudit(`Assigned Task: ${data.title} to ${data.assignee}`);
                     }
-                    showToast("Invoice published successfully.");
-                    formAddInvoice.reset();
-                    closeModals();
-                } catch(e) { showToast("Error saving invoice", true); }
+                    showToast("Task Assigned"); closeModals();
+                } catch(e) { showToast("Error saving task", true); }
             });
         }
 
-        window.toggleInvoiceStatus = async (id, currentStatus) => {
-            const ns = currentStatus === 'Paid' ? 'Pending' : 'Paid';
+        // --- HR TICKETS ---
+        function renderTickets() {
             try {
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'invoices', id), { status: ns });
-                showToast(`Invoice marked as ${ns}`);
-            } catch(e) { showToast("Error updating status", true); }
+                let openC = 0;
+                const html = allTickets.map(t => {
+                    if(t.status === 'Open') openC++;
+                    const statusColor = t.status === 'Open' ? 'text-amber-400 bg-amber-500/10' : (t.status === 'Resolved' ? 'text-emerald-400 bg-emerald-500/10' : 'text-blue-400 bg-blue-500/10');
+                    return `
+                    <div class="responsive-grid hr-grid hover:bg-white/5">
+                        <div class="font-mono text-[10px] text-slate-400"><span class="mobile-label text-[9px] font-semibold text-slate-500 uppercase mr-2">Date</span>${new Date(t.timestamp).toLocaleDateString()}</div>
+                        <div>
+                            <p class="font-semibold text-white text-sm leading-tight">${t.subject||'--'}</p>
+                            <p class="text-[10px] text-indigo-400 font-mono mt-1"><i class="fa-solid fa-user mr-1"></i>${t.rep||'--'}</p>
+                        </div>
+                        <div class="text-xs text-slate-300"><span class="mobile-label text-[9px] font-semibold text-slate-500 uppercase mr-2">Category</span><span class="bg-white/5 px-2.5 py-1 rounded-md border border-white/5">${t.category||'--'}</span></div>
+                        <div><span class="mobile-label text-[9px] font-semibold text-slate-500 uppercase mr-2">Status</span><span class="px-2 py-1 rounded-lg text-[10px] font-semibold uppercase tracking-wider ${statusColor}">${t.status||'--'}</span></div>
+                        <div class="text-right">
+                            <button onclick="openManageTicket('${t.id}')" class="bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 px-4 py-2 rounded-lg text-xs font-semibold transition-colors w-full md:w-auto border border-blue-500/20">Review</button>
+                        </div>
+                    </div>`
+                }).join('');
+                safeText('hr-open-count', openC);
+                safeHTML('hr-tickets-body', html || '<div class="py-12 text-center text-slate-500"><i class="fa-solid fa-check-circle text-3xl mb-2 opacity-20"></i><p>No open tickets.</p></div>');
+            } catch(e) { console.error("Render Ticket Error", e); }
         }
 
-        // Manage Creative Projects
-        window.openManageProject = (id) => {
-            const p = allCreatives.find(x => x.id === id);
-            if(!p) return;
-
-            document.getElementById('mv-id').value = id;
-            document.getElementById('mv-title').innerText = p.title;
-            document.getElementById('mv-client').innerText = p.client;
-            document.getElementById('mv-type').innerText = p.type;
-            document.getElementById('mv-deadline').innerText = p.deadline ? new Date(p.deadline).toLocaleDateString() : '--';
-            document.getElementById('mv-notes').innerText = p.notes || 'No notes.';
-            
-            document.getElementById('mv-assignee-input').value = p.assignee || '';
-            document.getElementById('mv-final-link').value = p.final_link || '';
-            document.getElementById('mv-status-select').value = p.status || 'In Progress';
-
-            safeShowModal('modal-view-project');
-        };
-
-        window.saveProjectUpdates = async () => {
-            const id = document.getElementById('mv-id').value;
-            const assignee = document.getElementById('mv-assignee-input').value.trim();
-            const finalLink = document.getElementById('mv-final-link').value.trim();
-            const status = document.getElementById('mv-status-select').value;
-
+        // --- PAYROLL ENGINE ---
+        function renderPayroll() {
             try {
-                const updateData = { assignee, status };
-                if(finalLink) updateData.final_link = finalLink;
+                let totalAwarded = 0;
+                const html = allUsers.map(user => {
+                    const aw = Number(user.commission_awarded)||0; 
+                    const pd = Number(user.commission_paid)||0; 
+                    const pen = Math.max(0, aw - pd);
+                    totalAwarded += aw;
+                    const role = user.role || '';
+                    const name = user.name || 'Unknown Staff';
+                    
+                    let referenceHtml = '';
+                    if(role.includes('Sales') || role.includes('Executive')) {
+                        const won = allLeads.filter(l => l.rep === name && l.status === 'Closed Won').map(d => `<div class="flex justify-between text-[10px] text-slate-400 border-b border-white/5 pb-1 mb-1"><span>${d.company||'--'}</span><span class="font-mono text-emerald-400">₹${(Number(d.value)||0).toLocaleString('en-IN')}</span></div>`).join('');
+                        referenceHtml = `<p class="text-[9px] text-slate-500 uppercase font-semibold mb-2">Closed Won Deals:</p><div class="max-h-20 overflow-y-auto pr-2 custom-scrollbar">${won || '<p class="text-xs text-slate-600 italic">No won deals.</p>'}</div>`;
+                    } else {
+                        const comp = allCreatives.filter(c => c.assignee === name && c.status === 'Approved & Completed').map(d => `<div class="flex justify-between text-[10px] text-slate-400 border-b border-white/5 pb-1 mb-1"><span>${d.title||'--'}</span><span class="font-mono text-cyan-400">${d.type||'--'}</span></div>`).join('');
+                        referenceHtml = `<p class="text-[9px] text-slate-500 uppercase font-semibold mb-2">Completed Tasks:</p><div class="max-h-20 overflow-y-auto pr-2 custom-scrollbar">${comp || '<p class="text-xs text-slate-600 italic">No completed tasks.</p>'}</div>`;
+                    }
+
+                    return `
+                    <div class="card-panel p-5 border border-white/5 flex flex-col">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center gap-3">
+                                <img src="https://ui-avatars.com/api/?name=${name.replace(/ /g, '+')}&background=0f172a&color=fff" class="w-10 h-10 rounded-full border border-slate-600 shrink-0">
+                                <div>
+                                    <h4 class="font-semibold text-white flex items-center gap-2">${name} <span class="text-[9px] bg-white/10 px-2 py-0.5 rounded text-slate-300 font-normal">${user.status||'--'}</span></h4>
+                                    <p class="text-[10px] text-slate-400 font-mono">Role: ${role}</p>
+                                </div>
+                            </div>
+                            <button onclick="openAwardModal('${user.id}', '${name}')" class="bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-400 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors shrink-0 border border-emerald-500/20"><i class="fa-solid fa-plus"></i> Payout</button>
+                        </div>
+                        <div class="flex-1 mb-4">${referenceHtml}</div>
+                        <div class="grid grid-cols-3 gap-2 mb-4 bg-black/30 p-3 rounded-xl border border-white/5">
+                            <div><p class="text-[9px] text-slate-500 uppercase font-semibold">Awarded</p><p class="font-mono font-semibold text-indigo-400 text-sm">₹${aw.toLocaleString('en-IN')}</p></div>
+                            <div><p class="text-[9px] text-slate-500 uppercase font-semibold">Paid</p><p class="font-mono font-semibold text-slate-300 text-sm">₹${pd.toLocaleString('en-IN')}</p></div>
+                            <div><p class="text-[9px] text-indigo-500 uppercase font-semibold">Pending</p><p class="font-mono font-semibold ${pen>0?'text-indigo-400':'text-slate-500'} text-sm">₹${pen.toLocaleString('en-IN')}</p></div>
+                        </div>
+                        <button onclick="releasePayment('${user.id}', ${pen}, '${name}')" ${pen<=0?'disabled':''} class="w-full py-3 rounded-xl text-sm font-semibold transition-all ${pen>0?'bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg':'bg-slate-800 text-slate-500 cursor-not-allowed'}"><i class="fa-solid fa-money-bill-transfer"></i> Mark Balance as Paid</button>
+                    </div>`
+                }).join('');
                 
-                updateData.history = arrayUnion({ note: `Admin updated status to ${status}. Assigned: ${assignee||'None'}`, date: new Date().toISOString(), user: ADMIN_NAME });
+                safeHTML('payroll-grid', html || '<p class="text-slate-500 col-span-full py-8 text-center">No staff records found.</p>');
+                safeText('stat-all-awarded', "₹" + totalAwarded.toLocaleString('en-IN'));
+            } catch(e) { console.error("Render Payroll Error", e); }
+        }
 
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'creative_tasks', id), updateData);
-                
-                logAudit(`Updated project ${id} to ${status}`);
-                showToast("Project Updated");
-                closeModals();
-            } catch(e) { showToast("Error updating project", true); }
-        };
+        // ================= MODAL ACTIONS =================
 
-        // Resolve Ticket
-        window.resolveTicket = async (id) => {
-            try {
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'hr_tickets', id), { status: 'Resolved' });
-                logAudit(`Resolved support ticket ${id}`);
-                showToast("Ticket Resolved");
-            } catch(e) { showToast("Error", true); }
-        };
-
-        // Universal Delete
-        window.deleteDocItem = async (colName, id, label) => {
-            if(confirm(`Are you sure you want to permanently delete this ${label}?`)) {
+        const addUserForm = document.getElementById('form-add-user');
+        if (addUserForm) {
+            addUserForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('btn-save-user');
+                if(btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...'; }
                 try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', colName, id));
-                    logAudit(`Deleted ${label} (${id})`);
-                    showToast(`${label} deleted.`);
-                } catch(e) { showToast("Error deleting item.", true); }
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'team_users'), {
+                        name: document.getElementById('usr-name').value.trim(),
+                        email: document.getElementById('usr-email').value.trim(),
+                        role: document.getElementById('usr-role').value,
+                        upi: document.getElementById('usr-upi').value.trim(),
+                        password: document.getElementById('usr-pass').value.trim(),
+                        commission_awarded: 0,
+                        commission_paid: 0,
+                        status: 'Active',
+                        timestamp: Date.now()
+                    });
+                    logAudit(`Created new user account: ${document.getElementById('usr-name').value}`);
+                    showToast("User Created Successfully");
+                    addUserForm.reset();
+                    closeModals();
+                } catch (err) {
+                    console.error(err);
+                    showToast("Error creating user", true);
+                } finally {
+                    if(btn) { btn.disabled = false; btn.innerHTML = 'Create User Account'; }
+                }
+            });
+        }
+
+        window.toggleUserStatus = async (id, stat) => {
+            const ns = stat === 'Active' ? 'Suspended' : 'Active';
+            if(confirm(`Change user status to ${ns}?`)) {
+                try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', id), { status: ns }); logAudit(`User ${id} status updated to ${ns}`); showToast("Status Updated"); } catch(e) {}
+            }
+        };
+        window.deleteUser = async (id) => { if(confirm("Confirm user deletion. This cannot be undone.")) { try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', id)); logAudit(`Deleted user account ${id}`); showToast("User Deleted"); } catch(e){} } };
+
+        // SALES OVERRIDE
+        function populateRepDropdowns() {
+            try {
+                const salesOpts = '<option value="">Unassigned</option>' + allUsers.filter(u => (u.role||'').includes('Sales') || (u.role||'').includes('Executive')).map(u => `<option value="${u.name}">${u.name}</option>`).join('');
+                safeHTML('edit-ld-rep', salesOpts);
+            } catch(e) {}
+        }
+
+        window.openEditLeadModal = (id) => {
+            const l = allLeads.find(x => x.id === id); if(!l) return;
+            document.getElementById('edit-ld-id').value = id;
+            document.getElementById('edit-ld-company').value = l.company || ''; document.getElementById('edit-ld-value').value = l.value || 0;
+            document.getElementById('edit-ld-contact').value = l.contact || ''; document.getElementById('edit-ld-phone').value = l.phone || '';
+            document.getElementById('edit-ld-source').value = l.source || 'Cold Email'; document.getElementById('edit-ld-nextaction').value = l.nextAction || '';
+            document.getElementById('edit-ld-rep').value = l.rep || ''; document.getElementById('edit-ld-status').value = l.status || 'New Lead';
+            document.getElementById('edit-ld-notes').value = l.notes || '';
+            safeShowModal('modal-edit-lead');
+        };
+
+        const editForm = document.getElementById('form-edit-lead');
+        if(editForm) {
+            editForm.addEventListener('submit', async (e) => {
+                e.preventDefault(); const id = document.getElementById('edit-ld-id').value; const comp = document.getElementById('edit-ld-company').value;
+                const up = {
+                    company: comp, value: Number(document.getElementById('edit-ld-value').value), contact: document.getElementById('edit-ld-contact').value, phone: document.getElementById('edit-ld-phone').value,
+                    source: document.getElementById('edit-ld-source').value, nextAction: document.getElementById('edit-ld-nextaction').value,
+                    rep: document.getElementById('edit-ld-rep').value, status: document.getElementById('edit-ld-status').value, notes: document.getElementById('edit-ld-notes').value.trim()
+                };
+                try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), up); logAudit(`Updated deal details: ${comp}`); showToast("Details Saved"); closeModals(); } catch(e) { showToast("Error", true); }
+            });
+        }
+
+        window.deleteDocItem = async (collectionName, id) => { if(confirm("Confirm deletion of this record.")) { try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', collectionName, id)); logAudit(`Deleted record from ${collectionName}: ${id}`); } catch(e){} } };
+
+        // TIMELINE
+        window.openTimeline = (id, type) => {
+            document.getElementById('tl-id').value = id; document.getElementById('tl-type').value = type;
+            let title='', meta1='', meta2='', meta3='', hist=[];
+
+            if(type === 'sales') {
+                const l = allLeads.find(x => x.id === id); if(!l) return;
+                title = l.company; meta1 = `<i class="fa-solid fa-user mr-1.5 text-indigo-400"></i>${l.contact || 'N/A'}`; meta2 = `<i class="fa-solid fa-phone mr-1.5 text-blue-400"></i><a href="tel:${l.phone}">${l.phone||'--'}</a>`; meta3 = `₹${(Number(l.value)||0).toLocaleString('en-IN')}`; hist = l.history || [];
+            } else {
+                const c = allCreatives.find(x => x.id === id); if(!c) return;
+                title = c.title; meta1 = `<i class="fa-solid fa-briefcase mr-1.5 text-cyan-400"></i>${c.client||'--'}`; meta2 = `<i class="fa-solid fa-film mr-1.5 text-indigo-400"></i>${c.type||'--'}`; meta3 = `Due: ${c.deadline ? new Date(c.deadline).toLocaleDateString() : '--'}`; hist = c.history || [];
+            }
+
+            safeText('tl-company', title || '--');
+            safeHTML('tl-meta-bar', `
+                <span class="flex items-center bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">${meta1}</span>
+                <span class="flex items-center bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">${meta2}</span>
+                <span class="font-semibold bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-lg border border-emerald-500/20 ml-auto md:ml-0">${meta3}</span>
+            `);
+            
+            const histHtml = hist.slice().reverse().map(h => `<div class="pl-6 border-l-2 border-indigo-500/50 relative py-1 group"><div class="absolute w-3 h-3 bg-indigo-500 rounded-full -left-[7px] top-2 shadow-[0_0_10px_#4f46e5] group-hover:scale-125 transition-transform"></div><p class="text-sm font-semibold text-white">${h.note}</p><p class="text-[10px] text-slate-400 font-mono mt-1.5 bg-black/30 inline-block px-2 py-0.5 rounded border border-white/5">${h.date ? new Date(h.date).toLocaleString() : '--'} • ${h.user||'--'}</p></div>`).join('');
+            safeHTML('tl-history-list', histHtml || '<p class="text-sm text-slate-500 italic p-4 bg-white/5 rounded-xl border border-white/5 text-center">No history logged yet.</p>');
+            
+            document.getElementById('tl-new-note').value = ''; safeShowModal('modal-timeline');
+        };
+
+        window.addTimelineEvent = async () => {
+            const id = document.getElementById('tl-id').value; const type = document.getElementById('tl-type').value; const note = document.getElementById('tl-new-note').value.trim(); if(!note) return;
+            const collectionName = type === 'sales' ? 'sales_leads' : 'creative_tasks';
+            try {
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', collectionName, id), { history: arrayUnion({ note: note, date: new Date().toISOString(), user: "System Admin" }) });
+                document.getElementById('tl-new-note').value = '';
+            } catch(e) { showToast("Error logging interaction", true); }
+        };
+
+        // PAYROLL & TICKETS
+        window.openAwardModal = (id, name) => { document.getElementById('award-user-id').value = id; safeText('award-rep-name', name); document.getElementById('award-reason').value=''; document.getElementById('award-amount').value=''; safeShowModal('modal-award'); };
+        
+        const formAward = document.getElementById('form-award');
+        if(formAward) {
+            formAward.addEventListener('submit', async (e) => {
+                e.preventDefault(); const id = document.getElementById('award-user-id').value; const amt = Number(document.getElementById('award-amount').value);
+                if(amt<=0) return; const u = allUsers.find(x=>x.id===id); if(!u) return;
+                try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', id), { commission_awarded: (Number(u.commission_awarded)||0) + amt }); logAudit(`Logged payout of ₹${amt} to ${u.name}`); showToast("Payout Logged"); closeModals(); } catch(e) { showToast("Error", true); }
+            });
+        }
+
+        window.releasePayment = async (id, amt, name) => {
+            if(amt<=0) return;
+            if(confirm(`Mark ₹${amt.toLocaleString('en-IN')} as PAID to ${name}?`)) {
+                const u = allUsers.find(x=>x.id===id); if(!u) return;
+                try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', id), { commission_paid: (Number(u.commission_paid)||0) + amt }); logAudit(`Cleared pending balance ₹${amt} for ${name}`); showToast("Payment Marked as Paid"); } catch(e) {}
             }
         };
 
+        window.openManageTicket = (id) => {
+            const t = allTickets.find(x=>x.id===id); if(!t) return;
+            document.getElementById('mng-tk-id').value = id; safeText('mng-tk-subject', t.subject||'--');
+            safeText('mng-tk-rep', `${t.rep||'--'} • ${t.category||'--'}`); safeText('mng-tk-details', t.details||'--');
+            document.getElementById('mng-tk-status').value = t.status || 'Open';
+            safeShowModal('modal-manage-ticket');
+        };
+        
+        const formMngTk = document.getElementById('form-manage-ticket');
+        if(formMngTk) {
+            formMngTk.addEventListener('submit', async (e) => {
+                e.preventDefault(); const id = document.getElementById('mng-tk-id').value; const ns = document.getElementById('mng-tk-status').value;
+                try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'hr_tickets', id), { status: ns }); logAudit(`Updated Support Ticket to ${ns}`); showToast("Ticket Updated"); closeModals(); } catch(e) {}
+            });
+        }
+
+        window.exportGlobalCSV = () => {
+            if(!allLeads.length && !allCreatives.length) return showToast("No data to export", true);
+            const headers = ['Type', 'Company/Project', 'Contact/Client', 'Phone/Format', 'Value/Deadline', 'Status', 'Assignee'];
+            const csvRows = [headers.join(',')];
+            allLeads.forEach(l => csvRows.push([ '"Sales"', `"${l.company||''}"`, `"${l.contact||''}"`, `"${l.phone||''}"`, l.value||0, `"${l.status||''}"`, `"${l.rep||''}"` ].join(',')));
+            allCreatives.forEach(c => csvRows.push([ '"Creative"', `"${c.title||''}"`, `"${c.client||''}"`, `"${c.type||''}"`, `"${c.deadline||''}"`, `"${c.status||''}"`, `"${c.assignee||''}"` ].join(',')));
+            const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+            const a = document.createElement('a'); a.setAttribute('href', window.URL.createObjectURL(blob)); a.setAttribute('download', `Workspace_Export_${new Date().toLocaleDateString()}.csv`);
+            document.body.appendChild(a); a.click(); document.body.removeChild(a); logAudit('Exported platform data to CSV');
+        };
     </script>
 </body>
 </html>
