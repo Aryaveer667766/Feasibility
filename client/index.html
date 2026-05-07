@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Client Onboarding | Feasibility Media</title>
+    <title>Client App | Feasibility Media</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
@@ -12,151 +12,204 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #0f172a;
+            background-color: #020617; /* Deep slate */
             color: #f8fafc;
             overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.1) 0%, transparent 60%);
+            -webkit-tap-highlight-color: transparent;
         }
         .font-heading { font-family: 'Outfit', sans-serif; }
 
-        .glass-panel { 
-            background: rgba(30, 41, 59, 0.7); 
-            backdrop-filter: blur(16px); 
-            border: 1px solid rgba(255, 255, 255, 0.08); 
+        /* Mobile App Container */
+        #app-container {
+            width: 100%;
+            max-width: 480px; /* Mobile width restriction for desktop viewing */
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
         }
 
-        input { 
-            background: rgba(15, 23, 42, 0.8); 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            color: white; 
-            transition: all 0.3s; 
-            border-radius: 0.75rem; 
-            width: 100%; 
-            padding: 1rem;
+        .glass-card { 
+            background: rgba(30, 41, 59, 0.6); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            border-radius: 1.5rem;
         }
-        input:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); }
 
-        .view-section { display: none; opacity: 0; transition: opacity 0.4s ease-in-out; }
-        .view-section.active { display: flex; opacity: 1; flex-direction: column; }
+        .view-section { 
+            display: none; 
+            opacity: 0; 
+            transition: opacity 0.5s ease-in-out, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(20px);
+            flex: 1;
+            flex-direction: column;
+        }
+        .view-section.active { 
+            display: flex; 
+            opacity: 1; 
+            transform: translateY(0);
+        }
 
-        /* Pulse animation for scanning state */
+        /* Scanning Radar Animation */
+        .scan-pulse-container { position: relative; }
         .scan-pulse {
-            box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
-            animation: pulse-ring 2s infinite;
+            position: absolute;
+            inset: -15px;
+            border-radius: 1.5rem;
+            border: 2px solid rgba(99, 102, 241, 0);
+            animation: radar 2.5s cubic-bezier(0.21, 0.53, 0.56, 0.8) infinite;
         }
-        @keyframes pulse-ring {
-            0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
-            70% { box-shadow: 0 0 0 20px rgba(99, 102, 241, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+        @keyframes radar {
+            0% { inset: -5px; border-color: rgba(99, 102, 241, 0.8); border-width: 4px; }
+            100% { inset: -40px; border-color: rgba(99, 102, 241, 0); border-width: 1px; }
+        }
+
+        /* Success Confetti Animation */
+        .success-bg {
+            background: radial-gradient(circle at center, rgba(16, 185, 129, 0.2) 0%, transparent 70%);
+            animation: bloom 1s ease-out forwards;
+        }
+        @keyframes bloom {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
         }
     </style>
 </head>
-<body class="h-screen w-full flex flex-col items-center justify-center relative p-4">
+<body>
 
-    <!-- VIEW 1: AUTHENTICATION / REGISTRATION -->
-    <div id="view-auth" class="view-section active w-full max-w-md w-full">
-        <div class="glass-panel p-8 rounded-3xl shadow-2xl shadow-black/50">
-            <div class="text-center mb-8">
-                <div class="w-16 h-16 bg-indigo-600 text-white items-center justify-center rounded-2xl text-3xl font-bold shadow-lg shadow-indigo-500/30 mx-auto mb-4 flex">F</div>
-                <h2 class="text-2xl font-bold text-white font-heading">Client Setup</h2>
-                <p class="text-sm text-slate-400 mt-2">Create your account to begin the offline activation process.</p>
+    <div id="app-container">
+
+        <!-- VIEW 1: LOADING SYSTEM -->
+        <div id="view-loading" class="view-section active justify-center items-center h-full px-6 text-center">
+            <div class="w-16 h-16 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin mb-6"></div>
+            <h2 class="text-xl font-bold text-white font-heading">Initializing Secure Link...</h2>
+            <p class="text-sm text-slate-400 mt-2">Connecting to Feasibility Media network.</p>
+        </div>
+
+        <!-- VIEW 2: QR CONNECT (Awaiting Scan) -->
+        <div id="view-qr" class="view-section justify-center items-center h-full px-6 pt-12 pb-8">
+            <div class="text-center mb-10 w-full">
+                <div class="inline-flex items-center justify-center w-14 h-14 bg-indigo-600 text-white rounded-2xl font-bold text-2xl shadow-lg shadow-indigo-500/30 mb-5">F</div>
+                <h2 class="text-3xl font-bold text-white font-heading tracking-tight">Sync Device</h2>
+                <p class="text-base text-slate-400 mt-3 leading-relaxed">Present this code to your executive to pair your account and activate your portal.</p>
             </div>
             
-            <form id="auth-form" class="space-y-4">
-                <div id="name-field">
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Company Name</label>
-                    <input type="text" id="auth-name" required placeholder="Acme Corp">
+            <div class="scan-pulse-container mb-12 mt-4">
+                <div class="scan-pulse"></div>
+                <div class="bg-white p-5 rounded-3xl relative z-10 shadow-2xl">
+                    <!-- QR Code gets injected here -->
+                    <img id="session-qr" src="" alt="Activation QR Code" class="w-56 h-56 md:w-64 md:h-64 object-contain">
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Email Address</label>
-                    <input type="email" id="auth-email" required placeholder="you@company.com">
+            </div>
+
+            <div class="mt-auto glass-card w-full p-4 flex items-center justify-center gap-3 text-indigo-400 font-semibold animate-pulse">
+                <i class="fa-solid fa-satellite-dish text-lg"></i>
+                <span>Listening for executive scan...</span>
+            </div>
+        </div>
+
+        <!-- VIEW 3: INSTANT DASHBOARD -->
+        <div id="view-dashboard" class="view-section h-full relative">
+            <!-- Background bloom effect on entry -->
+            <div class="absolute inset-0 pointer-events-none overflow-hidden z-0 flex items-center justify-center">
+                <div id="bloom-effect" class="w-full aspect-square rounded-full opacity-0"></div>
+            </div>
+
+            <!-- Dashboard Header -->
+            <div class="px-6 pt-12 pb-6 relative z-10 border-b border-white/5 bg-slate-900/50 backdrop-blur-md">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-full text-[10px] font-bold uppercase tracking-widest">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Activated
+                    </div>
+                    <button class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-300 hover:text-white transition-colors">
+                        <i class="fa-solid fa-bell"></i>
+                    </button>
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Create Password</label>
-                    <input type="password" id="auth-password" required placeholder="••••••••">
-                </div>
+                <h1 class="text-3xl font-bold text-white font-heading leading-tight mt-4">Welcome,<br><span id="dash-client-name" class="text-indigo-400">Client</span></h1>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div class="flex-1 overflow-y-auto px-5 py-6 space-y-4 relative z-10">
                 
-                <button type="submit" id="auth-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-4 rounded-xl font-bold text-lg transition-colors mt-6 shadow-lg shadow-indigo-600/20">
-                    Create Account
+                <div class="glass-card p-5 border-l-4 border-l-indigo-500 relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 text-indigo-500/10 text-7xl"><i class="fa-solid fa-rocket"></i></div>
+                    <h3 class="text-lg font-bold text-white font-heading relative z-10">Account Linked!</h3>
+                    <p class="text-sm text-slate-400 mt-1 relative z-10">Your offline onboarding is complete. Our team is now reviewing your brief.</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mt-6">
+                    <button class="glass-card p-5 text-left hover:bg-white/5 transition-colors group">
+                        <div class="w-10 h-10 bg-cyan-500/10 text-cyan-400 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-white font-heading">My Projects</h4>
+                        <p class="text-[10px] text-slate-500 mt-1">Track deliverables</p>
+                    </button>
+
+                    <button class="glass-card p-5 text-left hover:bg-white/5 transition-colors group">
+                        <div class="w-10 h-10 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-file-invoice-dollar"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-white font-heading">Billing</h4>
+                        <p class="text-[10px] text-slate-500 mt-1">Payment verified</p>
+                    </button>
+
+                    <button class="glass-card p-5 text-left hover:bg-white/5 transition-colors group">
+                        <div class="w-10 h-10 bg-amber-500/10 text-amber-400 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-folder-tree"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-white font-heading">Brand Kit</h4>
+                        <p class="text-[10px] text-slate-500 mt-1">Upload logos</p>
+                    </button>
+
+                    <button class="glass-card p-5 text-left hover:bg-white/5 transition-colors group">
+                        <div class="w-10 h-10 bg-rose-500/10 text-rose-400 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-headset"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-white font-heading">Support</h4>
+                        <p class="text-[10px] text-slate-500 mt-1">Contact manager</p>
+                    </button>
+                </div>
+
+            </div>
+            
+            <!-- Bottom Navigation Tab Bar (App Feel) -->
+            <div class="h-16 glass-card border-x-0 border-b-0 rounded-none rounded-t-3xl flex justify-around items-center px-6 relative z-10 shrink-0">
+                <button class="flex flex-col items-center gap-1 text-indigo-400">
+                    <i class="fa-solid fa-house"></i>
+                    <span class="text-[9px] font-bold">Home</span>
                 </button>
-            </form>
-
-            <div class="mt-6 text-center">
-                <button id="toggle-auth" class="text-sm text-indigo-400 hover:text-indigo-300">Already registered? Sign In</button>
+                <button class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-300">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <span class="text-[9px] font-bold">Projects</span>
+                </button>
+                <button class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-300">
+                    <i class="fa-solid fa-comment-dots"></i>
+                    <span class="text-[9px] font-bold">Chat</span>
+                </button>
             </div>
         </div>
-    </div>
 
-    <!-- VIEW 2: PENDING ACTIVATION (QR CODE) -->
-    <div id="view-activation" class="view-section w-full max-w-md w-full text-center">
-        <div class="glass-panel p-8 rounded-3xl shadow-2xl shadow-indigo-900/20 border-indigo-500/30">
-            <h2 class="text-3xl font-bold text-white font-heading mb-2">Almost Done!</h2>
-            <p class="text-slate-400 mb-8">Please show this QR code to your Field Sales Executive to finalize your payment and activate your portal.</p>
-            
-            <div class="bg-white p-4 rounded-2xl inline-block mb-8 scan-pulse border-4 border-indigo-100">
-                <!-- QR Code gets injected here -->
-                <img id="activation-qr" src="" alt="Activation QR Code" class="w-56 h-56 object-contain">
-            </div>
-
-            <div class="flex items-center justify-center gap-3 text-indigo-400 font-medium">
-                <i class="fa-solid fa-circle-notch fa-spin text-xl"></i>
-                <span>Awaiting Executive Scan...</span>
-            </div>
-        </div>
-        
-        <button id="btn-logout-pending" class="mt-6 text-sm text-slate-500 hover:text-white transition-colors">Log Out / Cancel</button>
-    </div>
-
-    <!-- VIEW 3: ACTIVE DASHBOARD (Simplified) -->
-    <div id="view-dashboard" class="view-section w-full h-full max-w-4xl mx-auto flex flex-col pt-8">
-        
-        <header class="flex justify-between items-center mb-8 px-4">
-            <div>
-                <h1 class="text-2xl font-bold text-white font-heading" id="dash-welcome">Welcome, Client</h1>
-                <p class="text-emerald-400 text-sm font-semibold mt-1"><i class="fa-solid fa-shield-check mr-1"></i> Account Activated</p>
-            </div>
-            <button id="btn-logout-dash" class="bg-white/5 border border-white/10 text-slate-300 hover:text-white px-4 py-2 rounded-lg text-sm transition-colors">Sign Out</button>
-        </header>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 px-4">
-            
-            <div class="glass-panel p-6 rounded-2xl">
-                <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-2xl mb-4">
-                    <i class="fa-solid fa-file-invoice-dollar"></i>
-                </div>
-                <h3 class="text-lg font-bold text-white font-heading mb-2">Billing & Invoices</h3>
-                <p class="text-sm text-slate-400 mb-4">Your offline payment has been recorded. Future invoices will appear here.</p>
-                <button class="w-full bg-slate-800 hover:bg-slate-700 text-white py-3 rounded-xl text-sm font-semibold transition-colors">View History</button>
-            </div>
-
-            <div class="glass-panel p-6 rounded-2xl">
-                <div class="w-12 h-12 bg-indigo-500/10 text-indigo-400 rounded-xl flex items-center justify-center text-2xl mb-4">
-                    <i class="fa-solid fa-headset"></i>
-                </div>
-                <h3 class="text-lg font-bold text-white font-heading mb-2">Support & Comms</h3>
-                <p class="text-sm text-slate-400 mb-4">Need help or want to submit a new project request? Contact your manager.</p>
-                <button class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl text-sm font-semibold transition-colors">Open Ticket</button>
-            </div>
-
-        </div>
     </div>
 
     <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-6 right-6 text-white px-6 py-4 rounded-xl shadow-2xl font-bold text-sm transform translate-y-32 opacity-0 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md bg-indigo-600/90">
-        <i class="fa-solid fa-circle-info text-xl"></i> <span id="toast-msg">Notification</span>
+    <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm text-white px-5 py-4 rounded-2xl shadow-2xl font-bold text-sm transform -translate-y-32 opacity-0 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-xl bg-emerald-600/90 text-center justify-center">
+        <i class="fa-solid fa-check-circle text-lg"></i> <span id="toast-msg">Success</span>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Global Configuration
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        let currentUser = null;
         let db, auth;
-        let clientListener = null;
+        let sessionListener = null;
+        let currentSessionId = null;
 
         // UI Helpers
         const switchView = (viewId) => {
@@ -166,10 +219,15 @@
 
         const showToast = (msg, isError=false) => {
             const toast = document.getElementById('toast');
-            toast.className = `fixed bottom-6 right-6 text-white px-6 py-4 rounded-xl shadow-2xl font-bold text-sm transform translate-y-0 opacity-100 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md ${isError ? 'bg-red-600/90' : 'bg-emerald-600/90'}`;
+            toast.className = `fixed top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm text-white px-5 py-4 rounded-2xl shadow-2xl font-bold text-sm transform translate-y-0 opacity-100 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-xl justify-center ${isError ? 'bg-red-600/90' : 'bg-emerald-600/90'}`;
             document.getElementById('toast-msg').innerText = msg;
-            setTimeout(() => { toast.classList.replace('translate-y-0', 'translate-y-32'); toast.classList.replace('opacity-100', 'opacity-0'); }, 4000);
+            setTimeout(() => { toast.classList.replace('translate-y-0', '-translate-y-32'); toast.classList.replace('opacity-100', 'opacity-0'); }, 4000);
         };
+
+        // Session Generator (Creates a unique ID for this device session)
+        function generateSessionId() {
+            return 'SESSION-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now().toString(36);
+        }
 
         try {
             const fbConfig = {
@@ -185,128 +243,102 @@
             db = getFirestore(app); 
             auth = getAuth(app);
 
-            // Auth State Listener
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    currentUser = user;
-                    checkClientActivationStatus(user);
-                } else {
-                    currentUser = null;
-                    if(clientListener) { clientListener(); clientListener = null; }
-                    switchView('auth');
-                }
+            // Connect silently without any login UI
+            signInAnonymously(auth).then(() => {
+                initOfflineSession();
+            }).catch(e => {
+                console.error("Auth Error", e);
+                showToast("Connection failed.", true);
             });
 
         } catch (e) { console.error("Firebase Init Error", e); }
 
-        // --- View Logic & Database Listener ---
-        function checkClientActivationStatus(user) {
-            // We listen directly to the client's document in the DB
-            // Assuming the doc ID is the user's UID for easy retrieval
-            const clientDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'offline_clients', user.uid);
+        async function initOfflineSession() {
+            // Check if this device already has an active session from a previous visit
+            const storedSession = localStorage.getItem('fm_offline_session');
+            currentSessionId = storedSession || generateSessionId();
             
-            clientListener = onSnapshot(clientDocRef, (docSnap) => {
+            if(!storedSession) {
+                // Save new session locally
+                localStorage.setItem('fm_offline_session', currentSessionId);
+                
+                // Initialize the session in Firestore as 'Pending'
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'offline_sessions', currentSessionId), {
+                    status: 'Pending',
+                    createdAt: Date.now()
+                });
+            }
+
+            // Start Realtime Listener on this specific session
+            listenToSession(currentSessionId);
+        }
+
+        function listenToSession(sessionId) {
+            const sessionRef = doc(db, 'artifacts', appId, 'public', 'data', 'offline_sessions', sessionId);
+            
+            sessionListener = onSnapshot(sessionRef, (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     
                     if (data.status === 'Active') {
-                        // Sales Rep scanned and activated!
-                        document.getElementById('dash-welcome').innerText = `Welcome, ${user.displayName || 'Client'}`;
-                        
-                        // Only show toast if transitioning from pending
-                        if(document.getElementById('view-activation').classList.contains('active')) {
-                            showToast("Activation Successful!");
-                        }
-                        switchView('dashboard');
+                        // The Sales Executive has scanned the QR and pushed the data!
+                        triggerUnlockAnimation(data.company || "Valued Client");
                     } else {
-                        // Still Pending. Show QR Code.
-                        showActivationQR(user.uid);
-                        switchView('activation');
+                        // Still Pending. Show the QR Code.
+                        showSessionQR(sessionId);
                     }
                 } else {
-                    // Document doesn't exist yet, we will create it in the register flow
-                    showActivationQR(user.uid);
-                    switchView('activation');
+                    // Document missing, re-create it just in case
+                    setDoc(sessionRef, { status: 'Pending', createdAt: Date.now() });
+                    showSessionQR(sessionId);
                 }
             }, (error) => {
                 console.error("Listener Error", error);
             });
         }
 
-        function showActivationQR(uid) {
-            // Encode the UID into the QR code. The Field Sales App scans this UID.
-            const qrData = encodeURIComponent(`ACTIVATE:${uid}`);
-            document.getElementById('activation-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${qrData}&color=0f172a&bgcolor=ffffff`;
-        }
-
-        // --- Form Auth Logic ---
-        let isRegister = true;
-        const toggleBtn = document.getElementById('toggle-auth');
-        const authBtn = document.getElementById('auth-btn');
-        const nameField = document.getElementById('name-field');
-        const nameInput = document.getElementById('auth-name');
-
-        if(toggleBtn) {
-            toggleBtn.addEventListener('click', () => {
-                isRegister = !isRegister;
-                if(isRegister) {
-                    toggleBtn.innerText = "Already registered? Sign In";
-                    authBtn.innerText = "Create Account";
-                    nameField.style.display = 'block';
-                    nameInput.setAttribute('required', 'true');
-                } else {
-                    toggleBtn.innerText = "Need an account? Create one";
-                    authBtn.innerText = "Sign In";
-                    nameField.style.display = 'none';
-                    nameInput.removeAttribute('required');
-                }
-            });
-        }
-
-        document.getElementById('auth-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('auth-email').value.trim();
-            const password = document.getElementById('auth-password').value.trim();
+        function showSessionQR(sessionId) {
+            // The QR code purely holds the session ID string.
+            // The Sales App will scan this, read the ID, and write client data to this document path.
+            const qrData = encodeURIComponent(`FM_OFFLINE_SYNC:${sessionId}`);
+            document.getElementById('session-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${qrData}&color=0f172a&bgcolor=ffffff&margin=10`;
             
-            authBtn.disabled = true;
-            authBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+            // Transition from Loading to QR view
+            if(!document.getElementById('view-qr').classList.contains('active')) {
+                setTimeout(() => switchView('qr'), 500);
+            }
+        }
 
-            try {
-                if(isRegister) {
-                    const companyName = nameInput.value.trim();
-                    const userCred = await createUserWithEmailAndPassword(auth, email, password);
-                    await updateProfile(userCred.user, { displayName: companyName });
-                    
-                    // Create the offline_client document as 'Pending'
-                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'offline_clients', userCred.user.uid), {
-                        company: companyName,
-                        email: email,
-                        status: 'Pending',
-                        timestamp: Date.now()
-                    });
+        function triggerUnlockAnimation(clientName) {
+            // Stop listening to prevent loops
+            if(sessionListener) sessionListener();
+            
+            // Set the dashboard data
+            document.getElementById('dash-client-name').innerText = clientName;
 
-                    showToast("Account created. Please prepare for activation.");
-                } else {
-                    await signInWithEmailAndPassword(auth, email, password);
-                    showToast("Logged in.");
+            // Trigger the bloom animation and switch view
+            document.getElementById('bloom-effect').classList.add('success-bg');
+            showToast("Sync Successful!");
+            
+            setTimeout(() => {
+                switchView('dashboard');
+                // Haptic feedback if supported by device
+                if(window.navigator && window.navigator.vibrate) {
+                    window.navigator.vibrate([100, 50, 100]);
                 }
-            } catch(error) {
-                showToast(error.message, true);
-                authBtn.disabled = false;
-                authBtn.innerText = isRegister ? "Create Account" : "Sign In";
+            }, 600);
+        }
+
+        // DEV TOOL: For testing without the Sales App, double click the QR code to simulate an executive scan
+        document.getElementById('session-qr').addEventListener('dblclick', () => {
+            if(confirm("DEV MODE: Simulate executive scan and activate?")) {
+                setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'offline_sessions', currentSessionId), {
+                    status: 'Active',
+                    company: 'Stark Industries (Simulated)',
+                    activatedAt: Date.now()
+                }, { merge: true });
             }
         });
-
-        // --- Logouts ---
-        const handleLogout = async () => {
-            await signOut(auth);
-            document.getElementById('auth-form').reset();
-            authBtn.disabled = false;
-            authBtn.innerText = isRegister ? "Create Account" : "Sign In";
-        };
-        
-        document.getElementById('btn-logout-pending').addEventListener('click', handleLogout);
-        document.getElementById('btn-logout-dash').addEventListener('click', handleLogout);
 
     </script>
 </body>
