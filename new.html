@@ -98,18 +98,18 @@
         <div class="glass-card p-8 rounded-3xl w-full text-center relative overflow-hidden">
             <div class="absolute -top-10 -right-10 text-emerald-500/5 text-9xl"><i class="fa-solid fa-id-badge"></i></div>
             
-            <div class="w-16 h-16 bg-gradient-to-br from-emerald-600 to-teal-500 text-white rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
-                <i class="fa-solid fa-bolt"></i>
+            <div class="w-16 h-16 bg-white/5 text-emerald-400 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 border border-white/10">
+                <i class="fa-solid fa-user-tie"></i>
             </div>
             
-            <h2 class="text-2xl font-bold text-white font-heading mb-2">Executive Portal</h2>
-            <p class="text-sm text-slate-400 mb-8">Secure login to your field terminal.</p>
+            <h2 class="text-2xl font-bold text-white font-heading mb-2">Executive Login</h2>
+            <p class="text-sm text-slate-400 mb-8">Enter your registered executive email to start your shift and track your closed deals.</p>
             
             <form id="form-auth" class="space-y-4 relative z-10">
-                <input type="email" id="auth-email" required placeholder="name@feasibilitymedia.in">
-                <input type="password" id="auth-pass" required placeholder="••••••••">
+                <input type="email" id="auth-email" required placeholder="executive@feasibilitymedia.in" class="text-center font-mono">
+                <input type="password" id="auth-pass" required placeholder="••••••••" class="text-center font-mono tracking-widest">
                 <button type="submit" id="auth-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-4 rounded-xl font-bold text-lg transition-colors shadow-lg shadow-emerald-900/40 mt-2">
-                    Connect
+                    Start Shift
                 </button>
             </form>
         </div>
@@ -124,11 +124,14 @@
                 <div class="w-8 h-8 bg-emerald-500 text-slate-900 flex items-center justify-center rounded-lg text-sm font-black shadow-[0_0_15px_rgba(16,185,129,0.4)]">FS</div>
                 <span class="text-white font-bold tracking-tight font-heading">Field Terminal</span>
             </div>
-            <div class="flex items-center gap-3">
+            <div id="header-rep-info" class="flex items-center gap-3 hidden">
                 <div class="flex flex-col items-end">
-                    <span class="text-[9px] text-emerald-400 font-bold uppercase tracking-wider"><i class="fa-solid fa-location-dot mr-1"></i> GPS Active</span>
+                    <span class="text-[9px] text-emerald-400 font-bold uppercase tracking-wider"><i class="fa-solid fa-location-dot mr-1"></i> Shift Active</span>
                     <span id="header-rep-email" class="text-xs text-white font-mono truncate max-w-[100px]">--</span>
                 </div>
+                <button onclick="logoutRep()" class="w-8 h-8 rounded-full bg-rose-500/10 text-rose-400 flex items-center justify-center hover:bg-rose-500/20 transition-colors">
+                    <i class="fa-solid fa-power-off text-xs"></i>
+                </button>
             </div>
         </header>
 
@@ -156,7 +159,6 @@
                 </div>
                 
                 <div class="space-y-3 pb-8" id="recent-deals-list">
-                    <!-- Populated by JS -->
                     <div class="text-center py-10 text-slate-500 italic text-sm border border-white/5 rounded-2xl">No deals closed yet. Go get 'em!</div>
                 </div>
             </div>
@@ -321,7 +323,7 @@
                 <p class="text-sm text-slate-400 mb-4">Live map of your closed deals.</p>
                 
                 <div class="flex-1 w-full relative rounded-2xl overflow-hidden border border-white/10 shadow-lg">
-                    <div id="map-container" class="w-full h-full absolute inset-0"></div>
+                    <div id="map-container" class="w-full h-full absolute inset-0 bg-black"></div>
                 </div>
             </div>
 
@@ -354,8 +356,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, doc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, doc, updateDoc, onSnapshot, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Global Setup
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -363,10 +365,8 @@
         let html5QrCode = null;
         let mapInstance = null;
         let repDeals = [];
-
-        // Geolocation Data
+        let currentExecutiveEmail = null;
         let currentGeo = { lat: null, lng: null };
-
         let currentClient = { company: "", contact: "", email: "", phone: "", value: 0, paymentMethod: "" };
 
         // --- UI UTILS ---
@@ -398,7 +398,7 @@
             setTimeout(() => { toast.classList.replace('translate-y-0', '-translate-y-32'); toast.classList.replace('opacity-100', 'opacity-0'); }, 3000);
         };
 
-        // --- FIREBASE INIT & AUTH ---
+        // --- FIREBASE INIT & SECURE AUTH ---
         try {
             const fbConfig = {
               apiKey: "AIzaSyAAgcIprurHXdo9tztkqVzLsIzJCWhqWwc", 
@@ -413,28 +413,30 @@
             db = getFirestore(app); 
             auth = getAuth(app);
 
-            // Set persistence so login lasts forever
-            setPersistence(auth, browserLocalPersistence)
-                .then(() => {
-                    onAuthStateChanged(auth, (user) => {
-                        if(user) {
-                            document.getElementById('view-auth').classList.remove('active');
-                            document.getElementById('main-app').classList.remove('hidden', 'opacity-0');
-                            document.getElementById('header-rep-info').classList.remove('hidden');
-                            document.getElementById('header-rep-email').innerText = user.email;
-                            
-                            setupRepDataListener(user.email);
-                            switchTabNav('dashboard');
-                        } else {
-                            document.getElementById('main-app').classList.add('hidden', 'opacity-0');
-                            document.getElementById('header-rep-info').classList.add('hidden');
-                            document.getElementById('view-auth').classList.add('active');
-                        }
-                    });
-                });
+            // Connect securely and silently
+            signInAnonymously(auth).then(() => {
+                // Check if already authenticated locally
+                const savedEmail = localStorage.getItem('fm_executive_email');
+                if(savedEmail) {
+                    currentExecutiveEmail = savedEmail;
+                    unlockApp(savedEmail);
+                }
+            }).catch(e => {
+                showToast("Connection failed.", true);
+            });
 
         } catch (e) { console.error("Firebase Init", e); }
 
+        function unlockApp(email) {
+            document.getElementById('view-auth').classList.remove('active');
+            document.getElementById('main-app').classList.remove('hidden', 'opacity-0');
+            document.getElementById('header-rep-info').classList.remove('hidden');
+            document.getElementById('header-rep-email').innerText = email;
+            setupRepDataListener(email);
+            switchTabNav('dashboard');
+        }
+
+        // Custom Login (Checking against team_users directory)
         document.getElementById('form-auth').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('auth-email').value.trim();
@@ -445,20 +447,51 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...';
 
             try {
-                await signInWithEmailAndPassword(auth, email, pass);
-                showToast("Shift Started");
+                // Query Firestore for this email and password
+                const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'team_users'), 
+                                where("email", "==", email), 
+                                where("password", "==", pass));
+                
+                const querySnapshot = await getDocs(q);
+                
+                let isValid = false;
+                let isSuspended = false;
+                
+                querySnapshot.forEach((doc) => {
+                    const userData = doc.data();
+                    if(userData.status === 'Suspended') isSuspended = true;
+                    else isValid = true;
+                });
+
+                if(isSuspended && !isValid) {
+                    showToast("Account suspended. Contact Admin.", true);
+                } else if (isValid) {
+                    currentExecutiveEmail = email;
+                    localStorage.setItem('fm_executive_email', email);
+                    
+                    showToast("Shift Started");
+                    unlockApp(email);
+                } else {
+                    showToast("Invalid Credentials.", true);
+                }
             } catch(err) {
-                showToast("Invalid Credentials.", true);
+                console.error(err);
+                showToast("Login failed. Check connection.", true);
             } finally {
                 btn.disabled = false;
-                btn.innerText = "Connect";
+                btn.innerText = "Start Shift";
             }
         });
 
-        window.logoutRep = async () => {
+        window.logoutRep = () => {
             if(confirm("End shift and securely lock terminal?")) {
-                await signOut(auth);
+                localStorage.removeItem('fm_executive_email');
+                currentExecutiveEmail = null;
+                document.getElementById('main-app').classList.add('hidden', 'opacity-0');
+                document.getElementById('header-rep-info').classList.add('hidden');
                 document.getElementById('form-auth').reset();
+                document.getElementById('view-auth').classList.add('active');
+                showToast("Shift Ended.");
             }
         };
 
@@ -468,6 +501,7 @@
                 repDeals = [];
                 snap.forEach(d => {
                     const data = d.data();
+                    // Match exactly this rep
                     if(data.rep === email) repDeals.push({id: d.id, ...data});
                 });
                 repDeals.sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
@@ -513,11 +547,10 @@
         // --- MAP LOGIC ---
         function initMap() {
             if(mapInstance) {
-                mapInstance.invalidateSize(); // Fixes rendering bugs in hidden divs
+                mapInstance.invalidateSize(); // Fix rendering
                 return;
             }
 
-            // Default to India Center if no GPS
             mapInstance = L.map('map-container').setView([20.5937, 78.9629], 5);
             
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -526,7 +559,6 @@
 
             addMarkersToMap();
             
-            // Try to center on user
             if(navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition((pos) => {
                     mapInstance.setView([pos.coords.latitude, pos.coords.longitude], 12);
@@ -536,9 +568,7 @@
 
         function addMarkersToMap() {
             if(!mapInstance) return;
-            // Clear existing markers conceptually (in a robust app, keep refs and remove)
             
-            // Custom emerald icon
             const emeraldIcon = L.divIcon({
                 className: 'custom-div-icon',
                 html: "<div style='background-color:#10b981; width:20px; height:20px; border-radius:50%; border:3px solid white; box-shadow:0 0 10px rgba(16,185,129,0.8);'></div>",
@@ -555,7 +585,7 @@
             });
         }
 
-        // --- GPS CAPTURE FOR DEALS ---
+        // --- GPS CAPTURE ---
         function captureGPS() {
             const statusEl = document.getElementById('gps-status');
             const coordEl = document.getElementById('gps-coords');
@@ -622,7 +652,7 @@
                         setTimeout(() => startScanner(), 2000); 
                     }
                 },
-                (err) => {} // ignore stream errors
+                (err) => {} 
             ).catch((err) => {
                 showToast("Camera access required.", true);
             });
@@ -640,7 +670,7 @@
             
             const sessionId = qrData.split(':')[1];
             if(!sessionId) { showToast("Data extraction failed.", true); return; }
-            if(!auth.currentUser) { showToast("Authentication lost. Please login.", true); return; }
+            if(!currentExecutiveEmail) { showToast("Authentication lost. Please login.", true); return; }
 
             try {
                 // 1. Add to Admin Client Directory
@@ -658,13 +688,12 @@
                     phone: currentClient.phone,
                     value: currentClient.value,
                     source: `Field Terminal (${currentClient.paymentMethod})`,
-                    rep: auth.currentUser.email,
+                    rep: currentExecutiveEmail,
                     status: 'Closed Won',
-                    history: [{ note: `Payment via ${currentClient.paymentMethod}. Portal activated.`, date: new Date().toISOString(), user: auth.currentUser.email }],
+                    history: [{ note: `Payment via ${currentClient.paymentMethod}. Portal activated.`, date: new Date().toISOString(), user: currentExecutiveEmail }],
                     timestamp: Date.now()
                 };
 
-                // Add location if acquired
                 if(currentGeo.lat) leadData.location = currentGeo;
 
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), leadData);
@@ -682,14 +711,14 @@
 
             } catch (err) {
                 console.error("DB Error:", err);
-                showToast("Sync Failed.", true);
+                showToast("Sync Failed. Please check connection.", true);
             }
         }
 
         window.resetFlow = () => {
             document.getElementById('form-register').reset();
             currentClient = { company: "", contact: "", email: "", phone: "", value: 0, paymentMethod: "" };
-            currentGeo = { lat: null, lng: null }; // reset geo for next deal
+            currentGeo = { lat: null, lng: null }; 
             switchTabNav('dashboard');
         };
 
