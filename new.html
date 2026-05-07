@@ -9,8 +9,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Core QR Code Library for Custom UI -->
+    <!-- QR Scanner & Maps -->
     <script src="https://unpkg.com/html5-qrcode"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <style>
         :root {
@@ -35,7 +37,6 @@
         .glass-card { 
             background: var(--surface); 
             backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.05); 
             box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
         }
@@ -51,8 +52,7 @@
             transition: all 0.2s ease-out;
         }
         input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); background: rgba(0, 0, 0, 0.5); }
-        input::placeholder { color: #475569; }
-
+        
         /* View Management */
         .app-view { 
             display: none; 
@@ -68,264 +68,284 @@
             transform: scale(1);
         }
 
-        /* Custom Scanner Viewfinder */
-        #reader-container {
-            position: relative;
-            width: 100%;
-            border-radius: 1.5rem;
-            overflow: hidden;
-            background: #000;
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
-        }
+        /* Custom Scanner */
+        #reader-container { position: relative; width: 100%; border-radius: 1.5rem; overflow: hidden; background: #000; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1); }
         #reader video { object-fit: cover !important; width: 100% !important; height: 100% !important; border-radius: 1.5rem; }
-        
-        .scanner-overlay {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
-        }
-        .scanner-frame {
-            width: 70%;
-            aspect-ratio: 1;
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 1.5rem;
-            position: relative;
-        }
-        .scanner-frame::before, .scanner-frame::after,
-        .scanner-frame span::before, .scanner-frame span::after {
-            content: ''; position: absolute; width: 30px; height: 30px; border-color: var(--primary); border-style: solid;
-        }
+        .scanner-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 10; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 100px rgba(0,0,0,0.8); }
+        .scanner-frame { width: 70%; aspect-ratio: 1; border: 2px solid rgba(255,255,255,0.2); border-radius: 1.5rem; position: relative; }
+        .scanner-frame::before, .scanner-frame::after, .scanner-frame span::before, .scanner-frame span::after { content: ''; position: absolute; width: 30px; height: 30px; border-color: var(--primary); border-style: solid; }
         .scanner-frame::before { top: -2px; left: -2px; border-width: 4px 0 0 4px; border-top-left-radius: 1.5rem; }
         .scanner-frame::after { top: -2px; right: -2px; border-width: 4px 4px 0 0; border-top-right-radius: 1.5rem; }
         .scanner-frame span::before { bottom: -2px; left: -2px; border-width: 0 0 4px 4px; border-bottom-left-radius: 1.5rem; }
         .scanner-frame span::after { bottom: -2px; right: -2px; border-width: 0 4px 4px 0; border-bottom-right-radius: 1.5rem; }
+        .scan-line { width: 100%; height: 2px; background: var(--primary); box-shadow: 0 0 15px 2px var(--primary); position: absolute; top: 0; left: 0; animation: scanline 2.5s ease-in-out infinite; }
+        @keyframes scanline { 0% { top: 5%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 95%; opacity: 0; } }
 
-        .scan-line {
-            width: 100%; height: 2px; background: var(--primary);
-            box-shadow: 0 0 15px 2px var(--primary);
-            position: absolute; top: 0; left: 0;
-            animation: scanline 2.5s ease-in-out infinite;
-        }
+        /* Payment Radios */
+        .pay-method-label { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 1rem; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.2s; background: rgba(0,0,0,0.3); }
+        input[type="radio"]:checked + .pay-method-label { border-color: var(--primary); background: var(--primary-glow); color: white; }
 
-        @keyframes scanline {
-            0% { top: 5%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 95%; opacity: 0; }
-        }
-
-        /* Payment Method Radio Group */
-        .pay-method-label {
-            display: flex; flex-direction: column; items-center; justify-content: center; text-align: center;
-            padding: 1rem; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.2s;
-            background: rgba(0,0,0,0.3);
-        }
-        input[type="radio"]:checked + .pay-method-label {
-            border-color: var(--primary); background: var(--primary-glow); color: white;
-        }
+        /* Map styling */
+        #map-container { border-radius: 1rem; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+        .leaflet-container { background: #0f172a; }
+        .leaflet-layer, .leaflet-control-zoom-in, .leaflet-control-zoom-out, .leaflet-control-attribution { filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%); }
     </style>
 </head>
 <body class="flex flex-col relative w-full h-[100dvh] max-w-lg mx-auto bg-slate-900 md:border-x border-white/5 md:shadow-2xl">
 
-    <!-- APP HEADER -->
-    <header class="h-16 px-5 flex items-center justify-between shrink-0 glass-card rounded-none border-t-0 border-x-0 z-50">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-8 bg-emerald-500 text-slate-900 flex items-center justify-center rounded-lg text-sm font-black shadow-[0_0_15px_rgba(16,185,129,0.4)]">FS</div>
-            <span class="text-white font-bold tracking-tight font-heading">Executive Terminal</span>
-        </div>
-        <div id="header-rep-info" class="hidden flex items-center gap-3">
-            <div class="flex flex-col items-end">
-                <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Active Shift</span>
-                <span id="header-rep-email" class="text-xs text-white font-mono truncate max-w-[100px]">--</span>
+    <!-- AUTHENTICATION VIEW -->
+    <div id="view-auth" class="app-view active p-6 justify-center z-[100] absolute inset-0 bg-[#020617] backdrop-blur-xl">
+        <div class="glass-card p-8 rounded-3xl w-full text-center relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 text-emerald-500/5 text-9xl"><i class="fa-solid fa-id-badge"></i></div>
+            
+            <div class="w-16 h-16 bg-gradient-to-br from-emerald-600 to-teal-500 text-white rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                <i class="fa-solid fa-bolt"></i>
             </div>
-            <button onclick="logoutRep()" class="w-8 h-8 rounded-full bg-rose-500/10 text-rose-400 flex items-center justify-center hover:bg-rose-500/20 transition-colors">
-                <i class="fa-solid fa-power-off text-xs"></i>
-            </button>
-        </div>
-    </header>
-
-    <main class="flex-1 relative overflow-hidden">
-        
-        <!-- VIEW 0: EXECUTIVE AUTHENTICATION -->
-        <div id="view-auth" class="app-view active p-6 justify-center">
-            <div class="glass-card p-8 rounded-3xl w-full text-center relative overflow-hidden">
-                <div class="absolute -top-10 -right-10 text-emerald-500/5 text-9xl"><i class="fa-solid fa-id-badge"></i></div>
-                
-                <div class="w-16 h-16 bg-white/5 text-emerald-400 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 border border-white/10">
-                    <i class="fa-solid fa-user-tie"></i>
-                </div>
-                
-                <h2 class="text-2xl font-bold text-white font-heading mb-2">Executive Login</h2>
-                <p class="text-sm text-slate-400 mb-8">Enter your registered executive email to start your shift and track your closed deals.</p>
-                
-                <form id="form-auth" class="space-y-4 relative z-10">
-                    <input type="email" id="rep-email" required placeholder="executive@feasibilitymedia.in" class="text-center font-mono">
-                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-4 rounded-xl font-bold text-lg transition-colors shadow-lg shadow-emerald-900/40 mt-2">
-                        Start Shift
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <!-- VIEW 1: CLIENT REGISTRATION -->
-        <div id="view-register" class="app-view p-6 overflow-y-auto custom-scrollbar pb-12">
-            <div class="mb-6 flex items-center justify-between">
-                <div>
-                    <h2 class="text-2xl font-bold text-white font-heading">New Deal</h2>
-                    <p class="text-sm text-slate-400">Step 1: Client Information</p>
-                </div>
-                <div class="w-10 h-10 rounded-full border-2 border-emerald-500 flex items-center justify-center text-emerald-500 font-bold font-mono text-sm bg-emerald-500/10">1</div>
-            </div>
-
-            <form id="form-register" class="space-y-5 flex-1 glass-card p-5 rounded-3xl">
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Company / Brand Name *</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-building absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                        <input type="text" id="reg-company" required placeholder="e.g. Acme Corp" class="pl-12">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Client Point of Contact *</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                        <input type="text" id="reg-contact" required placeholder="Full Name" class="pl-12">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Email Address *</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                        <input type="email" id="reg-email" required placeholder="client@domain.com" class="pl-12">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Phone Number</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                        <input type="tel" id="reg-phone" required placeholder="+91 00000 00000" class="pl-12 font-mono">
-                    </div>
-                </div>
-                
-                <div class="pt-4 mt-2 border-t border-white/5">
-                    <label class="block text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-2 ml-1">Gross Deal Value (₹) *</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-indian-rupee-sign absolute left-5 top-1/2 -translate-y-1/2 text-emerald-500 text-lg"></i>
-                        <input type="number" id="reg-value" required placeholder="0" class="pl-12 text-2xl font-black text-emerald-400 tracking-tight" style="height: 4rem;">
-                    </div>
-                </div>
-                
-                <div class="pt-4">
-                    <button type="submit" class="w-full bg-white text-slate-900 py-4 rounded-xl font-bold text-lg transition-colors flex items-center justify-center gap-2">
-                        Continue to Payment <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </div>
+            
+            <h2 class="text-2xl font-bold text-white font-heading mb-2">Executive Portal</h2>
+            <p class="text-sm text-slate-400 mb-8">Secure login to your field terminal.</p>
+            
+            <form id="form-auth" class="space-y-4 relative z-10">
+                <input type="email" id="auth-email" required placeholder="name@feasibilitymedia.in">
+                <input type="password" id="auth-pass" required placeholder="••••••••">
+                <button type="submit" id="auth-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-4 rounded-xl font-bold text-lg transition-colors shadow-lg shadow-emerald-900/40 mt-2">
+                    Connect
+                </button>
             </form>
         </div>
+    </div>
 
-        <!-- VIEW 2: PAYMENT CAPTURE -->
-        <div id="view-payment" class="app-view p-6 pb-12">
-            <div class="mb-6 flex items-center justify-between">
-                <div>
-                    <button type="button" onclick="goToView('register')" class="text-slate-400 hover:text-white mb-2 text-sm flex items-center gap-1 transition-colors"><i class="fa-solid fa-chevron-left"></i> Back</button>
-                    <h2 class="text-2xl font-bold text-white font-heading">Payment Capture</h2>
-                    <p class="text-sm text-slate-400">Step 2: Verify Collection</p>
-                </div>
-                <div class="w-10 h-10 rounded-full border-2 border-emerald-500 flex items-center justify-center text-emerald-500 font-bold font-mono text-sm bg-emerald-500/10">2</div>
+    <!-- MAIN APP WRAPPER -->
+    <div id="main-app" class="flex flex-col w-full h-full hidden opacity-0 transition-opacity duration-500">
+        
+        <!-- APP HEADER -->
+        <header class="h-16 px-5 flex items-center justify-between shrink-0 glass-card rounded-none border-t-0 border-x-0 z-50">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-emerald-500 text-slate-900 flex items-center justify-center rounded-lg text-sm font-black shadow-[0_0_15px_rgba(16,185,129,0.4)]">FS</div>
+                <span class="text-white font-bold tracking-tight font-heading">Field Terminal</span>
             </div>
-
-            <div class="flex-1 flex flex-col">
-                <div class="glass-card p-6 text-center rounded-3xl mb-6">
-                    <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">Collecting From</p>
-                    <p class="text-lg font-bold text-white mb-6" id="pay-company-name">Acme Corp</p>
-                    
-                    <p class="text-[10px] text-emerald-400 uppercase tracking-widest font-bold mb-1">Amount Due</p>
-                    <h3 class="text-5xl font-black text-emerald-400 tracking-tighter" id="pay-amount">₹0</h3>
+            <div class="flex items-center gap-3">
+                <div class="flex flex-col items-end">
+                    <span class="text-[9px] text-emerald-400 font-bold uppercase tracking-wider"><i class="fa-solid fa-location-dot mr-1"></i> GPS Active</span>
+                    <span id="header-rep-email" class="text-xs text-white font-mono truncate max-w-[100px]">--</span>
                 </div>
+            </div>
+        </header>
 
-                <div class="mb-6">
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 ml-1">Select Payment Method Received</p>
-                    <div class="grid grid-cols-2 gap-3">
-                        <label class="cursor-pointer">
-                            <input type="radio" name="pay_method" value="UPI / QR Code" class="hidden" checked>
-                            <div class="pay-method-label"><i class="fa-solid fa-qrcode text-xl mb-2 text-slate-300"></i><span class="text-xs font-bold text-slate-300">UPI / QR</span></div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="pay_method" value="Bank Transfer (NEFT/IMPS)" class="hidden">
-                            <div class="pay-method-label"><i class="fa-solid fa-building-columns text-xl mb-2 text-slate-300"></i><span class="text-xs font-bold text-slate-300">Bank Transfer</span></div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="pay_method" value="Payment Link" class="hidden">
-                            <div class="pay-method-label"><i class="fa-solid fa-link text-xl mb-2 text-slate-300"></i><span class="text-xs font-bold text-slate-300">Payment Link</span></div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="pay_method" value="Cash" class="hidden">
-                            <div class="pay-method-label"><i class="fa-solid fa-money-bill-1-wave text-xl mb-2 text-slate-300"></i><span class="text-xs font-bold text-slate-300">Cash</span></div>
-                        </label>
+        <main class="flex-1 relative overflow-hidden">
+            
+            <!-- VIEW: DASHBOARD -->
+            <div id="view-dashboard" class="app-view p-5 overflow-y-auto custom-scrollbar">
+                <h2 class="text-2xl font-bold text-white font-heading mb-4">My Dashboard</h2>
+                
+                <!-- KPI Cards -->
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="glass-card p-4 rounded-2xl border-t-2 border-t-emerald-500">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">My Revenue</p>
+                        <h3 class="text-xl font-black text-white font-mono" id="dash-revenue">₹0</h3>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl border-t-2 border-t-indigo-500">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Deals Closed</p>
+                        <h3 class="text-xl font-black text-white font-mono" id="dash-deals">0</h3>
                     </div>
                 </div>
 
-                <div class="mt-auto">
-                    <button onclick="goToView('scan')" class="w-full bg-emerald-600 text-white py-4 rounded-xl font-bold text-lg shadow-[0_10px_30px_rgba(16,185,129,0.3)] flex items-center justify-center gap-2">
-                        Proceed to Scanner <i class="fa-solid fa-camera"></i>
-                    </button>
-                    <p class="text-[10px] text-slate-500 text-center mt-3 font-semibold px-4">By proceeding, you verify the funds have been successfully secured.</p>
+                <!-- Recent Deals -->
+                <div class="mb-4 flex items-center justify-between">
+                    <h3 class="text-sm font-bold text-white uppercase tracking-wider">Recent Signups</h3>
+                </div>
+                
+                <div class="space-y-3 pb-8" id="recent-deals-list">
+                    <!-- Populated by JS -->
+                    <div class="text-center py-10 text-slate-500 italic text-sm border border-white/5 rounded-2xl">No deals closed yet. Go get 'em!</div>
                 </div>
             </div>
-        </div>
 
-        <!-- VIEW 3: SECURE QR SCANNER -->
-        <div id="view-scan" class="app-view p-6 flex-col">
-            <div class="mb-4 flex items-center justify-between shrink-0">
-                <div>
-                    <button type="button" onclick="stopScanner(); goToView('payment');" class="text-slate-400 hover:text-white mb-2 text-sm flex items-center gap-1 transition-colors"><i class="fa-solid fa-chevron-left"></i> Back</button>
-                    <h2 class="text-2xl font-bold text-white font-heading">Sync & Activate</h2>
+            <!-- VIEW: CLIENT REGISTRATION -->
+            <div id="view-register" class="app-view p-5 overflow-y-auto custom-scrollbar pb-12">
+                <div class="mb-6 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white font-heading">New Deal</h2>
+                        <p class="text-sm text-slate-400">Step 1: Client Information</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full border-2 border-emerald-500 flex items-center justify-center text-emerald-500 font-bold font-mono text-sm bg-emerald-500/10">1</div>
                 </div>
-                <div class="w-10 h-10 rounded-full border-2 border-emerald-500 flex items-center justify-center text-emerald-500 font-bold font-mono text-sm bg-emerald-500/10 shadow-[0_0_15px_rgba(16,185,129,0.4)]">3</div>
+
+                <form id="form-register" class="space-y-4 flex-1 glass-card p-5 rounded-3xl">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Company / Brand Name *</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-building absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                            <input type="text" id="reg-company" required placeholder="e.g. Acme Corp" class="pl-12">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Client Point of Contact *</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                            <input type="text" id="reg-contact" required placeholder="Full Name" class="pl-12">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Email Address *</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                            <input type="email" id="reg-email" required placeholder="client@domain.com" class="pl-12">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Phone Number</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                            <input type="tel" id="reg-phone" required placeholder="+91 00000 00000" class="pl-12 font-mono">
+                        </div>
+                    </div>
+                    
+                    <div class="pt-4 mt-2 border-t border-white/5">
+                        <label class="block text-[10px] font-bold text-emerald-400 uppercase tracking-widest mb-2 ml-1">Gross Deal Value (₹) *</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-indian-rupee-sign absolute left-5 top-1/2 -translate-y-1/2 text-emerald-500 text-lg"></i>
+                            <input type="number" id="reg-value" required placeholder="0" class="pl-12 text-2xl font-black text-emerald-400 tracking-tight" style="height: 4rem;">
+                        </div>
+                    </div>
+                    
+                    <div class="pt-4">
+                        <button type="submit" class="w-full bg-white text-slate-900 py-4 rounded-xl font-bold text-lg transition-colors flex items-center justify-center gap-2">
+                            Continue to Payment <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
 
-            <p class="text-sm text-slate-300 mb-6 text-center leading-relaxed">Ask the client to open their portal and show their <b>Activation QR Code</b>. Scan it below to link the deal.</p>
+            <!-- VIEW: PAYMENT CAPTURE -->
+            <div id="view-payment" class="app-view p-5 pb-12">
+                <div class="mb-6 flex items-center justify-between">
+                    <div>
+                        <button type="button" onclick="goToView('register')" class="text-slate-400 hover:text-white mb-2 text-sm flex items-center gap-1 transition-colors"><i class="fa-solid fa-chevron-left"></i> Back</button>
+                        <h2 class="text-2xl font-bold text-white font-heading">Payment Capture</h2>
+                        <p class="text-sm text-slate-400">Step 2: Verify Collection</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full border-2 border-emerald-500 flex items-center justify-center text-emerald-500 font-bold font-mono text-sm bg-emerald-500/10">2</div>
+                </div>
 
-            <!-- Custom Scanner UI -->
-            <div class="flex-1 flex items-center justify-center w-full mb-6 max-h-[60vh]">
-                <div id="reader-container" class="w-full max-w-[320px] aspect-[3/4] relative">
-                    <div id="reader" class="w-full h-full"></div>
-                    <div class="scanner-overlay">
-                        <div class="scanner-frame">
-                            <span></span>
-                            <div class="scan-line"></div>
+                <div class="flex-1 flex flex-col">
+                    <div class="glass-card p-6 text-center rounded-3xl mb-6">
+                        <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">Collecting From</p>
+                        <p class="text-lg font-bold text-white mb-6" id="pay-company-name">Acme Corp</p>
+                        
+                        <p class="text-[10px] text-emerald-400 uppercase tracking-widest font-bold mb-1">Amount Due</p>
+                        <h3 class="text-5xl font-black text-emerald-400 tracking-tighter" id="pay-amount">₹0</h3>
+                    </div>
+
+                    <div class="mb-6">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 ml-1">Select Payment Method</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="pay_method" value="UPI / QR Code" class="hidden" checked>
+                                <div class="pay-method-label"><i class="fa-solid fa-qrcode text-xl mb-2 text-slate-300"></i><span class="text-xs font-bold text-slate-300">UPI / QR</span></div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="pay_method" value="Bank Transfer" class="hidden">
+                                <div class="pay-method-label"><i class="fa-solid fa-building-columns text-xl mb-2 text-slate-300"></i><span class="text-xs font-bold text-slate-300">Bank Transfer</span></div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="pay_method" value="Payment Link" class="hidden">
+                                <div class="pay-method-label"><i class="fa-solid fa-link text-xl mb-2 text-slate-300"></i><span class="text-xs font-bold text-slate-300">Payment Link</span></div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="pay_method" value="Cash" class="hidden">
+                                <div class="pay-method-label"><i class="fa-solid fa-money-bill-1-wave text-xl mb-2 text-slate-300"></i><span class="text-xs font-bold text-slate-300">Cash</span></div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto">
+                        <button id="btn-proceed-scan" class="w-full bg-emerald-600 text-white py-4 rounded-xl font-bold text-lg shadow-[0_10px_30px_rgba(16,185,129,0.3)] flex items-center justify-center gap-2">
+                            Proceed to Scanner <i class="fa-solid fa-camera"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: SECURE QR SCANNER -->
+            <div id="view-scan" class="app-view p-5 flex-col">
+                <div class="mb-4 flex items-center justify-between shrink-0">
+                    <div>
+                        <button type="button" onclick="stopScanner(); goToView('payment');" class="text-slate-400 hover:text-white mb-2 text-sm flex items-center gap-1 transition-colors"><i class="fa-solid fa-chevron-left"></i> Back</button>
+                        <h2 class="text-2xl font-bold text-white font-heading">Sync & Activate</h2>
+                    </div>
+                    <div class="w-10 h-10 rounded-full border-2 border-emerald-500 flex items-center justify-center text-emerald-500 font-bold font-mono text-sm bg-emerald-500/10 shadow-[0_0_15px_rgba(16,185,129,0.4)]">3</div>
+                </div>
+
+                <div class="bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-3 mb-4 flex items-center gap-3">
+                    <i class="fa-solid fa-location-crosshairs text-indigo-400 text-2xl animate-pulse"></i>
+                    <div>
+                        <p class="text-[10px] text-indigo-400 font-bold uppercase tracking-wider" id="gps-status">Acquiring GPS Lock...</p>
+                        <p class="text-xs text-slate-300" id="gps-coords">Waiting for location data.</p>
+                    </div>
+                </div>
+
+                <p class="text-sm text-slate-300 mb-4 text-center">Scan the client's <b>Activation QR Code</b> from their device to link the deal.</p>
+
+                <!-- Custom Scanner UI -->
+                <div class="flex-1 flex items-center justify-center w-full mb-6">
+                    <div id="reader-container" class="w-full aspect-[3/4] max-h-[400px] relative">
+                        <div id="reader" class="w-full h-full"></div>
+                        <div class="scanner-overlay">
+                            <div class="scanner-frame">
+                                <span></span>
+                                <div class="scan-line"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="shrink-0 text-center pb-6">
-                <div class="inline-flex items-center gap-2 text-xs font-bold text-emerald-400 bg-emerald-500/10 px-4 py-2 rounded-full border border-emerald-500/20">
-                    <i class="fa-solid fa-lock"></i> Secure Network Active
+            <!-- VIEW: SUCCESS SCREEN -->
+            <div id="view-success" class="app-view items-center justify-center text-center p-6 bg-emerald-900/20 absolute inset-0 z-50">
+                <div class="w-28 h-28 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center text-5xl mb-8 border-4 border-emerald-500 shadow-[0_0_50px_rgba(16,185,129,0.5)]">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h2 class="text-3xl font-black text-white font-heading mb-3 tracking-tight">Deal Closed!</h2>
+                <p class="text-slate-300 text-lg mb-2"><span id="success-company" class="font-bold text-white">Acme Corp</span> is now activated.</p>
+                <p class="text-sm text-slate-500 mb-10">Commission details will be updated in your dashboard shortly.</p>
+                
+                <button onclick="resetFlow()" class="w-full bg-white text-slate-900 py-4 rounded-xl font-bold text-lg shadow-xl">
+                    Back to Dashboard
+                </button>
+            </div>
+
+            <!-- VIEW: MAP / TERRITORY -->
+            <div id="view-map" class="app-view p-5 flex-col h-full">
+                <h2 class="text-2xl font-bold text-white font-heading mb-4">My Territory</h2>
+                <p class="text-sm text-slate-400 mb-4">Live map of your closed deals.</p>
+                
+                <div class="flex-1 w-full relative rounded-2xl overflow-hidden border border-white/10 shadow-lg">
+                    <div id="map-container" class="w-full h-full absolute inset-0"></div>
                 </div>
             </div>
-        </div>
 
-        <!-- VIEW 4: SUCCESS SCREEN -->
-        <div id="view-success" class="app-view items-center justify-center text-center p-6">
-            <div class="w-28 h-28 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center text-5xl mb-8 border-4 border-emerald-500 shadow-[0_0_50px_rgba(16,185,129,0.5)]">
-                <i class="fa-solid fa-check"></i>
-            </div>
-            <h2 class="text-3xl font-black text-white font-heading mb-3 tracking-tight">Deal Closed!</h2>
-            <p class="text-slate-300 text-lg mb-2"><span id="success-company" class="font-bold text-white">Acme Corp</span> is now activated.</p>
-            <p class="text-sm text-slate-500 mb-10">The client's dashboard has been unlocked remotely. The deal is assigned to you in the central database.</p>
-            
-            <button onclick="resetFlow()" class="w-full bg-white text-slate-900 py-4 rounded-xl font-bold text-lg shadow-xl">
-                Start New Registration
+        </main>
+
+        <!-- BOTTOM NAVIGATION -->
+        <nav class="h-20 glass-card rounded-none border-x-0 border-b-0 flex justify-around items-center px-2 shrink-0 z-50 pb-safe">
+            <button onclick="switchTabNav('dashboard')" id="nav-dashboard" class="nav-icon active flex flex-col items-center gap-1 w-16 transition-colors text-emerald-400">
+                <i class="fa-solid fa-chart-pie text-xl mb-1"></i>
+                <span class="text-[10px] font-bold">Stats</span>
             </button>
-        </div>
+            <button onclick="switchTabNav('register')" id="nav-register" class="nav-icon flex flex-col items-center gap-1 w-16 transition-colors text-slate-500 hover:text-emerald-400">
+                <div class="w-12 h-12 bg-emerald-600 text-white rounded-full flex items-center justify-center -mt-6 border-4 border-[#020617] shadow-lg shadow-emerald-900/50">
+                    <i class="fa-solid fa-plus text-xl"></i>
+                </div>
+                <span class="text-[10px] font-bold mt-1">New Deal</span>
+            </button>
+            <button onclick="switchTabNav('map')" id="nav-map" class="nav-icon flex flex-col items-center gap-1 w-16 transition-colors text-slate-500 hover:text-emerald-400">
+                <i class="fa-solid fa-map-location-dot text-xl mb-1"></i>
+                <span class="text-[10px] font-bold">Map</span>
+            </button>
+        </nav>
 
-    </main>
+    </div> <!-- END MAIN APP -->
 
     <!-- Toast Notification -->
     <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm text-white px-5 py-4 rounded-2xl shadow-2xl font-bold text-sm transform -translate-y-32 opacity-0 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-xl bg-emerald-600/90 justify-center">
@@ -334,22 +354,41 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, doc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Environment Setup
+        // Global Setup
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         let db, auth;
-        let html5QrCode = null; // Direct object for custom UI
+        let html5QrCode = null;
+        let mapInstance = null;
+        let repDeals = [];
 
-        // State Management
-        let currentExecutiveEmail = localStorage.getItem('fm_executive_email') || null;
+        // Geolocation Data
+        let currentGeo = { lat: null, lng: null };
+
         let currentClient = { company: "", contact: "", email: "", phone: "", value: 0, paymentMethod: "" };
 
         // --- UI UTILS ---
         window.goToView = (viewId) => {
             document.querySelectorAll('.app-view').forEach(el => el.classList.remove('active'));
             document.getElementById(`view-${viewId}`).classList.add('active');
+
+            if(viewId === 'map') setTimeout(() => initMap(), 300);
+            if(viewId === 'scan') captureGPS();
+        };
+
+        window.switchTabNav = (viewId) => {
+            document.querySelectorAll('.nav-icon').forEach(el => {
+                el.classList.remove('text-emerald-400');
+                el.classList.add('text-slate-500');
+            });
+            const activeBtn = document.getElementById(`nav-${viewId}`);
+            if(activeBtn) {
+                activeBtn.classList.remove('text-slate-500');
+                activeBtn.classList.add('text-emerald-400');
+            }
+            goToView(viewId);
         };
 
         window.showToast = (msg, isError=false) => {
@@ -359,7 +398,7 @@
             setTimeout(() => { toast.classList.replace('translate-y-0', '-translate-y-32'); toast.classList.replace('opacity-100', 'opacity-0'); }, 3000);
         };
 
-        // --- INIT FIREBASE ---
+        // --- FIREBASE INIT & AUTH ---
         try {
             const fbConfig = {
               apiKey: "AIzaSyAAgcIprurHXdo9tztkqVzLsIzJCWhqWwc", 
@@ -374,52 +413,173 @@
             db = getFirestore(app); 
             auth = getAuth(app);
 
-            // Connect securely without user login UI, we handle rep ID separately
-            signInAnonymously(auth).then(() => {
-                checkRepAuth();
-            }).catch(e => showToast("Network Error.", true));
+            // Set persistence so login lasts forever
+            setPersistence(auth, browserLocalPersistence)
+                .then(() => {
+                    onAuthStateChanged(auth, (user) => {
+                        if(user) {
+                            document.getElementById('view-auth').classList.remove('active');
+                            document.getElementById('main-app').classList.remove('hidden', 'opacity-0');
+                            document.getElementById('header-rep-info').classList.remove('hidden');
+                            document.getElementById('header-rep-email').innerText = user.email;
+                            
+                            setupRepDataListener(user.email);
+                            switchTabNav('dashboard');
+                        } else {
+                            document.getElementById('main-app').classList.add('hidden', 'opacity-0');
+                            document.getElementById('header-rep-info').classList.add('hidden');
+                            document.getElementById('view-auth').classList.add('active');
+                        }
+                    });
+                });
+
         } catch (e) { console.error("Firebase Init", e); }
 
-        // --- REP AUTH FLOW ---
-        function checkRepAuth() {
-            if(currentExecutiveEmail) {
-                document.getElementById('header-rep-info').classList.remove('hidden');
-                document.getElementById('header-rep-email').innerText = currentExecutiveEmail;
-                goToView('register');
-            } else {
-                goToView('auth');
-            }
-        }
-
-        document.getElementById('form-auth').addEventListener('submit', (e) => {
+        document.getElementById('form-auth').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('rep-email').value.trim();
-            if(!email) return;
+            const email = document.getElementById('auth-email').value.trim();
+            const pass = document.getElementById('auth-pass').value.trim();
+            const btn = document.getElementById('auth-btn');
             
-            currentExecutiveEmail = email;
-            localStorage.setItem('fm_executive_email', currentExecutiveEmail);
-            
-            document.getElementById('header-rep-info').classList.remove('hidden');
-            document.getElementById('header-rep-email').innerText = currentExecutiveEmail;
-            
-            showToast("Shift Started");
-            goToView('register');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...';
+
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+                showToast("Shift Started");
+            } catch(err) {
+                showToast("Invalid Credentials.", true);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Connect";
+            }
         });
 
-        window.logoutRep = () => {
-            if(confirm("End shift and logout?")) {
-                localStorage.removeItem('fm_executive_email');
-                currentExecutiveEmail = null;
-                document.getElementById('header-rep-info').classList.add('hidden');
+        window.logoutRep = async () => {
+            if(confirm("End shift and securely lock terminal?")) {
+                await signOut(auth);
                 document.getElementById('form-auth').reset();
-                goToView('auth');
             }
         };
 
-        // --- STEP 1: REGISTRATION ---
+        // --- DASHBOARD DATA ---
+        function setupRepDataListener(email) {
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), (snap) => {
+                repDeals = [];
+                snap.forEach(d => {
+                    const data = d.data();
+                    if(data.rep === email) repDeals.push({id: d.id, ...data});
+                });
+                repDeals.sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
+                
+                renderDashboard();
+                if(mapInstance) addMarkersToMap(); // Update map if open
+            });
+        }
+
+        function renderDashboard() {
+            let total = 0;
+            let wonCount = 0;
+            repDeals.forEach(d => {
+                if(d.status === 'Closed Won') {
+                    total += Number(d.value) || 0;
+                    wonCount++;
+                }
+            });
+
+            document.getElementById('dash-revenue').innerText = `₹${total.toLocaleString('en-IN')}`;
+            document.getElementById('dash-deals').innerText = wonCount;
+
+            const list = document.getElementById('recent-deals-list');
+            if(repDeals.length === 0) {
+                list.innerHTML = `<div class="text-center py-10 text-slate-500 italic text-sm border border-white/5 rounded-2xl">No deals closed yet. Go get 'em!</div>`;
+                return;
+            }
+
+            list.innerHTML = repDeals.slice(0, 10).map(d => `
+                <div class="glass-card p-4 flex items-center justify-between border-l-4 ${d.status === 'Closed Won' ? 'border-l-emerald-500' : 'border-l-amber-500'}">
+                    <div>
+                        <h4 class="font-bold text-white text-sm">${d.company}</h4>
+                        <p class="text-[10px] text-slate-400 font-mono mt-1">${new Date(d.timestamp).toLocaleDateString()} • ${d.source}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-mono font-bold text-emerald-400">₹${Number(d.value).toLocaleString('en-IN')}</p>
+                        <p class="text-[9px] font-bold uppercase mt-1 ${d.status === 'Closed Won' ? 'text-emerald-500' : 'text-amber-500'}">${d.status}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- MAP LOGIC ---
+        function initMap() {
+            if(mapInstance) {
+                mapInstance.invalidateSize(); // Fixes rendering bugs in hidden divs
+                return;
+            }
+
+            // Default to India Center if no GPS
+            mapInstance = L.map('map-container').setView([20.5937, 78.9629], 5);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap'
+            }).addTo(mapInstance);
+
+            addMarkersToMap();
+            
+            // Try to center on user
+            if(navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    mapInstance.setView([pos.coords.latitude, pos.coords.longitude], 12);
+                });
+            }
+        }
+
+        function addMarkersToMap() {
+            if(!mapInstance) return;
+            // Clear existing markers conceptually (in a robust app, keep refs and remove)
+            
+            // Custom emerald icon
+            const emeraldIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: "<div style='background-color:#10b981; width:20px; height:20px; border-radius:50%; border:3px solid white; box-shadow:0 0 10px rgba(16,185,129,0.8);'></div>",
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            });
+
+            repDeals.forEach(d => {
+                if(d.location && d.location.lat && d.location.lng) {
+                    L.marker([d.location.lat, d.location.lng], {icon: emeraldIcon})
+                     .addTo(mapInstance)
+                     .bindPopup(`<b>${d.company}</b><br>₹${d.value}`);
+                }
+            });
+        }
+
+        // --- GPS CAPTURE FOR DEALS ---
+        function captureGPS() {
+            const statusEl = document.getElementById('gps-status');
+            const coordEl = document.getElementById('gps-coords');
+            
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    currentGeo.lat = position.coords.latitude;
+                    currentGeo.lng = position.coords.longitude;
+                    statusEl.innerText = "GPS Locked";
+                    statusEl.classList.replace('text-indigo-400', 'text-emerald-400');
+                    document.querySelector('.fa-location-crosshairs').classList.replace('text-indigo-400', 'text-emerald-400');
+                    document.querySelector('.fa-location-crosshairs').classList.remove('animate-pulse');
+                    coordEl.innerText = `${currentGeo.lat.toFixed(4)}, ${currentGeo.lng.toFixed(4)}`;
+                }, (error) => {
+                    statusEl.innerText = "GPS Unavailable";
+                    statusEl.classList.replace('text-indigo-400', 'text-amber-400');
+                    coordEl.innerText = "Proceeding without location data.";
+                }, { timeout: 10000 });
+            }
+        }
+
+        // --- DEAL FLOW ---
         document.getElementById('form-register').addEventListener('submit', (e) => {
             e.preventDefault();
-            
             currentClient.company = document.getElementById('reg-company').value.trim();
             currentClient.contact = document.getElementById('reg-contact').value.trim();
             currentClient.email = document.getElementById('reg-email').value.trim();
@@ -432,26 +592,17 @@
             goToView('payment');
         });
 
-        // --- STEP 2: PAYMENT SUBMIT ---
-        // Overriding the inline onclick on the Payment view button to handle the radio capture
-        const btnProceedScan = document.querySelector('#view-payment button[onclick="goToView(\'scan\')"]');
-        if(btnProceedScan) {
-            btnProceedScan.onclick = (e) => {
-                e.preventDefault();
-                const selectedMethod = document.querySelector('input[name="pay_method"]:checked').value;
-                currentClient.paymentMethod = selectedMethod;
-                goToView('scan');
-                setTimeout(() => startScanner(), 400); // slight delay for view transition
-            };
-        }
+        document.getElementById('btn-proceed-scan').onclick = (e) => {
+            e.preventDefault();
+            const selectedMethod = document.querySelector('input[name="pay_method"]:checked').value;
+            currentClient.paymentMethod = selectedMethod;
+            goToView('scan');
+            setTimeout(() => startScanner(), 400); 
+        };
 
-        // --- STEP 3: CUSTOM SCANNER ---
+        // --- SCANNER LOGIC ---
         function startScanner() {
-            if(!html5QrCode) {
-                html5QrCode = new Html5Qrcode("reader");
-            }
-            
-            // Only start if not already scanning
+            if(!html5QrCode) html5QrCode = new Html5Qrcode("reader");
             if(html5QrCode.isScanning) return;
 
             const config = { fps: 10, qrbox: { width: 250, height: 250 } };
@@ -460,27 +611,20 @@
                 { facingMode: "environment" },
                 config,
                 async (decodedText, decodedResult) => {
-                    // Prevent multi-scans
                     if(html5QrCode.isScanning) {
                         try { await html5QrCode.stop(); } catch(e){}
                     }
-                    
-                    // Validate it's our system's QR code
                     if(decodedText && decodedText.startsWith('FM_OFFLINE_SYNC:')) {
-                        if(navigator.vibrate) navigator.vibrate(200); // Haptic feedback
+                        if(navigator.vibrate) navigator.vibrate([100,50,100]); 
                         await processActivation(decodedText);
                     } else {
-                        showToast("Invalid QR Code. Please scan client's screen.", true);
-                        // restart scanner after error
+                        showToast("Invalid QR Code.", true);
                         setTimeout(() => startScanner(), 2000); 
                     }
                 },
-                (errorMessage) => {
-                    // background parse errors, ignore
-                }
+                (err) => {} // ignore stream errors
             ).catch((err) => {
-                console.log(err);
-                showToast("Camera access required to scan.", true);
+                showToast("Camera access required.", true);
             });
         }
 
@@ -492,13 +636,11 @@
 
         // --- FINAL DB SYNC ---
         async function processActivation(qrData) {
-            showToast("Securing Deal...");
+            showToast("Securing Deal & Uploading...");
             
-            // Extract Session ID from QR string (Format: FM_OFFLINE_SYNC:SessionID)
             const sessionId = qrData.split(':')[1];
-            if(!sessionId) {
-                showToast("Data extraction failed.", true); return;
-            }
+            if(!sessionId) { showToast("Data extraction failed.", true); return; }
+            if(!auth.currentUser) { showToast("Authentication lost. Please login.", true); return; }
 
             try {
                 // 1. Add to Admin Client Directory
@@ -509,18 +651,23 @@
                     timestamp: Date.now()
                 });
 
-                // 2. Add to Sales Pipeline (Attributed to Executive)
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), {
+                // 2. Add to Sales Pipeline (Attributed + GPS)
+                const leadData = {
                     company: currentClient.company,
                     contact: currentClient.contact,
                     phone: currentClient.phone,
                     value: currentClient.value,
                     source: `Field Terminal (${currentClient.paymentMethod})`,
-                    rep: currentExecutiveEmail, // Automated attribution!
+                    rep: auth.currentUser.email,
                     status: 'Closed Won',
-                    history: [{ note: `Payment collected via ${currentClient.paymentMethod}. Portal activated.`, date: new Date().toISOString(), user: currentExecutiveEmail }],
+                    history: [{ note: `Payment via ${currentClient.paymentMethod}. Portal activated.`, date: new Date().toISOString(), user: auth.currentUser.email }],
                     timestamp: Date.now()
-                });
+                };
+
+                // Add location if acquired
+                if(currentGeo.lat) leadData.location = currentGeo;
+
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), leadData);
 
                 // 3. Trigger Remote Unlock on Client's Phone
                 await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'offline_sessions', sessionId), {
@@ -531,18 +678,19 @@
 
                 document.getElementById('success-company').innerText = currentClient.company;
                 goToView('success');
-                showToast("Deal Closed Successfully!");
+                showToast("Deal Logged!");
 
             } catch (err) {
-                console.error("Database Error:", err);
-                showToast("Sync Failed. Please check connection.", true);
+                console.error("DB Error:", err);
+                showToast("Sync Failed.", true);
             }
         }
 
         window.resetFlow = () => {
             document.getElementById('form-register').reset();
             currentClient = { company: "", contact: "", email: "", phone: "", value: 0, paymentMethod: "" };
-            goToView('register');
+            currentGeo = { lat: null, lng: null }; // reset geo for next deal
+            switchTabNav('dashboard');
         };
 
     </script>
