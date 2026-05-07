@@ -128,7 +128,7 @@
             <div class="mb-6">
                 <span class="inline-block px-3 py-1 bg-indigo-500/10 text-indigo-400 rounded-full text-[10px] font-bold uppercase tracking-wider mb-3">Step 3 of 3</span>
                 <h2 class="text-2xl font-bold text-white font-heading">Scan to Activate</h2>
-                <p class="text-sm text-slate-400 mt-1">Scan the client's QR code to link their payment and activate their portal account.</p>
+                <p class="text-sm text-slate-400 mt-1">Scan the QR code from the client's phone to unlock their portal.</p>
             </div>
 
             <!-- Live Camera Viewport -->
@@ -150,7 +150,6 @@
                     <i class="fa-solid fa-camera"></i> Open Camera
                 </button>
                 
-                <!-- Fallback for testing without a real QR code -->
                 <button onclick="simulateSuccessfulScan()" class="w-full bg-slate-800 text-slate-400 hover:text-white py-3 rounded-xl font-bold text-sm transition-colors border border-white/5">
                     Bypass / Simulate Successful Scan
                 </button>
@@ -163,7 +162,7 @@
                 <i class="fa-solid fa-check"></i>
             </div>
             <h2 class="text-3xl font-bold text-white font-heading mb-2">Account Activated!</h2>
-            <p class="text-slate-400 mb-8" id="success-message">Acme Corp has been successfully registered and synced to the Admin Panel.</p>
+            <p class="text-slate-400 mb-8" id="success-message">Acme Corp has been successfully registered, synced to the Admin Panel, and unlocked.</p>
             
             <button onclick="resetFlow()" class="w-full bg-white/10 hover:bg-white/20 text-white py-4 rounded-xl font-bold text-lg transition-colors">
                 Start New Registration
@@ -178,9 +177,10 @@
     </div>
 
     <script type="module">
+        // Import Firestore update functions to correctly communicate with the client's screen
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Firebase Setup
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -279,7 +279,7 @@
         }
 
         function onScanFailure(error) {
-            // handle scan failure, usually better to ignore and keep scanning
+            // handle scan failure, ignore to keep scanning smoothly
         }
 
         async function onScanSuccess(decodedText, decodedResult) {
@@ -291,7 +291,10 @@
 
         window.simulateSuccessfulScan = async () => {
             stopScanner();
-            await processActivation("SIMULATED_QR_CODE_DATA");
+            // Simulating what the offline client portal generates: FM_OFFLINE_SYNC:SessionID
+            const fakeSessionId = prompt("Enter Client's Session ID to unlock their screen (or leave blank to skip unlock):");
+            const data = fakeSessionId ? `FM_OFFLINE_SYNC:${fakeSessionId}` : 'SIMULATED_QR_CODE_DATA';
+            await processActivation(data);
         };
 
         // --- Final Activation & Database Sync ---
@@ -314,13 +317,28 @@
                     phone: currentClient.phone,
                     value: currentClient.value,
                     source: 'Field Sales Terminal',
-                    rep: 'Field Executive', // In a full app, this would be the logged-in rep's name
+                    rep: 'Field Executive', // Logged in rep name
                     status: 'Closed Won',
                     history: [{ note: `Activated in field via QR scan.`, date: new Date().toISOString(), user: "Field Executive" }],
                     timestamp: Date.now()
                 });
 
-                document.getElementById('success-message').innerText = `${currentClient.company} has been successfully registered and synced to the Admin Panel.`;
+                // 3. UNLOCK THE CLIENT'S SCREEN (Checks for the special QR string from the Client App)
+                let sessionId = null;
+                if(qrData && qrData.startsWith('FM_OFFLINE_SYNC:')) {
+                    sessionId = qrData.split(':')[1];
+                }
+
+                if (sessionId) {
+                    // Updating this document triggers the listener on the client's phone instantly
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'offline_sessions', sessionId), {
+                        status: 'Active',
+                        company: currentClient.company,
+                        activatedAt: Date.now()
+                    });
+                }
+
+                document.getElementById('success-message').innerText = `${currentClient.company} has been successfully registered, synced to the Admin Panel, and unlocked.`;
                 goToStep('success');
                 showToast("Account Activated Successfully!");
 
