@@ -74,20 +74,6 @@
             transform: translateY(0);
         }
 
-        /* Scanning Radar Animation */
-        .scan-pulse-container { position: relative; }
-        .scan-pulse {
-            position: absolute;
-            inset: -15px;
-            border-radius: 1.5rem;
-            border: 2px solid rgba(99, 102, 241, 0);
-            animation: radar 2.5s cubic-bezier(0.21, 0.53, 0.56, 0.8) infinite;
-        }
-        @keyframes radar {
-            0% { inset: -5px; border-color: rgba(99, 102, 241, 0.8); border-width: 4px; }
-            100% { inset: -40px; border-color: rgba(99, 102, 241, 0); border-width: 1px; }
-        }
-
         /* Success Confetti Animation */
         .success-bg {
             background: radial-gradient(circle at center, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
@@ -129,22 +115,31 @@
 
         <!-- VIEW 2: QR CONNECT (Awaiting Scan) -->
         <div id="view-qr" class="app-view justify-center items-center h-full px-6 pt-12 pb-8 absolute inset-0 z-50 bg-[#0f172a]">
-            <div class="text-center mb-10 w-full">
+            <div class="text-center mb-6 w-full">
                 <div class="inline-flex items-center justify-center w-14 h-14 bg-indigo-600 text-white rounded-2xl font-bold text-2xl shadow-lg shadow-indigo-500/30 mb-5">F</div>
                 <h2 class="text-3xl font-bold text-white font-heading tracking-tight">Sync Device</h2>
-                <p class="text-base text-slate-400 mt-3 leading-relaxed">Present this code to your executive to securely pair your account and activate your portal.</p>
+                <p class="text-sm text-slate-400 mt-3 leading-relaxed">Present this code to your executive to securely pair your account and activate your portal.</p>
             </div>
             
-            <div class="scan-pulse-container mb-12 mt-4">
-                <div class="scan-pulse"></div>
-                <div class="bg-white p-5 rounded-3xl relative z-10 shadow-2xl">
-                    <img id="session-qr" src="" alt="Activation QR Code" class="w-56 h-56 md:w-64 md:h-64 object-contain">
+            <div class="relative flex items-center justify-center w-[280px] h-[280px] mb-8">
+                <!-- Animated Progress Ring -->
+                <svg class="absolute inset-0 w-full h-full transform -rotate-90 z-0" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="48" fill="transparent" stroke="rgba(255,255,255,0.05)" stroke-width="2" />
+                    <!-- Circumference of r=48 is approx 301.59 -->
+                    <circle id="qr-timer-ring" cx="50" cy="50" r="48" fill="transparent" stroke="#6366f1" stroke-width="3" stroke-dasharray="301.59" stroke-dashoffset="0" stroke-linecap="round" class="transition-all duration-1000 ease-linear shadow-[0_0_15px_#6366f1]" />
+                </svg>
+                
+                <div class="bg-white p-4 rounded-3xl relative z-10 shadow-2xl">
+                    <img id="session-qr" src="" alt="Activation QR Code" class="w-48 h-48 md:w-56 md:h-56 object-contain">
                 </div>
             </div>
 
-            <div class="mt-auto glass-card w-full p-4 flex items-center justify-center gap-3 text-indigo-400 font-semibold animate-pulse">
-                <i class="fa-solid fa-satellite-dish text-lg"></i>
-                <span>Waiting for executive scan...</span>
+            <div class="text-center w-full max-w-[280px]">
+                <div class="flex items-center justify-center gap-2 mb-2 text-indigo-400 font-bold">
+                    <i class="fa-solid fa-rotate"></i>
+                    <span>Refreshes in <span id="qr-timer-text" class="font-mono text-lg">15</span>s</span>
+                </div>
+                <p class="text-[10px] text-slate-500 leading-tight">SCAN BEFORE QR EXPIRES</p>
             </div>
         </div>
 
@@ -157,9 +152,8 @@
                 <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-full text-[10px] font-bold uppercase tracking-widest">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Connected
                 </div>
-                <button class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-300 hover:text-white transition-colors relative">
-                    <i class="fa-solid fa-bell"></i>
-                    <span class="absolute top-1 right-1 w-2 h-2 bg-rose-500 rounded-full hidden" id="notif-dot"></span>
+                <button onclick="logoutClient()" class="w-8 h-8 rounded-full bg-rose-500/10 flex items-center justify-center text-rose-400 hover:bg-rose-500/20 transition-colors relative" title="Disconnect">
+                    <i class="fa-solid fa-power-off text-xs"></i>
                 </button>
             </div>
             <h1 class="text-2xl font-bold text-white font-heading leading-tight mt-3 relative z-10 truncate" id="dash-client-name">Welcome, Client</h1>
@@ -355,13 +349,11 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection, addDoc, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Global Configuration
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         let db, auth;
-        let sessionListener = null;
-        let currentSessionId = null;
         let CLIENT_COMPANY = null;
 
         // Data Arrays
@@ -370,13 +362,19 @@
         let myAssets = [];
         let myTickets = [];
 
+        // Dynamic QR Rotation Variables
+        const ROTATION_SECONDS = 15;
+        let timeRemaining = ROTATION_SECONDS;
+        let countdownInterval = null;
+        let currentSessionId = null;
+        let sessionListener = null;
+        let isUnlocked = false;
+
         // --- UI UTILS ---
         window.switchTabNav = (viewId) => {
-            // Update Tab Content
             document.querySelectorAll('.app-view').forEach(el => el.classList.remove('active'));
             document.getElementById(`view-${viewId}`).classList.add('active');
 
-            // Update Nav Icons
             document.querySelectorAll('.nav-icon').forEach(el => {
                 el.classList.remove('text-indigo-400');
                 el.classList.add('text-slate-500');
@@ -392,7 +390,6 @@
             const m = document.getElementById(id);
             if(m) {
                 m.classList.add('active');
-                // Set default date for brief if opening brief modal
                 if(id === 'modal-new-brief') {
                     const today = new Date(); today.setDate(today.getDate() + 7);
                     document.getElementById('nb-deadline').value = today.toISOString().split('T')[0];
@@ -409,11 +406,7 @@
             setTimeout(() => { toast.classList.replace('translate-y-0', '-translate-y-32'); toast.classList.replace('opacity-100', 'opacity-0'); }, 3000);
         };
 
-        // --- FIREBASE INIT & SESSION LOGIC ---
-        function generateSessionId() {
-            return 'FM-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now().toString(36);
-        }
-
+        // --- FIREBASE INIT ---
         try {
             const fbConfig = {
               apiKey: "AIzaSyAAgcIprurHXdo9tztkqVzLsIzJCWhqWwc", 
@@ -428,67 +421,122 @@
             db = getFirestore(app); 
             auth = getAuth(app);
 
-            // Connect silently without any login UI
+            // Connect silently
             signInAnonymously(auth).then(() => {
-                initOfflineSession();
+                checkExistingSession();
             }).catch(e => {
                 showToast("Connection failed.", true);
             });
 
         } catch (e) { console.error("Firebase Init Error", e); }
 
-        async function initOfflineSession() {
-            // Check if device already has active session
-            const storedSession = localStorage.getItem('fm_client_session');
-            currentSessionId = storedSession || generateSessionId();
+        function checkExistingSession() {
+            // Check if client is already unlocked from a previous visit
+            const savedCompany = localStorage.getItem('fm_client_company');
+            if(savedCompany) {
+                CLIENT_COMPANY = savedCompany;
+                document.getElementById('view-loading').classList.remove('active');
+                triggerUnlockAnimation();
+                fetchClientData();
+            } else {
+                // Start the rotating secure QR process
+                startQRRotationCycle();
+            }
+        }
+
+        // --- SECURE DYNAMIC QR ROTATION ENGINE ---
+        function generateSessionId() {
+            return 'FM-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now().toString(36);
+        }
+
+        async function createAndListenToSession() {
+            if(isUnlocked) return;
+
+            const oldSessionId = currentSessionId;
+            const oldListener = sessionListener;
+
+            // 1. Generate New Session
+            currentSessionId = generateSessionId();
             
-            if(!storedSession) {
-                // Save new session locally
-                localStorage.setItem('fm_client_session', currentSessionId);
-                // Initialize session in Firestore as 'Pending'
+            // 2. Write to DB
+            try {
                 await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'offline_sessions', currentSessionId), {
                     status: 'Pending',
                     createdAt: Date.now()
                 });
-            }
+            } catch(e) { console.error("Session creation failed", e); return; }
 
-            listenToSession(currentSessionId);
-        }
-
-        function listenToSession(sessionId) {
-            const sessionRef = doc(db, 'artifacts', appId, 'public', 'data', 'offline_sessions', sessionId);
-            
-            sessionListener = onSnapshot(sessionRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    if (data.status === 'Active') {
-                        // Scan successful! Unlock App
-                        CLIENT_COMPANY = data.company || "Valued Client";
-                        triggerUnlockAnimation();
-                        fetchClientData(); // Start listening to their specific data
-                    } else {
-                        // Show QR Code
-                        showSessionQR(sessionId);
-                    }
-                } else {
-                    setDoc(sessionRef, { status: 'Pending', createdAt: Date.now() });
-                    showSessionQR(sessionId);
+            // 3. Start Listener on NEW Session
+            sessionListener = onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'offline_sessions', currentSessionId), (snap) => {
+                if (snap.exists() && snap.data().status === 'Active') {
+                    CLIENT_COMPANY = snap.data().company || "Valued Client";
+                    handleSuccessfulUnlock();
                 }
             });
-        }
 
-        function showSessionQR(sessionId) {
-            const qrData = encodeURIComponent(`FM_OFFLINE_SYNC:${sessionId}`);
+            // 4. Update UI (QR Image)
+            const qrData = encodeURIComponent(`FM_OFFLINE_SYNC:${currentSessionId}`);
             document.getElementById('session-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${qrData}&color=0f172a&bgcolor=ffffff&margin=10`;
             
-            // Hide loading, show QR
             document.getElementById('view-loading').classList.remove('active');
-            document.getElementById('view-qr').classList.add('active');
+            if(!isUnlocked) document.getElementById('view-qr').classList.add('active');
+
+            // 5. Cleanup OLD Session (with 5-second Grace Period)
+            if(oldSessionId) {
+                setTimeout(() => {
+                    if(oldListener) oldListener(); // Stop listening to old
+                    deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'offline_sessions', oldSessionId)).catch(e=>{});
+                }, 5000); // 5s overlap grace period prevents mis-scans during the refresh jump
+            }
+        }
+
+        function startQRRotationCycle() {
+            createAndListenToSession();
+            updateTimerUI();
+
+            countdownInterval = setInterval(() => {
+                if(isUnlocked) {
+                    clearInterval(countdownInterval);
+                    return;
+                }
+                
+                timeRemaining--;
+                updateTimerUI();
+
+                if(timeRemaining <= 0) {
+                    timeRemaining = ROTATION_SECONDS;
+                    createAndListenToSession();
+                }
+            }, 1000);
+        }
+
+        function updateTimerUI() {
+            const textEl = document.getElementById('qr-timer-text');
+            const ringEl = document.getElementById('qr-timer-ring');
+            
+            if(textEl) textEl.innerText = timeRemaining;
+            
+            if(ringEl) {
+                // Circumference is ~301.59. Dash offset moves from 0 (full) to 301.59 (empty)
+                const offset = 301.59 - (timeRemaining / ROTATION_SECONDS) * 301.59;
+                ringEl.style.strokeDashoffset = offset;
+            }
+        }
+
+        // --- UNLOCK LOGIC ---
+        function handleSuccessfulUnlock() {
+            isUnlocked = true;
+            clearInterval(countdownInterval);
+            if(sessionListener) sessionListener();
+            
+            // Save to localStorage so they stay logged in if they refresh
+            localStorage.setItem('fm_client_company', CLIENT_COMPANY);
+
+            triggerUnlockAnimation();
+            fetchClientData();
         }
 
         function triggerUnlockAnimation() {
-            if(sessionListener) sessionListener(); // stop polling session status
-            
             document.getElementById('dash-client-name').innerText = CLIENT_COMPANY;
             document.getElementById('view-qr').classList.remove('active');
             
@@ -504,11 +552,15 @@
             if(window.navigator && window.navigator.vibrate) window.navigator.vibrate([100, 50, 100]);
         }
 
+        window.logoutClient = () => {
+            if(confirm("Disconnect from this workspace? You will need an executive to rescan you to enter again.")) {
+                localStorage.removeItem('fm_client_company');
+                window.location.reload(); // Reloads the app back into pending state
+            }
+        }
+
         // --- FETCH & RENDER DATA ---
         function fetchClientData() {
-            // Because this is a lightweight mobile client, we filter queries by their company name.
-            // Note: In production, requires Firestore Indexes if using composite queries, but single 'where' works out of the box.
-
             // 1. Projects
             const qProjects = query(collection(db, 'artifacts', appId, 'public', 'data', 'creative_tasks'), where("client", "==", CLIENT_COMPANY));
             onSnapshot(qProjects, (snap) => {
@@ -577,10 +629,6 @@
             } else {
                 rhEl.innerHTML = `<div class="text-center py-4 text-slate-500 italic text-xs">No recent activity.</div>`;
             }
-
-            // Notification Dot
-            const actionRequired = myProjects.some(p => p.status === 'Client Review' || p.status === 'Awaiting Assets');
-            document.getElementById('notif-dot').style.display = actionRequired ? 'block' : 'none';
         }
 
         function renderProjects() {
@@ -655,8 +703,6 @@
         }
 
         // --- FORM SUBMISSIONS ---
-        
-        // 1. Submit Brief
         const formBrief = document.getElementById('form-new-brief');
         if(formBrief) {
             formBrief.addEventListener('submit', async (e) => {
@@ -685,7 +731,6 @@
             });
         }
 
-        // 2. Submit Asset
         const formAsset = document.getElementById('form-add-asset');
         if(formAsset) {
             formAsset.addEventListener('submit', async (e) => {
@@ -705,7 +750,6 @@
             });
         }
 
-        // 3. Submit Ticket
         const formTicket = document.getElementById('form-new-ticket');
         if(formTicket) {
             formTicket.addEventListener('submit', async (e) => {
@@ -727,7 +771,6 @@
                 finally { btn.disabled = false; }
             });
         }
-
     </script>
 </body>
 </html>
