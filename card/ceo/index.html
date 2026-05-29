@@ -208,10 +208,22 @@
                     </div>
                 </div>
 
-                <!-- Pitch / Bio -->
-                <p class="text-slate-300 text-sm leading-relaxed mb-8 font-medium italic px-2" style="transform: translateZ(15px);">
-                    "Building the backend digital growth infrastructure for elite D2C brands, creators, and modern retail."
-                </p>
+                <!-- About / Pitch Section -->
+                <div class="bg-black/40 border border-white/5 rounded-2xl p-5 mb-8 text-left" style="transform: translateZ(15px);">
+                    <h3 class="text-white font-bold text-sm mb-2 font-heading tracking-wide uppercase"><i class="fa-solid fa-bolt text-brand-purple mr-2"></i> What I Do</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed font-light mb-4">
+                        I build and scale high-ticket sales pipelines and manage executive growth operations. My focus is entirely on driving measurable, aggressive revenue for our partners.
+                    </p>
+                    
+                    <h3 class="text-white font-bold text-sm mb-2 font-heading tracking-wide uppercase"><i class="fa-solid fa-globe text-brand-emerald mr-2"></i> Feasibility Media</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed font-light mb-4">
+                        We are the backend digital growth infrastructure for elite D2C brands, creators, and modern retail. We handle production, ads, and strategy under one roof.
+                    </p>
+
+                    <a href="https://feasibilitymedia.in" target="_blank" class="inline-flex items-center gap-2 text-brand-purple hover:text-white transition-colors text-xs font-bold uppercase tracking-widest">
+                        Visit FeasibilityMedia.in <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
 
                 <!-- Super Call to Action -->
                 <button onclick="generateVCard()" class="btn-elite w-full py-5 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 relative z-30" style="transform: translateZ(40px);">
@@ -240,14 +252,14 @@
             </a>
 
             <!-- WhatsApp -->
-            <a href="https://wa.me/919262555060" target="_blank" class="link-card flex items-center justify-between p-4 px-5 group">
+            <a href="https://wa.me/919431366776" target="_blank" class="link-card flex items-center justify-between p-4 px-5 group">
                 <div class="flex items-center gap-5">
                     <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-2xl shadow-[0_0_15px_rgba(16,185,129,0.15)] group-hover:bg-emerald-500/20 group-hover:scale-110 transition-all">
                         <i class="fa-brands fa-whatsapp"></i>
                     </div>
                     <div>
                         <h3 class="text-white font-bold text-base tracking-wide">WhatsApp</h3>
-                        <p class="text-[10px] text-slate-400 uppercase tracking-widest mt-1 font-mono">+91 92625 55060</p>
+                        <p class="text-[10px] text-slate-400 uppercase tracking-widest mt-1 font-mono">Direct Priority Message</p>
                     </div>
                 </div>
                 <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-active:bg-white/20 transition-colors border border-white/10 group-hover:border-white/30">
@@ -403,9 +415,10 @@ N:Mishra;Aryaveer;;;
 FN:Aryaveer Mishra
 ORG:Feasibility Media
 TITLE:CEO & Founder
-TEL;TYPE=WORK,VOICE:+919262555060
-TEL;TYPE=CELL,VOICE:+919262555060
+TEL;TYPE=WORK,VOICE:+919431366776
+TEL;TYPE=CELL,VOICE:+919431366776
 EMAIL;TYPE=WORK:ceo.feasibilitymedia@gmail.com
+URL:https://feasibilitymedia.in
 URL:https://www.linkedin.com/in/aryaveer-mishra/
 NOTE:Startup India & MSME Verified. Building digital growth infrastructure for D2C brands, creators, and retail.
 END:VCARD`;
@@ -422,7 +435,7 @@ END:VCARD`;
             document.body.removeChild(link);
             window.URL.revokeObjectURL(url);
             
-            showToast("Contact card downloaded!");
+            showToast("Opening contacts...");
         }
     </script>
 </body>
