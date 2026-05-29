@@ -9,7 +9,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;800;900&family=JetBrains+Mono:wght@400;700&family=Playfair+Display:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Tailwind Config -->
@@ -21,6 +23,7 @@
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
                         heading: ['Outfit', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace'],
+                        signature: ['Playfair Display', 'serif'],
                     },
                     colors: {
                         brand: {
@@ -36,6 +39,7 @@
                         'slide-up': 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                         'float': 'float 6s ease-in-out infinite',
                         'pulse-slow': 'pulseSlow 4s ease-in-out infinite alternate',
+                        'ripple': 'ripple 2s cubic-bezier(0, 0.2, 0.8, 1) infinite',
                     },
                     keyframes: {
                         slideUp: {
@@ -49,6 +53,10 @@
                         pulseSlow: {
                             '0%': { opacity: '0.3', transform: 'scale(0.95)' },
                             '100%': { opacity: '0.6', transform: 'scale(1.05)' }
+                        },
+                        ripple: {
+                            '0%': { boxShadow: '0 0 0 0 rgba(255, 255, 255, 0.2), inset 0 -4px 0 rgba(0,0,0,0.15)' },
+                            '100%': { boxShadow: '0 0 0 20px rgba(255, 255, 255, 0), inset 0 -4px 0 rgba(0,0,0,0.15)' }
                         }
                     }
                 }
@@ -62,7 +70,8 @@
             color: #f8fafc;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
-            padding-bottom: 120px; /* Space for fixed bottom bar */
+            padding-bottom: 40px; 
+            perspective: 1500px;
         }
         
         /* Interactive Spotlight & Ambient Orbs */
@@ -101,28 +110,61 @@
         .stagger-5 { opacity: 0; animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards; }
         .stagger-6 { opacity: 0; animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards; }
 
-        /* The Black Card Layout */
+        /* The Black Card Layout with 3D Support */
         .main-card {
-            background: linear-gradient(145deg, rgba(20, 24, 39, 0.8) 0%, rgba(10, 12, 20, 0.95) 100%);
+            background: linear-gradient(145deg, rgba(20, 24, 39, 0.85) 0%, rgba(10, 12, 20, 0.98) 100%);
             backdrop-filter: blur(32px);
             -webkit-backdrop-filter: blur(32px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.25);
             border-left: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 36px;
             box-shadow: 0 40px 80px -10px rgba(0,0,0,0.9), inset 0 0 30px rgba(255,255,255,0.03);
             overflow: hidden;
             position: relative;
             z-index: 10;
+            transform-style: preserve-3d;
+            will-change: transform;
+            transition: transform 0.15s ease-out;
+        }
+
+        /* 3D Inner Content Container to pop out text */
+        .card-inner-3d {
+            transform: translateZ(40px);
+            transform-style: preserve-3d;
+        }
+
+        /* Iridescent Holographic Foil Effect */
+        .card-foil {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.05) 25%, rgba(139, 92, 246, 0.15) 45%, rgba(16, 185, 129, 0.15) 55%, rgba(255,255,255,0.05) 75%, transparent 80%);
+            mix-blend-mode: color-dodge;
+            transform: translateX(-150%);
+            z-index: 15;
+            pointer-events: none;
+            transition: transform 0.1s ease-out;
+        }
+
+        /* White Glare Overlay */
+        .card-glare {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(105deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.03) 45%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.03) 55%, rgba(255,255,255,0) 70%);
+            transform: translateX(-150%);
+            z-index: 16;
+            pointer-events: none;
+            transition: transform 0.1s ease-out;
         }
 
         /* Header Banner */
         .card-banner {
-            height: 150px;
+            height: 160px;
             background: linear-gradient(135deg, #1e1b4b 0%, #020617 100%);
             position: relative;
             border-bottom: 1px solid rgba(255,255,255,0.08);
             overflow: hidden;
+            transform: translateZ(10px);
         }
         .card-banner::after {
             content: ''; position: absolute; inset: 0;
@@ -136,17 +178,18 @@
 
         /* Profile Avatar */
         .avatar-container {
-            margin-top: -75px;
+            margin-top: -80px;
             position: relative;
             z-index: 20;
             display: inline-block;
+            transform: translateZ(50px);
         }
         .avatar-ring {
             background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
             padding: 4px;
             border-radius: 50%;
             display: inline-block;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 20px rgba(245, 158, 11, 0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 25px rgba(245, 158, 11, 0.3);
         }
 
         /* Gradient Text */
@@ -168,26 +211,15 @@
             backdrop-filter: blur(12px);
         }
         .action-link:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.15);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px -10px rgba(0,0,0,0.6);
         }
         .action-link:active {
             transform: scale(0.97);
             background: rgba(255, 255, 255, 0.08);
             border-color: rgba(139, 92, 246, 0.4);
-        }
-
-        /* Fixed Bottom Action Bar (App feel) */
-        .fixed-action-bar {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            padding: 16px 24px 32px 24px; /* Extra bottom padding for iPhone indicator */
-            background: linear-gradient(to top, rgba(3,3,5,1) 40%, rgba(3,3,5,0.8) 80%, transparent);
-            z-index: 50;
-            display: flex;
-            justify-content: center;
         }
 
         /* Liquid Metallic Button */
@@ -197,7 +229,6 @@
         }
         .btn-save {
             width: 100%;
-            max-width: 400px;
             background: linear-gradient(90deg, #ffffff, #cbd5e1, #ffffff, #cbd5e1);
             background-size: 200% auto;
             color: #000000;
@@ -213,9 +244,32 @@
             gap: 12px;
             box-shadow: 0 15px 35px rgba(255,255,255,0.25), inset 0 -4px 0 rgba(0,0,0,0.15);
             transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-            animation: metallic-sweep 4s linear infinite;
+            animation: metallic-sweep 4s linear infinite, ripple 2.5s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+            margin-top: 1.5rem;
+            transform: translateZ(40px); /* 3D Pop */
         }
-        .btn-save:active { transform: scale(0.96); box-shadow: 0 5px 15px rgba(255,255,255,0.3), inset 0 -2px 0 rgba(0,0,0,0.15); }
+        .btn-save:active { 
+            transform: scale(0.96) translateZ(20px); 
+            box-shadow: 0 5px 15px rgba(255,255,255,0.3), inset 0 -2px 0 rgba(0,0,0,0.15); 
+        }
+
+        /* Founder's Note Box */
+        .founders-note {
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 24px 20px;
+            border-radius: 16px;
+            position: relative;
+        }
+        .quote-icon {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 40px;
+            color: rgba(139, 92, 246, 0.2);
+            font-family: serif;
+            line-height: 1;
+        }
 
         /* Modals */
         .modal { opacity: 0; pointer-events: none; transition: all 0.4s ease; }
@@ -254,14 +308,18 @@
             </div>
         </header>
 
-        <!-- THE BLACK CARD (Wrapped to fix animation collision) -->
-        <div class="stagger-2 mb-8">
-            <div class="main-card animate-float">
+        <!-- THE BLACK CARD (Wrapped for 3D) -->
+        <div class="stagger-2 mb-8 perspective-container" style="perspective: 1500px;">
+            <div class="main-card animate-float" id="main-card">
+                
+                <!-- Holographic Glare & Foil Elements -->
+                <div class="card-foil" id="card-foil"></div>
+                <div class="card-glare" id="card-glare"></div>
                 
                 <div class="card-banner"></div>
                 
                 <!-- Inner Content Container -->
-                <div class="text-center px-6 pb-10">
+                <div class="text-center px-6 pb-8 card-inner-3d">
                     
                     <!-- Avatar -->
                     <div class="avatar-container">
@@ -270,11 +328,14 @@
                         </div>
                     </div>
 
-                    <h1 class="text-[32px] font-black font-heading text-white tracking-tight mt-4 mb-1 flex items-center justify-center gap-2">
+                    <!-- Dynamic Greeting -->
+                    <p id="dynamic-greeting" class="text-brand-emerald font-mono text-[10px] uppercase tracking-widest font-bold mt-2 drop-shadow-md">Welcome</p>
+
+                    <h1 class="text-[32px] font-black font-heading text-white tracking-tight mt-1 mb-1 flex items-center justify-center gap-2 drop-shadow-lg">
                         Aryaveer Mishra
                         <i class="fa-solid fa-circle-check text-blue-500 text-[20px] drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]" title="Verified"></i>
                     </h1>
-                    <p class="text-brand-purple font-mono text-sm uppercase tracking-widest font-black mb-8 drop-shadow-md">CEO & Founder</p>
+                    <p class="text-brand-purple font-mono text-xs uppercase tracking-widest font-black mb-8 drop-shadow-md">CEO & Founder</p>
                     
                     <!-- Trust & Authority Badges -->
                     <div class="flex flex-wrap justify-center gap-2.5 mb-8">
@@ -299,10 +360,18 @@
                         </div>
                     </div>
 
-                    <!-- The Pitch -->
-                    <p class="text-slate-300 text-[15px] leading-relaxed font-light italic px-2">
-                        "I build and scale high-ticket sales pipelines and manage growth operations for elite D2C brands and creators."
-                    </p>
+                    <!-- Founder's Manifesto Note -->
+                    <div class="founders-note text-left">
+                        <span class="quote-icon">"</span>
+                        <p class="text-slate-300 text-[16px] leading-relaxed font-signature italic px-2">
+                            I don't believe in vanity metrics. I believe in engineered retention, undeniable ROI, and building the backend infrastructure for the next generation of digital empires.
+                        </p>
+                    </div>
+
+                    <!-- Add To Contacts -->
+                    <button onclick="generateVCard(this)" class="btn-save">
+                        <i class="fa-solid fa-address-book text-xl drop-shadow-md"></i> Add To Contacts
+                    </button>
                 </div>
             </div>
         </div>
@@ -377,13 +446,6 @@
 
     </main>
 
-    <!-- FIXED BOTTOM ACTION BAR -->
-    <div class="fixed-action-bar stagger-6">
-        <button onclick="generateVCard(this)" class="btn-save">
-            <i class="fa-solid fa-address-book text-xl drop-shadow-md"></i> Add To Contacts
-        </button>
-    </div>
-
     <!-- QR CODE MODAL FOR IN-PERSON NETWORKING -->
     <div id="qr-modal" class="fixed inset-0 bg-black/95 backdrop-blur-2xl flex items-center justify-center modal p-4 z-[300]">
         <div class="modal-content w-full max-w-sm">
@@ -414,12 +476,79 @@
 
     <!-- Toast Notification -->
     <div id="toast" class="fixed top-6 right-1/2 translate-x-1/2 bg-white text-black px-6 py-3.5 rounded-full shadow-[0_15px_40px_rgba(255,255,255,0.2)] font-bold text-sm transform -translate-y-32 opacity-0 transition-all duration-400 z-[400] flex items-center gap-3 whitespace-nowrap">
-        <div class="w-6 h-6 rounded-full bg-brand-emerald/20 flex items-center justify-center"><i class="fa-solid fa-check text-brand-emerald text-sm"></i></div> 
+        <div class="w-6 h-6 rounded-full bg-brand-emerald/20 flex items-center justify-center"><i class="fa-solid fa-check text-brand-emerald text-xs"></i></div> 
         <span id="toast-msg">Success</span>
     </div>
 
     <script>
-        // --- Interactive Spotlight Logic ---
+        // --- Dynamic Time-Aware Greeting ---
+        function setGreeting() {
+            const hour = new Date().getHours();
+            let greeting = "Welcome";
+            if (hour < 12) greeting = "Good Morning";
+            else if (hour < 18) greeting = "Good Afternoon";
+            else greeting = "Good Evening";
+            document.getElementById('dynamic-greeting').innerText = greeting;
+        }
+        setGreeting();
+
+        // --- Interactive Holographic 3D Tilt Logic ---
+        const card = document.getElementById('main-card');
+        const glare = document.getElementById('card-glare');
+        const foil = document.getElementById('card-foil');
+        
+        function handleMove(x, y, rect) {
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            // Calculate tilt degrees (Max 15deg)
+            const rotateX = ((y - centerY) / centerY) * -15; 
+            const rotateY = ((x - centerX) / centerX) * 15;
+
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            
+            // Move Glare and Foil based on cursor/touch position
+            const movePercentageX = (x / rect.width) * 200 - 100;
+            const movePercentageY = (y / rect.height) * 200 - 100;
+            
+            glare.style.transform = `translateX(${movePercentageX}%) translateY(${movePercentageY * 0.2}%)`;
+            foil.style.transform = `translateX(${movePercentageX * 1.5}%) translateY(${movePercentageY * 0.5}%)`;
+        }
+
+        // Desktop Mouse Event
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            handleMove(x, y, rect);
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            glare.style.transform = `translateX(-150%)`;
+            foil.style.transform = `translateX(-150%)`;
+        });
+
+        // Mobile Touch Event
+        card.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            const rect = card.getBoundingClientRect();
+            // Only apply if touch is inside the card
+            if(touch.clientX >= rect.left && touch.clientX <= rect.right && 
+               touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
+                const x = touch.clientX - rect.left;
+                const y = touch.clientY - rect.top;
+                handleMove(x, y, rect);
+            }
+        }, { passive: true });
+
+        card.addEventListener('touchend', () => {
+            card.style.transform = `rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            glare.style.transform = `translateX(-150%)`;
+            foil.style.transform = `translateX(-150%)`;
+        });
+
+        // Interactive Spotlight Logic (Background)
         document.addEventListener('mousemove', (e) => {
             const spotlight = document.getElementById('spotlight');
             spotlight.style.setProperty('--x', e.clientX + 'px');
@@ -432,6 +561,7 @@
             spotlight.style.setProperty('--x', touch.clientX + 'px');
             spotlight.style.setProperty('--y', touch.clientY + 'px');
         }, { passive: true });
+
 
         // --- Init ---
         window.onload = () => {
@@ -499,7 +629,6 @@
         }
 
         function fallbackCopy(text) {
-            // Robust clipboard fallback
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(text).then(() => showToast("Link copied to clipboard!"));
             } else {
