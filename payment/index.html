@@ -218,118 +218,90 @@
 
         .gateway-body {
             display: flex;
-            min-height: 450px;
-        }
-
-        .payment-sidebar {
-            width: 260px;
-            background: #f9fafb;
-            border-right: 1px solid var(--border-color);
-            padding: 16px 0;
-        }
-
-        .method-tab {
-            padding: 16px 24px;
-            display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            font-weight: 500;
-            color: var(--text-gray);
-            transition: all 0.2s;
-            border-left: 3px solid transparent;
+            background: #fafafa;
+            padding: 40px 20px;
         }
 
-        .method-tab:hover {
-            background: #f3f4f6;
-            color: var(--text-dark);
-        }
-
-        .method-tab.active {
+        .upi-only-card {
             background: white;
-            color: var(--primary);
-            border-left-color: var(--primary);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02) inset;
-        }
-
-        .method-tab svg { width: 20px; height: 20px; }
-
-        .payment-content {
-            flex: 1;
-            padding: 32px;
-            background: white;
+            border-radius: 24px;
+            padding: 40px 32px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border-color);
+            text-align: center;
             position: relative;
         }
 
-        .tab-pane {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .tab-pane.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* UPI Tab */
-        .upi-container {
-            text-align: center;
-            padding: 10px;
+        .trust-badge-top {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--success);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+            white-space: nowrap;
         }
 
         .qr-box {
-            background: white;
-            padding: 20px;
-            border-radius: 16px;
+            background: #f8fafc;
+            padding: 24px;
+            border-radius: 24px;
             border: 2px dashed #cbd5e1;
             display: inline-block;
             margin-bottom: 24px;
-            position: relative;
         }
 
-        .qr-box::before {
-            content: 'SCAN TO PAY';
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            padding: 0 10px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-gray);
-            letter-spacing: 1px;
-        }
+        #qrcode img { margin: 0 auto; border-radius: 12px; background: white; padding: 12px; box-shadow: var(--shadow-sm); }
 
-        #qrcode img { margin: 0 auto; border-radius: 8px; }
-
-        .app-logos {
+        .app-logos-grid {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            margin: 20px 0;
+            gap: 20px;
+            margin: 24px 0;
         }
         
-        .app-logo {
-            width: 40px; height: 40px; border-radius: 50%; background: #f1f5f9;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 600; font-size: 10px; color: var(--text-gray);
-            border: 1px solid var(--border-color);
-        }
-
-        /* Card Tab (Fake UI) */
-        .card-form {
-            max-width: 360px;
-            margin: 0 auto;
-        }
-
-        .card-row {
+        .brand-logo-container {
             display: flex;
-            gap: 16px;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .brand-logo-container:hover {
+            transform: translateY(-2px);
+        }
+
+        .brand-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            background: white;
+            overflow: hidden;
+        }
+
+        .brand-name {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-gray);
         }
 
         /* Trust Footer */
@@ -403,30 +375,15 @@
             .amount-section { text-align: center; width: 100%; padding-top: 16px; border-top: 1px dashed #cbd5e1; }
             .amount-section .value { font-size: 36px; }
             
-            .gateway-body { flex-direction: column; min-height: auto; }
+            .gateway-body { padding: 24px 16px; background: white; align-items: stretch; }
             
-            /* Segmented Control Tabs for Mobile */
-            .payment-sidebar { 
-                width: calc(100% - 32px); margin: -20px auto 16px; padding: 6px; 
-                background: #ffffff; border-radius: 16px; border: 1px solid var(--border-color); 
-                display: flex; flex-direction: row; box-shadow: var(--shadow-md); position: relative; z-index: 10;
-            }
-            .method-tab { 
-                flex: 1; flex-direction: column; justify-content: center; gap: 8px; 
-                padding: 12px 4px; border: none; border-radius: 12px; 
-                font-size: 11px; text-align: center; font-weight: 600; white-space: normal;
-                color: var(--text-light); transition: all 0.3s;
-            }
-            .method-tab svg { width: 22px; height: 22px; margin: 0 auto; stroke-width: 2.5; }
-            .method-tab.active { background: #f8fafc; box-shadow: inset 0 0 0 1.5px var(--primary); color: var(--primary); border: none; }
+            .upi-only-card { border: none; box-shadow: none; padding: 24px 8px 140px; max-width: 100%; }
             
-            .payment-content { padding: 16px 16px 140px 16px; } /* Padding for sticky bottom */
+            .brand-icon { width: 52px; height: 52px; border-radius: 14px; }
+            .app-logos-grid { gap: 16px; flex-wrap: wrap; }
             
             .hide-on-mobile { display: none !important; }
             .show-on-mobile { display: block !important; }
-
-            .app-logos { flex-wrap: wrap; justify-content: center; gap: 16px; }
-            .app-logo { width: 52px; height: 52px; font-size: 11px; border-radius: 14px; box-shadow: var(--shadow-sm); }
 
             .gateway-footer { flex-direction: column; gap: 16px; padding: 24px 16px 40px; background: transparent; border: none; }
             .trust-badges { flex-wrap: wrap; justify-content: center; }
@@ -521,124 +478,83 @@
 
         <!-- Body -->
         <div class="gateway-body">
-            <!-- Sidebar -->
-            <div class="payment-sidebar">
-                <div class="method-tab active" onclick="switchTab('upi')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
-                    UPI / QR (Instant)
+            <div class="upi-only-card">
+                <!-- Trust Badge -->
+                <div class="trust-badge-top">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Verified & Secure UPI
                 </div>
-                <div class="method-tab" onclick="switchTab('card')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
-                    Credit / Debit Card
-                </div>
-                <div class="method-tab" onclick="switchTab('netbanking')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-                    Net Banking
-                </div>
-            </div>
 
-            <!-- Content Area -->
-            <div class="payment-content">
+                <h3 class="hide-on-mobile" style="margin-top: 16px; margin-bottom: 8px; font-size: 22px; color: var(--text-dark); font-weight: 700;">Scan to Pay</h3>
+                <p class="hide-on-mobile" style="color: var(--text-gray); font-size: 15px; margin-bottom: 24px;">Use any UPI app to scan and complete payment</p>
                 
-                <!-- UPI TAB -->
-                <div id="tab-upi" class="tab-pane active upi-container">
-                    <h3 class="hide-on-mobile" style="margin-bottom: 8px; font-size: 18px; color: var(--text-dark);">Pay with UPI</h3>
-                    <p class="hide-on-mobile" style="color: var(--text-gray); font-size: 14px; margin-bottom: 24px;">Scan the QR code using any UPI app on your phone.</p>
-                    
-                    <h3 class="show-on-mobile" style="display:none; margin-bottom: 8px; font-size: 20px; color: var(--text-dark); font-weight: 700;">Complete Payment</h3>
-                    <p class="show-on-mobile" style="display:none; color: var(--text-gray); font-size: 14px; margin-bottom: 24px;">Select an app to pay directly from your device securely.</p>
-                    
-                    <div class="qr-box hide-on-mobile">
-                        <div id="qrcode"></div>
+                <h3 class="show-on-mobile" style="display:none; margin-top: 16px; margin-bottom: 8px; font-size: 24px; color: var(--text-dark); font-weight: 700;">Complete Payment</h3>
+                <p class="show-on-mobile" style="display:none; color: var(--text-gray); font-size: 15px; margin-bottom: 24px;">Pay securely directly from your mobile app</p>
+                
+                <div class="qr-box hide-on-mobile">
+                    <div id="qrcode"></div>
+                    <div style="margin-top: 16px; font-size: 14px; font-weight: 600; color: var(--text-gray); display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        Secured by NPCI
                     </div>
+                </div>
 
-                    <div class="app-logos">
-                        <div class="app-logo" style="color: #4285F4;">GPay</div>
-                        <div class="app-logo" style="color: #5E3688;">PhPe</div>
-                        <div class="app-logo" style="color: #00BAF2;">Paytm</div>
-                        <div class="app-logo" style="color: #F89B29;">BHIM</div>
-                        <div class="app-logo show-on-mobile" style="display:none; color: var(--text-dark); border-style: dashed;">More</div>
+                <div class="app-logos-grid">
+                    <!-- GPay -->
+                    <div class="brand-logo-container" onclick="document.getElementById('pay-btn-mobile').click()">
+                        <div class="brand-icon">
+                            <svg viewBox="0 0 48 48" width="30px" height="30px"><path fill="#4285F4" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#34A853" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#EA4335" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+                        </div>
+                        <span class="brand-name">GPay</span>
                     </div>
-
-                    <div class="hide-on-mobile" style="display: flex; align-items: center; gap: 16px; margin: 24px 0;">
-                        <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
-                        <span style="font-size: 12px; color: var(--text-light); font-weight: 500;">OR</span>
-                        <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
+                    <!-- PhonePe -->
+                    <div class="brand-logo-container" onclick="document.getElementById('pay-btn-mobile').click()">
+                        <div class="brand-icon" style="background: #5f259f; border: none;">
+                            <svg viewBox="0 0 200 200" width="34" height="34" fill="white"><path d="M100 25c-41.4 0-75 33.6-75 75s33.6 75 75 75 75-33.6 75-75-33.6-75-75-75zm26 73h-19.2v35.3h-16.7V98H74.3V83.6h15.8V75c0-14.8 8.8-21.7 21.6-21.7 6.4 0 11.8.5 13.4.7v15h-9.2c-7.2 0-8.6 3.4-8.6 8.5v6.2h18.2L126 98z"/></svg>
+                        </div>
+                        <span class="brand-name">PhonePe</span>
                     </div>
+                    <!-- Paytm -->
+                    <div class="brand-logo-container" onclick="document.getElementById('pay-btn-mobile').click()">
+                        <div class="brand-icon">
+                            <svg viewBox="0 0 100 30" width="42" height="14" fill="#012B72"><text font-family="Arial, sans-serif" font-weight="900" font-size="28" y="24">Pay</text><text font-family="Arial, sans-serif" font-weight="900" font-size="28" y="24" x="50" fill="#00BAF2">tm</text></svg>
+                        </div>
+                        <span class="brand-name">Paytm</span>
+                    </div>
+                    <!-- BHIM -->
+                    <div class="brand-logo-container" onclick="document.getElementById('pay-btn-mobile').click()">
+                        <div class="brand-icon">
+                            <svg viewBox="0 0 100 30" width="40" height="14"><text font-family="Arial, sans-serif" font-weight="900" font-size="28" y="24" fill="#F89B29">BH</text><text font-family="Arial, sans-serif" font-weight="900" font-size="28" y="24" x="42" fill="#008000">IM</text></svg>
+                        </div>
+                        <span class="brand-name">BHIM</span>
+                    </div>
+                </div>
 
-                    <a href="#" id="pay-btn" class="btn btn-primary hide-on-mobile">
-                        Open UPI App on Mobile
+                <div class="hide-on-mobile" style="display: flex; align-items: center; gap: 16px; margin: 24px 0;">
+                    <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
+                    <span style="font-size: 12px; color: var(--text-light); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Or open app directly</span>
+                    <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
+                </div>
+
+                <a href="#" id="pay-btn" class="btn btn-primary hide-on-mobile" style="font-size: 16px; padding: 16px; border-radius: 14px;">
+                    Pay Using UPI App
+                </a>
+
+                <!-- Mobile Sticky Action Bar -->
+                <div class="show-on-mobile mobile-action-area" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <span style="font-size: 14px; color: var(--text-gray); font-weight: 500;">Total Payable</span>
+                        <span style="font-size: 22px; color: var(--text-dark); font-weight: 700; font-family: 'Outfit', sans-serif;">₹<span id="mobile-display-amount">0</span></span>
+                    </div>
+                    <a href="#" id="pay-btn-mobile" class="btn btn-primary" style="font-size: 16px; padding: 18px; width: 100%; border-radius: 16px; box-shadow: 0 8px 16px -4px rgba(79, 70, 229, 0.4);">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        Pay Securely Now
                     </a>
-
-                    <!-- Mobile Sticky Action Bar -->
-                    <div class="show-on-mobile mobile-action-area" style="display: none;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                            <span style="font-size: 14px; color: var(--text-gray); font-weight: 500;">Total Payable</span>
-                            <span style="font-size: 22px; color: var(--text-dark); font-weight: 700; font-family: 'Outfit', sans-serif;">₹<span id="mobile-display-amount">0</span></span>
-                        </div>
-                        <a href="#" id="pay-btn-mobile" class="btn btn-primary" style="font-size: 16px; padding: 18px; width: 100%; border-radius: 16px; box-shadow: 0 8px 16px -4px rgba(79, 70, 229, 0.4);">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                            Pay Securely Now
-                        </a>
-                        <div style="text-align: center; margin-top: 12px; font-size: 11px; color: var(--text-light); display: flex; justify-content: center; align-items: center; gap: 4px;">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                            Secured by AES-256 Encryption
-                        </div>
+                    <div style="text-align: center; margin-top: 12px; font-size: 11px; color: var(--text-light); display: flex; justify-content: center; align-items: center; gap: 4px;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        Secured by AES-256 Encryption & NPCI
                     </div>
                 </div>
-
-                <!-- CARD TAB (Simulated) -->
-                <div id="tab-card" class="tab-pane card-form">
-                    <h3 style="margin-bottom: 24px; font-size: 18px; color: var(--text-dark);">Enter Card Details</h3>
-                    
-                    <div class="form-group">
-                        <label>Card Number</label>
-                        <input type="text" class="form-control" placeholder="0000 0000 0000 0000" id="fake-card-num" maxlength="19">
-                    </div>
-                    
-                    <div class="card-row">
-                        <div class="form-group" style="flex: 1;">
-                            <label>Expiry (MM/YY)</label>
-                            <input type="text" class="form-control" placeholder="MM/YY" id="fake-card-exp" maxlength="5">
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            <label>CVV</label>
-                            <input type="password" class="form-control" placeholder="123" maxlength="3">
-                        </div>
-                    </div>
-
-                    <div class="form-group" style="margin-bottom: 32px;">
-                        <label>Cardholder Name</label>
-                        <input type="text" class="form-control" placeholder="Name on card">
-                    </div>
-
-                    <button class="btn btn-primary" onclick="attemptAlternativePayment('Card')">
-                        Pay Securely
-                    </button>
-                </div>
-
-                <!-- NET BANKING TAB (Simulated) -->
-                <div id="tab-netbanking" class="tab-pane">
-                    <h3 style="margin-bottom: 24px; font-size: 18px; color: var(--text-dark);">Select your Bank</h3>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 32px;">
-                        <div style="padding: 16px; border: 1px solid var(--border-color); border-radius: 12px; cursor: pointer; text-align: center; font-weight: 500; transition: 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border-color)'" onclick="attemptAlternativePayment('HDFC')">HDFC Bank</div>
-                        <div style="padding: 16px; border: 1px solid var(--border-color); border-radius: 12px; cursor: pointer; text-align: center; font-weight: 500; transition: 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border-color)'" onclick="attemptAlternativePayment('SBI')">SBI</div>
-                        <div style="padding: 16px; border: 1px solid var(--border-color); border-radius: 12px; cursor: pointer; text-align: center; font-weight: 500; transition: 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border-color)'" onclick="attemptAlternativePayment('ICICI')">ICICI Bank</div>
-                        <div style="padding: 16px; border: 1px solid var(--border-color); border-radius: 12px; cursor: pointer; text-align: center; font-weight: 500; transition: 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border-color)'" onclick="attemptAlternativePayment('Axis')">Axis Bank</div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Other Banks</label>
-                        <select class="form-control" onchange="if(this.value) attemptAlternativePayment(this.value)">
-                            <option value="">Search for your bank...</option>
-                            <option value="Kotak">Kotak Mahindra</option>
-                            <option value="PNB">Punjab National Bank</option>
-                            <option value="BOB">Bank of Baroda</option>
-                        </select>
-                    </div>
-                </div>
-
             </div>
         </div>
 
@@ -681,43 +597,6 @@
 
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), duration);
-        }
-
-        // Tab Switching Logic
-        function switchTab(tabId) {
-            // Update tabs
-            document.querySelectorAll('.method-tab').forEach(tab => tab.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-
-            // Update content panes
-            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
-            document.getElementById('tab-' + tabId).classList.add('active');
-        }
-
-        // Format Card Number input nicely
-        document.getElementById('fake-card-num')?.addEventListener('input', function (e) {
-            this.value = this.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim();
-        });
-
-        // Format Expiry input nicely
-        document.getElementById('fake-card-exp')?.addEventListener('input', function (e) {
-            let val = this.value.replace(/\D/g, '');
-            if (val.length >= 2) {
-                val = val.substring(0, 2) + '/' + val.substring(2, 4);
-            }
-            this.value = val;
-        });
-
-        // Function called when trying to use Card/Netbanking
-        // This fulfills the requirement: UI is there, but forces UPI usage for the actual transaction.
-        function attemptAlternativePayment(methodName) {
-            showToast(`Notice: Merchant currently only accepts UPI payments to ensure zero transaction fees and instant settlement. Please switch to the UPI tab.`, 'error', 6000);
-            
-            // Auto switch back to UPI after a short delay
-            setTimeout(() => {
-                const upiTab = document.querySelector('.method-tab'); // First tab is UPI
-                if(upiTab) upiTab.click();
-            }, 3000);
         }
 
         // Number formatter
