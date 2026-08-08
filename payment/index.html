@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium UPI Payment Portal</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            --secondary-gradient: linear-gradient(135deg, #3b82f6 0%, #2dd4bf 100%);
+            --dark: #0f172a;
+            --gray: #64748b;
+            --light: #f8fafc;
+            --success: #10b981;
+            --error: #ef4444;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--dark);
+            overflow-x: hidden;
+            background-color: #e0e7ff;
+            position: relative;
+        }
+
+        .bg-mesh {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -1;
+            background: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.4) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.4) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.4) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(45, 212, 191, 0.4) 0px, transparent 50%);
+            filter: blur(60px);
+            animation: pulseBg 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseBg {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            border-radius: 32px;
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 32px;
+            position: relative;
+            overflow: hidden;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideUpFade {
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .hidden { display: none !important; }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        p.subtitle {
+            color: var(--gray);
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 16px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            color: var(--dark);
+            background: rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .input-group .icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            width: 20px;
+            height: 20px;
+            transition: color 0.3s ease;
+        }
+
+        .input-group input:focus + .icon,
+        .input-group input:not(:placeholder-shown) + .icon {
+            color: var(--primary);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 10px 20px -10px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px -10px rgba(99, 102, 241, 0.6);
+        }
+        
+        .btn-primary:hover::after { opacity: 1; }
+        .btn-primary:active { transform: translateY(1px); }
+
+        .btn-secondary {
+            background: rgba(241, 245, 249, 0.8);
+            color: var(--dark);
+            border: 1px solid #e2e8f0;
+            margin-top: 12px;
+        }
+        
+        .btn-secondary:hover { background: #f1f5f9; border-color: #cbd5e1; }
+
+        .result-container {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px dashed #cbd5e1;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .link-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            color: var(--gray);
+            word-break: break-all;
+            margin-bottom: 16px;
+            user-select: all;
+            font-family: monospace;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .amount-display {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--dark);
+            margin: 24px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .amount-display .currency {
+            font-size: 28px;
+            color: var(--gray);
+            -webkit-text-fill-color: var(--gray);
+            font-weight: 600;
+        }
+
+        .qr-card {
+            background: white;
+            padding: 24px;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), inset 0 0 0 2px #f1f5f9;
+            display: inline-block;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        /* Stylized QR corners */
+        .qr-card::before, .qr-card::after {
+            content: ''; position: absolute; width: 20px; height: 20px; border-color: var(--primary); border-style: solid;
+        }
+        .qr-card::before { top: 12px; left: 12px; border-width: 3px 0 0 3px; border-radius: 6px 0 0 0; }
+        .qr-card::after { bottom: 12px; right: 12px; border-width: 0 3px 3px 0; border-radius: 0 0 6px 0; }
+        
+        .qr-card-inner {
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none;
+        }
+        .qr-card-inner::before, .qr-card-inner::after {
+            content: ''; position: absolute; width: 20px; height: 20px; border-color: var(--primary); border-style: solid;
+        }
+        .qr-card-inner::before { top: 12px; right: 12px; border-width: 3px 3px 0 0; border-radius: 0 6px 0 0; }
+        .qr-card-inner::after { bottom: 12px; left: 12px; border-width: 0 0 3px 3px; border-radius: 0 0 0 6px; }
+
+
+        #qrcode img { display: block; margin: 0 auto; border-radius: 8px; }
+
+        .trust-badges {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 24px;
+            color: var(--gray);
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .trust-badges svg { width: 16px; height: 16px; color: var(--success); }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: white;
+            color: var(--dark);
+            padding: 14px 24px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
+            border: 1px solid #e2e8f0;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--success);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+        }
+        
+        .toast.error .toast-icon {
+            background: var(--error);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="bg-mesh"></div>
+
+    <!-- Custom Toast Notification -->
+    <div id="toast" class="toast">
+        <div class="toast-icon" id="toast-icon">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <span id="toast-msg">Success</span>
+    </div>
+
+    <!-- GENERATOR VIEW (Admin Mode) -->
+    <div class="glass-card" id="generator-view">
+        <div class="header">
+            <div class="badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                Merchant Portal
+            </div>
+            <h2>Create Payment Link</h2>
+            <p class="subtitle">Generate a beautiful, secure payment page for your customers.</p>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="payee-name" placeholder=" " required autocomplete="off">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <label style="position:absolute; left:48px; top:18px; color:var(--gray); font-size:15px; transition:0.3s; pointer-events:none; font-weight:500;">Payee / Business Name</label>
+        </div>
+
+        <div class="input-group">
+            <input type="number" id="payee-amount" placeholder=" " required autocomplete="off">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            <label style="position:absolute; left:48px; top:18px; color:var(--gray); font-size:15px; transition:0.3s; pointer-events:none; font-weight:500;">Amount (₹)</label>
+        </div>
+
+        <button class="btn btn-primary" onclick="generateLink()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            Generate Secure Link
+        </button>
+
+        <div id="generated-result" class="result-container hidden">
+            <div class="link-box" id="result-link"></div>
+            <button class="btn btn-secondary" onclick="copyLink()" id="copy-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                Copy Payment Link
+            </button>
+            <button class="btn btn-secondary" style="border:none; background:transparent; color:var(--primary); font-size: 14px;" onclick="window.location.href=document.getElementById('result-link').innerText">
+                Preview as Customer →
+            </button>
+        </div>
+    </div>
+
+    <!-- PAYMENT VIEW (Customer Mode) -->
+    <div class="glass-card hidden" id="payment-view" style="text-align: center;">
+        <div class="header" style="margin-bottom: 16px;">
+            <div class="badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Secure Payment
+            </div>
+            <p class="subtitle" style="margin-bottom: 4px;">Paying</p>
+            <h2 id="display-name" style="font-size: 22px;"></h2>
+        </div>
+        
+        <div class="amount-display">
+            <span class="currency">₹</span><span id="display-amount"></span>
+        </div>
+
+        <div class="qr-card">
+            <div class="qr-card-inner"></div>
+            <div id="qrcode"></div>
+        </div>
+
+        <p class="subtitle" style="margin-bottom: 24px; font-size: 14px;">Scan with any UPI app to pay</p>
+
+        <a href="#" id="pay-btn" class="btn btn-primary">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+            Pay Now on Mobile
+        </a>
+
+        <div class="trust-badges">
+            <div>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                100% Secure
+            </div>
+            <div>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                Instant Transfer
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Floating label animation logic */
+        .input-group input:focus ~ label,
+        .input-group input:not(:placeholder-shown) ~ label {
+            transform: translateY(-26px) scale(0.85);
+            left: 10px;
+            background: var(--glass-bg);
+            padding: 0 8px;
+            border-radius: 4px;
+            color: var(--primary);
+            opacity: 1 !important;
+        }
+        .input-group input::-webkit-outer-spin-button,
+        .input-group input::-webkit-inner-spin-button {
+            -webkit-appearance: none; margin: 0;
+        }
+    </style>
+
+    <script>
+        // Target UPI ID
+        const UPI_ID = "gpay-11245353662@okbizaxis";
+
+        // Toast Notification System (replaces alerts)
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-msg');
+            const iconEl = document.getElementById('toast-icon');
+            
+            msgEl.innerText = message;
+            
+            if (isError) {
+                toast.classList.add('error');
+                iconEl.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+            } else {
+                toast.classList.remove('error');
+                iconEl.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+            }
+
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Parse URL Parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlName = urlParams.get('name');
+        const urlAmount = urlParams.get('amount');
+
+        // Number formatter for beautiful amount display (e.g., 1000 -> 1,000)
+        const formatCurrency = (num) => {
+            return Number(num).toLocaleString('en-IN');
+        };
+
+        if (urlName && urlAmount) {
+            // Switch to Payment View
+            document.getElementById('generator-view').classList.add('hidden');
+            document.getElementById('payment-view').classList.remove('hidden');
+
+            // Populate UI Data
+            document.getElementById('display-name').innerText = urlName;
+            document.getElementById('display-amount').innerText = formatCurrency(urlAmount);
+
+            // Construct standard UPI URI scheme
+            const upiString = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(urlName)}&am=${urlAmount}&cu=INR`;
+
+            // Setup Mobile Pay Button
+            document.getElementById('pay-btn').href = upiString;
+
+            // Generate High-Quality QR Code
+            new QRCode(document.getElementById("qrcode"), {
+                text: upiString,
+                width: 200,
+                height: 200,
+                colorDark : "#0f172a", // Dark blue/slate for premium look
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        }
+
+        // Link Generation Logic
+        function generateLink() {
+            const name = document.getElementById('payee-name').value.trim();
+            const amount = document.getElementById('payee-amount').value.trim();
+
+            if (!name || !amount) {
+                showToast("Please enter both Name and Amount", true);
+                return;
+            }
+            if (amount <= 0) {
+                showToast("Amount must be greater than 0", true);
+                return;
+            }
+
+            // Construct shareable URL
+            const baseUrl = window.location.origin + window.location.pathname;
+            const finalUrl = `${baseUrl}?name=${encodeURIComponent(name)}&amount=${encodeURIComponent(amount)}`;
+
+            // Display result box
+            document.getElementById('result-link').innerText = finalUrl;
+            document.getElementById('generated-result').classList.remove('hidden');
+            
+            showToast("Payment link generated successfully!");
+        }
+
+        // Copy to Clipboard Logic
+        function copyLink() {
+            const linkText = document.getElementById('result-link').innerText;
+            
+            // Try modern clipboard API first, fallback to execCommand
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(linkText).then(handleCopySuccess);
+            } else {
+                // Fallback for iFrames / older browsers
+                let textArea = document.createElement("textarea");
+                textArea.value = linkText;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-999999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    handleCopySuccess();
+                } catch (err) {
+                    showToast("Failed to copy link", true);
+                }
+                textArea.remove();
+            }
+        }
+
+        function handleCopySuccess() {
+            showToast("Link copied to clipboard!");
+            const copyBtn = document.getElementById('copy-btn');
+            const originalHTML = copyBtn.innerHTML;
+            
+            // Visual feedback on the button itself
+            copyBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span style="color:var(--success)">Copied!</span>';
+            copyBtn.style.borderColor = "var(--success)";
+            copyBtn.style.background = "rgba(16, 185, 129, 0.1)";
+
+            setTimeout(() => {
+                copyBtn.innerHTML = originalHTML;
+                copyBtn.style.borderColor = "";
+                copyBtn.style.background = "";
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
