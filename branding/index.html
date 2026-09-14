@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Feasibility Media — Brand Identity System & Vector Specifications</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Syne (Avant-Garde/Structural), Playfair Display (Luxury Editorial), Plus Jakarta Sans (Precision Body), JetBrains Mono (Tech Spec) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        display: ['Syne', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        obsidian: '#09090b',
+                        surface: {
+                            dark: '#121215',
+                            light: '#f7f7f9',
+                            cardDark: '#18181b',
+                            cardLight: '#ffffff'
+                        },
+                        crimson: {
+                            DEFAULT: '#e11d48',
+                            hover: '#be123c',
+                            glow: 'rgba(225, 29, 72, 0.25)'
+                        },
+                        chrome: '#71717a'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Smooth color transitions on mode switch */
+        * {
+            transition: background-color 0.25s ease, border-color 0.25s ease, color 0.2s ease;
+        }
+
+        /* Subtle luxury blueprint grid */
+        .luxury-grid-dark {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+        .luxury-grid-light {
+            background-image: linear-gradient(rgba(10, 10, 10, 0.035) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(10, 10, 10, 0.035) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(113, 113, 122, 0.35);
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e11d48;
+        }
+
+        /* Code block scroll styling */
+        pre code {
+            font-family: 'JetBrains Mono', monospace;
+            tab-size: 2;
+        }
+
+        /* Toast slide animation */
+        #toast {
+            transform: translateY(120%) translateX(-50%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+        }
+        #toast.active {
+            transform: translateY(0) translateX(-50%);
+        }
+
+        /* Realistic business card 3D tilt perspective */
+        .card-perspective {
+            perspective: 1200px;
+        }
+    </style>
+</head>
+<body class="bg-obsidian text-zinc-100 font-sans antialiased selection:bg-crimson selection:text-white relative min-h-screen">
+
+    <!-- Top System Bar / Spec Info -->
+    <div class="w-full bg-black/90 border-b border-white/10 py-2 px-4 sm:px-8 text-[11px] font-mono tracking-widest uppercase flex justify-between items-center z-50 relative text-zinc-400">
+        <div class="flex items-center gap-3">
+            <span class="inline-flex items-center gap-1.5 text-crimson font-bold">
+                <span class="w-1.5 h-1.5 rounded-full bg-crimson animate-ping"></span>
+                SPEC SYSTEM V3.2
+            </span>
+            <span class="hidden md:inline text-zinc-600">|</span>
+            <span class="hidden md:inline">PROPRIETARY VECTOR ASSETS • FEASIBILITY MEDIA</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <span class="text-zinc-500 hidden sm:inline">100% BESPOKE GEOMETRY</span>
+            <a href="#mockups" class="text-white hover:text-crimson transition-colors underline decoration-crimson/50 underline-offset-4">View In Situ</a>
+        </div>
+    </div>
+
+    <!-- Main Fixed Navigation -->
+    <header class="sticky top-0 z-40 bg-obsidian/85 dark:bg-obsidian/85 glass-panel border-b border-white/10 px-4 sm:px-8 py-4 transition-all">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Brand Mark dynamic small icon -->
+            <div class="flex items-center gap-3.5">
+                <div id="nav-brand-icon" class="w-9 h-9 rounded-lg bg-zinc-900 border border-white/15 p-1.5 flex items-center justify-center text-white shadow-sm">
+                    <!-- Injected via JS -->
+                </div>
+                <div>
+                    <span class="font-serif font-bold text-lg tracking-tight text-white block leading-none">Feasibility<span class="text-crimson">.</span></span>
+                    <span class="font-mono text-[9px] text-zinc-400 tracking-[0.2em] uppercase block mt-1">Brand Identity Spec</span>
+                </div>
+            </div>
+
+            <!-- Jump links -->
+            <nav class="hidden lg:flex items-center gap-8 text-xs font-semibold tracking-wider uppercase text-zinc-400">
+                <a href="#concept-selector" class="hover:text-white transition-colors">Vector Marks</a>
+                <a href="#assets-suite" class="hover:text-white transition-colors">Asset Suite</a>
+                <a href="#code-inspector" class="hover:text-white transition-colors">SVG Code</a>
+                <a href="#color-system" class="hover:text-white transition-colors">Color System</a>
+                <a href="#mockups" class="hover:text-white transition-colors">Applications</a>
+            </nav>
+
+            <!-- Action Controls: Concept Pill Switcher & Theme Preview -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Global Preview Light/Dark on assets -->
+                <button id="theme-toggle-btn" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-zinc-300 flex items-center gap-2 transition-colors" title="Toggle Guidelines Environment Theme">
+                    <i class="fa-solid fa-circle-half-stroke text-crimson"></i>
+                    <span id="theme-toggle-label" class="hidden sm:inline">Theme: Dark</span>
+                </button>
+
+                <!-- Quick Export Button -->
+                <button id="download-current-svg-btn" class="px-4 py-2 rounded-xl bg-crimson hover:bg-crimson-hover text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg shadow-crimson/20 transition-all">
+                    <i class="fa-solid fa-arrow-down-to-bracket text-[11px]"></i>
+                    <span class="hidden sm:inline">Export Active SVG</span>
+                    <span class="sm:hidden">SVG</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-8 py-10 space-y-24">
+
+        <!-- Hero: Proprietary Mark Statement -->
+        <section class="pt-6 sm:pt-12 text-center max-w-4xl mx-auto space-y-6">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-crimson/10 border border-crimson/30 text-crimson text-xs font-mono tracking-widest uppercase">
+                <i class="fa-solid fa-fingerprint"></i> Zero Font Glyphs • Pure Vector Architecture
+            </div>
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-serif font-black tracking-tight text-white leading-[1.05]">
+                Distinctly Singular.<br>
+                <span class="italic font-normal text-zinc-400">Engineered to Dominate.</span>
+            </h1>
+            <p class="text-base sm:text-lg text-zinc-400 font-light leading-relaxed max-w-2xl mx-auto">
+                Unlike common luxury serif glyphs that mimic legacy fashion houses (Fendi) or corporate monoliths (Facebook, Forbes), Feasibility Media’s identity is built on proprietary geometric vectors that communicate media focus, precision optics, and architectural authority.
+            </p>
+        </section>
+
+        <!-- SECTION 1: The 3 Core Concepts -->
+        <section id="concept-selector" class="space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-white/10 pb-6 gap-4">
+                <div>
+                    <p class="text-xs font-mono uppercase tracking-[0.2em] text-crimson mb-2">01 // Architectural Selection</p>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white">Choose Vector Archetype</h2>
+                </div>
+                <p class="text-xs font-mono text-zinc-400">Click any concept card to reconfigure the entire asset suite live.</p>
+            </div>
+
+            <!-- Concept Selection Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Concept Alpha Card -->
+                <div onclick="selectConcept('alpha')" id="card-alpha" class="cursor-pointer group relative p-6 sm:p-8 rounded-3xl bg-zinc-900/80 border-2 border-crimson shadow-xl shadow-crimson/10 transition-all">
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="px-2.5 py-1 rounded-md text-[10px] font-mono uppercase tracking-wider bg-crimson text-white font-bold">Concept 01 (Active)</span>
+                        <span class="text-xs font-mono text-zinc-500">APERTURE / FOCUS</span>
+                    </div>
+                    <!-- Vector Preview Container -->
+                    <div class="w-full h-44 rounded-2xl bg-black border border-white/10 flex items-center justify-center p-6 mb-6 group-hover:border-white/30 transition-colors">
+                        <div class="w-24 h-24 svg-render-alpha"></div>
+                    </div>
+                    <h3 class="font-serif font-bold text-2xl text-white mb-2 group-hover:text-crimson transition-colors">The Aperture F</h3>
+                    <p class="text-xs text-zinc-400 font-light leading-relaxed">
+                        A dynamic geometric structure combining a precision optical framing angle with layered crossbars. Evokes a lens shutter, viewfinder focus, and forward motion.
+                    </p>
+                    <div class="mt-4 pt-4 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-zinc-400">
+                        <span>Geometry: Prismatic 45°</span>
+                        <span class="text-crimson font-bold">Recommended</span>
+                    </div>
+                </div>
+
+                <!-- Concept Beta Card -->
+                <div onclick="selectConcept('beta')" id="card-beta" class="cursor-pointer group relative p-6 sm:p-8 rounded-3xl bg-zinc-900/40 border-2 border-white/10 hover:border-white/30 transition-all">
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="px-2.5 py-1 rounded-md text-[10px] font-mono uppercase tracking-wider bg-white/10 text-zinc-300 font-bold">Concept 02</span>
+                        <span class="text-xs font-mono text-zinc-500">MONOLITH / STAGED</span>
+                    </div>
+                    <!-- Vector Preview Container -->
+                    <div class="w-full h-44 rounded-2xl bg-black border border-white/10 flex items-center justify-center p-6 mb-6 group-hover:border-white/30 transition-colors">
+                        <div class="w-24 h-24 svg-render-beta"></div>
+                    </div>
+                    <h3 class="font-serif font-bold text-2xl text-white mb-2 group-hover:text-crimson transition-colors">The Monolith F</h3>
+                    <p class="text-xs text-zinc-400 font-light leading-relaxed">
+                        Brutalist luxury mark consisting of two high-aspect ratio monolithic pillars framing an offset negative-space cantilever, balanced with our signature crimson editorial terminal dot.
+                    </p>
+                    <div class="mt-4 pt-4 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-zinc-400">
+                        <span>Geometry: Orthogonal Pillars</span>
+                        <span class="text-zinc-500">Luxury Modern</span>
+                    </div>
+                </div>
+
+                <!-- Concept Gamma Card -->
+                <div onclick="selectConcept('gamma')" id="card-gamma" class="cursor-pointer group relative p-6 sm:p-8 rounded-3xl bg-zinc-900/40 border-2 border-white/10 hover:border-white/30 transition-all">
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="px-2.5 py-1 rounded-md text-[10px] font-mono uppercase tracking-wider bg-white/10 text-zinc-300 font-bold">Concept 03</span>
+                        <span class="text-xs font-mono text-zinc-500">SIGNAL / PULSE</span>
+                    </div>
+                    <!-- Vector Preview Container -->
+                    <div class="w-full h-44 rounded-2xl bg-black border border-white/10 flex items-center justify-center p-6 mb-6 group-hover:border-white/30 transition-colors">
+                        <div class="w-24 h-24 svg-render-gamma"></div>
+                    </div>
+                    <h3 class="font-serif font-bold text-2xl text-white mb-2 group-hover:text-crimson transition-colors">The Signal F</h3>
+                    <p class="text-xs text-zinc-400 font-light leading-relaxed">
+                        A fluid, avant-garde ligature that merges an upward transmission wave with a razor-sharp serif counter. Impossible to confuse with any generic standard font glyph.
+                    </p>
+                    <div class="mt-4 pt-4 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-zinc-400">
+                        <span>Geometry: Continuous Ribbon</span>
+                        <span class="text-zinc-500">High Editorial</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 2: Complete Asset Suite -->
+        <section id="assets-suite" class="space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-white/10 pb-6 gap-4">
+                <div>
+                    <p class="text-xs font-mono uppercase tracking-[0.2em] text-crimson mb-2">02 // Comprehensive Lockups</p>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white">
+                        Asset Suite: <span id="active-concept-title" class="text-crimson">The Aperture F</span>
+                    </h2>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-mono text-zinc-400">Surface Mode:</span>
+                    <button onclick="toggleAssetPreviewBg('dark')" id="bg-btn-dark" class="px-3 py-1.5 rounded-lg text-xs font-mono bg-zinc-800 text-white font-bold border border-white/20">Dark Surface</button>
+                    <button onclick="toggleAssetPreviewBg('light')" id="bg-btn-light" class="px-3 py-1.5 rounded-lg text-xs font-mono bg-transparent text-zinc-400 hover:text-white border border-transparent hover:border-white/10">Light Surface</button>
+                </div>
+            </div>
+
+            <!-- Responsive Asset Matrix -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Primary Full Lockup (Stacked & Spaced) -->
+                <div class="lg:col-span-8 p-8 sm:p-12 rounded-3xl asset-container-surface bg-zinc-950 border border-white/10 flex flex-col justify-between min-h-[380px] relative overflow-hidden">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-mono text-zinc-500 uppercase tracking-widest">Primary Editorial Lockup</span>
+                        <button onclick="copyActiveLockupCode('primary')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 text-xs font-mono text-zinc-300 flex items-center gap-1.5 transition-all">
+                            <i class="fa-regular fa-copy"></i> Copy Lockup SVG
+                        </button>
+                    </div>
+
+                    <!-- Dynamic Render Container -->
+                    <div id="render-primary-lockup" class="py-12 flex items-center justify-center">
+                        <!-- Injected by JS -->
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center text-xs font-mono text-zinc-500 pt-6 border-t border-white/10 gap-2">
+                        <span>Aspect: Master Ratio 16:9 Balanced</span>
+                        <span>Usage: Keynotes, Executive Decks, Headquarters Entry</span>
+                    </div>
+                </div>
+
+                <!-- Standalone Icon Showcase (Light & Dark) -->
+                <div class="lg:col-span-4 flex flex-col gap-6">
+                    <!-- Dark Mode Icon Card -->
+                    <div class="p-6 rounded-3xl bg-zinc-950 border border-white/10 flex items-center justify-between">
+                        <div class="space-y-1">
+                            <p class="text-xs font-mono text-zinc-400 font-semibold uppercase">Icon Mark — Obsidian</p>
+                            <p class="text-[11px] text-zinc-500">Dark theme & inverted canvases</p>
+                            <button onclick="copyIconSvg('dark')" class="text-xs text-crimson hover:underline font-mono mt-2 inline-block">Copy Dark Icon SVG &rarr;</button>
+                        </div>
+                        <div id="render-icon-dark-sm" class="w-16 h-16 rounded-2xl bg-black border border-white/10 p-3 flex items-center justify-center">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Light Mode Icon Card -->
+                    <div class="p-6 rounded-3xl bg-white border border-zinc-200 text-zinc-900 flex items-center justify-between">
+                        <div class="space-y-1">
+                            <p class="text-xs font-mono text-zinc-600 font-semibold uppercase">Icon Mark — Stark White</p>
+                            <p class="text-[11px] text-zinc-400">Editorial light backgrounds</p>
+                            <button onclick="copyIconSvg('light')" class="text-xs text-crimson hover:underline font-mono mt-2 inline-block">Copy Light Icon SVG &rarr;</button>
+                        </div>
+                        <div id="render-icon-light-sm" class="w-16 h-16 rounded-2xl bg-zinc-100 border border-zinc-300 p-3 flex items-center justify-center">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Scale Metrics Spec -->
+                    <div class="p-6 rounded-3xl bg-zinc-900/60 border border-white/10 space-y-3 font-mono text-xs text-zinc-400">
+                        <p class="text-white font-bold tracking-wider uppercase text-[11px] flex items-center gap-2">
+                            <i class="fa-solid fa-ruler-combined text-crimson"></i> Clear Space Guidelines
+                        </p>
+                        <p class="text-zinc-400 text-[11px] font-sans leading-relaxed">
+                            Maintain a minimum margin of 1.5x the width of the vertical stem around all perimeter vectors to ensure optical separation.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Horizontal Banner Lockup (Website Nav Format) -->
+                <div class="lg:col-span-12 p-8 sm:p-10 rounded-3xl asset-container-surface bg-zinc-950 border border-white/10 flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div class="space-y-1 text-center md:text-left">
+                        <span class="text-xs font-mono text-zinc-500 uppercase tracking-widest block">Horizontal Banner / Navigation Lockup</span>
+                        <p class="text-xs text-zinc-400 font-light">Engineered for website headers, SaaS dashboards, and email signatures.</p>
+                    </div>
+
+                    <div id="render-horizontal-lockup" class="py-4 px-6 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-center">
+                        <!-- Injected by JS -->
+                    </div>
+
+                    <button onclick="copyActiveLockupCode('horizontal')" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 text-xs font-mono text-zinc-200 shrink-0">
+                        <i class="fa-regular fa-copy mr-1.5"></i> Copy Nav SVG
+                    </button>
+                </div>
+
+                <!-- Favicon & Social Profile Previews -->
+                <div class="lg:col-span-12 space-y-4">
+                    <h3 class="text-lg font-serif font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-shapes text-crimson text-sm"></i> App Icon & Micro-Scale Testing
+                    </h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+                        
+                        <!-- 64px App Squircle -->
+                        <div class="p-6 rounded-2xl bg-zinc-900/60 border border-white/10 flex flex-col items-center text-center gap-3">
+                            <div id="preview-squircle-64" class="w-16 h-16 rounded-[22%] bg-black border border-white/20 p-3 shadow-2xl flex items-center justify-center">
+                                <!-- Injected by JS -->
+                            </div>
+                            <span class="text-xs font-mono text-zinc-400">iOS / Android Squircle</span>
+                            <span class="text-[10px] font-mono text-zinc-600">64 × 64 px</span>
+                        </div>
+
+                        <!-- 32px Favicon In Browser Tab Simulation -->
+                        <div class="p-6 rounded-2xl bg-zinc-900/60 border border-white/10 flex flex-col items-center text-center gap-3">
+                            <div class="w-full bg-zinc-950 rounded-lg p-2.5 border border-white/10 flex items-center gap-2">
+                                <div id="preview-tab-favicon" class="w-4 h-4 shrink-0 flex items-center justify-center">
+                                    <!-- Injected by JS -->
+                                </div>
+                                <span class="text-[10px] font-mono text-zinc-300 truncate">Feasibility — Media</span>
+                            </div>
+                            <span class="text-xs font-mono text-zinc-400">Browser Favicon</span>
+                            <span class="text-[10px] font-mono text-zinc-600">16 / 32 px</span>
+                        </div>
+
+                        <!-- 48px Circular Social Avatar -->
+                        <div class="p-6 rounded-2xl bg-zinc-900/60 border border-white/10 flex flex-col items-center text-center gap-3">
+                            <div id="preview-avatar-circle" class="w-14 h-14 rounded-full bg-black border border-crimson/50 p-2.5 shadow-lg flex items-center justify-center">
+                                <!-- Injected by JS -->
+                            </div>
+                            <span class="text-xs font-mono text-zinc-400">Instagram / X Avatar</span>
+                            <span class="text-[10px] font-mono text-zinc-600">Circular Safe Zone</span>
+                        </div>
+
+                        <!-- Chrome App Dock Micro Icon -->
+                        <div class="p-6 rounded-2xl bg-zinc-900/60 border border-white/10 flex flex-col items-center text-center gap-3">
+                            <div id="preview-dock-micro" class="w-12 h-12 rounded-xl bg-white text-zinc-900 p-2 shadow-lg flex items-center justify-center">
+                                <!-- Injected by JS -->
+                            </div>
+                            <span class="text-xs font-mono text-zinc-400">Light Dock Icon</span>
+                            <span class="text-[10px] font-mono text-zinc-600">High-Contrast Scaled</span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 3: Live SVG Code Inspector & Exporter -->
+        <section id="code-inspector" class="space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-white/10 pb-6 gap-4">
+                <div>
+                    <p class="text-xs font-mono uppercase tracking-[0.2em] text-crimson mb-2">03 // Production Ready Vectors</p>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white">Raw Vector Inspector</h2>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="copyCleanSvgCode()" class="px-5 py-2.5 rounded-xl bg-crimson hover:bg-crimson-hover text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all">
+                        <i class="fa-regular fa-copy"></i> Copy Active SVG Code
+                    </button>
+                    <button onclick="downloadSvgFile()" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-mono flex items-center gap-2 transition-all">
+                        <i class="fa-solid fa-download"></i> .SVG File
+                    </button>
+                </div>
+            </div>
+
+            <!-- Code Preview Box -->
+            <div class="relative rounded-3xl bg-zinc-950 border border-white/10 p-6 sm:p-8 font-mono overflow-hidden">
+                <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-4 text-xs text-zinc-500">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+                        <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                        <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+                        <span class="ml-2 font-mono text-zinc-400" id="code-file-name">feasibility-aperture-mark.svg</span>
+                    </div>
+                    <span class="text-[11px] text-zinc-500">Pure Inline Vector Code (No dependencies)</span>
+                </div>
+
+                <pre class="text-xs sm:text-sm text-zinc-300 overflow-x-auto max-h-80 leading-relaxed font-mono"><code id="raw-svg-code-display">&lt;!-- Select a concept above to inspect clean vector markup --&gt;</code></pre>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Brand Color System -->
+        <section id="color-system" class="space-y-8">
+            <div class="border-b border-white/10 pb-6">
+                <p class="text-xs font-mono uppercase tracking-[0.2em] text-crimson mb-2">04 // Editorial Chromatics</p>
+                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white">The Color System</h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Pure Obsidian -->
+                <div class="p-6 rounded-3xl bg-zinc-900/60 border border-white/10 space-y-4">
+                    <div class="w-full h-32 rounded-2xl bg-[#09090b] border border-white/20 shadow-inner flex items-end p-4">
+                        <span class="text-[10px] font-mono text-zinc-500">BASE DARK</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white text-lg">Pure Obsidian</h4>
+                        <p class="text-xs text-zinc-400 font-light mt-1">Deep architectural darkness, authoritative foundation.</p>
+                    </div>
+                    <div class="pt-3 border-t border-white/10 font-mono text-xs text-zinc-400 space-y-1">
+                        <div class="flex justify-between"><span>HEX:</span><span class="text-white font-bold">#09090B</span></div>
+                        <div class="flex justify-between"><span>RGB:</span><span>9, 9, 11</span></div>
+                        <div class="flex justify-between"><span>ROLE:</span><span>Canvas & Primary Text</span></div>
+                    </div>
+                </div>
+
+                <!-- Stark White -->
+                <div class="p-6 rounded-3xl bg-zinc-900/60 border border-white/10 space-y-4">
+                    <div class="w-full h-32 rounded-2xl bg-[#ffffff] border border-white/20 shadow-inner flex items-end p-4">
+                        <span class="text-[10px] font-mono text-zinc-600">BASE LIGHT</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white text-lg">Stark White</h4>
+                        <p class="text-xs text-zinc-400 font-light mt-1">Editorial clarity, negative space, and high contrast.</p>
+                    </div>
+                    <div class="pt-3 border-t border-white/10 font-mono text-xs text-zinc-400 space-y-1">
+                        <div class="flex justify-between"><span>HEX:</span><span class="text-white font-bold">#FFFFFF</span></div>
+                        <div class="flex justify-between"><span>RGB:</span><span>255, 255, 255</span></div>
+                        <div class="flex justify-between"><span>ROLE:</span><span>Headings & Monolith</span></div>
+                    </div>
+                </div>
+
+                <!-- Editorial Crimson -->
+                <div class="p-6 rounded-3xl bg-zinc-900/60 border border-white/10 space-y-4">
+                    <div class="w-full h-32 rounded-2xl bg-[#e11d48] border border-white/20 shadow-lg shadow-crimson/20 flex items-end p-4">
+                        <span class="text-[10px] font-mono text-white/80">CORE ACCENT</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white text-lg">Editorial Crimson</h4>
+                        <p class="text-xs text-zinc-400 font-light mt-1">Decisive signature period, live recording, and focal priority.</p>
+                    </div>
+                    <div class="pt-3 border-t border-white/10 font-mono text-xs text-zinc-400 space-y-1">
+                        <div class="flex justify-between"><span>HEX:</span><span class="text-white font-bold">#E11D48</span></div>
+                        <div class="flex justify-between"><span>RGB:</span><span>225, 29, 72</span></div>
+                        <div class="flex justify-between"><span>ROLE:</span><span>Focal Terminal Dot</span></div>
+                    </div>
+                </div>
+
+                <!-- Chrome Zinc -->
+                <div class="p-6 rounded-3xl bg-zinc-900/60 border border-white/10 space-y-4">
+                    <div class="w-full h-32 rounded-2xl bg-[#71717a] border border-white/20 shadow-inner flex items-end p-4">
+                        <span class="text-[10px] font-mono text-white/80">METALLIC NEUTRAL</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white text-lg">Chrome Zinc</h4>
+                        <p class="text-xs text-zinc-400 font-light mt-1">Secondary labeling, specifications, and layout framing.</p>
+                    </div>
+                    <div class="pt-3 border-t border-white/10 font-mono text-xs text-zinc-400 space-y-1">
+                        <div class="flex justify-between"><span>HEX:</span><span class="text-white font-bold">#71717A</span></div>
+                        <div class="flex justify-between"><span>RGB:</span><span>113, 113, 122</span></div>
+                        <div class="flex justify-between"><span>ROLE:</span><span>Structural Dividers</span></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 5: Real-World In-Situ Applications -->
+        <section id="mockups" class="space-y-12">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-white/10 pb-6 gap-4">
+                <div>
+                    <p class="text-xs font-mono uppercase tracking-[0.2em] text-crimson mb-2">05 // In Situ Brand Applications</p>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white">Physical & Digital Collateral</h2>
+                </div>
+                <p class="text-xs font-mono text-zinc-400">All mockups render your active vector selection live.</p>
+            </div>
+
+            <!-- Mockups Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Mockup 1: Luxury Heavyweight Business Cards (Card Perspective) -->
+                <div class="lg:col-span-6 p-8 sm:p-10 rounded-3xl bg-zinc-950 border border-white/10 flex flex-col justify-between space-y-8">
+                    <div>
+                        <span class="text-xs font-mono text-zinc-500 uppercase tracking-widest block mb-1">01 / Luxury Matte Cotton Stationery</span>
+                        <h3 class="font-serif font-bold text-xl text-white">Executive Business Cards</h3>
+                    </div>
+
+                    <!-- 3D Card Display -->
+                    <div class="card-perspective flex justify-center items-center py-6">
+                        <div class="w-full max-w-sm h-52 rounded-2xl bg-[#0d0d10] border border-white/15 p-6 shadow-2xl flex flex-col justify-between relative overflow-hidden group hover:rotate-1 hover:scale-105 transition-all duration-500">
+                            <!-- Subtle card background watermark -->
+                            <div class="absolute -right-6 -bottom-6 w-36 h-36 opacity-5 pointer-events-none watermark-render"></div>
+                            
+                            <div class="flex justify-between items-start">
+                                <div class="w-12 h-12 mockup-icon-render"></div>
+                                <span class="text-[9px] font-mono text-zinc-500 uppercase tracking-widest">PRIVATE SPEC</span>
+                            </div>
+
+                            <div>
+                                <h4 class="font-serif font-bold text-white text-lg tracking-tight">Abhinav Pathak</h4>
+                                <p class="text-[11px] font-mono text-crimson uppercase tracking-wider mt-0.5">Head of Operations & Client Systems</p>
+                                <p class="text-[10px] font-mono text-zinc-500 mt-2">operations@feasibilitymedia.in • Ranchi / Global</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-xs font-mono text-zinc-500 text-center">450 GSM Heavy Matte Cardstock • Debossed Black Foil with Crimson Edge Foil</p>
+                </div>
+
+                <!-- Mockup 2: Architectural Digital Billboard / Screen -->
+                <div class="lg:col-span-6 p-8 sm:p-10 rounded-3xl bg-zinc-950 border border-white/10 flex flex-col justify-between space-y-8">
+                    <div>
+                        <span class="text-xs font-mono text-zinc-500 uppercase tracking-widest block mb-1">02 / Large Format Outdoor Display</span>
+                        <h3 class="font-serif font-bold text-xl text-white">Metropolitan Monolith Screen</h3>
+                    </div>
+
+                    <!-- Billboard Screen Frame -->
+                    <div class="w-full h-56 rounded-2xl bg-black border-4 border-zinc-800 p-6 flex flex-col items-center justify-center text-center relative overflow-hidden shadow-2xl">
+                        <div class="absolute inset-0 bg-gradient-to-t from-crimson/15 via-transparent to-transparent opacity-60"></div>
+                        <div class="relative z-10 space-y-4">
+                            <div class="w-16 h-16 mx-auto mockup-icon-render"></div>
+                            <div>
+                                <h4 class="font-serif font-black text-2xl text-white tracking-wider uppercase">Feasibility<span class="text-crimson">.</span></h4>
+                                <p class="text-[10px] font-mono tracking-[0.3em] text-zinc-400 uppercase mt-1">THE INFLUENCER INFRASTRUCTURE</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-xs font-mono text-zinc-500 text-center">4K Outdoor High-Contrast LED • 10,000 Nits Luminance Calibration</p>
+                </div>
+
+                <!-- Mockup 3: Mobile SaaS / Client Dashboard Header -->
+                <div class="lg:col-span-12 p-8 sm:p-10 rounded-3xl bg-zinc-950 border border-white/10 space-y-8">
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                        <div>
+                            <span class="text-xs font-mono text-zinc-500 uppercase tracking-widest block mb-1">03 / Client Portal Interface</span>
+                            <h3 class="font-serif font-bold text-xl text-white">Real-Time Mobile Portal App Header</h3>
+                        </div>
+                        <span class="text-xs font-mono text-crimson bg-crimson/10 px-3 py-1 rounded-full border border-crimson/30 w-fit">Live Deployment Render</span>
+                    </div>
+
+                    <!-- App Header Frame -->
+                    <div class="w-full max-w-2xl mx-auto rounded-2xl bg-zinc-900/90 border border-white/15 p-4 sm:p-6 shadow-2xl space-y-6">
+                        <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-black border border-white/20 p-1.5 flex items-center justify-center mockup-icon-render"></div>
+                                <div>
+                                    <span class="font-serif font-bold text-white text-sm">Feasibility<span class="text-crimson">.</span></span>
+                                    <span class="text-[9px] font-mono text-zinc-400 block">Active Campaign Terminal</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span class="text-[11px] font-mono text-emerald-400">SYNCED</span>
+                            </div>
+                        </div>
+
+                        <!-- Mini stats readout -->
+                        <div class="grid grid-cols-3 gap-3 text-left font-mono">
+                            <div class="bg-black/50 p-3 rounded-xl border border-white/5">
+                                <p class="text-[10px] text-zinc-500 uppercase">Tracked Clicks</p>
+                                <p class="text-lg font-bold text-white mt-1">28,490</p>
+                            </div>
+                            <div class="bg-black/50 p-3 rounded-xl border border-white/5">
+                                <p class="text-[10px] text-zinc-500 uppercase">Audience Reach</p>
+                                <p class="text-lg font-bold text-white mt-1">1.42M</p>
+                            </div>
+                            <div class="bg-black/50 p-3 rounded-xl border border-white/5">
+                                <p class="text-[10px] text-zinc-500 uppercase">Realized ROI</p>
+                                <p class="text-lg font-bold text-crimson mt-1">+38.4%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-12 px-4 sm:px-8 mt-24 bg-black/60 text-center space-y-4">
+        <div class="flex items-center justify-center gap-2">
+            <span class="font-serif font-bold text-xl text-white">Feasibility<span class="text-crimson">.</span></span>
+        </div>
+        <p class="text-xs font-mono text-zinc-500 uppercase tracking-widest">
+            Brand Identity Specification • Proprietary Vector Engine & Assets
+        </p>
+        <p class="text-[11px] text-zinc-600 font-mono">
+            &copy; 2026 Feasibility Media. Internal Assets & Design Systems.
+        </p>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 left-1/2 z-[100] px-6 py-3.5 rounded-full bg-zinc-900 border border-white/20 text-white font-mono text-xs font-semibold shadow-2xl flex items-center gap-3">
+        <i class="fa-solid fa-circle-check text-crimson text-sm"></i>
+        <span id="toast-message">SVG Asset Copied to Clipboard</span>
+    </div>
+
+    <!-- Vector Engine & Interactive Script -->
+    <script>
+        /**
+         * PROPRIETARY VECTOR DEFINITIONS (Zero standard font serifs)
+         * Crafted explicitly to avoid looking like Fendi (inverted double F), 
+         * Facebook (round lowercase f), Forbes (standard Scotch Roman serif),
+         * or Fashion Nova (condensed generic glyph).
+         */
+        const LOGO_CONCEPTS = {
+            alpha: {
+                id: 'alpha',
+                name: 'The Aperture F',
+                subtitle: 'Aperture / Focus Framing',
+                filename: 'feasibility-aperture-mark.svg',
+                description: 'An architectural optical monogram combining a 45-degree angled focus bracket with layered speed-bars and a precision focal indicator.',
+                
+                // Pure vector SVG (viewBox 0 0 100 100)
+                getIconSvg: function(mode = 'dark') {
+                    const primaryFill = mode === 'dark' ? '#ffffff' : '#09090b';
+                    const bgFill = mode === 'dark' ? 'transparent' : 'transparent';
+                    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" fill="none">
+  <!-- Architectural Stem with 45-deg Bevel -->
+  <path d="M22 14 L42 14 L42 86 L22 86 Z" fill="${primaryFill}" />
+  <!-- Upper Prismatic Cantilever (Aperture Focus Bracket) -->
+  <path d="M42 14 L86 14 L86 32 L56 32 L42 46 Z" fill="${primaryFill}" />
+  <!-- Center Acceleration Crossbar (Negative-space offset) -->
+  <path d="M48 48 L76 48 L76 64 L48 64 Z" fill="${primaryFill}" />
+  <!-- Signature Focal Reticle Dot -->
+  <circle cx="86" cy="80" r="6" fill="#e11d48" />
+</svg>`;
+                },
+
+                // Full Primary Lockup SVG
+                getPrimaryLockupSvg: function(mode = 'dark') {
+                    const textFill = mode === 'dark' ? '#ffffff' : '#09090b';
+                    const subFill = mode === 'dark' ? '#a1a1aa' : '#71717a';
+                    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 120" width="100%" height="100%" fill="none">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,600&amp;family=Plus+Jakarta+Sans:wght@700&amp;display=swap');
+      .lockup-brand-txt { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 54px; fill: ${textFill}; letter-spacing: -0.03em; }
+      .lockup-sub-txt { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 13px; fill: ${subFill}; letter-spacing: 0.38em; text-transform: uppercase; }
+    </style>
+  </defs>
+  <!-- Vector Mark Group (Scaled) -->
+  <g transform="translate(10, 10) scale(0.95)">
+    <path d="M22 14 L42 14 L42 86 L22 86 Z" fill="${textFill}" />
+    <path d="M42 14 L86 14 L86 32 L56 32 L42 46 Z" fill="${textFill}" />
+    <path d="M48 48 L76 48 L76 64 L48 64 Z" fill="${textFill}" />
+    <circle cx="86" cy="80" r="6" fill="#e11d48" />
+  </g>
+  <!-- Bespoke Typography Group -->
+  <text x="135" y="70" class="lockup-brand-txt">Feasibility<tspan fill="#e11d48">.</tspan></text>
+  <text x="138" y="96" class="lockup-sub-txt">MEDIA INFRASTRUCTURE</text>
+</svg>`;
+                },
+
+                // Horizontal Nav Lockup SVG
+                getHorizontalLockupSvg: function(mode = 'dark') {
+                    const textFill = mode === 'dark' ? '#ffffff' : '#09090b';
+                    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 50" width="100%" height="100%" fill="none">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;display=swap');
+      .nav-brand-txt { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 30px; fill: ${textFill}; letter-spacing: -0.02em; }
+    </style>
+  </defs>
+  <!-- Compact Icon -->
+  <g transform="translate(0, 5) scale(0.42)">
+    <path d="M22 14 L42 14 L42 86 L22 86 Z" fill="${textFill}" />
+    <path d="M42 14 L86 14 L86 32 L56 32 L42 46 Z" fill="${textFill}" />
+    <path d="M48 48 L76 48 L76 64 L48 64 Z" fill="${textFill}" />
+    <circle cx="86" cy="80" r="6" fill="#e11d48" />
+  </g>
+  <text x="54" y="35" class="nav-brand-txt">Feasibility<tspan fill="#e11d48">.</tspan></text>
+</svg>`;
+                }
+            },
+
+            beta: {
+                id: 'beta',
+                name: 'The Monolith F',
+                subtitle: 'Staged Architectural Columns',
+                filename: 'feasibility-monolith-mark.svg',
+                description: 'Brutalist monolith columns arranged with mathematical proportion ratios, expressing solid foundations, stability, and high-capital infrastructure.',
+                
+                getIconSvg: function(mode = 'dark') {
+                    const primaryFill = mode === 'dark' ? '#ffffff' : '#09090b';
+                    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" fill="none">
+  <!-- Pillar 1: Full-Height Monolith Stem -->
+  <rect x="18" y="14" width="20" height="72" rx="3" fill="${primaryFill}" />
+  <!-- Pillar 2: Elevated Upper Horizontal Beam -->
+  <rect x="44" y="14" width="40" height="18" rx="3" fill="${primaryFill}" />
+  <!-- Pillar 3: Staggered Secondary Cantilever -->
+  <rect x="44" y="40" width="28" height="16" rx="3" fill="${primaryFill}" />
+  <!-- Pillar 4: Terminal Square Dot (Editorial Signature) -->
+  <rect x="74" y="72" width="14" height="14" rx="2" fill="#e11d48" />
+</svg>`;
+                },
+
+                getPrimaryLockupSvg: function(mode = 'dark') {
+                    const textFill = mode === 'dark' ? '#ffffff' : '#09090b';
+                    const subFill = mode === 'dark' ? '#a1a1aa' : '#71717a';
+                    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 120" width="100%" height="100%" fill="none">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,600&amp;family=Plus+Jakarta+Sans:wght@700&amp;display=swap');
+      .lockup-brand-txt { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 54px; fill: ${textFill}; letter-spacing: -0.03em; }
+      .lockup-sub-txt { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 13px; fill: ${subFill}; letter-spacing: 0.38em; text-transform: uppercase; }
+    </style>
+  </defs>
+  <!-- Monolith Mark Group -->
+  <g transform="translate(10, 10) scale(0.95)">
+    <rect x="18" y="14" width="20" height="72" rx="3" fill="${textFill}" />
+    <rect x="44" y="14" width="40" height="18" rx="3" fill="${textFill}" />
+    <rect x="44" y="40" width="28" height="16" rx="3" fill="${textFill}" />
+    <rect x="74" y="72" width="14" height="14" rx="2" fill="#e11d48" />
+  </g>
+  <text x="135" y="70" class="lockup-brand-txt">Feasibility<tspan fill="#e11d48">.</tspan></text>
+  <text x="138" y="96" class="lockup-sub-txt">MEDIA INFRASTRUCTURE</text>
+</svg>`;
+                },
+
+                getHorizontalLockupSvg: function(mode = 'dark') {
+                    const textFill = mode === 'dark' ? '#ffffff' : '#09090b';
+                    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 50" width="100%" height="100%" fill="none">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;display=swap');
+      .nav-brand-txt { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 30px; fill: ${textFill}; letter-spacing: -0.02em; }
+    </style>
+  </defs>
+  <g transform="translate(0, 5) scale(0.42)">
+    <rect x="18" y="14" width="20" height="72" rx="3" fill="${textFill}" />
+    <rect x="44" y="14" width="40" height="18" rx="3" fill="${textFill}" />
+    <rect x="44" y="40" width="28" height="16" rx="3" fill="${textFill}" />
+    <rect x="74" y="72" width="14" height="14" rx="2" fill="#e11d48" />
+  </g>
+  <text x="54" y="35" class="nav-brand-txt">Feasibility<tspan fill="#e11d48">.</tspan></text>
+</svg>`;
+                }
+            },
+
+            gamma: {
+                id: 'gamma',
+                name: 'The Signal F',
+                subtitle: 'Fluid Wave & Cyber-Serif Ligature',
+                filename: 'feasibility-signal-mark.svg',
+                description: 'A bespoke cyber-editorial ligature merging high-tension vector curves with acute 30-degree incisions. Completely original curves drawn mathematically from scratch.',
+                
+                getIconSvg: function(mode = 'dark') {
+                    const primaryFill = mode === 'dark' ? '#ffffff' : '#09090b';
+                    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" fill="none">
+  <!-- Sweeping Fluid Stem with Micro-Finial -->
+  <path d="M20 84 C20 84, 24 50, 26 28 C27 18, 36 14, 48 14 L84 14 C84 14, 78 26, 68 28 L46 28 C39 28, 38 32, 38 40 L72 40 C72 40, 66 52, 56 54 L36 54 C34 66, 32 84, 32 84 Z" fill="${primaryFill}" />
+  <!-- Floating Pulse Dot -->
+  <circle cx="82" cy="74" r="7" fill="#e11d48" />
+</svg>`;
+                },
+
+                getPrimaryLockupSvg: function(mode = 'dark') {
+                    const textFill = mode === 'dark' ? '#ffffff' : '#09090b';
+                    const subFill = mode === 'dark' ? '#a1a1aa' : '#71717a';
+                    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 120" width="100%" height="100%" fill="none">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,600&amp;family=Plus+Jakarta+Sans:wght@700&amp;display=swap');
+      .lockup-brand-txt { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 54px; fill: ${textFill}; letter-spacing: -0.03em; }
+      .lockup-sub-txt { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 13px; fill: ${subFill}; letter-spacing: 0.38em; text-transform: uppercase; }
+    </style>
+  </defs>
+  <!-- Signal Mark Group -->
+  <g transform="translate(10, 10) scale(0.95)">
+    <path d="M20 84 C20 84, 24 50, 26 28 C27 18, 36 14, 48 14 L84 14 C84 14, 78 26, 68 28 L46 28 C39 28, 38 32, 38 40 L72 40 C72 40, 66 52, 56 54 L36 54 C34 66, 32 84, 32 84 Z" fill="${textFill}" />
+    <circle cx="82" cy="74" r="7" fill="#e11d48" />
+  </g>
+  <text x="135" y="70" class="lockup-brand-txt">Feasibility<tspan fill="#e11d48">.</tspan></text>
+  <text x="138" y="96" class="lockup-sub-txt">MEDIA INFRASTRUCTURE</text>
+</svg>`;
+                },
+
+                getHorizontalLockupSvg: function(mode = 'dark') {
+                    const textFill = mode === 'dark' ? '#ffffff' : '#09090b';
+                    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 50" width="100%" height="100%" fill="none">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;display=swap');
+      .nav-brand-txt { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 30px; fill: ${textFill}; letter-spacing: -0.02em; }
+    </style>
+  </defs>
+  <g transform="translate(0, 5) scale(0.42)">
+    <path d="M20 84 C20 84, 24 50, 26 28 C27 18, 36 14, 48 14 L84 14 C84 14, 78 26, 68 28 L46 28 C39 28, 38 32, 38 40 L72 40 C72 40, 66 52, 56 54 L36 54 C34 66, 32 84, 32 84 Z" fill="${textFill}" />
+    <circle cx="82" cy="74" r="7" fill="#e11d48" />
+  </g>
+  <text x="54" y="35" class="nav-brand-txt">Feasibility<tspan fill="#e11d48">.</tspan></text>
+</svg>`;
+                }
+            }
+        };
+
+        // State Machine
+        let currentConceptId = 'alpha';
+        let currentSurfaceMode = 'dark'; // 'dark' | 'light'
+        let guidelineTheme = 'dark';
+
+        /**
+         * Initialize preview states on window load
+         */
+        window.addEventListener('DOMContentLoaded', () => {
+            // Render static card preview vectors
+            renderStaticCards();
+            // Render the active concept across all assets and mockups
+            renderActiveConcept();
+        });
+
+        // Render card previews
+        function renderStaticCards() {
+            document.querySelector('.svg-render-alpha').innerHTML = LOGO_CONCEPTS.alpha.getIconSvg('dark');
+            document.querySelector('.svg-render-beta').innerHTML = LOGO_CONCEPTS.beta.getIconSvg('dark');
+            document.querySelector('.svg-render-gamma').innerHTML = LOGO_CONCEPTS.gamma.getIconSvg('dark');
+        }
+
+        /**
+         * Switch Selected Concept Live
+         */
+        function selectConcept(conceptId) {
+            if (!LOGO_CONCEPTS[conceptId]) return;
+            currentConceptId = conceptId;
+
+            // Update Card border states
+            ['alpha', 'beta', 'gamma'].forEach(id => {
+                const card = document.getElementById(`card-${id}`);
+                const badge = card.querySelector('span');
+                if (id === conceptId) {
+                    card.classList.remove('border-white/10', 'bg-zinc-900/40');
+                    card.classList.add('border-crimson', 'bg-zinc-900/80', 'shadow-xl', 'shadow-crimson/10');
+                    badge.classList.remove('bg-white/10', 'text-zinc-300');
+                    badge.classList.add('bg-crimson', 'text-white');
+                    badge.textContent = `Concept ${id === 'alpha' ? '01' : id === 'beta' ? '02' : '03'} (Active)`;
+                } else {
+                    card.classList.remove('border-crimson', 'bg-zinc-900/80', 'shadow-xl', 'shadow-crimson/10');
+                    card.classList.add('border-white/10', 'bg-zinc-900/40');
+                    badge.classList.remove('bg-crimson', 'text-white');
+                    badge.classList.add('bg-white/10', 'text-zinc-300');
+                    badge.textContent = `Concept ${id === 'alpha' ? '01' : id === 'beta' ? '02' : '03'}`;
+                }
+            });
+
+            // Re-render asset suite and mockups
+            renderActiveConcept();
+            showToast(`Active Concept Changed to "${LOGO_CONCEPTS[conceptId].name}"`);
+        }
+
+        /**
+         * Re-render all dynamic containers based on currentConceptId & currentSurfaceMode
+         */
+        function renderActiveConcept() {
+            const concept = LOGO_CONCEPTS[currentConceptId];
+
+            // 1. Update Title Header
+            document.getElementById('active-concept-title').textContent = concept.name;
+            document.getElementById('code-file-name').textContent = concept.filename;
+
+            // 2. Nav Icon
+            document.getElementById('nav-brand-icon').innerHTML = concept.getIconSvg('dark');
+
+            // 3. Primary Full Lockup
+            document.getElementById('render-primary-lockup').innerHTML = concept.getPrimaryLockupSvg(currentSurfaceMode);
+
+            // 4. Standalone Icon Previews
+            document.getElementById('render-icon-dark-sm').innerHTML = concept.getIconSvg('dark');
+            document.getElementById('render-icon-light-sm').innerHTML = concept.getIconSvg('light');
+
+            // 5. Horizontal Nav Lockup
+            document.getElementById('render-horizontal-lockup').innerHTML = concept.getHorizontalLockupSvg(currentSurfaceMode);
+
+            // 6. Micro Previews (Favicons & Avatars)
+            document.getElementById('preview-squircle-64').innerHTML = concept.getIconSvg('dark');
+            document.getElementById('preview-tab-favicon').innerHTML = concept.getIconSvg('dark');
+            document.getElementById('preview-avatar-circle').innerHTML = concept.getIconSvg('dark');
+            document.getElementById('preview-dock-micro').innerHTML = concept.getIconSvg('light');
+
+            // 7. In-situ Mockups
+            document.querySelectorAll('.mockup-icon-render').forEach(el => {
+                el.innerHTML = concept.getIconSvg('dark');
+            });
+            document.querySelectorAll('.watermark-render').forEach(el => {
+                el.innerHTML = concept.getIconSvg('dark');
+            });
+
+            // 8. Raw Code Inspector Display
+            const rawSvg = concept.getIconSvg(currentSurfaceMode);
+            document.getElementById('raw-svg-code-display').textContent = rawSvg;
+        }
+
+        /**
+         * Toggle surface mode on Asset Suite (Dark vs Light canvas)
+         */
+        function toggleAssetPreviewBg(mode) {
+            currentSurfaceMode = mode;
+            const darkBtn = document.getElementById('bg-btn-dark');
+            const lightBtn = document.getElementById('bg-btn-light');
+            const containers = document.querySelectorAll('.asset-container-surface');
+
+            if (mode === 'light') {
+                lightBtn.className = "px-3 py-1.5 rounded-lg text-xs font-mono bg-white text-zinc-900 font-bold border border-zinc-300";
+                darkBtn.className = "px-3 py-1.5 rounded-lg text-xs font-mono bg-transparent text-zinc-400 hover:text-white border border-transparent hover:border-white/10";
+                containers.forEach(el => {
+                    el.classList.remove('bg-zinc-950', 'border-white/10');
+                    el.classList.add('bg-white', 'border-zinc-300', 'text-zinc-900');
+                });
+            } else {
+                darkBtn.className = "px-3 py-1.5 rounded-lg text-xs font-mono bg-zinc-800 text-white font-bold border border-white/20";
+                lightBtn.className = "px-3 py-1.5 rounded-lg text-xs font-mono bg-transparent text-zinc-400 hover:text-white border border-transparent hover:border-white/10";
+                containers.forEach(el => {
+                    el.classList.remove('bg-white', 'border-zinc-300', 'text-zinc-900');
+                    el.classList.add('bg-zinc-950', 'border-white/10', 'text-white');
+                });
+            }
+
+            renderActiveConcept();
+        }
+
+        /**
+         * Copy Clean SVG Code to Clipboard
+         */
+        function copyCleanSvgCode() {
+            const concept = LOGO_CONCEPTS[currentConceptId];
+            const raw = concept.getIconSvg(currentSurfaceMode);
+            copyToClipboard(raw, `Copied ${concept.name} SVG Code`);
+        }
+
+        function copyIconSvg(mode) {
+            const concept = LOGO_CONCEPTS[currentConceptId];
+            const raw = concept.getIconSvg(mode);
+            copyToClipboard(raw, `Copied ${concept.name} (${mode.toUpperCase()}) SVG`);
+        }
+
+        function copyActiveLockupCode(type) {
+            const concept = LOGO_CONCEPTS[currentConceptId];
+            let raw = '';
+            if (type === 'primary') {
+                raw = concept.getPrimaryLockupSvg(currentSurfaceMode);
+            } else {
+                raw = concept.getHorizontalLockupSvg(currentSurfaceMode);
+            }
+            copyToClipboard(raw, `Copied ${concept.name} Lockup SVG`);
+        }
+
+        /**
+         * Safe Clipboard copy fallback
+         */
+        function copyToClipboard(text, successMsg) {
+            const temp = document.createElement("textarea");
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            try {
+                document.execCommand('copy');
+                showToast(successMsg || 'Code Copied to Clipboard');
+            } catch (err) {
+                console.error("Clipboard copy failed", err);
+            }
+            document.body.removeChild(temp);
+        }
+
+        /**
+         * Download SVG as standalone File via Data URI
+         */
+        function downloadSvgFile() {
+            const concept = LOGO_CONCEPTS[currentConceptId];
+            const svgContent = concept.getIconSvg(currentSurfaceMode);
+            const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = concept.filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showToast(`Downloaded ${concept.filename}`);
+        }
+
+        document.getElementById('download-current-svg-btn').addEventListener('click', downloadSvgFile);
+
+        /**
+         * Theme Toggle across body
+         */
+        document.getElementById('theme-toggle-btn').addEventListener('click', () => {
+            const body = document.body;
+            const label = document.getElementById('theme-toggle-label');
+            if (guidelineTheme === 'dark') {
+                guidelineTheme = 'light';
+                body.classList.remove('bg-obsidian', 'text-zinc-100');
+                body.classList.add('bg-zinc-100', 'text-zinc-900');
+                label.textContent = "Theme: Light";
+            } else {
+                guidelineTheme = 'dark';
+                body.classList.remove('bg-zinc-100', 'text-zinc-900');
+                body.classList.add('bg-obsidian', 'text-zinc-100');
+                label.textContent = "Theme: Dark";
+            }
+            showToast(`Guidelines preview switched to ${guidelineTheme.toUpperCase()}`);
+        });
+
+        /**
+         * Toast Notification Controller
+         */
+        let toastTimeout = null;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = message;
+            toast.classList.add('active');
+
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('active');
+            }, 2800);
+        }
+    </script>
+</body>
+</html>
