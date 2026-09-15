@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Feasibility Media | The New Standard of Influence</title>
+    
+    <!-- SEO Tags -->
+    <link rel="canonical" href="https://feasibilitymedia.in/">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Playfair Display (Elegant Serif) & Manrope (Clean Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Three.js for Canvas Visuals -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            black: '#0a0a0a',
+                            white: '#fcfcfc',
+                            gray: '#1a1a1a',
+                            lightgray: '#f5f5f5',
+                            crimson: '#e11d48', // The single pop of color
+                            muted: '#737373'
+                        }
+                    },
+                    transitionTimingFunction: {
+                        'slow-smooth': 'cubic-bezier(0.77, 0, 0.175, 1)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* --- Core Setup --- */
+        body {
+            background-color: transparent; /* Changed to transparent for canvas */
+            color: #0a0a0a;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        ::selection { background-color: #e11d48; color: #ffffff; }
+
+        /* --- Typography Classes --- */
+        .text-huge {
+            font-size: clamp(4rem, 12vw, 12rem);
+            line-height: 0.85;
+            letter-spacing: -0.06em;
+        }
+        
+        .text-large {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            line-height: 1;
+            letter-spacing: -0.04em;
+        }
+
+        /* --- Custom Graphic Elements --- */
+        .grain-overlay {
+            position: fixed; inset: 0; pointer-events: none; z-index: 50; opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .line-vertical { position: absolute; top: 0; bottom: 0; width: 1px; background-color: rgba(0,0,0,0.06); }
+        .line-horizontal { position: absolute; left: 0; right: 0; height: 1px; background-color: rgba(0,0,0,0.06); }
+
+        /* --- Animations --- */
+        .reveal-up {
+            opacity: 0; transform: translateY(60px);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-up.visible { opacity: 1; transform: translateY(0); }
+
+        .reveal-scale {
+            opacity: 0; transform: scale(0.95);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+        /* --- Marquee --- */
+        @keyframes marquee-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .marquee-track { display: flex; width: max-content; animation: marquee-left 40s linear infinite; }
+
+        /* --- Custom Cursor Logic (CSS prep) --- */
+        .hover-target { cursor: pointer; }
+        
+        /* --- Buttons & Inputs --- */
+        .btn-avant {
+            position: relative; display: inline-flex; align-items: center; justify-content: center;
+            padding: 1.25rem 2.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+            overflow: hidden; transition: color 0.4s ease; border-radius: 999px;
+            background: #0a0a0a; color: #ffffff;
+        }
+        .btn-avant::before {
+            content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 100%;
+            background: #e11d48; transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+            border-radius: 999px; z-index: -1;
+        }
+        .btn-avant:hover::before { transform: translateY(-100%); }
+        .btn-avant:hover { color: #ffffff; border-color: #e11d48; }
+
+        .input-line {
+            width: 100%; background: transparent; border: none; border-bottom: 1px solid #d4d4d8;
+            padding: 1.5rem 0; font-size: 1.25rem; font-family: 'Playfair Display', serif;
+            transition: border-color 0.4s ease; outline: none; border-radius: 0;
+        }
+        .input-line:focus { border-bottom-color: #0a0a0a; }
+        .input-line::placeholder { color: #a1a1aa; font-family: 'Manrope', sans-serif; font-size: 1rem; font-weight: 400; }
+
+        /* Slider Customization */
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+        input[type=range]::-webkit-slider-thumb { 
+            -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; 
+            background: #e11d48; cursor: pointer; margin-top: -9px; 
+            box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.2); transition: transform 0.2s; 
+        }
+        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.3); }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; cursor: pointer; background: #e5e5e5; }
+        
+        /* Canvas Background */
+        #webgl-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            background-color: #fcfcfc;
+        }
+        
+        /* Glassmorphism utility for sections to reveal canvas */
+        .glass-panel {
+            background: rgba(252, 252, 252, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="relative">
+    
+    <!-- The 3D Canvas Background -->
+    <canvas id="webgl-canvas"></canvas>
+    
+    <div class="grain-overlay"></div>
+
+    <!-- Alert / Status Bar -->
+    <div class="w-full border-b border-black/5 py-3 px-6 flex justify-between items-center text-[10px] font-bold tracking-[0.2em] uppercase z-50 relative glass-panel">
+        <div class="flex items-center gap-3">
+            <div class="w-2 h-2 rounded-full bg-brand-crimson animate-pulse"></div>
+            <span>System Initializing</span>
+        </div>
+        <div class="hidden sm:block text-brand-muted">
+            Influence Architected in 3D
+        </div>
+        <a href="#contact" class="hover:text-brand-crimson transition-colors">Join Waitlist</a>
+    </div>
+
+    <!-- Main Header -->
+    <header class="w-full z-40 glass-panel border-b border-black/5 sticky top-0">
+        <div class="w-full px-6 lg:px-12 h-24 flex items-center justify-between">
+            <a href="#" class="text-2xl font-serif font-bold tracking-tighter hover-target">
+                Feasibility.
+            </a>
+            
+            <nav class="hidden md:flex gap-12 text-xs font-bold uppercase tracking-[0.15em] text-brand-black">
+                <a href="#thesis" class="hover:text-brand-crimson transition-colors hover-target">Thesis</a>
+                <a href="#infrastructure" class="hover:text-brand-crimson transition-colors hover-target">Infrastructure</a>
+                <a href="#scale" class="hover:text-brand-crimson transition-colors hover-target">Scale</a>
+            </nav>
+
+            <a href="#contact" class="text-xs font-bold uppercase tracking-[0.15em] border-b border-brand-black pb-1 hover:text-brand-crimson hover:border-brand-crimson transition-colors hover-target">
+                Initiate
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO SECTION (Transparent to show canvas prominently) -->
+        <section class="relative min-h-[85vh] flex flex-col justify-center px-6 lg:px-12 overflow-hidden">
+            <!-- Decorative Grid Lines -->
+            <div class="line-vertical left-1/4 hidden lg:block opacity-30"></div>
+            <div class="line-vertical left-2/4 hidden lg:block opacity-30"></div>
+            <div class="line-vertical left-3/4 hidden lg:block opacity-30"></div>
+            
+            <div class="relative z-10 w-full max-w-7xl mx-auto py-20 reveal-up">
+                
+                <h1 class="text-huge font-serif text-brand-black mb-8 mix-blend-multiply">
+                    Influence,<br>
+                    <span class="italic font-light text-brand-muted mix-blend-normal">Architected.</span>
+                </h1>
+                
+                <div class="grid lg:grid-cols-2 gap-12 lg:gap-24 items-end mt-12">
+                    <div class="glass-panel p-6 rounded-2xl border border-black/5">
+                        <p class="text-xl md:text-2xl font-medium leading-relaxed max-w-lg">
+                            We are not a traditional agency. We are the backend infrastructure powering the world's most ambitious brands and creators.
+                        </p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-6">
+                        <a href="#contact" class="btn-avant shadow-lg hover-target group">
+                            <span class="relative z-10">Deploy Campaign</span>
+                        </a>
+                        <a href="#infrastructure" class="inline-flex items-center justify-center px-8 py-4 rounded-full border border-black/20 text-xs font-bold uppercase tracking-widest hover:bg-black/5 glass-panel transition-colors hover-target">
+                            View Thesis
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- STATEMENT MARQUEE -->
+        <section class="py-12 border-y border-black/5 overflow-hidden bg-brand-lightgray relative reveal-up">
+            <div class="marquee-track flex items-center gap-16 text-3xl md:text-5xl font-serif italic text-brand-muted">
+                <span>Stop guessing on ROI.</span>
+                <span class="w-3 h-3 rounded-full bg-brand-crimson shadow-[0_0_15px_rgba(225,29,72,0.5)]"></span>
+                <span>Data-driven creator matching.</span>
+                <span class="w-3 h-3 rounded-full bg-brand-crimson shadow-[0_0_15px_rgba(225,29,72,0.5)]"></span>
+                <span>Live dashboard analytics.</span>
+                <span class="w-3 h-3 rounded-full bg-brand-crimson shadow-[0_0_15px_rgba(225,29,72,0.5)]"></span>
+                <span>Stop guessing on ROI.</span>
+                <span class="w-3 h-3 rounded-full bg-brand-crimson shadow-[0_0_15px_rgba(225,29,72,0.5)]"></span>
+                <span>Data-driven creator matching.</span>
+                <span class="w-3 h-3 rounded-full bg-brand-crimson shadow-[0_0_15px_rgba(225,29,72,0.5)]"></span>
+                <span>Live dashboard analytics.</span>
+            </div>
+        </section>
+
+        <!-- THE THESIS (Service Pillars) -->
+        <section id="thesis" class="py-32 px-6 lg:px-12 relative glass-panel mt-16 rounded-t-[3rem] border-t border-black/5">
+            <div class="max-w-7xl mx-auto">
+                
+                <div class="mb-24 reveal-up flex flex-col md:flex-row justify-between md:items-end gap-8">
+                    <h2 class="text-large font-serif bg-brand-white/50 p-4 rounded-xl backdrop-blur-sm inline-block">The New<br>Standard.</h2>
+                    <p class="text-lg text-brand-black font-medium max-w-sm glass-panel p-6 rounded-2xl border border-black/5">We dismantled the traditional agency model and rebuilt it using pure performance data and proprietary software.</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-x-12 gap-y-20 border-t border-black/10 pt-16">
+                    
+                    <!-- Pillar 1 -->
+                    <div class="reveal-up group hover-target glass-panel p-8 rounded-3xl border border-black/5 hover:border-brand-crimson/30 transition-colors shadow-sm">
+                        <div class="text-xs font-bold font-sans text-brand-crimson mb-6 tracking-widest uppercase">01 / Curated Talent</div>
+                        <h3 class="text-3xl font-serif mb-4 group-hover:text-brand-crimson transition-colors">Creator Roster</h3>
+                        <p class="text-brand-muted leading-relaxed">We bypass generic influencers to exclusively partner with high-converting creators across diverse, engaged niches. Absolute alignment between brand and audience.</p>
+                    </div>
+
+                    <!-- Pillar 2 -->
+                    <div class="reveal-up delay-75 group hover-target glass-panel p-8 rounded-3xl border border-black/5 hover:border-brand-crimson/30 transition-colors shadow-sm">
+                        <div class="text-xs font-bold font-sans text-brand-crimson mb-6 tracking-widest uppercase">02 / Total Transparency</div>
+                        <h3 class="text-3xl font-serif mb-4 group-hover:text-brand-crimson transition-colors">Live Analytics</h3>
+                        <p class="text-brand-muted leading-relaxed">No more end-of-month PDFs. Because our roots are in software engineering, we build custom live dashboards for our clients to track clicks, views, and CPA in real-time.</p>
+                    </div>
+
+                    <!-- Pillar 3 -->
+                    <div class="reveal-up delay-150 group hover-target glass-panel p-8 rounded-3xl border border-black/5 hover:border-brand-crimson/30 transition-colors shadow-sm">
+                        <div class="text-xs font-bold font-sans text-brand-crimson mb-6 tracking-widest uppercase">03 / In-House Excellence</div>
+                        <h3 class="text-3xl font-serif mb-4 group-hover:text-brand-crimson transition-colors">Asset Production</h3>
+                        <p class="text-brand-muted leading-relaxed">We don't just connect you; we optimize the output. From scripting to high-CTR thumbnail design, we control the variables that guarantee high viewership.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- IMAGE / BREAK SECTION (Minimalist Graphic) -->
+        <!-- Solid background to break up the transparency and canvas effect -->
+        <section class="py-24 px-6 lg:px-12 bg-brand-gray text-white relative overflow-hidden reveal-scale z-10">
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiPjwvcmVjdD4KPC9zdmc+')]"></div>
+            
+            <div class="max-w-7xl mx-auto relative z-10 grid lg:grid-cols-2 gap-16 items-center min-h-[50vh]">
+                <div>
+                    <div class="w-16 h-16 border-2 border-brand-crimson rounded-full flex items-center justify-center mb-8 shadow-[0_0_20px_rgba(225,29,72,0.3)]">
+                        <i class="fa-solid fa-code text-brand-crimson text-xl"></i>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-serif mb-6 leading-tight">We are engineers,<br><span class="italic text-zinc-400">not just marketers.</span></h2>
+                    <p class="text-lg text-zinc-400 max-w-md font-light leading-relaxed mb-8">
+                        Our competitive advantage is our technical foundation. We deploy Vanilla JS, React, and Firebase to build the internal tools that make our campaigns scale faster and track clearer than anyone else in the market.
+                    </p>
+                    <a href="#contact" class="inline-flex items-center gap-3 text-sm font-bold uppercase tracking-widest hover:text-brand-crimson transition-colors hover-target">
+                        Discuss Infrastructure <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <!-- Abstract Data Visualization Graphic -->
+                <div class="h-full flex flex-col justify-center gap-4">
+                    <div class="w-full h-1 bg-zinc-800 rounded overflow-hidden"><div class="h-full bg-brand-crimson w-[85%] relative"><div class="absolute right-0 top-0 bottom-0 w-4 bg-white/50 blur-sm animate-pulse"></div></div></div>
+                    <div class="flex justify-between text-xs font-mono text-zinc-500 uppercase tracking-widest mb-6"><span>Campaign Trajectory</span><span>Optimal</span></div>
+                    
+                    <div class="w-full h-1 bg-zinc-800 rounded overflow-hidden"><div class="h-full bg-white w-[62%] relative"><div class="absolute right-0 top-0 bottom-0 w-4 bg-white/50 blur-sm animate-pulse"></div></div></div>
+                    <div class="flex justify-between text-xs font-mono text-zinc-500 uppercase tracking-widest mb-6"><span>Audience Retention</span><span>62%</span></div>
+                    
+                    <div class="w-full h-1 bg-zinc-800 rounded overflow-hidden"><div class="h-full bg-brand-crimson w-[94%] relative"><div class="absolute right-0 top-0 bottom-0 w-4 bg-white/50 blur-sm animate-pulse"></div></div></div>
+                    <div class="flex justify-between text-xs font-mono text-zinc-500 uppercase tracking-widest"><span>Data Sync</span><span>Live</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROI CALCULATOR -->
+        <section id="scale" class="py-32 px-6 lg:px-12 relative border-b border-black/5 bg-brand-white/40 backdrop-blur-xl">
+            <div class="max-w-4xl mx-auto reveal-up">
+                
+                <div class="text-center mb-20 glass-panel inline-block p-8 rounded-3xl mx-auto border border-black/5">
+                    <h2 class="text-4xl md:text-5xl font-serif mb-4">Calculate Trajectory.</h2>
+                    <p class="text-brand-muted text-lg">Input your monthly deployment budget to forecast baseline performance.</p>
+                </div>
+
+                <div class="bg-brand-white/90 backdrop-blur-md border border-black/10 p-10 md:p-16 rounded-3xl shadow-xl relative overflow-hidden">
+                    <!-- Subtle glow behind calculator -->
+                    <div class="absolute -top-20 -right-20 w-64 h-64 bg-brand-crimson rounded-full blur-[100px] opacity-10 pointer-events-none"></div>
+
+                    <!-- Slider -->
+                    <div class="mb-16 relative z-10">
+                        <div class="flex justify-between items-end mb-8 border-b border-black/10 pb-4">
+                            <span class="text-xs font-bold uppercase tracking-[0.2em] text-brand-muted">Capital Allocation</span>
+                            <span class="text-4xl md:text-5xl font-serif font-bold text-brand-black" id="budgetDisplay">₹50,000</span>
+                        </div>
+                        <input type="range" id="budgetSlider" min="10000" max="1000000" step="10000" value="50000" class="w-full hover-target relative z-20">
+                        <div class="flex justify-between text-[10px] font-bold text-brand-muted uppercase tracking-widest mt-4">
+                            <span>Pilot Phase (₹10k)</span>
+                            <span>Enterprise (₹10L+)</span>
+                        </div>
+                    </div>
+
+                    <!-- Metrics Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+                        <div class="md:border-r border-black/10">
+                            <p class="text-[10px] font-bold text-brand-muted uppercase tracking-widest mb-2">Estimated Impressions</p>
+                            <p class="text-4xl font-serif font-bold" id="calcViews">500k</p>
+                        </div>
+                        <div class="md:border-r border-black/10 md:pl-8">
+                            <p class="text-[10px] font-bold text-brand-muted uppercase tracking-widest mb-2">Projected Actions (4%)</p>
+                            <p class="text-4xl font-serif font-bold" id="calcClicks">20,000</p>
+                        </div>
+                        <div class="md:pl-8">
+                            <p class="text-[10px] font-bold text-brand-crimson uppercase tracking-widest mb-2">Avg Conversions (2%)</p>
+                            <p class="text-4xl font-serif font-bold text-brand-crimson drop-shadow-sm" id="calcConversions">400</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- AUDIENCE DIVISIONS -->
+        <section class="py-32 px-6 lg:px-12 relative bg-brand-lightgray/80 backdrop-blur-md">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-16 lg:gap-24">
+                    
+                    <!-- For Brands -->
+                    <div class="reveal-up group glass-panel p-10 rounded-3xl border border-black/5 hover:shadow-lg transition-all">
+                        <h2 class="text-4xl md:text-5xl font-serif mb-8 border-b border-black/10 pb-6">For Brands.</h2>
+                        <p class="text-xl text-brand-muted mb-8 leading-relaxed font-light">Scale your product or service with precision. We match you with high-converting creators and provide a secure login to a live tracking portal. You pay for verifiable data, not vanity metrics.</p>
+                        <ul class="space-y-4 mb-12">
+                            <li class="flex items-start gap-4 text-sm font-bold uppercase tracking-widest"><span class="text-brand-crimson mt-0.5">—</span> Dedicated Account Management</li>
+                            <li class="flex items-start gap-4 text-sm font-bold uppercase tracking-widest"><span class="text-brand-crimson mt-0.5">—</span> Live CPA & Traffic Dashboards</li>
+                            <li class="flex items-start gap-4 text-sm font-bold uppercase tracking-widest"><span class="text-brand-crimson mt-0.5">—</span> Strategic Audience Matching</li>
+                        </ul>
+                        <a href="#contact" class="btn-avant hover-target group">
+                            <span class="relative z-10">Initiate Campaign</span>
+                        </a>
+                    </div>
+
+                    <!-- For Creators -->
+                    <div class="reveal-up delay-100 group glass-panel p-10 rounded-3xl border border-black/5 hover:shadow-lg transition-all">
+                        <h2 class="text-4xl md:text-5xl font-serif mb-8 border-b border-black/10 pb-6">For Creators.</h2>
+                        <p class="text-xl text-brand-muted mb-8 leading-relaxed font-light">Stop managing DMs and editing your own footage. We act as your production and management backend. We handle your thumbnails, strategy, and brand negotiations so you can focus on creating.</p>
+                        <ul class="space-y-4 mb-12">
+                            <li class="flex items-start gap-4 text-sm font-bold uppercase tracking-widest"><span class="text-brand-black mt-0.5">—</span> High-CTR Thumbnail Engineering</li>
+                            <li class="flex items-start gap-4 text-sm font-bold uppercase tracking-widest"><span class="text-brand-black mt-0.5">—</span> Premium Brand Sponsorships</li>
+                            <li class="flex items-start gap-4 text-sm font-bold uppercase tracking-widest"><span class="text-brand-black mt-0.5">—</span> Channel SEO Optimization</li>
+                        </ul>
+                        <a href="#contact" class="btn-avant bg-brand-white text-brand-black border border-black/10 hover-target group">
+                            <span class="relative z-10">Apply to Roster</span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- PRICING / DEPLOYMENT -->
+        <section id="infrastructure" class="py-32 px-6 lg:px-12 relative border-y border-black/5 bg-transparent">
+            <div class="max-w-7xl mx-auto relative z-10">
+                <div class="mb-20 text-center reveal-up glass-panel inline-block p-8 rounded-3xl mx-auto border border-black/5">
+                    <h2 class="text-large font-serif mb-4">Engagement Models.</h2>
+                    <p class="text-brand-muted text-lg">Transparent structures designed to scale.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    
+                    <!-- Pilot -->
+                    <div class="border border-black/10 p-12 hover:border-black transition-all reveal-up hover-target bg-brand-white/80 backdrop-blur-lg rounded-3xl shadow-sm hover:shadow-xl hover:-translate-y-2">
+                        <div class="text-[10px] font-bold text-brand-muted uppercase tracking-widest mb-4">Phase 01</div>
+                        <h3 class="text-3xl font-serif mb-8">Pilot Integration</h3>
+                        <p class="text-sm text-brand-muted leading-relaxed mb-12">A low-risk, subsidized entry point to test traffic quality. Includes a single targeted creator integration and a basic analytics report.</p>
+                        <div class="border-t border-black/10 pt-8 mt-auto">
+                            <a href="#contact" class="text-xs font-bold uppercase tracking-widest hover:text-brand-crimson transition-colors">Request Availability &rarr;</a>
+                        </div>
+                    </div>
+
+                    <!-- Retainer -->
+                    <div class="bg-brand-black/95 backdrop-blur-xl text-brand-white p-12 reveal-up delay-75 hover-target relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all hover:-translate-y-2 border border-zinc-800">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-brand-crimson blur-[100px] opacity-30"></div>
+                        <div class="relative z-10">
+                            <div class="text-[10px] font-bold text-brand-crimson uppercase tracking-widest mb-4">Phase 02</div>
+                            <h3 class="text-3xl font-serif mb-8">Enterprise Retainer</h3>
+                            <p class="text-sm text-zinc-400 leading-relaxed mb-12">Full-scale infrastructure. Multi-creator campaigns, in-house asset optimization, and a secure login to your custom live tracking dashboard.</p>
+                            <div class="border-t border-white/10 pt-8 mt-auto">
+                                <a href="#contact" class="text-xs font-bold uppercase tracking-widest hover:text-brand-crimson transition-colors">Build Custom Quote &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT (Minimalist Form) -->
+        <section id="contact" class="py-32 px-6 lg:px-12 relative bg-brand-white/95 backdrop-blur-2xl z-10 border-t border-black/5">
+            <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 lg:gap-32">
+                
+                <div class="reveal-up">
+                    <h2 class="text-large font-serif mb-8">Establish<br>Connection.</h2>
+                    <p class="text-xl text-brand-muted font-light leading-relaxed mb-12 max-w-md">
+                        Direct all inquiries to our operations desk. We evaluate new brand partnerships and creator applications on a rolling basis.
+                    </p>
+                    
+                    <div class="space-y-6 text-sm font-bold uppercase tracking-widest">
+                        <div class="flex items-center gap-4 hover:text-brand-crimson transition-colors cursor-pointer">
+                            <i class="fa-solid fa-envelope text-brand-crimson"></i>
+                            operations@feasibilitymedia.in
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <i class="fa-solid fa-location-dot text-brand-crimson"></i>
+                            Headquarters: Ranchi, JH
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="reveal-up delay-100">
+                    <!-- Custom Toggle -->
+                    <div class="flex gap-8 mb-12 border-b border-black/10 pb-4">
+                        <button id="toggleBrand" class="text-xs font-bold uppercase tracking-widest text-brand-black hover-target transition-colors">Brand Inquiry</button>
+                        <button id="toggleCreator" class="text-xs font-bold uppercase tracking-widest text-brand-muted hover:text-brand-black hover-target transition-colors">Creator App</button>
+                    </div>
+
+                    <form id="contact-form" action="https://formspree.io/f/mandalko" method="POST" class="space-y-4 relative">
+                        <input type="hidden" name="user_type" id="userTypeInput" value="Brand">
+                        
+                        <input type="text" name="name" id="nameInput" placeholder="Brand / Company Name" class="input-line" required>
+                        <input type="tel" name="phone" placeholder="Contact Number" class="input-line" required>
+                        
+                        <!-- Dynamic Fields -->
+                        <div id="creatorFields" class="hidden space-y-4">
+                            <input type="url" name="youtube_link" placeholder="YouTube Channel Link" class="input-line">
+                            <select name="pain_point" class="input-line text-brand-muted appearance-none cursor-pointer">
+                                <option value="" disabled selected>Primary Challenge</option>
+                                <option value="Thumbnails">Low CTR / Thumbnails</option>
+                                <option value="Editing">Time spent Editing</option>
+                                <option value="Sponsorships">Acquiring Sponsorships</option>
+                            </select>
+                        </div>
+
+                        <textarea name="message" id="messageInput" placeholder="Define your objective." rows="1" class="input-line resize-none" required></textarea>
+                        
+                        <div class="pt-12">
+                            <button type="submit" id="contact-submit-btn" class="btn-avant w-full sm:w-auto hover-target group">
+                                <span class="relative z-10">Transmit Data</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 lg:px-12 bg-brand-black text-white relative z-10">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            
+            <a href="#" class="text-2xl font-serif font-bold tracking-tighter hover-target">
+                Feasibility.
+            </a>
+            
+            <div class="flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-zinc-500">
+                <span>&copy; 2026 Feasibility Media</span>
+                <span class="hidden sm:inline">|</span>
+                <span>All Rights Reserved</span>
+            </div>
+            
+            <div class="flex items-center gap-6 text-zinc-500">
+                <i class="fa-brands fa-react hover:text-white transition-colors hover-target" title="React Engine"></i>
+                <i class="fa-brands fa-js hover:text-white transition-colors hover-target" title="Vanilla JS"></i>
+                <i class="fa-solid fa-server hover:text-white transition-colors hover-target" title="Firebase"></i>
+                <i class="fa-solid fa-cube hover:text-white transition-colors hover-target" title="Three.js Architecture"></i>
+            </div>
+            
+        </div>
+    </footer>
+
+    <!-- Avant-Garde Success Modal -->
+    <div id="success-modal" class="fixed inset-0 z-[100] bg-brand-white flex flex-col justify-center items-center p-6 transition-all duration-700 opacity-0 pointer-events-none">
+        <div id="modal-inner" class="max-w-2xl text-center transform translate-y-12 transition-transform duration-700">
+            <h3 class="text-huge font-serif text-brand-black mb-8 leading-none">Received.</h3>
+            <p class="text-xl text-brand-muted font-light mb-12">
+                Your data has been transmitted to our operations desk. We will evaluate the parameters and initiate contact shortly.
+            </p>
+            <button onclick="closeSuccessModal()" class="text-xs font-bold uppercase tracking-widest border-b border-brand-black pb-1 hover:text-brand-crimson hover:border-brand-crimson transition-colors hover-target">
+                Return to Site
+            </button>
+        </div>
+    </div>
+
+    <script>
+        /* =========================================
+           THREE.JS CANVAS BACKGROUND (Data/Architecture)
+           ========================================= */
+        function initCanvasBackground() {
+            const canvas = document.getElementById('webgl-canvas');
+            const scene = new THREE.Scene();
+            
+            // Camera Setup
+            const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 2000);
+            camera.position.set(0, 200, 400);
+            camera.lookAt(0, 0, 0);
+
+            // Renderer Setup
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            // Group to hold all objects for unified rotation
+            const networkGroup = new THREE.Group();
+            scene.add(networkGroup);
+
+            // 1. Data Topography (Wavy Wireframe Plane)
+            const planeGeometry = new THREE.PlaneGeometry(1600, 1600, 45, 45);
+            // Orient plane horizontally
+            planeGeometry.rotateX(-Math.PI / 2); 
+            
+            const planeMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0x0a0a0a, 
+                wireframe: true, 
+                transparent: true, 
+                opacity: 0.05 // Very subtle background grid
+            });
+            const planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
+            planeMesh.position.y = -100;
+            networkGroup.add(planeMesh);
+
+            // 2. Data Nodes (Particles representing Creators/Brands)
+            const particleCount = 600;
+            const particlesGeom = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+            
+            const colorBlack = new THREE.Color('#0a0a0a');
+            const colorCrimson = new THREE.Color('#e11d48');
+
+            for (let i = 0; i < particleCount; i++) {
+                // Random position within a wide cylinder area
+                const radius = 100 + Math.random() * 700;
+                const theta = Math.random() * Math.PI * 2;
+                
+                positions[i * 3] = Math.cos(theta) * radius; // x
+                positions[i * 3 + 1] = (Math.random() - 0.5) * 400; // y (spread vertically)
+                positions[i * 3 + 2] = Math.sin(theta) * radius; // z
+
+                // 5% of nodes are crimson (representing high value targets/data)
+                const isCrimson = Math.random() > 0.95;
+                const vertexColor = isCrimson ? colorCrimson : colorBlack;
+                
+                colors[i * 3] = vertexColor.r;
+                colors[i * 3 + 1] = vertexColor.g;
+                colors[i * 3 + 2] = vertexColor.b;
+            }
+
+            particlesGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            particlesGeom.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const particleMaterial = new THREE.PointsMaterial({
+                size: 3.5,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.6,
+                sizeAttenuation: true
+            });
+
+            const particleSystem = new THREE.Points(particlesGeom, particleMaterial);
+            networkGroup.add(particleSystem);
+
+            // Interaction Variables
+            let mouseX = 0;
+            let mouseY = 0;
+            let targetX = 0;
+            let targetY = 0;
+            let scrollY = 0;
+            
+            const windowHalfX = window.innerWidth / 2;
+            const windowHalfY = window.innerHeight / 2;
+
+            // Event Listeners
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX - windowHalfX) * 0.0005;
+                mouseY = (event.clientY - windowHalfY) * 0.0005;
+            });
+
+            window.addEventListener('scroll', () => {
+                scrollY = window.scrollY;
+            });
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            // Animation Loop
+            const clock = new THREE.Clock();
+
+            function animate() {
+                requestAnimationFrame(animate);
+                const time = clock.getElapsedTime();
+
+                // Fluid motion for target rotation (Ease towards mouse)
+                targetX = mouseX * 0.5;
+                targetY = mouseY * 0.5;
+                
+                // Add scroll influence to rotation
+                const scrollInfluence = scrollY * 0.0002;
+
+                networkGroup.rotation.y += 0.001; // Constant slow rotation
+                networkGroup.rotation.x += (targetY - networkGroup.rotation.x) * 0.05;
+                networkGroup.rotation.z = scrollInfluence;
+
+                // Animate the Wireframe Plane (Data Wave effect)
+                const positionAttribute = planeGeometry.attributes.position;
+                for (let i = 0; i < positionAttribute.count; i++) {
+                    const x = positionAttribute.getX(i);
+                    const z = positionAttribute.getZ(i);
+                    
+                    // Complex wave formula combining sin and cos
+                    const y = Math.sin(x * 0.003 + time * 0.5) * 30 + 
+                              Math.cos(z * 0.004 + time * 0.3) * 30;
+                    
+                    positionAttribute.setY(i, y - 100); 
+                }
+                positionAttribute.needsUpdate = true;
+
+                // Slight particle movement floating
+                const particlePositions = particlesGeom.attributes.position;
+                for(let i=0; i < particleCount; i++) {
+                    // Just subtly bob them on the Y axis
+                    const py = particlePositions.getY(i);
+                    const oy = positions[i * 3 + 1]; // original y
+                    const offset = Math.sin(time * 0.5 + i) * 0.5;
+                    particlePositions.setY(i, oy + offset);
+                }
+                particlePositions.needsUpdate = true;
+
+                // Parallax camera slightly on scroll
+                camera.position.y = 200 - (scrollY * 0.05);
+                camera.lookAt(0,0,0);
+
+                renderer.render(scene, camera);
+            }
+            
+            // Start Canvas Animation
+            animate();
+        }
+
+        // Initialize Three.js on load
+        window.addEventListener('load', initCanvasBackground);
+
+        /* =========================================
+           EXISTING UI LOGIC (Form, Slider, Modal)
+           ========================================= */
+        
+        // Smooth Reveal Observer
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('.reveal-up, .reveal-scale').forEach(el => revealObserver.observe(el));
+
+        // --- Interactive ROI Calculator ---
+        const budgetSlider = document.getElementById('budgetSlider');
+        const budgetDisplay = document.getElementById('budgetDisplay');
+        const calcViews = document.getElementById('calcViews');
+        const calcClicks = document.getElementById('calcClicks');
+        const calcConversions = document.getElementById('calcConversions');
+
+        function formatNumber(num) {
+            if (num >= 100000) return (num / 100000).toFixed(1).replace('.0', '') + 'L';
+            if (num >= 1000) return (num / 1000).toFixed(0) + 'k';
+            return num.toString();
+        }
+
+        budgetSlider.addEventListener('input', (e) => {
+            const budget = parseInt(e.target.value);
+            const views = budget * 10; 
+            const clicks = Math.floor(views * 0.04); 
+            const conversions = Math.floor(clicks * 0.02); 
+
+            budgetDisplay.innerText = '₹' + budget.toLocaleString('en-IN');
+            calcViews.innerText = formatNumber(views);
+            calcClicks.innerText = formatNumber(clicks);
+            calcConversions.innerText = formatNumber(conversions);
+        });
+
+        // --- Form Toggle Logic ---
+        const btnBrand = document.getElementById('toggleBrand');
+        const btnCreator = document.getElementById('toggleCreator');
+        const creatorFields = document.getElementById('creatorFields');
+        const nameInput = document.getElementById('nameInput');
+        const messageInput = document.getElementById('messageInput');
+        const userTypeInput = document.getElementById('userTypeInput');
+
+        btnBrand.addEventListener('click', () => {
+            btnBrand.className = 'text-xs font-bold uppercase tracking-widest text-brand-black hover-target transition-colors';
+            btnCreator.className = 'text-xs font-bold uppercase tracking-widest text-brand-muted hover:text-brand-black hover-target transition-colors';
+            
+            userTypeInput.value = 'Brand';
+            creatorFields.classList.add('hidden');
+            nameInput.placeholder = 'Brand / Company Name';
+            messageInput.placeholder = 'Define your objective.';
+        });
+
+        btnCreator.addEventListener('click', () => {
+            btnCreator.className = 'text-xs font-bold uppercase tracking-widest text-brand-black hover-target transition-colors';
+            btnBrand.className = 'text-xs font-bold uppercase tracking-widest text-brand-muted hover:text-brand-black hover-target transition-colors';
+            
+            userTypeInput.value = 'Creator';
+            creatorFields.classList.remove('hidden');
+            nameInput.placeholder = 'Creator Name';
+            messageInput.placeholder = 'Detail your current audience metrics.';
+        });
+
+        // Auto-resizing textarea
+        const textarea = document.getElementById('messageInput');
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+
+        // --- Full Screen Modal Logic ---
+        const successModal = document.getElementById('success-modal');
+        const modalInner = document.getElementById('modal-inner');
+        
+        function openSuccessModal() {
+            successModal.classList.remove('pointer-events-none');
+            void successModal.offsetWidth;
+            successModal.classList.remove('opacity-0');
+            modalInner.classList.remove('translate-y-12');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeSuccessModal() {
+            successModal.classList.add('opacity-0');
+            modalInner.classList.add('translate-y-12');
+            setTimeout(() => {
+                successModal.classList.add('pointer-events-none');
+                document.body.style.overflow = 'auto';
+            }, 700);
+        }
+
+        // --- Form Submission Handling ---
+        const form = document.getElementById('contact-form');
+        const submitBtn = document.getElementById('contact-submit-btn');
+        const btnText = submitBtn.querySelector('span');
+        
+        if(form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const originalText = btnText.innerHTML; 
+                submitBtn.disabled = true;
+                btnText.innerHTML = 'PROCESSING...';
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: JSON.stringify(Object.fromEntries(new FormData(form).entries())),
+                    headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
+                }).then(res => {
+                    if (res.ok) {
+                        openSuccessModal();
+                        form.reset();
+                        textarea.style.height = 'auto'; // reset textarea height
+                    } else alert("System Error. Please verify connection.");
+                }).catch(() => alert("Network error. Try again later."))
+                .finally(() => {
+                    submitBtn.disabled = false;
+                    btnText.innerHTML = originalText;
+                });
+            });
+        }
+    </script>
+</body>
+</html>
