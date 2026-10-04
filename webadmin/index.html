@@ -8,7 +8,7 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Tailwind Config for Branding and Dark Mode -->
+    <!-- Tailwind Config for Branding -->
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -36,367 +36,553 @@
         }
     </script>
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Phosphor Icons -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        /* Custom Styles & Scrollbars */
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; overflow: hidden; }
         
-        /* Custom Scrollbar */
+        /* Custom Scrollbars */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .dark ::-webkit-scrollbar-thumb { background: #475569; }
-        
-        /* Kanban specific styles */
-        .kanban-col { min-height: 500px; }
-        .drag-over { border: 2px dashed #0ea5e9; background-color: rgba(14, 165, 233, 0.05); }
-        .dragging { opacity: 0.5; }
-        
-        /* Transition for theme toggle */
-        body { transition: background-color 0.3s ease, color 0.3s ease; }
-        
-        /* Hide scrollbar for kanban board horizontal scroll */
         .hide-scroll::-webkit-scrollbar { display: none; }
-        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Kanban Drag & Drop Styles */
+        .kanban-col { min-height: 60vh; }
+        .drag-over { border: 2px dashed #0ea5e9; background-color: rgba(14, 165, 233, 0.05); }
+        .dragging { opacity: 0.5; transform: scale(0.98); }
+        
+        /* Transitions */
+        .transition-transform { transition-duration: 300ms; }
+        
+        /* Glass Modal */
+        .modal-backdrop { backdrop-filter: blur(4px); }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 dark:bg-dark-bg dark:text-gray-100 overflow-hidden h-screen w-screen">
+<body class="bg-gray-50 text-gray-900 dark:bg-dark-bg dark:text-gray-100 h-screen w-screen flex">
 
-    <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm">
-        <div class="bg-white dark:bg-dark-panel p-8 rounded-xl shadow-2xl w-full max-w-md border border-gray-200 dark:border-dark-border transition-colors">
-            <div class="text-center mb-8">
-                <div class="w-16 h-16 bg-primary-500 rounded-xl mx-auto flex items-center justify-center mb-4 shadow-lg">
-                    <i class="ph ph-trend-up text-white text-3xl"></i>
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-gray-900 text-white flex flex-col h-full fixed md:relative z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shadow-xl flex-shrink-0">
+        <div class="p-6 flex items-center justify-between border-b border-gray-800">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center shadow-lg shadow-primary-500/30">
+                    <i class="fa-solid fa-chart-line text-white"></i>
                 </div>
-                <h1 class="text-2xl font-bold dark:text-white">Feasibility Media</h1>
-                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Partner CRM Dashboard</p>
+                <span class="font-bold text-lg tracking-wide">Feasibility</span>
+            </div>
+            <button onclick="toggleSidebar()" class="md:hidden text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+        
+        <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-1">
+            <button data-view="dashboard" class="nav-btn active w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium bg-primary-600 text-white transition-all shadow-md shadow-primary-600/20">
+                <i class="fa-solid fa-house w-5"></i> Dashboard
+            </button>
+            <button data-view="leads" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
+                <i class="fa-solid fa-users w-5"></i> Leads
+            </button>
+            <button data-view="clients" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
+                <i class="fa-solid fa-handshake w-5"></i> Clients
+            </button>
+            <button data-view="pipeline" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
+                <i class="fa-solid fa-columns w-5"></i> Sales Pipeline
+            </button>
+            <button data-view="projects" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
+                <i class="fa-solid fa-bars-progress w-5"></i> Projects
+            </button>
+            <button data-view="payments" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
+                <i class="fa-solid fa-file-invoice-dollar w-5"></i> Payments
+            </button>
+            <button data-view="expenses" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
+                <i class="fa-solid fa-receipt w-5"></i> Expenses
+            </button>
+            <button data-view="partners" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
+                <i class="fa-solid fa-user-group w-5"></i> Partners
+            </button>
+        </nav>
+        
+        <div class="p-4 border-t border-gray-800 bg-gray-900/50">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary-600 to-primary-400 flex items-center justify-center border-2 border-gray-700 text-white font-bold text-sm">
+                    FM
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-white">Aryaveer & Partner</p>
+                    <p class="text-xs text-green-400 flex items-center gap-1"><i class="fa-solid fa-circle text-[8px]"></i> System Active</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-gray-50/50 dark:bg-dark-bg relative">
+        
+        <!-- Topbar -->
+        <header class="h-16 bg-white dark:bg-dark-panel border-b border-gray-200 dark:border-dark-border flex items-center justify-between px-6 flex-shrink-0 z-10">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="md:hidden text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <h2 id="current-view-title" class="text-xl font-bold text-gray-800 dark:text-white hidden sm:block">Dashboard</h2>
             </div>
             
-            <form id="login-form" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Username</label>
-                    <input type="text" id="username" value="admin" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleTheme()" class="w-9 h-9 flex items-center justify-center text-gray-500 bg-gray-100 rounded-full hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 transition-colors">
+                    <i class="fa-solid fa-moon dark:hidden"></i>
+                    <i class="fa-solid fa-sun hidden dark:block"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="absolute inset-0 bg-white/80 dark:bg-dark-bg/80 backdrop-blur-sm z-30 flex flex-col items-center justify-center transition-opacity duration-300">
+            <i class="fa-solid fa-circle-notch fa-spin text-4xl text-primary-500 mb-4"></i>
+            <p class="text-gray-600 dark:text-gray-300 font-medium">Syncing with Firestore...</p>
+        </div>
+
+        <!-- Views Container -->
+        <div id="views-container" class="flex-1 overflow-y-auto p-4 sm:p-8 custom-scrollbar">
+            
+            <!-- Dashboard View -->
+            <div id="view-dashboard" class="view-section space-y-6">
+                <!-- 50/50 Split Highlight -->
+                <div class="bg-gradient-to-r from-gray-900 to-gray-800 dark:from-dark-panel dark:to-gray-900 rounded-2xl p-6 sm:p-8 shadow-xl text-white relative overflow-hidden border border-gray-800">
+                    <div class="absolute top-0 right-0 p-8 opacity-10">
+                        <i class="fa-solid fa-scale-balanced text-9xl"></i>
+                    </div>
+                    <h3 class="text-gray-400 font-medium mb-1 uppercase tracking-wider text-xs">Financial Overview</h3>
+                    <h2 class="text-3xl font-bold mb-6">Net Profit Split (50/50)</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+                        <div class="bg-black/20 backdrop-blur-md rounded-xl p-5 border border-white/10">
+                            <p class="text-sm text-gray-400 mb-1">Total Net Profit</p>
+                            <p class="text-2xl font-bold text-green-400" id="dash-net-profit">₹0</p>
+                            <p class="text-xs text-gray-500 mt-2">Collected - Expenses</p>
+                        </div>
+                        <div class="bg-primary-900/40 backdrop-blur-md rounded-xl p-5 border border-primary-500/20">
+                            <p class="text-sm text-gray-400 mb-1">Aryaveer's Share</p>
+                            <p class="text-2xl font-bold text-white" id="dash-aryaveer-share">₹0</p>
+                            <p class="text-xs text-primary-400 mt-2"><i class="fa-solid fa-bolt"></i> 50% Cut</p>
+                        </div>
+                        <div class="bg-purple-900/40 backdrop-blur-md rounded-xl p-5 border border-purple-500/20">
+                            <p class="text-sm text-gray-400 mb-1">Partner's Share</p>
+                            <p class="text-2xl font-bold text-white" id="dash-partner-share">₹0</p>
+                            <p class="text-xs text-purple-400 mt-2"><i class="fa-solid fa-bolt"></i> 50% Cut</p>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
-                    <input type="password" id="password" value="admin123" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all">
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm flex flex-col justify-center">
+                        <div class="flex justify-between items-start mb-2">
+                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Leads</p>
+                            <div class="w-8 h-8 rounded bg-blue-50 text-blue-500 flex items-center justify-center"><i class="fa-solid fa-users"></i></div>
+                        </div>
+                        <h3 id="stat-total-leads" class="text-2xl font-bold text-gray-800 dark:text-white">0</h3>
+                    </div>
+                    <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm flex flex-col justify-center">
+                        <div class="flex justify-between items-start mb-2">
+                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Active Clients</p>
+                            <div class="w-8 h-8 rounded bg-indigo-50 text-indigo-500 flex items-center justify-center"><i class="fa-solid fa-handshake"></i></div>
+                        </div>
+                        <h3 id="stat-active-clients" class="text-2xl font-bold text-gray-800 dark:text-white">0</h3>
+                    </div>
+                    <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm flex flex-col justify-center">
+                        <div class="flex justify-between items-start mb-2">
+                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Collected Revenue</p>
+                            <div class="w-8 h-8 rounded bg-green-50 text-green-500 flex items-center justify-center"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+                        </div>
+                        <h3 id="stat-collected" class="text-2xl font-bold text-green-600">₹0</h3>
+                    </div>
+                    <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm flex flex-col justify-center">
+                        <div class="flex justify-between items-start mb-2">
+                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Expenses</p>
+                            <div class="w-8 h-8 rounded bg-red-50 text-red-500 flex items-center justify-center"><i class="fa-solid fa-arrow-trend-down"></i></div>
+                        </div>
+                        <h3 id="stat-expenses" class="text-2xl font-bold text-red-500">₹0</h3>
+                    </div>
                 </div>
-                <button type="submit" class="w-full bg-primary-600 hover:bg-primary-500 text-white font-medium py-2 rounded-lg transition-colors">Sign In</button>
-                <p id="login-error" class="text-red-500 text-sm text-center hidden">Invalid credentials.</p>
-                <div class="text-xs text-center text-gray-400 mt-4">Demo: admin / admin123</div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white dark:bg-dark-panel p-6 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
+                        <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Pipeline Status</h3>
+                        <div class="h-64 flex items-center justify-center" id="chart-container">
+                            <canvas id="pipelineChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-dark-panel p-6 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-semibold text-gray-800 dark:text-white">Recent Activity</h3>
+                        </div>
+                        <div id="recent-activity-list" class="space-y-4">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leads View -->
+            <div id="view-leads" class="view-section hidden space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
+                    <div class="relative w-full sm:w-72">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="search-leads" placeholder="Search leads..." class="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none transition-all">
+                    </div>
+                    <button onclick="openModal('leadModal')" class="w-full sm:w-auto bg-primary-600 hover:bg-primary-500 text-white px-5 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2 transition-colors shadow-sm">
+                        <i class="fa-solid fa-plus"></i> New Lead
+                    </button>
+                </div>
+                
+                <div class="bg-white dark:bg-dark-panel rounded-xl border border-gray-200 dark:border-dark-border shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm whitespace-nowrap">
+                            <thead class="bg-gray-50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+                                <tr>
+                                    <th class="px-6 py-4 font-semibold">Business</th>
+                                    <th class="px-6 py-4 font-semibold">Owner</th>
+                                    <th class="px-6 py-4 font-semibold">Status</th>
+                                    <th class="px-6 py-4 font-semibold">Value</th>
+                                    <th class="px-6 py-4 font-semibold text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leads-table-body" class="divide-y divide-gray-100 dark:divide-gray-800">
+                                <!-- Rendered dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pipeline (Kanban) View -->
+            <div id="view-pipeline" class="view-section hidden h-full flex flex-col">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Sales Pipeline</h3>
+                    <p class="text-sm text-gray-500">Drag and drop leads to update status</p>
+                </div>
+                <div class="flex-1 overflow-x-auto pb-4">
+                    <div id="kanban-board" class="flex gap-4 h-full min-w-max items-start">
+                        <!-- Columns injected dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clients View -->
+            <div id="view-clients" class="view-section hidden space-y-4">
+                <div class="flex justify-between items-center bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Active Clients</h3>
+                    <button onclick="openModal('clientModal')" class="bg-primary-600 hover:bg-primary-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">Add Client</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="clients-grid">
+                    <!-- Rendered dynamically -->
+                </div>
+            </div>
+
+            <!-- Projects View -->
+            <div id="view-projects" class="view-section hidden space-y-4">
+                 <div class="flex justify-between items-center bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Projects</h3>
+                    <button onclick="openModal('projectModal')" class="bg-primary-600 hover:bg-primary-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">New Project</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="projects-grid">
+                     <!-- Rendered dynamically -->
+                </div>
+            </div>
+
+            <!-- Payments View -->
+            <div id="view-payments" class="view-section hidden space-y-4">
+                <div class="flex justify-between items-center bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Payments</h3>
+                    <button onclick="openModal('paymentModal')" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">Record Payment</button>
+                </div>
+                <div class="bg-white dark:bg-dark-panel rounded-xl border border-gray-200 dark:border-dark-border shadow-sm overflow-hidden">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-gray-50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+                            <tr>
+                                <th class="px-6 py-4 font-semibold">Date</th>
+                                <th class="px-6 py-4 font-semibold">Client / Project</th>
+                                <th class="px-6 py-4 font-semibold">Amount</th>
+                                <th class="px-6 py-4 font-semibold">Status</th>
+                                <th class="px-6 py-4 font-semibold text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="payments-table-body" class="divide-y divide-gray-100 dark:divide-gray-800">
+                             <!-- Rendered dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Expenses View -->
+            <div id="view-expenses" class="view-section hidden space-y-4">
+                 <div class="flex justify-between items-center bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Expenses</h3>
+                    <button onclick="openModal('expenseModal')" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">Add Expense</button>
+                </div>
+                <div class="bg-white dark:bg-dark-panel rounded-xl border border-gray-200 dark:border-dark-border shadow-sm overflow-hidden">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-gray-50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+                            <tr>
+                                <th class="px-6 py-4 font-semibold">Date</th>
+                                <th class="px-6 py-4 font-semibold">Description</th>
+                                <th class="px-6 py-4 font-semibold">Category</th>
+                                <th class="px-6 py-4 font-semibold">Amount</th>
+                                <th class="px-6 py-4 font-semibold">Paid By</th>
+                                <th class="px-6 py-4 font-semibold text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expenses-table-body" class="divide-y divide-gray-100 dark:divide-gray-800">
+                             <!-- Rendered dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Partners View -->
+            <div id="view-partners" class="view-section hidden space-y-6">
+                <div class="bg-white dark:bg-dark-panel p-6 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm mb-6">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Partner Ledger & Profit Split</h2>
+                    <p class="text-gray-500 text-sm">Formula: (Total Collected Payments - Total Expenses) / 2</p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="partners-grid">
+                    <!-- Aryaveer Card -->
+                    <div class="bg-white dark:bg-dark-panel rounded-2xl border border-gray-200 dark:border-dark-border shadow-md overflow-hidden relative">
+                        <div class="h-2 w-full bg-blue-500"></div>
+                        <div class="p-6 sm:p-8">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="w-14 h-14 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xl font-bold">A</div>
+                                <div>
+                                    <h3 class="text-xl font-bold dark:text-white">Aryaveer</h3>
+                                    <p class="text-sm text-gray-500">Managing Partner</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-800">
+                                    <span class="text-gray-500">Leads Owned</span>
+                                    <span class="font-bold dark:text-white" id="partner-a-leads">0</span>
+                                </div>
+                                <div class="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-800">
+                                    <span class="text-gray-500">Clients Won</span>
+                                    <span class="font-bold dark:text-white" id="partner-a-clients">0</span>
+                                </div>
+                                <div class="flex justify-between items-center py-4 mt-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg px-4">
+                                    <span class="font-semibold text-gray-700 dark:text-gray-300">50% Net Profit Share</span>
+                                    <span class="text-2xl font-bold text-blue-600 dark:text-blue-400" id="partner-a-payout">₹0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Partner Card -->
+                    <div class="bg-white dark:bg-dark-panel rounded-2xl border border-gray-200 dark:border-dark-border shadow-md overflow-hidden relative">
+                        <div class="h-2 w-full bg-purple-500"></div>
+                        <div class="p-6 sm:p-8">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="w-14 h-14 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-xl font-bold">P</div>
+                                <div>
+                                    <h3 class="text-xl font-bold dark:text-white">Partner</h3>
+                                    <p class="text-sm text-gray-500">Managing Partner</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-800">
+                                    <span class="text-gray-500">Leads Owned</span>
+                                    <span class="font-bold dark:text-white" id="partner-p-leads">0</span>
+                                </div>
+                                <div class="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-800">
+                                    <span class="text-gray-500">Clients Won</span>
+                                    <span class="font-bold dark:text-white" id="partner-p-clients">0</span>
+                                </div>
+                                <div class="flex justify-between items-center py-4 mt-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg px-4">
+                                    <span class="font-semibold text-gray-700 dark:text-gray-300">50% Net Profit Share</span>
+                                    <span class="text-2xl font-bold text-purple-600 dark:text-purple-400" id="partner-p-payout">₹0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Global Modals -->
+    
+    <!-- Lead Modal -->
+    <div id="leadModal" class="fixed inset-0 bg-gray-900/60 modal-backdrop z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-dark-panel w-full max-w-lg rounded-2xl shadow-2xl border border-gray-200 dark:border-dark-border overflow-hidden transform transition-all">
+            <div class="flex justify-between items-center p-5 border-b border-gray-100 dark:border-gray-800">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white" id="leadModalTitle">Add New Lead</h3>
+                <button onclick="closeModal('leadModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form id="form-lead" class="p-5 space-y-4" onsubmit="saveLead(event)">
+                <input type="hidden" id="lead-id">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Business Name *</label>
+                    <input type="text" id="lead-business" required class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Lead Owner *</label>
+                        <select id="lead-owner" required class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
+                            <option value="Aryaveer">Aryaveer</option>
+                            <option value="Partner">Partner</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
+                        <select id="lead-status" class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
+                            <option value="NEW">NEW</option>
+                            <option value="CONTACTED">CONTACTED</option>
+                            <option value="NEGOTIATING">NEGOTIATING</option>
+                            <option value="WON">WON</option>
+                            <option value="LOST">LOST</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Estimated Value (₹)</label>
+                        <input type="number" id="lead-value" class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Source</label>
+                        <select id="lead-source" class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
+                            <option value="Instagram">Instagram</option>
+                            <option value="WhatsApp">WhatsApp</option>
+                            <option value="Referral">Referral</option>
+                            <option value="Website">Website</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="pt-4 flex justify-end gap-3">
+                    <button type="button" onclick="closeModal('leadModal')" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 rounded-lg transition-colors">Cancel</button>
+                    <button type="submit" id="btn-save-lead" class="px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-500 rounded-lg transition-colors">Save Lead</button>
+                </div>
             </form>
         </div>
     </div>
 
-    <div id="app-container" class="hidden h-full flex w-full">
-        
-        <!-- Sidebar -->
-        <aside id="sidebar" class="w-64 bg-gray-900 text-white flex flex-col h-full fixed md:relative z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
-            <div class="p-6 flex items-center justify-between border-b border-gray-800">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
-                        <i class="ph ph-trend-up text-white font-bold"></i>
-                    </div>
-                    <span class="font-bold text-lg tracking-wide">Feasibility</span>
-                </div>
-                <button id="close-sidebar" class="md:hidden text-gray-400 hover:text-white">
-                    <i class="ph ph-x text-xl"></i>
-                </button>
+    <!-- Client Modal -->
+    <div id="clientModal" class="fixed inset-0 bg-gray-900/60 modal-backdrop z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-dark-panel w-full max-w-lg rounded-2xl shadow-2xl border border-gray-200 dark:border-dark-border overflow-hidden transform transition-all">
+            <div class="flex justify-between items-center p-5 border-b border-gray-100 dark:border-gray-800">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white" id="clientModalTitle">Add Client</h3>
+                <button onclick="closeModal('clientModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
-            
-            <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1 custom-scrollbar">
-                <button data-view="dashboard" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium bg-primary-600 text-white transition-colors">
-                    <i class="ph ph-squares-four text-lg"></i> Dashboard
-                </button>
-                <button data-view="leads" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
-                    <i class="ph ph-users text-lg"></i> Leads
-                </button>
-                <button data-view="clients" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
-                    <i class="ph ph-handshake text-lg"></i> Clients
-                </button>
-                <button data-view="pipeline" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
-                    <i class="ph ph-kanban text-lg"></i> Sales Pipeline
-                </button>
-                <button data-view="projects" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
-                    <i class="ph ph-kanban text-lg"></i> Projects
-                </button>
-                <button data-view="payments" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
-                    <i class="ph ph-credit-card text-lg"></i> Payments
-                </button>
-                <button data-view="followups" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
-                    <i class="ph ph-phone-call text-lg"></i> Follow-ups
-                </button>
-                <button data-view="partners" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
-                    <i class="ph ph-users-three text-lg"></i> Partners
-                </button>
-                <button data-view="settings" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
-                    <i class="ph ph-gear text-lg"></i> Settings
-                </button>
-            </nav>
-            
-            <div class="p-4 border-t border-gray-800">
-                <div class="flex items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff" class="w-9 h-9 rounded-full border-2 border-gray-700">
-                    <div>
-                        <p class="text-sm font-medium text-white">Admin User</p>
-                        <p class="text-xs text-gray-400">Aryaveer & Partner</p>
-                    </div>
+            <form id="form-client" class="p-5 space-y-4" onsubmit="saveClient(event)">
+                <input type="hidden" id="client-id">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Client Business Name *</label>
+                    <input type="text" id="client-business" required class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
                 </div>
-                <button id="logout-btn" class="mt-4 w-full flex items-center justify-center gap-2 text-xs text-gray-400 hover:text-white border border-gray-700 rounded py-1.5 transition-colors">
-                    <i class="ph ph-sign-out"></i> Logout
-                </button>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="flex-1 flex flex-col h-full overflow-hidden bg-gray-50 dark:bg-dark-bg">
-            
-            <!-- Topbar -->
-            <header class="h-16 bg-white dark:bg-dark-panel border-b border-gray-200 dark:border-dark-border flex items-center justify-between px-4 sm:px-6 flex-shrink-0 z-10 transition-colors">
-                <div class="flex items-center gap-4">
-                    <button id="open-sidebar" class="md:hidden text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white">
-                        <i class="ph ph-list text-2xl"></i>
-                    </button>
-                    <h2 id="current-view-title" class="text-xl font-semibold text-gray-800 dark:text-white hidden sm:block">Dashboard</h2>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Linked Lead (Optional)</label>
+                    <select id="client-lead-id" class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
+                        <option value="">-- Select Lead --</option>
+                    </select>
                 </div>
-                
-                <div class="flex items-center gap-4 w-full justify-end sm:w-auto">
-                    <!-- Search -->
-                    <div class="relative hidden sm:block w-64">
-                        <i class="ph ph-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" id="global-search" placeholder="Search (Cmd+K)" class="w-full pl-9 pr-4 py-1.5 bg-gray-100 dark:bg-gray-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none transition-all">
-                    </div>
-                    
-                    <!-- Theme Toggle -->
-                    <button id="theme-toggle" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                        <i class="ph ph-moon text-xl dark:hidden"></i>
-                        <i class="ph ph-sun text-xl hidden dark:block"></i>
-                    </button>
+                <div class="pt-4 flex justify-end gap-3">
+                    <button type="button" onclick="closeModal('clientModal')" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 rounded-lg transition-colors">Cancel</button>
+                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-500 rounded-lg transition-colors">Save Client</button>
                 </div>
-            </header>
-
-            <!-- Views Container -->
-            <div id="views-container" class="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar">
-                
-                <div id="view-dashboard" class="view-section space-y-6">
-                    
-                    <!-- Stats Grid -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div class="bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-100 dark:border-dark-border shadow-sm">
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Total Leads</p>
-                            <div class="flex items-end gap-2 mt-1">
-                                <h3 id="stat-total-leads" class="text-2xl font-bold text-gray-800 dark:text-white">0</h3>
-                                <span class="text-xs text-green-500 mb-1"><i class="ph ph-trend-up"></i> +4 this week</span>
-                            </div>
-                        </div>
-                        <div class="bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-100 dark:border-dark-border shadow-sm">
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Active Projects</p>
-                            <div class="flex items-end gap-2 mt-1">
-                                <h3 id="stat-active-projects" class="text-2xl font-bold text-gray-800 dark:text-white">0</h3>
-                            </div>
-                        </div>
-                        <div class="bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-100 dark:border-dark-border shadow-sm">
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Total Revenue</p>
-                            <div class="flex items-end gap-2 mt-1">
-                                <h3 id="stat-total-revenue" class="text-2xl font-bold text-gray-800 dark:text-white">₹0</h3>
-                            </div>
-                        </div>
-                        <div class="bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-100 dark:border-dark-border shadow-sm">
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Pending Payments</p>
-                            <div class="flex items-end gap-2 mt-1">
-                                <h3 id="stat-pending-payments" class="text-2xl font-bold text-red-500">₹0</h3>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Charts & Tasks -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="lg:col-span-2 bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-100 dark:border-dark-border shadow-sm">
-                            <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Leads by Status</h3>
-                            <div class="h-64">
-                                <canvas id="leadsChart"></canvas>
-                            </div>
-                        </div>
-                        
-                        <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-100 dark:border-dark-border shadow-sm flex flex-col">
-                            <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Today's Follow-ups</h3>
-                            <div id="dashboard-tasks" class="flex-1 overflow-y-auto space-y-3">
-                                <!-- Tasks injected here -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="view-leads" class="view-section hidden space-y-4">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                        <div class="flex gap-2 w-full sm:w-auto">
-                            <input type="text" id="lead-search" placeholder="Search leads..." class="px-3 py-2 bg-white dark:bg-dark-panel border border-gray-200 dark:border-dark-border rounded-lg text-sm w-full sm:w-64 focus:ring-2 focus:ring-primary-500 outline-none dark:text-white">
-                            <select id="lead-filter-owner" class="px-3 py-2 bg-white dark:bg-dark-panel border border-gray-200 dark:border-dark-border rounded-lg text-sm outline-none dark:text-white">
-                                <option value="all">All Owners</option>
-                                <option value="Aryaveer">Aryaveer</option>
-                                <option value="Partner">Partner</option>
-                            </select>
-                        </div>
-                        <button onclick="openModal('lead-modal')" class="bg-primary-600 hover:bg-primary-500 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors">
-                            <i class="ph ph-plus"></i> Add Lead
-                        </button>
-                    </div>
-                    
-                    <div class="bg-white dark:bg-dark-panel rounded-xl border border-gray-200 dark:border-dark-border overflow-x-auto shadow-sm">
-                        <table class="w-full text-left text-sm whitespace-nowrap">
-                            <thead class="bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-dark-border">
-                                <tr>
-                                    <th class="px-4 py-3 font-medium">Business / Contact</th>
-                                    <th class="px-4 py-3 font-medium">Owner</th>
-                                    <th class="px-4 py-3 font-medium">Status</th>
-                                    <th class="px-4 py-3 font-medium">Value</th>
-                                    <th class="px-4 py-3 font-medium">Next Follow-up</th>
-                                    <th class="px-4 py-3 font-medium text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="leads-table-body" class="divide-y divide-gray-100 dark:divide-dark-border text-gray-700 dark:text-gray-300">
-                                <!-- Leads injected here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div id="view-pipeline" class="view-section hidden h-full flex flex-col">
-                    <div class="flex-1 overflow-x-auto hide-scroll pb-4">
-                        <div id="kanban-board" class="flex gap-4 h-full min-w-max">
-                            <!-- Kanban columns injected here -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Projects View -->
-                <div id="view-projects" class="view-section hidden space-y-4">
-                    <h3 class="font-semibold text-gray-800 dark:text-white text-lg mb-4">Active Projects</h3>
-                    <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <!-- Projects injected here -->
-                    </div>
-                </div>
-
-                <!-- Payments View -->
-                <div id="view-payments" class="view-section hidden space-y-4">
-                    <div class="bg-white dark:bg-dark-panel rounded-xl border border-gray-200 dark:border-dark-border overflow-x-auto shadow-sm">
-                        <table class="w-full text-left text-sm">
-                            <thead class="bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-dark-border">
-                                <tr>
-                                    <th class="px-4 py-3 font-medium">Client</th>
-                                    <th class="px-4 py-3 font-medium">Project</th>
-                                    <th class="px-4 py-3 font-medium">Total</th>
-                                    <th class="px-4 py-3 font-medium">Paid</th>
-                                    <th class="px-4 py-3 font-medium">Pending</th>
-                                    <th class="px-4 py-3 font-medium">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="payments-table-body" class="divide-y divide-gray-100 dark:divide-dark-border text-gray-700 dark:text-gray-300">
-                                <!-- Payments injected -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Partners View -->
-                <div id="view-partners" class="view-section hidden space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="partners-grid">
-                        <!-- Partners injected here -->
-                    </div>
-                </div>
-
-                <!-- Settings View -->
-                <div id="view-settings" class="view-section hidden space-y-6 max-w-2xl">
-                    <div class="bg-white dark:bg-dark-panel p-6 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
-                        <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Data Management</h3>
-                        <p class="text-sm text-gray-500 mb-4">Export your CRM data as JSON or import an existing backup. Due to browser restrictions, if Firebase fails, data is stored locally.</p>
-                        <div class="flex gap-3">
-                            <button onclick="exportData()" class="bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">Export JSON</button>
-                            <button onclick="clearData()" class="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-red-200">Clear Demo Data</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Other views placeholders (Clients, Followups) would follow same pattern -->
-
-            </div>
-        </main>
+            </form>
+        </div>
     </div>
 
-    <!-- Modal Backdrop -->
-    <div id="modal-backdrop" class="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        
-        <!-- Lead Modal -->
-        <div id="lead-modal" class="modal-content hidden bg-white dark:bg-dark-panel w-full max-w-2xl rounded-xl shadow-2xl border border-gray-200 dark:border-dark-border overflow-hidden">
-            <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-dark-border">
-                <h3 id="lead-modal-title" class="text-lg font-semibold dark:text-white">Add New Lead</h3>
-                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-white"><i class="ph ph-x text-xl"></i></button>
+    <!-- Expense Modal -->
+    <div id="expenseModal" class="fixed inset-0 bg-gray-900/60 modal-backdrop z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-dark-panel w-full max-w-md rounded-2xl shadow-2xl border border-gray-200 dark:border-dark-border overflow-hidden transform transition-all">
+            <div class="flex justify-between items-center p-5 border-b border-gray-100 dark:border-gray-800">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Record Expense</h3>
+                <button onclick="closeModal('expenseModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
-            <div class="p-4 overflow-y-auto max-h-[70vh]">
-                <form id="lead-form" class="space-y-4">
-                    <input type="hidden" id="lead-id">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Business Name *</label>
-                            <input type="text" id="lead-business" required class="w-full px-3 py-2 rounded bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 dark:text-white text-sm outline-none focus:border-primary-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Contact Person</label>
-                            <input type="text" id="lead-contact" class="w-full px-3 py-2 rounded bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 dark:text-white text-sm outline-none focus:border-primary-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Lead Owner *</label>
-                            <select id="lead-owner" required class="w-full px-3 py-2 rounded bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 dark:text-white text-sm outline-none focus:border-primary-500">
-                                <option value="Aryaveer">Aryaveer</option>
-                                <option value="Partner">Partner</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
-                            <select id="lead-status" class="w-full px-3 py-2 rounded bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 dark:text-white text-sm outline-none focus:border-primary-500">
-                                <option value="NEW">NEW</option>
-                                <option value="CONTACTED">CONTACTED</option>
-                                <option value="RESPONDED">RESPONDED</option>
-                                <option value="DEMO SENT">DEMO SENT</option>
-                                <option value="INTERESTED">INTERESTED</option>
-                                <option value="NEGOTIATING">NEGOTIATING</option>
-                                <option value="WON">WON</option>
-                                <option value="LOST">LOST</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Deal Value (₹)</label>
-                            <input type="number" id="lead-value" class="w-full px-3 py-2 rounded bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 dark:text-white text-sm outline-none focus:border-primary-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Next Follow-up</label>
-                            <input type="date" id="lead-followup" class="w-full px-3 py-2 rounded bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 dark:text-white text-sm outline-none focus:border-primary-500">
-                        </div>
+            <form id="form-expense" class="p-5 space-y-4" onsubmit="saveExpense(event)">
+                <input type="hidden" id="expense-id">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description *</label>
+                    <input type="text" id="expense-desc" required class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Amount (₹) *</label>
+                        <input type="number" id="expense-amount" required class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
                     </div>
-                </form>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
+                        <select id="expense-category" class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
+                            <option value="Domain">Domain</option>
+                            <option value="Hosting">Hosting</option>
+                            <option value="Software">Software</option>
+                            <option value="Advertising">Advertising</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="pt-4 flex justify-end gap-3">
+                    <button type="button" onclick="closeModal('expenseModal')" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 rounded-lg transition-colors">Cancel</button>
+                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-500 rounded-lg transition-colors">Save Expense</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="fixed inset-0 bg-gray-900/60 modal-backdrop z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-dark-panel w-full max-w-md rounded-2xl shadow-2xl border border-gray-200 dark:border-dark-border overflow-hidden transform transition-all">
+            <div class="flex justify-between items-center p-5 border-b border-gray-100 dark:border-gray-800">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Record Payment</h3>
+                <button onclick="closeModal('paymentModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
-            <div class="p-4 border-t border-gray-200 dark:border-dark-border flex justify-end gap-2">
-                <button onclick="closeModal()" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">Cancel</button>
-                <button onclick="saveLead()" class="px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-500 rounded">Save Lead</button>
-            </div>
+            <form id="form-payment" class="p-5 space-y-4" onsubmit="savePayment(event)">
+                <input type="hidden" id="payment-id">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Select Client *</label>
+                    <select id="payment-client-id" required class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
+                        <option value="">-- Select Client --</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Amount (₹) *</label>
+                        <input type="number" id="payment-amount" required class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
+                        <select id="payment-status" class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
+                            <option value="PAID">PAID</option>
+                            <option value="PENDING">PENDING</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="pt-4 flex justify-end gap-3">
+                    <button type="button" onclick="closeModal('paymentModal')" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 rounded-lg transition-colors">Cancel</button>
+                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-500 rounded-lg transition-colors">Save Payment</button>
+                </div>
+            </form>
         </div>
     </div>
 
     <!-- Toast Notifications -->
-    <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2"></div>
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3"></div>
 
+    <!-- JavaScript & Firebase -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set, onValue, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
 
+        // Provided Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyAZ_c3EaDxSZ6RrNrwQjR_TauJHrPfk_lk",
             authDomain: "designsnap-f3309.firebaseapp.com",
@@ -407,218 +593,159 @@
             appId: "1:741888249963:web:9540c9f68d6f0d5da9a12e",
             measurementId: "G-YC8TDQF1MM"
         };
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-        // Global State
-        window.appState = {
+        // Global State (Replaces Demo Data)
+        window.crmState = {
             leads: [],
+            clients: [],
             projects: [],
             payments: [],
-            initialized: false,
-            useFirebase: true
+            expenses: []
         };
-
-        let db;
+        
         let chartInstance = null;
+        let isInitialLoad = true;
 
-        // Constants
-        const PIPELINE_STAGES = ['NEW', 'CONTACTED', 'RESPONDED', 'DEMO SENT', 'INTERESTED', 'NEGOTIATING', 'WON', 'LOST'];
-        const DEMO_DATA = {
-            leads: [
-                { id: '1', business: 'ABC Furniture', contact: 'Ramesh', owner: 'Aryaveer', status: 'NEW', value: 25000, followup: '2026-10-10' },
-                { id: '2', business: 'Ranchi Sweets', contact: 'Suresh', owner: 'Partner', status: 'NEGOTIATING', value: 15000, followup: '2026-10-06' },
-                { id: '3', business: 'Tech Innovators', contact: 'Priya', owner: 'Aryaveer', status: 'WON', value: 45000, followup: '' }
-            ],
-            projects: [
-                { id: '1', client: 'Tech Innovators', status: 'IN PROGRESS', progress: 60, owner: 'Aryaveer', dev: 'Team' }
-            ],
-            payments: [
-                { id: '1', client: 'Tech Innovators', total: 45000, paid: 20000, pending: 25000, status: 'PARTIAL' }
-            ]
-        };
+        function setupFirebaseListeners() {
+            const collections = ['leads', 'clients', 'projects', 'payments', 'expenses'];
+            let loadedCount = 0;
 
-        async function initApp() {
-            try {
-                const app = initializeApp(firebaseConfig);
-                db = getDatabase(app);
-                // Check if data exists, if not seed it
-                const leadsRef = ref(db, 'leads');
-                onValue(leadsRef, (snapshot) => {
-                    const data = snapshot.val();
-                    if (data) {
-                        window.appState.leads = Object.values(data);
-                    } else if (!window.appState.initialized) {
-                        // Seed demo data once
-                        seedDemoData();
-                    }
-                    window.appState.initialized = true;
-                    if(document.getElementById('app-container').classList.contains('hidden') === false) {
-                        renderAll();
+            collections.forEach(colName => {
+                const q = query(collection(db, colName));
+                onSnapshot(q, (snapshot) => {
+                    crmState[colName] = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    
+                    // Sort descending by created timestamp if exists
+                    crmState[colName].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+                    if(isInitialLoad) {
+                        loadedCount++;
+                        if(loadedCount === collections.length) {
+                            isInitialLoad = false;
+                            document.getElementById('loading-overlay').classList.add('opacity-0', 'pointer-events-none');
+                            setTimeout(() => renderAll(), 300);
+                        }
+                    } else {
+                        renderAll(); // Re-render UI efficiently on any DB change
                     }
                 }, (error) => {
-                    console.warn("Firebase restricted or failed, falling back to LocalStorage", error);
-                    window.appState.useFirebase = false;
-                    loadLocalData();
+                    console.error(`Error loading ${colName}:`, error);
+                    window.showToast(`Error connecting to database (${colName})`, 'error');
                 });
-            } catch (error) {
-                console.error("Firebase init failed, using LocalStorage.", error);
-                window.appState.useFirebase = false;
-                loadLocalData();
-            }
-
-            setupTheme();
-            setupEventListeners();
-        }
-
-        // Dummy Login
-        document.getElementById('login-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
-            if (u === 'admin' && p === 'admin123') {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('app-container').classList.remove('hidden');
-                renderAll();
-                showToast("Welcome back!", "success");
-            } else {
-                document.getElementById('login-error').classList.remove('hidden');
-            }
-        });
-
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            document.getElementById('app-container').classList.add('hidden');
-            document.getElementById('login-screen').classList.remove('hidden');
-        });
-
-        function loadLocalData() {
-            const localData = localStorage.getItem('feasibility_crm');
-            if (localData) {
-                window.appState = JSON.parse(localData);
-                window.appState.useFirebase = false;
-            } else {
-                window.appState = { ...window.appState, ...DEMO_DATA, useFirebase: false };
-                saveLocalData();
-            }
-            if(!document.getElementById('app-container').classList.contains('hidden')) renderAll();
-        }
-
-        function saveLocalData() {
-            if(!window.appState.useFirebase) {
-                localStorage.setItem('feasibility_crm', JSON.stringify(window.appState));
-            }
-        }
-
-        async function syncData(collection) {
-            if (window.appState.useFirebase && db) {
-                try {
-                    const dataObj = {};
-                    window.appState[collection].forEach(item => {
-                        dataObj[item.id] = item;
-                    });
-                    await set(ref(db, collection), dataObj);
-                } catch (e) {
-                    console.error("Sync failed", e);
-                }
-            } else {
-                saveLocalData();
-            }
-            renderAll();
-        }
-
-        function seedDemoData() {
-            if (window.appState.useFirebase && db) {
-                const dataObj = {};
-                DEMO_DATA.leads.forEach(l => dataObj[l.id] = l);
-                set(ref(db, 'leads'), dataObj);
-            }
-        }
-
-        const navBtns = document.querySelectorAll('.nav-btn');
-        navBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const target = e.currentTarget.dataset.view;
-                
-                // Update active state
-                navBtns.forEach(b => {
-                    b.classList.remove('bg-primary-600', 'text-white');
-                    b.classList.add('text-gray-300', 'hover:bg-gray-800');
-                });
-                e.currentTarget.classList.add('bg-primary-600', 'text-white');
-                e.currentTarget.classList.remove('text-gray-300', 'hover:bg-gray-800');
-
-                // Toggle views
-                document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden'));
-                const viewEl = document.getElementById(`view-${target}`);
-                if (viewEl) viewEl.classList.remove('hidden');
-
-                // Update title
-                document.getElementById('current-view-title').innerText = e.currentTarget.innerText.trim();
-
-                // Close sidebar on mobile
-                if (window.innerWidth < 768) {
-                    document.getElementById('sidebar').classList.add('-translate-x-full');
-                }
-
-                // Render specific elements if needed
-                if (target === 'pipeline') renderPipeline();
-                if (target === 'dashboard') updateDashboardChart();
             });
-        });
+        }
 
         window.renderAll = function() {
+            calculateFinances();
             renderDashboard();
             renderLeads();
             renderPipeline();
+            renderClients();
             renderProjects();
             renderPayments();
-            renderPartners();
+            renderExpenses();
+            updateSelectDropdowns();
+        };
+
+        // Reusable Empty State Generator
+        function getEmptyState(title, subtitle, icon) {
+            return `
+                <div class="flex flex-col items-center justify-center p-12 text-center border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-xl m-4 bg-gray-50/50 dark:bg-gray-800/20">
+                    <div class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4 text-2xl text-gray-400 dark:text-gray-500">
+                        <i class="fa-solid ${icon}"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-1">${title}</h3>
+                    <p class="text-sm text-gray-500">${subtitle}</p>
+                </div>
+            `;
+        }
+
+        function calculateFinances() {
+            // Formula: (Total Collected Payments - Total Expenses) / 2
+            const totalCollected = crmState.payments
+                .filter(p => p.status === 'PAID')
+                .reduce((sum, p) => sum + Number(p.amount || 0), 0);
+                
+            const totalExpenses = crmState.expenses
+                .reduce((sum, e) => sum + Number(e.amount || 0), 0);
+                
+            const netProfit = totalCollected - totalExpenses;
+            const splitShare = netProfit / 2;
+
+            // Dashboard updates
+            document.getElementById('stat-collected').innerText = `₹${totalCollected.toLocaleString()}`;
+            document.getElementById('stat-expenses').innerText = `₹${totalExpenses.toLocaleString()}`;
+            document.getElementById('dash-net-profit').innerText = `₹${netProfit.toLocaleString()}`;
+            document.getElementById('dash-aryaveer-share').innerText = `₹${splitShare.toLocaleString()}`;
+            document.getElementById('dash-partner-share').innerText = `₹${splitShare.toLocaleString()}`;
+            
+            // Partners view updates
+            document.getElementById('partner-a-payout').innerText = `₹${splitShare.toLocaleString()}`;
+            document.getElementById('partner-p-payout').innerText = `₹${splitShare.toLocaleString()}`;
+            
+            // Count Leads and Clients by Owner
+            const counts = { Aryaveer: {leads:0, clients:0}, Partner: {leads:0, clients:0} };
+            crmState.leads.forEach(l => { if(counts[l.owner]) counts[l.owner].leads++; });
+            
+            document.getElementById('partner-a-leads').innerText = counts.Aryaveer.leads;
+            document.getElementById('partner-p-leads').innerText = counts.Partner.leads;
         }
 
         function renderDashboard() {
-            const leads = window.appState.leads || [];
-            document.getElementById('stat-total-leads').innerText = leads.length;
-            
-            const won = leads.filter(l => l.status === 'WON');
-            const totalRev = won.reduce((acc, curr) => acc + (Number(curr.value) || 0), 0);
-            document.getElementById('stat-total-revenue').innerText = `₹${totalRev.toLocaleString()}`;
+            document.getElementById('stat-total-leads').innerText = crmState.leads.length;
+            document.getElementById('stat-active-clients').innerText = crmState.clients.length;
 
-            const activeProj = window.appState.projects?.filter(p => p.status !== 'COMPLETED').length || 0;
-            document.getElementById('stat-active-projects').innerText = activeProj;
+            // Render Recent Activity (simulated from latest leads/payments)
+            const recentList = document.getElementById('recent-activity-list');
+            const activities = [
+                ...crmState.leads.map(l => ({ type: 'lead', title: `New Lead: ${l.business}`, time: l.timestamp })),
+                ...crmState.payments.map(p => ({ type: 'payment', title: `Payment ${p.status}: ₹${p.amount}`, time: p.timestamp }))
+            ].sort((a,b) => b.time - a.time).slice(0, 5);
 
-            // Tasks
-            const tasksHTML = leads.filter(l => l.followup && new Date(l.followup) <= new Date())
-                .map(l => `
-                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700">
-                        <div>
-                            <p class="text-sm font-medium dark:text-white">${l.business}</p>
-                            <p class="text-xs text-gray-500">Call ${l.contact} - Owner: ${l.owner}</p>
+            if (activities.length === 0) {
+                recentList.innerHTML = `<p class="text-sm text-gray-500 text-center py-4">No recent activity.</p>`;
+            } else {
+                recentList.innerHTML = activities.map(act => `
+                    <div class="flex items-center gap-3 py-2 border-b border-gray-100 dark:border-gray-800 last:border-0">
+                        <div class="w-8 h-8 rounded bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500">
+                            <i class="fa-solid ${act.type === 'lead' ? 'fa-user' : 'fa-indian-rupee-sign'} text-xs"></i>
                         </div>
-                        <button class="text-primary-500 hover:text-primary-600"><i class="ph ph-phone-call text-lg"></i></button>
+                        <div>
+                            <p class="text-sm font-medium dark:text-white">${act.title}</p>
+                            <p class="text-xs text-gray-400">Recently updated</p>
+                        </div>
                     </div>
                 `).join('');
-            document.getElementById('dashboard-tasks').innerHTML = tasksHTML || '<p class="text-sm text-gray-500">No tasks for today.</p>';
+            }
 
             updateDashboardChart();
         }
 
         function updateDashboardChart() {
-            const canvas = document.getElementById('leadsChart');
-            if(!canvas || canvas.offsetParent === null) return; // Don't draw if hidden
-
-            const leads = window.appState.leads || [];
-            const counts = PIPELINE_STAGES.map(stage => leads.filter(l => l.status === stage).length);
+            const canvas = document.getElementById('pipelineChart');
+            if(!canvas || canvas.offsetParent === null) return;
+            
+            const stages = ['NEW', 'CONTACTED', 'NEGOTIATING', 'WON', 'LOST'];
+            const counts = stages.map(st => crmState.leads.filter(l => l.status === st).length);
 
             if(chartInstance) chartInstance.destroy();
             
-            const ctx = canvas.getContext('2d');
-            chartInstance = new Chart(ctx, {
+            const isDark = document.documentElement.classList.contains('dark');
+            const textColor = isDark ? '#94a3b8' : '#475569';
+
+            chartInstance = new Chart(canvas.getContext('2d'), {
                 type: 'bar',
                 data: {
-                    labels: PIPELINE_STAGES,
+                    labels: stages,
                     datasets: [{
-                        label: 'Leads',
+                        label: 'Leads Count',
                         data: counts,
                         backgroundColor: '#0ea5e9',
-                        borderRadius: 4
+                        borderRadius: 6,
+                        borderWidth: 0
                     }]
                 },
                 options: {
@@ -626,7 +753,8 @@
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        y: { beginAtZero: true, ticks: { precision: 0 } }
+                        y: { beginAtZero: true, ticks: { precision: 0, color: textColor }, grid: { color: isDark ? '#334155' : '#f1f5f9' } },
+                        x: { ticks: { color: textColor }, grid: { display: false } }
                     }
                 }
             });
@@ -634,36 +762,35 @@
 
         function renderLeads() {
             const tbody = document.getElementById('leads-table-body');
-            const filterOwner = document.getElementById('lead-filter-owner').value;
-            const search = document.getElementById('lead-search').value.toLowerCase();
+            const searchQuery = document.getElementById('search-leads')?.value.toLowerCase() || '';
             
-            let filtered = (window.appState.leads || []).filter(l => {
-                const matchOwner = filterOwner === 'all' || l.owner === filterOwner;
-                const matchSearch = l.business.toLowerCase().includes(search) || l.contact.toLowerCase().includes(search);
-                return matchOwner && matchSearch;
-            });
+            const filtered = crmState.leads.filter(l => (l.business||'').toLowerCase().includes(searchQuery));
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-0">${getEmptyState('No Leads Found', 'Add a lead to start tracking.', 'fa-users')}</td></tr>`;
+                return;
+            }
 
             tbody.innerHTML = filtered.map(l => `
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                    <td class="px-4 py-3">
-                        <p class="font-medium dark:text-white">${l.business}</p>
-                        <p class="text-xs text-gray-500">${l.contact}</p>
+                    <td class="px-6 py-4">
+                        <p class="font-medium text-gray-900 dark:text-white">${l.business}</p>
+                        <p class="text-xs text-gray-500">${l.source || 'Unknown source'}</p>
                     </td>
-                    <td class="px-4 py-3">
-                        <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium ${l.owner === 'Aryaveer' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'}">
+                    <td class="px-6 py-4">
+                        <span class="px-2 py-1 rounded text-xs font-medium ${l.owner === 'Aryaveer' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'}">
                             ${l.owner}
                         </span>
                     </td>
-                    <td class="px-4 py-3">
-                        <span class="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300">
+                    <td class="px-6 py-4">
+                        <span class="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
                             ${l.status}
                         </span>
                     </td>
-                    <td class="px-4 py-3 dark:text-white">₹${Number(l.value||0).toLocaleString()}</td>
-                    <td class="px-4 py-3 text-gray-500 text-xs">${l.followup || '-'}</td>
-                    <td class="px-4 py-3 text-right">
-                        <button onclick="editLead('${l.id}')" class="text-gray-400 hover:text-primary-500 mr-2"><i class="ph ph-pencil-simple"></i></button>
-                        <button onclick="deleteLead('${l.id}')" class="text-gray-400 hover:text-red-500"><i class="ph ph-trash"></i></button>
+                    <td class="px-6 py-4 text-gray-900 dark:text-white font-medium">₹${Number(l.value||0).toLocaleString()}</td>
+                    <td class="px-6 py-4 text-right">
+                        <button onclick="editLead('${l.id}')" class="text-gray-400 hover:text-primary-500 mr-3 transition-colors"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteDocHandler('leads', '${l.id}')" class="text-gray-400 hover:text-red-500 transition-colors"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
             `).join('');
@@ -671,25 +798,30 @@
 
         window.renderPipeline = function() {
             const board = document.getElementById('kanban-board');
-            const leads = window.appState.leads || [];
+            const stages = ['NEW', 'CONTACTED', 'NEGOTIATING', 'WON', 'LOST'];
+            
+            if (crmState.leads.length === 0) {
+                board.innerHTML = `<div class="w-full">${getEmptyState('Empty Pipeline', 'Add leads to see them on the board.', 'fa-columns')}</div>`;
+                return;
+            }
 
-            board.innerHTML = PIPELINE_STAGES.map(stage => {
-                const stageLeads = leads.filter(l => l.status === stage);
+            board.innerHTML = stages.map(stage => {
+                const stageLeads = crmState.leads.filter(l => l.status === stage);
                 return `
-                <div class="kanban-col w-72 bg-gray-100/50 dark:bg-gray-800/50 rounded-xl p-3 flex flex-col border border-gray-200 dark:border-gray-700" data-stage="${stage}" ondragover="allowDrop(event)" ondrop="drop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
-                    <div class="flex justify-between items-center mb-3 px-1">
-                        <h4 class="font-semibold text-sm text-gray-700 dark:text-gray-200">${stage}</h4>
-                        <span class="text-xs bg-white dark:bg-gray-700 px-2 py-0.5 rounded-full shadow-sm text-gray-600 dark:text-gray-300">${stageLeads.length}</span>
+                <div class="kanban-col w-72 bg-gray-100/50 dark:bg-gray-800/30 rounded-xl p-3 flex flex-col border border-gray-200 dark:border-gray-800" data-stage="${stage}" ondragover="allowDrop(event)" ondrop="drop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+                    <div class="flex justify-between items-center mb-4 px-1">
+                        <h4 class="font-semibold text-sm text-gray-700 dark:text-gray-300 uppercase tracking-wider">${stage}</h4>
+                        <span class="text-xs bg-white dark:bg-gray-700 px-2 py-0.5 rounded-full text-gray-600 dark:text-gray-400 font-medium">${stageLeads.length}</span>
                     </div>
-                    <div class="flex-1 space-y-3 overflow-y-auto custom-scrollbar">
+                    <div class="flex-1 space-y-3 overflow-y-auto hide-scroll">
                         ${stageLeads.map(l => `
-                            <div class="bg-white dark:bg-dark-panel p-3 rounded-lg shadow-sm border border-gray-200 dark:border-dark-border cursor-grab active:cursor-grabbing" draggable="true" ondragstart="drag(event)" id="card-${l.id}" data-id="${l.id}">
+                            <div class="bg-white dark:bg-dark-panel p-4 rounded-lg shadow-sm border border-gray-200 dark:border-dark-border cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow relative group" draggable="true" ondragstart="drag(event)" data-id="${l.id}">
                                 <div class="flex justify-between items-start mb-2">
-                                    <h5 class="font-medium text-sm dark:text-white truncate">${l.business}</h5>
+                                    <h5 class="font-medium text-sm text-gray-900 dark:text-white truncate pr-4">${l.business}</h5>
                                 </div>
-                                <div class="flex justify-between items-center mt-2">
-                                    <span class="text-xs font-medium text-gray-500">₹${Number(l.value||0).toLocaleString()}</span>
-                                    <span class="text-[10px] px-1.5 py-0.5 rounded ${l.owner === 'Aryaveer' ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400'}">${l.owner}</span>
+                                <div class="flex justify-between items-center mt-3">
+                                    <span class="text-xs font-semibold text-green-600 dark:text-green-400">₹${Number(l.value||0).toLocaleString()}</span>
+                                    <span class="text-[10px] px-1.5 py-0.5 rounded font-medium ${l.owner === 'Aryaveer' ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400'}">${l.owner}</span>
                                 </div>
                             </div>
                         `).join('')}
@@ -698,11 +830,10 @@
             }).join('');
         }
 
-        // Drag and Drop handlers globally bound
         window.allowDrop = (ev) => ev.preventDefault();
         window.drag = (ev) => {
-            ev.dataTransfer.setData("text", ev.target.dataset.id);
-            ev.target.classList.add('dragging');
+            ev.dataTransfer.setData("text", ev.currentTarget.dataset.id);
+            ev.currentTarget.classList.add('dragging');
         };
         window.dragEnter = (ev) => {
             ev.preventDefault();
@@ -713,7 +844,7 @@
             const col = ev.target.closest('.kanban-col');
             if(col) col.classList.remove('drag-over');
         };
-        window.drop = (ev) => {
+        window.drop = async (ev) => {
             ev.preventDefault();
             const col = ev.target.closest('.kanban-col');
             document.querySelectorAll('.kanban-col').forEach(c => c.classList.remove('drag-over'));
@@ -722,233 +853,296 @@
             if(col) {
                 const leadId = ev.dataTransfer.getData("text");
                 const newStage = col.dataset.stage;
-                
-                const leadIndex = window.appState.leads.findIndex(l => l.id === leadId);
-                if(leadIndex > -1 && window.appState.leads[leadIndex].status !== newStage) {
-                    window.appState.leads[leadIndex].status = newStage;
-                    syncData('leads');
-                    showToast(`Moved to ${newStage}`, 'success');
+                try {
+                    await updateDoc(doc(db, 'leads', leadId), { status: newStage });
+                    window.showToast(`Moved to ${newStage}`, 'success');
+                } catch(e) {
+                    window.showToast(`Error updating pipeline`, 'error');
                 }
             }
         };
 
-        window.openModal = (modalId) => {
-            document.getElementById('modal-backdrop').classList.remove('hidden');
-            document.getElementById(modalId).classList.remove('hidden');
-            if(modalId === 'lead-modal') {
-                document.getElementById('lead-form').reset();
-                document.getElementById('lead-id').value = '';
-                document.getElementById('lead-modal-title').innerText = 'Add New Lead';
-            }
-        };
-        
-        window.closeModal = () => {
-            document.getElementById('modal-backdrop').classList.add('hidden');
-            document.querySelectorAll('.modal-content').forEach(m => m.classList.add('hidden'));
-        };
-
-        window.saveLead = () => {
-            const id = document.getElementById('lead-id').value || Date.now().toString();
-            const newLead = {
-                id,
-                business: document.getElementById('lead-business').value,
-                contact: document.getElementById('lead-contact').value,
-                owner: document.getElementById('lead-owner').value, // Critical Rule
-                status: document.getElementById('lead-status').value,
-                value: document.getElementById('lead-value').value,
-                followup: document.getElementById('lead-followup').value,
-            };
-
-            if(!newLead.business || !newLead.owner) {
-                showToast("Business Name and Owner are required.", "error");
+        function renderClients() {
+            const grid = document.getElementById('clients-grid');
+            if (crmState.clients.length === 0) {
+                grid.innerHTML = `<div class="col-span-full">${getEmptyState('No Clients Found', 'Convert a lead or add a client directly.', 'fa-handshake')}</div>`;
                 return;
             }
-
-            const idx = window.appState.leads.findIndex(l => l.id === id);
-            if(idx > -1) window.appState.leads[idx] = newLead;
-            else window.appState.leads.push(newLead);
-
-            syncData('leads');
-            closeModal();
-            showToast("Lead saved successfully.", "success");
-        };
-
-        window.editLead = (id) => {
-            const lead = window.appState.leads.find(l => l.id === id);
-            if(!lead) return;
-            
-            document.getElementById('lead-id').value = lead.id;
-            document.getElementById('lead-business').value = lead.business;
-            document.getElementById('lead-contact').value = lead.contact || '';
-            document.getElementById('lead-owner').value = lead.owner;
-            document.getElementById('lead-status').value = lead.status;
-            document.getElementById('lead-value').value = lead.value || '';
-            document.getElementById('lead-followup').value = lead.followup || '';
-            
-            document.getElementById('lead-modal-title').innerText = 'Edit Lead';
-            document.getElementById('modal-backdrop').classList.remove('hidden');
-            document.getElementById('lead-modal').classList.remove('hidden');
-        };
-
-        window.deleteLead = (id) => {
-            if(confirm("Are you sure you want to delete this lead?")) {
-                window.appState.leads = window.appState.leads.filter(l => l.id !== id);
-                syncData('leads');
-                showToast("Lead deleted.", "success");
-            }
-        };
-
-        function renderProjects() {
-            const grid = document.getElementById('projects-grid');
-            const projects = window.appState.projects || [];
-            grid.innerHTML = projects.map(p => `
-                <div class="bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
-                    <div class="flex justify-between items-start mb-2">
-                        <h4 class="font-medium dark:text-white">${p.client}</h4>
-                        <span class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-600 dark:text-gray-300">${p.status}</span>
-                    </div>
-                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 mb-2 mt-4">
-                        <div class="bg-primary-500 h-1.5 rounded-full" style="width: ${p.progress}%"></div>
-                    </div>
-                    <p class="text-xs text-right text-gray-500 mb-3">${p.progress}% Complete</p>
-                    <div class="flex justify-between text-xs text-gray-500 border-t border-gray-100 dark:border-gray-800 pt-2">
-                        <span>Sales: ${p.owner}</span>
-                        <span>Dev: ${p.dev}</span>
-                    </div>
+            grid.innerHTML = crmState.clients.map(c => `
+                <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm flex flex-col relative group">
+                    <button onclick="deleteDocHandler('clients', '${c.id}')" class="absolute top-4 right-4 text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><i class="fa-solid fa-trash text-sm"></i></button>
+                    <div class="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-lg flex items-center justify-center text-xl mb-4 font-bold uppercase">${c.business.charAt(0)}</div>
+                    <h4 class="font-bold text-gray-900 dark:text-white text-lg">${c.business}</h4>
+                    <p class="text-sm text-gray-500 mt-1">Client ID: ${c.id.substring(0,6).toUpperCase()}</p>
                 </div>
             `).join('');
+        }
+        
+        function renderProjects() {
+            const grid = document.getElementById('projects-grid');
+            grid.innerHTML = `<div class="col-span-full">${getEmptyState('Projects Coming Soon', 'This module will be expanded in the next update.', 'fa-bars-progress')}</div>`;
         }
 
         function renderPayments() {
             const tbody = document.getElementById('payments-table-body');
-            const payments = window.appState.payments || [];
-            tbody.innerHTML = payments.map(p => `
+            if (crmState.payments.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-0">${getEmptyState('No Payments Recorded', 'Record incoming payments here.', 'fa-file-invoice-dollar')}</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = crmState.payments.map(p => `
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                    <td class="px-4 py-3 font-medium dark:text-white">${p.client}</td>
-                    <td class="px-4 py-3 text-gray-500 text-xs">Website Dev</td>
-                    <td class="px-4 py-3 text-gray-700 dark:text-gray-300">₹${p.total}</td>
-                    <td class="px-4 py-3 text-green-600">₹${p.paid}</td>
-                    <td class="px-4 py-3 text-red-500">₹${p.pending}</td>
-                    <td class="px-4 py-3">
-                        <span class="px-2 py-1 rounded text-xs font-medium ${p.status === 'PAID' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'}">${p.status}</span>
+                    <td class="px-6 py-4 text-gray-500 text-sm">${new Date(p.timestamp).toLocaleDateString()}</td>
+                    <td class="px-6 py-4 font-medium dark:text-white">${p.clientName || 'Unknown'}</td>
+                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">₹${Number(p.amount).toLocaleString()}</td>
+                    <td class="px-6 py-4">
+                        <span class="px-2 py-1 rounded text-xs font-bold ${p.status === 'PAID' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'}">${p.status}</span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <button onclick="deleteDocHandler('payments', '${p.id}')" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
             `).join('');
         }
 
-        function renderPartners() {
-            const grid = document.getElementById('partners-grid');
-            const leads = window.appState.leads || [];
-            
-            const partners = ['Aryaveer', 'Partner'];
-            grid.innerHTML = partners.map(pName => {
-                const partnerLeads = leads.filter(l => l.owner === pName);
-                const won = partnerLeads.filter(l => l.status === 'WON');
-                const rev = won.reduce((acc, curr) => acc + (Number(curr.value)||0), 0);
-
-                return `
-                <div class="bg-white dark:bg-dark-panel p-6 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold text-white ${pName === 'Aryaveer' ? 'bg-blue-500' : 'bg-purple-500'}">
-                            ${pName.charAt(0)}
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-bold dark:text-white">${pName}</h3>
-                            <p class="text-sm text-gray-500">Partner Metrics</p>
-                        </div>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="flex justify-between border-b border-gray-100 dark:border-gray-800 pb-2">
-                            <span class="text-sm text-gray-500 dark:text-gray-400">Leads Sourced</span>
-                            <span class="font-medium dark:text-white">${partnerLeads.length}</span>
-                        </div>
-                        <div class="flex justify-between border-b border-gray-100 dark:border-gray-800 pb-2">
-                            <span class="text-sm text-gray-500 dark:text-gray-400">Deals Won</span>
-                            <span class="font-medium dark:text-white">${won.length}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-sm text-gray-500 dark:text-gray-400">Revenue Generated</span>
-                            <span class="font-bold text-green-600">₹${rev.toLocaleString()}</span>
-                        </div>
-                    </div>
-                </div>
-                `;
-            }).join('');
+        function renderExpenses() {
+            const tbody = document.getElementById('expenses-table-body');
+            if (crmState.expenses.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-0">${getEmptyState('No Expenses', 'Track domain, hosting, and software costs.', 'fa-receipt')}</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = crmState.expenses.map(e => `
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td class="px-6 py-4 text-gray-500 text-sm">${new Date(e.timestamp).toLocaleDateString()}</td>
+                    <td class="px-6 py-4 font-medium dark:text-white">${e.desc}</td>
+                    <td class="px-6 py-4 text-gray-500 text-sm">${e.category}</td>
+                    <td class="px-6 py-4 font-semibold text-red-500">₹${Number(e.amount).toLocaleString()}</td>
+                    <td class="px-6 py-4 text-gray-500 text-sm">System</td>
+                    <td class="px-6 py-4 text-right">
+                        <button onclick="deleteDocHandler('expenses', '${e.id}')" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
         }
 
-        function setupEventListeners() {
-            // Mobile Sidebar Toggle
-            document.getElementById('open-sidebar').addEventListener('click', () => {
-                document.getElementById('sidebar').classList.remove('-translate-x-full');
-            });
-            document.getElementById('close-sidebar').addEventListener('click', () => {
-                document.getElementById('sidebar').classList.add('-translate-x-full');
-            });
+        function updateSelectDropdowns() {
+            // Update Client Select in Payment Modal
+            const pClient = document.getElementById('payment-client-id');
+            pClient.innerHTML = `<option value="">-- Select Client --</option>` + 
+                crmState.clients.map(c => `<option value="${c.id}">${c.business}</option>`).join('');
+                
+            // Update Lead Select in Client Modal
+            const cLead = document.getElementById('client-lead-id');
+            cLead.innerHTML = `<option value="">-- Select Lead --</option>` + 
+                crmState.leads.filter(l=>l.status==='WON').map(l => `<option value="${l.id}">${l.business}</option>`).join('');
+        }
 
-            // Theme Toggle
-            document.getElementById('theme-toggle').addEventListener('click', () => {
-                document.documentElement.classList.toggle('dark');
-                localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-                if(chartInstance) updateDashboardChart(); // re-render chart to match theme (simplified)
-            });
+        window.saveLead = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-save-lead');
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Saving...`;
+            btn.disabled = true;
 
-            // Lead Search and Filter
-            document.getElementById('lead-search').addEventListener('input', renderLeads);
-            document.getElementById('lead-filter-owner').addEventListener('change', renderLeads);
+            const id = document.getElementById('lead-id').value;
+            const data = {
+                business: document.getElementById('lead-business').value,
+                owner: document.getElementById('lead-owner').value,
+                status: document.getElementById('lead-status').value,
+                value: document.getElementById('lead-value').value || 0,
+                source: document.getElementById('lead-source').value,
+                timestamp: id ? undefined : Date.now()
+            };
 
-            // Global Search (Cmd+K focus)
-            document.addEventListener('keydown', (e) => {
-                if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-                    e.preventDefault();
-                    document.getElementById('global-search')?.focus();
+            try {
+                if (id) {
+                    delete data.timestamp; // don't overwrite
+                    await updateDoc(doc(db, 'leads', id), data);
+                    window.showToast("Lead updated successfully", "success");
+                } else {
+                    await addDoc(collection(db, 'leads'), data);
+                    window.showToast("New lead created", "success");
                 }
-            });
-        }
+                closeModal('leadModal');
+            } catch (err) {
+                console.error(err);
+                window.showToast("Failed to save lead", "error");
+            } finally {
+                btn.innerHTML = `Save Lead`;
+                btn.disabled = false;
+            }
+        };
 
-        function setupTheme() {
+        window.saveClient = async (e) => {
+            e.preventDefault();
+            const data = {
+                business: document.getElementById('client-business').value,
+                leadId: document.getElementById('client-lead-id').value,
+                timestamp: Date.now()
+            };
+            try {
+                await addDoc(collection(db, 'clients'), data);
+                window.showToast("Client added", "success");
+                closeModal('clientModal');
+            } catch(err) {
+                window.showToast("Failed to add client", "error");
+            }
+        };
+
+        window.savePayment = async (e) => {
+            e.preventDefault();
+            const clientId = document.getElementById('payment-client-id').value;
+            const client = crmState.clients.find(c => c.id === clientId);
+            
+            const data = {
+                clientId: clientId,
+                clientName: client ? client.business : 'Unknown',
+                amount: document.getElementById('payment-amount').value,
+                status: document.getElementById('payment-status').value,
+                timestamp: Date.now()
+            };
+            try {
+                await addDoc(collection(db, 'payments'), data);
+                window.showToast("Payment recorded", "success");
+                closeModal('paymentModal');
+            } catch(err) {
+                window.showToast("Failed to record payment", "error");
+            }
+        };
+
+        window.saveExpense = async (e) => {
+            e.preventDefault();
+            const data = {
+                desc: document.getElementById('expense-desc').value,
+                amount: document.getElementById('expense-amount').value,
+                category: document.getElementById('expense-category').value,
+                timestamp: Date.now()
+            };
+            try {
+                await addDoc(collection(db, 'expenses'), data);
+                window.showToast("Expense recorded", "success");
+                closeModal('expenseModal');
+            } catch(err) {
+                window.showToast("Failed to record expense", "error");
+            }
+        };
+
+        window.deleteDocHandler = async (colName, id) => {
+            if(confirm("Are you sure you want to delete this record?")) {
+                try {
+                    await deleteDoc(doc(db, colName, id));
+                    window.showToast("Record deleted", "success");
+                } catch(err) {
+                    window.showToast("Failed to delete record", "error");
+                }
+            }
+        };
+
+        window.editLead = (id) => {
+            const lead = crmState.leads.find(l => l.id === id);
+            if(!lead) return;
+            
+            document.getElementById('lead-id').value = lead.id;
+            document.getElementById('lead-business').value = lead.business;
+            document.getElementById('lead-owner').value = lead.owner;
+            document.getElementById('lead-status').value = lead.status;
+            document.getElementById('lead-value').value = lead.value || '';
+            document.getElementById('lead-source').value = lead.source || 'Other';
+            
+            document.getElementById('leadModalTitle').innerText = 'Edit Lead';
+            openModal('leadModal');
+        };
+
+
+        window.openModal = (id) => {
+            const modal = document.getElementById(id);
+            if(modal.querySelector('form')) modal.querySelector('form').reset();
+            if(modal.querySelector('#lead-id')) modal.querySelector('#lead-id').value = '';
+            
+            modal.classList.remove('hidden');
+            // Animate in
+            setTimeout(() => {
+                modal.querySelector('div').classList.remove('scale-95', 'opacity-0');
+                modal.querySelector('div').classList.add('scale-100', 'opacity-100');
+            }, 10);
+        };
+        
+        window.closeModal = (id) => {
+            const modal = document.getElementById(id);
+            modal.querySelector('div').classList.remove('scale-100', 'opacity-100');
+            modal.querySelector('div').classList.add('scale-95', 'opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 200);
+        };
+
+        window.showToast = (msg, type = 'info') => {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const color = type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-gray-800';
+            const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-circle-xmark' : 'fa-info-circle';
+            
+            toast.className = `${color} text-white px-5 py-3 rounded-lg shadow-xl text-sm font-medium transition-all duration-300 transform translate-x-full flex items-center gap-3 border border-white/10`;
+            toast.innerHTML = `<i class="fa-solid ${icon} text-lg"></i> ${msg}`;
+            container.appendChild(toast);
+            
+            setTimeout(() => toast.classList.remove('translate-x-full'), 10);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-x-full');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        };
+
+        // Navigation and View Switching
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const target = e.currentTarget.dataset.view;
+                
+                // Update active nav styling
+                document.querySelectorAll('.nav-btn').forEach(b => {
+                    b.classList.remove('bg-primary-600', 'text-white', 'shadow-md');
+                    b.classList.add('text-gray-400', 'hover:bg-gray-800');
+                });
+                e.currentTarget.classList.add('bg-primary-600', 'text-white', 'shadow-md');
+                e.currentTarget.classList.remove('text-gray-400', 'hover:bg-gray-800');
+
+                // Switch view container
+                document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden'));
+                document.getElementById(`view-${target}`).classList.remove('hidden');
+
+                // Update Header Title
+                document.getElementById('current-view-title').innerText = e.currentTarget.innerText.trim();
+
+                // Close sidebar on mobile
+                if (window.innerWidth < 768) {
+                    document.getElementById('sidebar').classList.add('-translate-x-full');
+                }
+
+                // Render specific things that depend on container visibility (e.g., charts)
+                if (target === 'dashboard') updateDashboardChart();
+            });
+        });
+
+        // Theme Toggle Logic
+        window.toggleTheme = () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            if(chartInstance) updateDashboardChart();
+        };
+
+        // Sidebar Toggle Mobile
+        window.toggleSidebar = () => {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+        };
+        
+        // Search Filter Attach
+        document.getElementById('search-leads').addEventListener('input', renderLeads);
+
+        // Bootstrap on Load
+        document.addEventListener('DOMContentLoaded', () => {
             if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark');
             } else {
                 document.documentElement.classList.remove('dark');
             }
-        }
-
-        window.showToast = (message, type = 'info') => {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            const colors = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-gray-800';
-            toast.className = `${colors} text-white px-4 py-2 rounded shadow-lg text-sm transition-opacity duration-300 transform translate-y-0 opacity-100 flex items-center gap-2`;
-            toast.innerHTML = `<i class="ph ${type === 'success' ? 'ph-check-circle' : 'ph-info'}"></i> ${message}`;
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.classList.add('opacity-0');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        };
-
-        window.exportData = () => {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(window.appState));
-            const downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href", dataStr);
-            downloadAnchorNode.setAttribute("download", "feasibility_crm_backup.json");
-            document.body.appendChild(downloadAnchorNode);
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();
-        };
-
-        window.clearData = () => {
-            if(confirm("Are you sure? This will wipe local data. (Firebase data might persist if active)")) {
-                localStorage.removeItem('feasibility_crm');
-                window.appState.leads = [];
-                window.appState.projects = [];
-                window.appState.payments = [];
-                renderAll();
-                showToast("Data cleared locally.", "info");
-            }
-        };
-
-        // Bootstrap
-        document.addEventListener('DOMContentLoaded', initApp);
+            setupFirebaseListeners();
+        });
 
     </script>
 </body>
