@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feasibility Media CRM</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config for Branding and Dark Mode -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        },
+                        dark: {
+                            bg: '#0f172a',
+                            panel: '#1e293b',
+                            border: '#334155'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Custom Styles & Scrollbars */
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+        
+        /* Kanban specific styles */
+        .kanban-col { min-height: 500px; }
+        .drag-over { border: 2px dashed #0ea5e9; background-color: rgba(14, 165, 233, 0.05); }
+        .dragging { opacity: 0.5; }
+        
+        /* Transition for theme toggle */
+        body { transition: background-color 0.3s ease, color 0.3s ease; }
+        
+        /* Hide scrollbar for kanban board horizontal scroll */
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 dark:bg-dark-bg dark:text-gray-100 overflow-hidden h-screen w-screen">
+
+    <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm">
+        <div class="bg-white dark:bg-dark-panel p-8 rounded-xl shadow-2xl w-full max-w-md border border-gray-200 dark:border-dark-border transition-colors">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-primary-500 rounded-xl mx-auto flex items-center justify-center mb-4 shadow-lg">
+                    <i class="ph ph-trend-up text-white text-3xl"></i>
+                </div>
+                <h1 class="text-2xl font-bold dark:text-white">Feasibility Media</h1>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Partner CRM Dashboard</p>
+            </div>
+            
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Username</label>
+                    <input type="text" id="username" value="admin" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                    <input type="password" id="password" value="admin123" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all">
+                </div>
+                <button type="submit" class="w-full bg-primary-600 hover:bg-primary-500 text-white font-medium py-2 rounded-lg transition-colors">Sign In</button>
+                <p id="login-error" class="text-red-500 text-sm text-center hidden">Invalid credentials.</p>
+                <div class="text-xs text-center text-gray-400 mt-4">Demo: admin / admin123</div>
+            </form>
+        </div>
+    </div>
+
+    <div id="app-container" class="hidden h-full flex w-full">
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="w-64 bg-gray-900 text-white flex flex-col h-full fixed md:relative z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+            <div class="p-6 flex items-center justify-between border-b border-gray-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
+                        <i class="ph ph-trend-up text-white font-bold"></i>
+                    </div>
+                    <span class="font-bold text-lg tracking-wide">Feasibility</span>
+                </div>
+                <button id="close-sidebar" class="md:hidden text-gray-400 hover:text-white">
+                    <i class="ph ph-x text-xl"></i>
+                </button>
+            </div>
+            
+            <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1 custom-scrollbar">
+                <button data-view="dashboard" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium bg-primary-600 text-white transition-colors">
+                    <i class="ph ph-squares-four text-lg"></i> Dashboard
+                </button>
+                <button data-view="leads" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                    <i class="ph ph-users text-lg"></i> Leads
+                </button>
+                <button data-view="clients" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                    <i class="ph ph-handshake text-lg"></i> Clients
+                </button>
+                <button data-view="pipeline" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                    <i class="ph ph-kanban text-lg"></i> Sales Pipeline
+                </button>
+                <button data-view="projects" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                    <i class="ph ph-kanban text-lg"></i> Projects
+                </button>
+                <button data-view="payments" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                    <i class="ph ph-credit-card text-lg"></i> Payments
+                </button>
+                <button data-view="followups" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                    <i class="ph ph-phone-call text-lg"></i> Follow-ups
+                </button>
+                <button data-view="partners" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                    <i class="ph ph-users-three text-lg"></i> Partners
+                </button>
+                <button data-view="settings" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                    <i class="ph ph-gear text-lg"></i> Settings
+                </button>
+            </nav>
+            
+            <div class="p-4 border-t border-gray-800">
+                <div class="flex items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff" class="w-9 h-9 rounded-full border-2 border-gray-700">
+                    <div>
+                        <p class="text-sm font-medium text-white">Admin User</p>
+                        <p class="text-xs text-gray-400">Aryaveer & Partner</p>
+                    </div>
+                </div>
+                <button id="logout-btn" class="mt-4 w-full flex items-center justify-center gap-2 text-xs text-gray-400 hover:text-white border border-gray-700 rounded py-1.5 transition-colors">
+                    <i class="ph ph-sign-out"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden bg-gray-50 dark:bg-dark-bg">
+            
+            <!-- Topbar -->
+            <header class="h-16 bg-white dark:bg-dark-panel border-b border-gray-200 dark:border-dark-border flex items-center justify-between px-4 sm:px-6 flex-shrink-0 z-10 transition-colors">
+                <div class="flex items-center gap-4">
+                    <button id="open-sidebar" class="md:hidden text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white">
+                        <i class="ph ph-list text-2xl"></i>
+                    </button>
+                    <h2 id="current-view-title" class="text-xl font-semibold text-gray-800 dark:text-white hidden sm:block">Dashboard</h2>
+                </div>
+                
+                <div class="flex items-center gap-4 w-full justify-end sm:w-auto">
+                    <!-- Search -->
+                    <div class="relative hidden sm:block w-64">
+                        <i class="ph ph-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="global-search" placeholder="Search (Cmd+K)" class="w-full pl-9 pr-4 py-1.5 bg-gray-100 dark:bg-gray-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none transition-all">
+                    </div>
+                    
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <i class="ph ph-moon text-xl dark:hidden"></i>
+                        <i class="ph ph-sun text-xl hidden dark:block"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Views Container -->
+            <div id="views-container" class="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar">
+                
+                <div id="view-dashboard" class="view-section space-y-6">
+                    
+                    <!-- Stats Grid -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-100 dark:border-dark-border shadow-sm">
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Total Leads</p>
+                            <div class="flex items-end gap-2 mt-1">
+                                <h3 id="stat-total-leads" class="text-2xl font-bold text-gray-800 dark:text-white">0</h3>
+                                <span class="text-xs text-green-500 mb-1"><i class="ph ph-trend-up"></i> +4 this week</span>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-100 dark:border-dark-border shadow-sm">
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Active Projects</p>
+                            <div class="flex items-end gap-2 mt-1">
+                                <h3 id="stat-active-projects" class="text-2xl font-bold text-gray-800 dark:text-white">0</h3>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-100 dark:border-dark-border shadow-sm">
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Total Revenue</p>
+                            <div class="flex items-end gap-2 mt-1">
+                                <h3 id="stat-total-revenue" class="text-2xl font-bold text-gray-800 dark:text-white">₹0</h3>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-100 dark:border-dark-border shadow-sm">
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Pending Payments</p>
+                            <div class="flex items-end gap-2 mt-1">
+                                <h3 id="stat-pending-payments" class="text-2xl font-bold text-red-500">₹0</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts & Tasks -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2 bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-100 dark:border-dark-border shadow-sm">
+                            <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Leads by Status</h3>
+                            <div class="h-64">
+                                <canvas id="leadsChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-100 dark:border-dark-border shadow-sm flex flex-col">
+                            <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Today's Follow-ups</h3>
+                            <div id="dashboard-tasks" class="flex-1 overflow-y-auto space-y-3">
+                                <!-- Tasks injected here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="view-leads" class="view-section hidden space-y-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div class="flex gap-2 w-full sm:w-auto">
+                            <input type="text" id="lead-search" placeholder="Search leads..." class="px-3 py-2 bg-white dark:bg-dark-panel border border-gray-200 dark:border-dark-border rounded-lg text-sm w-full sm:w-64 focus:ring-2 focus:ring-primary-500 outline-none dark:text-white">
+                            <select id="lead-filter-owner" class="px-3 py-2 bg-white dark:bg-dark-panel border border-gray-200 dark:border-dark-border rounded-lg text-sm outline-none dark:text-white">
+                                <option value="all">All Owners</option>
+                                <option value="Aryaveer">Aryaveer</option>
+                                <option value="Partner">Partner</option>
+                            </select>
+                        </div>
+                        <button onclick="openModal('lead-modal')" class="bg-primary-600 hover:bg-primary-500 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors">
+                            <i class="ph ph-plus"></i> Add Lead
+                        </button>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-dark-panel rounded-xl border border-gray-200 dark:border-dark-border overflow-x-auto shadow-sm">
+                        <table class="w-full text-left text-sm whitespace-nowrap">
+                            <thead class="bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-dark-border">
+                                <tr>
+                                    <th class="px-4 py-3 font-medium">Business / Contact</th>
+                                    <th class="px-4 py-3 font-medium">Owner</th>
+                                    <th class="px-4 py-3 font-medium">Status</th>
+                                    <th class="px-4 py-3 font-medium">Value</th>
+                                    <th class="px-4 py-3 font-medium">Next Follow-up</th>
+                                    <th class="px-4 py-3 font-medium text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leads-table-body" class="divide-y divide-gray-100 dark:divide-dark-border text-gray-700 dark:text-gray-300">
+                                <!-- Leads injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="view-pipeline" class="view-section hidden h-full flex flex-col">
+                    <div class="flex-1 overflow-x-auto hide-scroll pb-4">
+                        <div id="kanban-board" class="flex gap-4 h-full min-w-max">
+                            <!-- Kanban columns injected here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projects View -->
+                <div id="view-projects" class="view-section hidden space-y-4">
+                    <h3 class="font-semibold text-gray-800 dark:text-white text-lg mb-4">Active Projects</h3>
+                    <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Projects injected here -->
+                    </div>
+                </div>
+
+                <!-- Payments View -->
+                <div id="view-payments" class="view-section hidden space-y-4">
+                    <div class="bg-white dark:bg-dark-panel rounded-xl border border-gray-200 dark:border-dark-border overflow-x-auto shadow-sm">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-dark-border">
+                                <tr>
+                                    <th class="px-4 py-3 font-medium">Client</th>
+                                    <th class="px-4 py-3 font-medium">Project</th>
+                                    <th class="px-4 py-3 font-medium">Total</th>
+                                    <th class="px-4 py-3 font-medium">Paid</th>
+                                    <th class="px-4 py-3 font-medium">Pending</th>
+                                    <th class="px-4 py-3 font-medium">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payments-table-body" class="divide-y divide-gray-100 dark:divide-dark-border text-gray-700 dark:text-gray-300">
+                                <!-- Payments injected -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Partners View -->
+                <div id="view-partners" class="view-section hidden space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="partners-grid">
+                        <!-- Partners injected here -->
+                    </div>
+                </div>
+
+                <!-- Settings View -->
+                <div id="view-settings" class="view-section hidden space-y-6 max-w-2xl">
+                    <div class="bg-white dark:bg-dark-panel p-6 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
+                        <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Data Management</h3>
+                        <p class="text-sm text-gray-500 mb-4">Export your CRM data as JSON or import an existing backup. Due to browser restrictions, if Firebase fails, data is stored locally.</p>
+                        <div class="flex gap-3">
+                            <button onclick="exportData()" class="bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">Export JSON</button>
+                            <button onclick="clearData()" class="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-red-200">Clear Demo Data</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Other views placeholders (Clients, Followups) would follow same pattern -->
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Backdrop -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        
+        <!-- Lead Modal -->
+        <div id="lead-modal" class="modal-content hidden bg-white dark:bg-dark-panel w-full max-w-2xl rounded-xl shadow-2xl border border-gray-200 dark:border-dark-border overflow-hidden">
+            <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-dark-border">
+                <h3 id="lead-modal-title" class="text-lg font-semibold dark:text-white">Add New Lead</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-white"><i class="ph ph-x text-xl"></i></button>
+            </div>
+            <div class="p-4 overflow-y-auto max-h-[70vh]">
+                <form id="lead-form" class="space-y-4">
+                    <input type="hidden" id="lead-id">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Business Name *</label>
+                            <input type="text" id="lead-business" required class="w-full px-3 py-2 rounded bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 dark:text-white text-sm outline-none focus:border-primary-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Contact Person</label>
+                            <input type="text" id="lead-contact" class="w-full px-3 py-2 rounded bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 dark:text-white text-sm outline-none focus:border-primary-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Lead Owner *</label>
+                            <select id="lead-owner" required class="w-full px-3 py-2 rounded bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 dark:text-white text-sm outline-none focus:border-primary-500">
+                                <option value="Aryaveer">Aryaveer</option>
+                                <option value="Partner">Partner</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
+                            <select id="lead-status" class="w-full px-3 py-2 rounded bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 dark:text-white text-sm outline-none focus:border-primary-500">
+                                <option value="NEW">NEW</option>
+                                <option value="CONTACTED">CONTACTED</option>
+                                <option value="RESPONDED">RESPONDED</option>
+                                <option value="DEMO SENT">DEMO SENT</option>
+                                <option value="INTERESTED">INTERESTED</option>
+                                <option value="NEGOTIATING">NEGOTIATING</option>
+                                <option value="WON">WON</option>
+                                <option value="LOST">LOST</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Deal Value (₹)</label>
+                            <input type="number" id="lead-value" class="w-full px-3 py-2 rounded bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 dark:text-white text-sm outline-none focus:border-primary-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Next Follow-up</label>
+                            <input type="date" id="lead-followup" class="w-full px-3 py-2 rounded bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 dark:text-white text-sm outline-none focus:border-primary-500">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="p-4 border-t border-gray-200 dark:border-dark-border flex justify-end gap-2">
+                <button onclick="closeModal()" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">Cancel</button>
+                <button onclick="saveLead()" class="px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-500 rounded">Save Lead</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2"></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set, onValue, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ_c3EaDxSZ6RrNrwQjR_TauJHrPfk_lk",
+            authDomain: "designsnap-f3309.firebaseapp.com",
+            databaseURL: "https://designsnap-f3309-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "designsnap-f3309",
+            storageBucket: "designsnap-f3309.firebasestorage.app",
+            messagingSenderId: "741888249963",
+            appId: "1:741888249963:web:9540c9f68d6f0d5da9a12e",
+            measurementId: "G-YC8TDQF1MM"
+        };
+
+        // Global State
+        window.appState = {
+            leads: [],
+            projects: [],
+            payments: [],
+            initialized: false,
+            useFirebase: true
+        };
+
+        let db;
+        let chartInstance = null;
+
+        // Constants
+        const PIPELINE_STAGES = ['NEW', 'CONTACTED', 'RESPONDED', 'DEMO SENT', 'INTERESTED', 'NEGOTIATING', 'WON', 'LOST'];
+        const DEMO_DATA = {
+            leads: [
+                { id: '1', business: 'ABC Furniture', contact: 'Ramesh', owner: 'Aryaveer', status: 'NEW', value: 25000, followup: '2026-10-10' },
+                { id: '2', business: 'Ranchi Sweets', contact: 'Suresh', owner: 'Partner', status: 'NEGOTIATING', value: 15000, followup: '2026-10-06' },
+                { id: '3', business: 'Tech Innovators', contact: 'Priya', owner: 'Aryaveer', status: 'WON', value: 45000, followup: '' }
+            ],
+            projects: [
+                { id: '1', client: 'Tech Innovators', status: 'IN PROGRESS', progress: 60, owner: 'Aryaveer', dev: 'Team' }
+            ],
+            payments: [
+                { id: '1', client: 'Tech Innovators', total: 45000, paid: 20000, pending: 25000, status: 'PARTIAL' }
+            ]
+        };
+
+        async function initApp() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getDatabase(app);
+                // Check if data exists, if not seed it
+                const leadsRef = ref(db, 'leads');
+                onValue(leadsRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        window.appState.leads = Object.values(data);
+                    } else if (!window.appState.initialized) {
+                        // Seed demo data once
+                        seedDemoData();
+                    }
+                    window.appState.initialized = true;
+                    if(document.getElementById('app-container').classList.contains('hidden') === false) {
+                        renderAll();
+                    }
+                }, (error) => {
+                    console.warn("Firebase restricted or failed, falling back to LocalStorage", error);
+                    window.appState.useFirebase = false;
+                    loadLocalData();
+                });
+            } catch (error) {
+                console.error("Firebase init failed, using LocalStorage.", error);
+                window.appState.useFirebase = false;
+                loadLocalData();
+            }
+
+            setupTheme();
+            setupEventListeners();
+        }
+
+        // Dummy Login
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            if (u === 'admin' && p === 'admin123') {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('app-container').classList.remove('hidden');
+                renderAll();
+                showToast("Welcome back!", "success");
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            document.getElementById('app-container').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+        });
+
+        function loadLocalData() {
+            const localData = localStorage.getItem('feasibility_crm');
+            if (localData) {
+                window.appState = JSON.parse(localData);
+                window.appState.useFirebase = false;
+            } else {
+                window.appState = { ...window.appState, ...DEMO_DATA, useFirebase: false };
+                saveLocalData();
+            }
+            if(!document.getElementById('app-container').classList.contains('hidden')) renderAll();
+        }
+
+        function saveLocalData() {
+            if(!window.appState.useFirebase) {
+                localStorage.setItem('feasibility_crm', JSON.stringify(window.appState));
+            }
+        }
+
+        async function syncData(collection) {
+            if (window.appState.useFirebase && db) {
+                try {
+                    const dataObj = {};
+                    window.appState[collection].forEach(item => {
+                        dataObj[item.id] = item;
+                    });
+                    await set(ref(db, collection), dataObj);
+                } catch (e) {
+                    console.error("Sync failed", e);
+                }
+            } else {
+                saveLocalData();
+            }
+            renderAll();
+        }
+
+        function seedDemoData() {
+            if (window.appState.useFirebase && db) {
+                const dataObj = {};
+                DEMO_DATA.leads.forEach(l => dataObj[l.id] = l);
+                set(ref(db, 'leads'), dataObj);
+            }
+        }
+
+        const navBtns = document.querySelectorAll('.nav-btn');
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const target = e.currentTarget.dataset.view;
+                
+                // Update active state
+                navBtns.forEach(b => {
+                    b.classList.remove('bg-primary-600', 'text-white');
+                    b.classList.add('text-gray-300', 'hover:bg-gray-800');
+                });
+                e.currentTarget.classList.add('bg-primary-600', 'text-white');
+                e.currentTarget.classList.remove('text-gray-300', 'hover:bg-gray-800');
+
+                // Toggle views
+                document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden'));
+                const viewEl = document.getElementById(`view-${target}`);
+                if (viewEl) viewEl.classList.remove('hidden');
+
+                // Update title
+                document.getElementById('current-view-title').innerText = e.currentTarget.innerText.trim();
+
+                // Close sidebar on mobile
+                if (window.innerWidth < 768) {
+                    document.getElementById('sidebar').classList.add('-translate-x-full');
+                }
+
+                // Render specific elements if needed
+                if (target === 'pipeline') renderPipeline();
+                if (target === 'dashboard') updateDashboardChart();
+            });
+        });
+
+        window.renderAll = function() {
+            renderDashboard();
+            renderLeads();
+            renderPipeline();
+            renderProjects();
+            renderPayments();
+            renderPartners();
+        }
+
+        function renderDashboard() {
+            const leads = window.appState.leads || [];
+            document.getElementById('stat-total-leads').innerText = leads.length;
+            
+            const won = leads.filter(l => l.status === 'WON');
+            const totalRev = won.reduce((acc, curr) => acc + (Number(curr.value) || 0), 0);
+            document.getElementById('stat-total-revenue').innerText = `₹${totalRev.toLocaleString()}`;
+
+            const activeProj = window.appState.projects?.filter(p => p.status !== 'COMPLETED').length || 0;
+            document.getElementById('stat-active-projects').innerText = activeProj;
+
+            // Tasks
+            const tasksHTML = leads.filter(l => l.followup && new Date(l.followup) <= new Date())
+                .map(l => `
+                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700">
+                        <div>
+                            <p class="text-sm font-medium dark:text-white">${l.business}</p>
+                            <p class="text-xs text-gray-500">Call ${l.contact} - Owner: ${l.owner}</p>
+                        </div>
+                        <button class="text-primary-500 hover:text-primary-600"><i class="ph ph-phone-call text-lg"></i></button>
+                    </div>
+                `).join('');
+            document.getElementById('dashboard-tasks').innerHTML = tasksHTML || '<p class="text-sm text-gray-500">No tasks for today.</p>';
+
+            updateDashboardChart();
+        }
+
+        function updateDashboardChart() {
+            const canvas = document.getElementById('leadsChart');
+            if(!canvas || canvas.offsetParent === null) return; // Don't draw if hidden
+
+            const leads = window.appState.leads || [];
+            const counts = PIPELINE_STAGES.map(stage => leads.filter(l => l.status === stage).length);
+
+            if(chartInstance) chartInstance.destroy();
+            
+            const ctx = canvas.getContext('2d');
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: PIPELINE_STAGES,
+                    datasets: [{
+                        label: 'Leads',
+                        data: counts,
+                        backgroundColor: '#0ea5e9',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { precision: 0 } }
+                    }
+                }
+            });
+        }
+
+        function renderLeads() {
+            const tbody = document.getElementById('leads-table-body');
+            const filterOwner = document.getElementById('lead-filter-owner').value;
+            const search = document.getElementById('lead-search').value.toLowerCase();
+            
+            let filtered = (window.appState.leads || []).filter(l => {
+                const matchOwner = filterOwner === 'all' || l.owner === filterOwner;
+                const matchSearch = l.business.toLowerCase().includes(search) || l.contact.toLowerCase().includes(search);
+                return matchOwner && matchSearch;
+            });
+
+            tbody.innerHTML = filtered.map(l => `
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                    <td class="px-4 py-3">
+                        <p class="font-medium dark:text-white">${l.business}</p>
+                        <p class="text-xs text-gray-500">${l.contact}</p>
+                    </td>
+                    <td class="px-4 py-3">
+                        <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium ${l.owner === 'Aryaveer' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'}">
+                            ${l.owner}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300">
+                            ${l.status}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 dark:text-white">₹${Number(l.value||0).toLocaleString()}</td>
+                    <td class="px-4 py-3 text-gray-500 text-xs">${l.followup || '-'}</td>
+                    <td class="px-4 py-3 text-right">
+                        <button onclick="editLead('${l.id}')" class="text-gray-400 hover:text-primary-500 mr-2"><i class="ph ph-pencil-simple"></i></button>
+                        <button onclick="deleteLead('${l.id}')" class="text-gray-400 hover:text-red-500"><i class="ph ph-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        window.renderPipeline = function() {
+            const board = document.getElementById('kanban-board');
+            const leads = window.appState.leads || [];
+
+            board.innerHTML = PIPELINE_STAGES.map(stage => {
+                const stageLeads = leads.filter(l => l.status === stage);
+                return `
+                <div class="kanban-col w-72 bg-gray-100/50 dark:bg-gray-800/50 rounded-xl p-3 flex flex-col border border-gray-200 dark:border-gray-700" data-stage="${stage}" ondragover="allowDrop(event)" ondrop="drop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+                    <div class="flex justify-between items-center mb-3 px-1">
+                        <h4 class="font-semibold text-sm text-gray-700 dark:text-gray-200">${stage}</h4>
+                        <span class="text-xs bg-white dark:bg-gray-700 px-2 py-0.5 rounded-full shadow-sm text-gray-600 dark:text-gray-300">${stageLeads.length}</span>
+                    </div>
+                    <div class="flex-1 space-y-3 overflow-y-auto custom-scrollbar">
+                        ${stageLeads.map(l => `
+                            <div class="bg-white dark:bg-dark-panel p-3 rounded-lg shadow-sm border border-gray-200 dark:border-dark-border cursor-grab active:cursor-grabbing" draggable="true" ondragstart="drag(event)" id="card-${l.id}" data-id="${l.id}">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h5 class="font-medium text-sm dark:text-white truncate">${l.business}</h5>
+                                </div>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="text-xs font-medium text-gray-500">₹${Number(l.value||0).toLocaleString()}</span>
+                                    <span class="text-[10px] px-1.5 py-0.5 rounded ${l.owner === 'Aryaveer' ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400'}">${l.owner}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        // Drag and Drop handlers globally bound
+        window.allowDrop = (ev) => ev.preventDefault();
+        window.drag = (ev) => {
+            ev.dataTransfer.setData("text", ev.target.dataset.id);
+            ev.target.classList.add('dragging');
+        };
+        window.dragEnter = (ev) => {
+            ev.preventDefault();
+            const col = ev.target.closest('.kanban-col');
+            if(col) col.classList.add('drag-over');
+        };
+        window.dragLeave = (ev) => {
+            const col = ev.target.closest('.kanban-col');
+            if(col) col.classList.remove('drag-over');
+        };
+        window.drop = (ev) => {
+            ev.preventDefault();
+            const col = ev.target.closest('.kanban-col');
+            document.querySelectorAll('.kanban-col').forEach(c => c.classList.remove('drag-over'));
+            document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
+            
+            if(col) {
+                const leadId = ev.dataTransfer.getData("text");
+                const newStage = col.dataset.stage;
+                
+                const leadIndex = window.appState.leads.findIndex(l => l.id === leadId);
+                if(leadIndex > -1 && window.appState.leads[leadIndex].status !== newStage) {
+                    window.appState.leads[leadIndex].status = newStage;
+                    syncData('leads');
+                    showToast(`Moved to ${newStage}`, 'success');
+                }
+            }
+        };
+
+        window.openModal = (modalId) => {
+            document.getElementById('modal-backdrop').classList.remove('hidden');
+            document.getElementById(modalId).classList.remove('hidden');
+            if(modalId === 'lead-modal') {
+                document.getElementById('lead-form').reset();
+                document.getElementById('lead-id').value = '';
+                document.getElementById('lead-modal-title').innerText = 'Add New Lead';
+            }
+        };
+        
+        window.closeModal = () => {
+            document.getElementById('modal-backdrop').classList.add('hidden');
+            document.querySelectorAll('.modal-content').forEach(m => m.classList.add('hidden'));
+        };
+
+        window.saveLead = () => {
+            const id = document.getElementById('lead-id').value || Date.now().toString();
+            const newLead = {
+                id,
+                business: document.getElementById('lead-business').value,
+                contact: document.getElementById('lead-contact').value,
+                owner: document.getElementById('lead-owner').value, // Critical Rule
+                status: document.getElementById('lead-status').value,
+                value: document.getElementById('lead-value').value,
+                followup: document.getElementById('lead-followup').value,
+            };
+
+            if(!newLead.business || !newLead.owner) {
+                showToast("Business Name and Owner are required.", "error");
+                return;
+            }
+
+            const idx = window.appState.leads.findIndex(l => l.id === id);
+            if(idx > -1) window.appState.leads[idx] = newLead;
+            else window.appState.leads.push(newLead);
+
+            syncData('leads');
+            closeModal();
+            showToast("Lead saved successfully.", "success");
+        };
+
+        window.editLead = (id) => {
+            const lead = window.appState.leads.find(l => l.id === id);
+            if(!lead) return;
+            
+            document.getElementById('lead-id').value = lead.id;
+            document.getElementById('lead-business').value = lead.business;
+            document.getElementById('lead-contact').value = lead.contact || '';
+            document.getElementById('lead-owner').value = lead.owner;
+            document.getElementById('lead-status').value = lead.status;
+            document.getElementById('lead-value').value = lead.value || '';
+            document.getElementById('lead-followup').value = lead.followup || '';
+            
+            document.getElementById('lead-modal-title').innerText = 'Edit Lead';
+            document.getElementById('modal-backdrop').classList.remove('hidden');
+            document.getElementById('lead-modal').classList.remove('hidden');
+        };
+
+        window.deleteLead = (id) => {
+            if(confirm("Are you sure you want to delete this lead?")) {
+                window.appState.leads = window.appState.leads.filter(l => l.id !== id);
+                syncData('leads');
+                showToast("Lead deleted.", "success");
+            }
+        };
+
+        function renderProjects() {
+            const grid = document.getElementById('projects-grid');
+            const projects = window.appState.projects || [];
+            grid.innerHTML = projects.map(p => `
+                <div class="bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-medium dark:text-white">${p.client}</h4>
+                        <span class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-600 dark:text-gray-300">${p.status}</span>
+                    </div>
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 mb-2 mt-4">
+                        <div class="bg-primary-500 h-1.5 rounded-full" style="width: ${p.progress}%"></div>
+                    </div>
+                    <p class="text-xs text-right text-gray-500 mb-3">${p.progress}% Complete</p>
+                    <div class="flex justify-between text-xs text-gray-500 border-t border-gray-100 dark:border-gray-800 pt-2">
+                        <span>Sales: ${p.owner}</span>
+                        <span>Dev: ${p.dev}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderPayments() {
+            const tbody = document.getElementById('payments-table-body');
+            const payments = window.appState.payments || [];
+            tbody.innerHTML = payments.map(p => `
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td class="px-4 py-3 font-medium dark:text-white">${p.client}</td>
+                    <td class="px-4 py-3 text-gray-500 text-xs">Website Dev</td>
+                    <td class="px-4 py-3 text-gray-700 dark:text-gray-300">₹${p.total}</td>
+                    <td class="px-4 py-3 text-green-600">₹${p.paid}</td>
+                    <td class="px-4 py-3 text-red-500">₹${p.pending}</td>
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 rounded text-xs font-medium ${p.status === 'PAID' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'}">${p.status}</span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderPartners() {
+            const grid = document.getElementById('partners-grid');
+            const leads = window.appState.leads || [];
+            
+            const partners = ['Aryaveer', 'Partner'];
+            grid.innerHTML = partners.map(pName => {
+                const partnerLeads = leads.filter(l => l.owner === pName);
+                const won = partnerLeads.filter(l => l.status === 'WON');
+                const rev = won.reduce((acc, curr) => acc + (Number(curr.value)||0), 0);
+
+                return `
+                <div class="bg-white dark:bg-dark-panel p-6 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold text-white ${pName === 'Aryaveer' ? 'bg-blue-500' : 'bg-purple-500'}">
+                            ${pName.charAt(0)}
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold dark:text-white">${pName}</h3>
+                            <p class="text-sm text-gray-500">Partner Metrics</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between border-b border-gray-100 dark:border-gray-800 pb-2">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">Leads Sourced</span>
+                            <span class="font-medium dark:text-white">${partnerLeads.length}</span>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-100 dark:border-gray-800 pb-2">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">Deals Won</span>
+                            <span class="font-medium dark:text-white">${won.length}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">Revenue Generated</span>
+                            <span class="font-bold text-green-600">₹${rev.toLocaleString()}</span>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function setupEventListeners() {
+            // Mobile Sidebar Toggle
+            document.getElementById('open-sidebar').addEventListener('click', () => {
+                document.getElementById('sidebar').classList.remove('-translate-x-full');
+            });
+            document.getElementById('close-sidebar').addEventListener('click', () => {
+                document.getElementById('sidebar').classList.add('-translate-x-full');
+            });
+
+            // Theme Toggle
+            document.getElementById('theme-toggle').addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+                if(chartInstance) updateDashboardChart(); // re-render chart to match theme (simplified)
+            });
+
+            // Lead Search and Filter
+            document.getElementById('lead-search').addEventListener('input', renderLeads);
+            document.getElementById('lead-filter-owner').addEventListener('change', renderLeads);
+
+            // Global Search (Cmd+K focus)
+            document.addEventListener('keydown', (e) => {
+                if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                    e.preventDefault();
+                    document.getElementById('global-search')?.focus();
+                }
+            });
+        }
+
+        function setupTheme() {
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        window.showToast = (message, type = 'info') => {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const colors = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-gray-800';
+            toast.className = `${colors} text-white px-4 py-2 rounded shadow-lg text-sm transition-opacity duration-300 transform translate-y-0 opacity-100 flex items-center gap-2`;
+            toast.innerHTML = `<i class="ph ${type === 'success' ? 'ph-check-circle' : 'ph-info'}"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        };
+
+        window.exportData = () => {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(window.appState));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "feasibility_crm_backup.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        };
+
+        window.clearData = () => {
+            if(confirm("Are you sure? This will wipe local data. (Firebase data might persist if active)")) {
+                localStorage.removeItem('feasibility_crm');
+                window.appState.leads = [];
+                window.appState.projects = [];
+                window.appState.payments = [];
+                renderAll();
+                showToast("Data cleared locally.", "info");
+            }
+        };
+
+        // Bootstrap
+        document.addEventListener('DOMContentLoaded', initApp);
+
+    </script>
+</body>
+</html>
