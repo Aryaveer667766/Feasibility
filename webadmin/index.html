@@ -7,39 +7,23 @@
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Tailwind Config for Branding -->
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        primary: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            900: '#0c4a6e',
-                        },
-                        dark: {
-                            bg: '#0f172a',
-                            panel: '#1e293b',
-                            border: '#334155'
-                        }
+                        primary: { 50: '#f0f9ff', 100: '#e0f2fe', 500: '#0ea5e9', 600: '#0284c7', 900: '#0c4a6e' },
+                        dark: { bg: '#0f172a', panel: '#1e293b', border: '#334155' }
                     },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    }
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
                 }
             }
         }
     </script>
 
-    <!-- Google Fonts: Inter -->
+    <!-- Google Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Chart.js -->
@@ -55,16 +39,17 @@
         .dark ::-webkit-scrollbar-thumb { background: #475569; }
         .hide-scroll::-webkit-scrollbar { display: none; }
         
-        /* Kanban Drag & Drop Styles */
+        /* Kanban Styles */
         .kanban-col { min-height: 60vh; }
         .drag-over { border: 2px dashed #0ea5e9; background-color: rgba(14, 165, 233, 0.05); }
-        .dragging { opacity: 0.5; transform: scale(0.98); }
+        .dragging { opacity: 0.5; transform: scale(0.95); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
         
-        /* Transitions */
-        .transition-transform { transition-duration: 300ms; }
+        /* Modal Backdrop */
+        .modal-backdrop { backdrop-filter: blur(4px); transition: all 0.3s ease; }
         
-        /* Glass Modal */
-        .modal-backdrop { backdrop-filter: blur(4px); }
+        /* Utilities */
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); }
+        .dark .glass-panel { background: rgba(30, 41, 59, 0.7); }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-dark-bg dark:text-gray-100 h-screen w-screen flex">
@@ -74,9 +59,9 @@
         <div class="p-6 flex items-center justify-between border-b border-gray-800">
             <div class="flex items-center gap-3">
                 <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center shadow-lg shadow-primary-500/30">
-                    <i class="fa-solid fa-chart-line text-white"></i>
+                    <i class="fa-solid fa-bolt text-white"></i>
                 </div>
-                <span class="font-bold text-lg tracking-wide">Feasibility</span>
+                <span class="font-bold text-lg tracking-wide">Feasibility CRM</span>
             </div>
             <button onclick="toggleSidebar()" class="md:hidden text-gray-400 hover:text-white">
                 <i class="fa-solid fa-xmark text-xl"></i>
@@ -85,39 +70,41 @@
         
         <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-1">
             <button data-view="dashboard" class="nav-btn active w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium bg-primary-600 text-white transition-all shadow-md shadow-primary-600/20">
-                <i class="fa-solid fa-house w-5"></i> Dashboard
+                <i class="fa-solid fa-chart-pie w-5"></i> Dashboard
             </button>
             <button data-view="leads" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
                 <i class="fa-solid fa-users w-5"></i> Leads
             </button>
+            <button data-view="pipeline" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
+                <i class="fa-solid fa-bars-staggered w-5"></i> Sales Pipeline
+            </button>
             <button data-view="clients" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
                 <i class="fa-solid fa-handshake w-5"></i> Clients
             </button>
-            <button data-view="pipeline" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
-                <i class="fa-solid fa-columns w-5"></i> Sales Pipeline
-            </button>
             <button data-view="projects" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
-                <i class="fa-solid fa-bars-progress w-5"></i> Projects
+                <i class="fa-solid fa-folder-open w-5"></i> Projects
             </button>
             <button data-view="payments" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
-                <i class="fa-solid fa-file-invoice-dollar w-5"></i> Payments
+                <i class="fa-solid fa-indian-rupee-sign w-5"></i> Payments
             </button>
             <button data-view="expenses" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
                 <i class="fa-solid fa-receipt w-5"></i> Expenses
             </button>
             <button data-view="partners" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
-                <i class="fa-solid fa-user-group w-5"></i> Partners
+                <i class="fa-solid fa-scale-balanced w-5"></i> Partners (Split)
             </button>
         </nav>
         
         <div class="p-4 border-t border-gray-800 bg-gray-900/50">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary-600 to-primary-400 flex items-center justify-center border-2 border-gray-700 text-white font-bold text-sm">
-                    FM
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-gray-700 to-gray-600 flex items-center justify-center border border-gray-500 text-white font-bold text-sm">
+                    <i class="fa-solid fa-user-tie"></i>
                 </div>
                 <div>
                     <p class="text-sm font-semibold text-white">Aryaveer & Partner</p>
-                    <p class="text-xs text-green-400 flex items-center gap-1"><i class="fa-solid fa-circle text-[8px]"></i> System Active</p>
+                    <p class="text-xs text-green-400 flex items-center gap-1" id="conn-status">
+                        <i class="fa-solid fa-circle text-[8px] animate-pulse"></i> Connecting...
+                    </p>
                 </div>
             </div>
         </div>
@@ -127,9 +114,9 @@
     <main class="flex-1 flex flex-col h-full overflow-hidden bg-gray-50/50 dark:bg-dark-bg relative">
         
         <!-- Topbar -->
-        <header class="h-16 bg-white dark:bg-dark-panel border-b border-gray-200 dark:border-dark-border flex items-center justify-between px-6 flex-shrink-0 z-10">
+        <header class="h-16 bg-white/80 dark:bg-dark-panel/80 backdrop-blur-md border-b border-gray-200 dark:border-dark-border flex items-center justify-between px-6 flex-shrink-0 z-10">
             <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="md:hidden text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors">
+                <button onclick="toggleSidebar()" class="md:hidden text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                     <i class="fa-solid fa-bars text-xl"></i>
                 </button>
                 <h2 id="current-view-title" class="text-xl font-bold text-gray-800 dark:text-white hidden sm:block">Dashboard</h2>
@@ -144,9 +131,9 @@
         </header>
 
         <!-- Loading Overlay -->
-        <div id="loading-overlay" class="absolute inset-0 bg-white/80 dark:bg-dark-bg/80 backdrop-blur-sm z-30 flex flex-col items-center justify-center transition-opacity duration-300">
-            <i class="fa-solid fa-circle-notch fa-spin text-4xl text-primary-500 mb-4"></i>
-            <p class="text-gray-600 dark:text-gray-300 font-medium">Syncing with Firestore...</p>
+        <div id="loading-overlay" class="absolute inset-0 bg-white/90 dark:bg-dark-bg/90 backdrop-blur-sm z-30 flex flex-col items-center justify-center transition-opacity duration-300">
+            <i class="fa-solid fa-circle-notch fa-spin text-5xl text-primary-500 mb-4"></i>
+            <p class="text-gray-600 dark:text-gray-300 font-medium text-lg">Syncing Real-Time Database...</p>
         </div>
 
         <!-- Views Container -->
@@ -155,78 +142,63 @@
             <!-- Dashboard View -->
             <div id="view-dashboard" class="view-section space-y-6">
                 <!-- 50/50 Split Highlight -->
-                <div class="bg-gradient-to-r from-gray-900 to-gray-800 dark:from-dark-panel dark:to-gray-900 rounded-2xl p-6 sm:p-8 shadow-xl text-white relative overflow-hidden border border-gray-800">
-                    <div class="absolute top-0 right-0 p-8 opacity-10">
-                        <i class="fa-solid fa-scale-balanced text-9xl"></i>
+                <div class="bg-gradient-to-br from-gray-900 to-gray-800 dark:from-dark-panel dark:to-gray-900 rounded-2xl p-6 sm:p-8 shadow-xl text-white relative overflow-hidden border border-gray-800">
+                    <div class="absolute -top-10 -right-10 p-8 opacity-5 transform rotate-12">
+                        <i class="fa-solid fa-indian-rupee-sign text-[200px]"></i>
                     </div>
-                    <h3 class="text-gray-400 font-medium mb-1 uppercase tracking-wider text-xs">Financial Overview</h3>
-                    <h2 class="text-3xl font-bold mb-6">Net Profit Split (50/50)</h2>
+                    <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
+                        <div>
+                            <h3 class="text-gray-400 font-medium mb-1 uppercase tracking-wider text-xs">Financial Overview</h3>
+                            <h2 class="text-3xl font-bold">Net Profit Split (50/50)</h2>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm text-gray-400">Total Net Profit</p>
+                            <p class="text-4xl font-bold text-green-400" id="dash-net-profit">₹0</p>
+                        </div>
+                    </div>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
-                        <div class="bg-black/20 backdrop-blur-md rounded-xl p-5 border border-white/10">
-                            <p class="text-sm text-gray-400 mb-1">Total Net Profit</p>
-                            <p class="text-2xl font-bold text-green-400" id="dash-net-profit">₹0</p>
-                            <p class="text-xs text-gray-500 mt-2">Collected - Expenses</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
+                        <div class="bg-white/10 backdrop-blur-md rounded-xl p-5 border border-white/10 flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-primary-500/20 text-primary-400 flex items-center justify-center text-xl font-bold border border-primary-500/30">A</div>
+                            <div>
+                                <p class="text-sm text-gray-300">Aryaveer's Share</p>
+                                <p class="text-2xl font-bold text-white" id="dash-aryaveer-share">₹0</p>
+                            </div>
                         </div>
-                        <div class="bg-primary-900/40 backdrop-blur-md rounded-xl p-5 border border-primary-500/20">
-                            <p class="text-sm text-gray-400 mb-1">Aryaveer's Share</p>
-                            <p class="text-2xl font-bold text-white" id="dash-aryaveer-share">₹0</p>
-                            <p class="text-xs text-primary-400 mt-2"><i class="fa-solid fa-bolt"></i> 50% Cut</p>
-                        </div>
-                        <div class="bg-purple-900/40 backdrop-blur-md rounded-xl p-5 border border-purple-500/20">
-                            <p class="text-sm text-gray-400 mb-1">Partner's Share</p>
-                            <p class="text-2xl font-bold text-white" id="dash-partner-share">₹0</p>
-                            <p class="text-xs text-purple-400 mt-2"><i class="fa-solid fa-bolt"></i> 50% Cut</p>
+                        <div class="bg-white/10 backdrop-blur-md rounded-xl p-5 border border-white/10 flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold border border-purple-500/30">P</div>
+                            <div>
+                                <p class="text-sm text-gray-300">Partner's Share</p>
+                                <p class="text-2xl font-bold text-white" id="dash-partner-share">₹0</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Stats Grid -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm flex flex-col justify-center">
-                        <div class="flex justify-between items-start mb-2">
-                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Leads</p>
-                            <div class="w-8 h-8 rounded bg-blue-50 text-blue-500 flex items-center justify-center"><i class="fa-solid fa-users"></i></div>
-                        </div>
-                        <h3 id="stat-total-leads" class="text-2xl font-bold text-gray-800 dark:text-white">0</h3>
+                    <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Total Leads</p>
+                        <h3 id="stat-total-leads" class="text-3xl font-bold text-gray-800 dark:text-white">0</h3>
                     </div>
-                    <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm flex flex-col justify-center">
-                        <div class="flex justify-between items-start mb-2">
-                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Active Clients</p>
-                            <div class="w-8 h-8 rounded bg-indigo-50 text-indigo-500 flex items-center justify-center"><i class="fa-solid fa-handshake"></i></div>
-                        </div>
-                        <h3 id="stat-active-clients" class="text-2xl font-bold text-gray-800 dark:text-white">0</h3>
+                    <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Active Clients</p>
+                        <h3 id="stat-active-clients" class="text-3xl font-bold text-gray-800 dark:text-white">0</h3>
                     </div>
-                    <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm flex flex-col justify-center">
-                        <div class="flex justify-between items-start mb-2">
-                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Collected Revenue</p>
-                            <div class="w-8 h-8 rounded bg-green-50 text-green-500 flex items-center justify-center"><i class="fa-solid fa-indian-rupee-sign"></i></div>
-                        </div>
-                        <h3 id="stat-collected" class="text-2xl font-bold text-green-600">₹0</h3>
+                    <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Collected Revenue</p>
+                        <h3 id="stat-collected" class="text-3xl font-bold text-green-600">₹0</h3>
                     </div>
-                    <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm flex flex-col justify-center">
-                        <div class="flex justify-between items-start mb-2">
-                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Expenses</p>
-                            <div class="w-8 h-8 rounded bg-red-50 text-red-500 flex items-center justify-center"><i class="fa-solid fa-arrow-trend-down"></i></div>
-                        </div>
-                        <h3 id="stat-expenses" class="text-2xl font-bold text-red-500">₹0</h3>
+                    <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Total Expenses</p>
+                        <h3 id="stat-expenses" class="text-3xl font-bold text-red-500">₹0</h3>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="bg-white dark:bg-dark-panel p-6 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
-                        <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Pipeline Status</h3>
-                        <div class="h-64 flex items-center justify-center" id="chart-container">
-                            <canvas id="pipelineChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="bg-white dark:bg-dark-panel p-6 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="font-semibold text-gray-800 dark:text-white">Recent Activity</h3>
-                        </div>
-                        <div id="recent-activity-list" class="space-y-4">
-                            <!-- Populated dynamically -->
-                        </div>
+                <div class="bg-white dark:bg-dark-panel p-6 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
+                    <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Lead Pipeline Analytics</h3>
+                    <div class="h-64 flex items-center justify-center w-full relative">
+                        <canvas id="pipelineChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -236,10 +208,10 @@
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
                     <div class="relative w-full sm:w-72">
                         <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" id="search-leads" placeholder="Search leads..." class="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none transition-all">
+                        <input type="text" id="search-leads" placeholder="Search leads by name..." class="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none transition-all">
                     </div>
-                    <button onclick="openModal('leadModal')" class="w-full sm:w-auto bg-primary-600 hover:bg-primary-500 text-white px-5 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2 transition-colors shadow-sm">
-                        <i class="fa-solid fa-plus"></i> New Lead
+                    <button onclick="openModal('leadModal')" class="w-full sm:w-auto bg-primary-600 hover:bg-primary-500 text-white px-5 py-2.5 rounded-lg text-sm font-medium flex items-center justify-center gap-2 shadow-md transition-colors">
+                        <i class="fa-solid fa-plus"></i> Add New Lead
                     </button>
                 </div>
                 
@@ -248,15 +220,15 @@
                         <table class="w-full text-left text-sm whitespace-nowrap">
                             <thead class="bg-gray-50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
                                 <tr>
-                                    <th class="px-6 py-4 font-semibold">Business</th>
+                                    <th class="px-6 py-4 font-semibold">Business / Source</th>
                                     <th class="px-6 py-4 font-semibold">Owner</th>
                                     <th class="px-6 py-4 font-semibold">Status</th>
-                                    <th class="px-6 py-4 font-semibold">Value</th>
+                                    <th class="px-6 py-4 font-semibold">Est. Value</th>
                                     <th class="px-6 py-4 font-semibold text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="leads-table-body" class="divide-y divide-gray-100 dark:divide-gray-800">
-                                <!-- Rendered dynamically -->
+                                <!-- Populated dynamically -->
                             </tbody>
                         </table>
                     </div>
@@ -265,13 +237,15 @@
 
             <!-- Pipeline (Kanban) View -->
             <div id="view-pipeline" class="view-section hidden h-full flex flex-col">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Sales Pipeline</h3>
-                    <p class="text-sm text-gray-500">Drag and drop leads to update status</p>
+                <div class="flex items-center justify-between mb-4 bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Drag & Drop Pipeline</h3>
+                        <p class="text-sm text-gray-500">Changes are saved automatically to the database.</p>
+                    </div>
                 </div>
-                <div class="flex-1 overflow-x-auto pb-4">
+                <div class="flex-1 overflow-x-auto pb-4 custom-scrollbar">
                     <div id="kanban-board" class="flex gap-4 h-full min-w-max items-start">
-                        <!-- Columns injected dynamically -->
+                        <!-- Columns populated dynamically -->
                     </div>
                 </div>
             </div>
@@ -283,7 +257,7 @@
                     <button onclick="openModal('clientModal')" class="bg-primary-600 hover:bg-primary-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">Add Client</button>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="clients-grid">
-                    <!-- Rendered dynamically -->
+                    <!-- Populated dynamically -->
                 </div>
             </div>
 
@@ -291,32 +265,35 @@
             <div id="view-projects" class="view-section hidden space-y-4">
                  <div class="flex justify-between items-center bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
                     <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Projects</h3>
-                    <button onclick="openModal('projectModal')" class="bg-primary-600 hover:bg-primary-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">New Project</button>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="projects-grid">
-                     <!-- Rendered dynamically -->
+                <div id="projects-grid" class="w-full">
+                     <!-- Empty state populated by JS -->
                 </div>
             </div>
 
             <!-- Payments View -->
             <div id="view-payments" class="view-section hidden space-y-4">
                 <div class="flex justify-between items-center bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Payments</h3>
-                    <button onclick="openModal('paymentModal')" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">Record Payment</button>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Payments Received</h3>
+                        <p class="text-sm text-gray-500">Income added here increases net profit.</p>
+                    </div>
+                    <button onclick="openModal('paymentModal')" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-md transition-colors">
+                        <i class="fa-solid fa-plus mr-1"></i> Record Payment
+                    </button>
                 </div>
                 <div class="bg-white dark:bg-dark-panel rounded-xl border border-gray-200 dark:border-dark-border shadow-sm overflow-hidden">
-                    <table class="w-full text-left text-sm">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
                         <thead class="bg-gray-50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
                             <tr>
                                 <th class="px-6 py-4 font-semibold">Date</th>
-                                <th class="px-6 py-4 font-semibold">Client / Project</th>
+                                <th class="px-6 py-4 font-semibold">Client</th>
                                 <th class="px-6 py-4 font-semibold">Amount</th>
-                                <th class="px-6 py-4 font-semibold">Status</th>
                                 <th class="px-6 py-4 font-semibold text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="payments-table-body" class="divide-y divide-gray-100 dark:divide-gray-800">
-                             <!-- Rendered dynamically -->
+                             <!-- Populated dynamically -->
                         </tbody>
                     </table>
                 </div>
@@ -325,23 +302,26 @@
             <!-- Expenses View -->
             <div id="view-expenses" class="view-section hidden space-y-4">
                  <div class="flex justify-between items-center bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Expenses</h3>
-                    <button onclick="openModal('expenseModal')" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">Add Expense</button>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Business Expenses</h3>
+                        <p class="text-sm text-gray-500">Expenses added here decrease net profit.</p>
+                    </div>
+                    <button onclick="openModal('expenseModal')" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-md transition-colors">
+                        <i class="fa-solid fa-plus mr-1"></i> Record Expense
+                    </button>
                 </div>
                 <div class="bg-white dark:bg-dark-panel rounded-xl border border-gray-200 dark:border-dark-border shadow-sm overflow-hidden">
-                    <table class="w-full text-left text-sm">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
                         <thead class="bg-gray-50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
                             <tr>
                                 <th class="px-6 py-4 font-semibold">Date</th>
-                                <th class="px-6 py-4 font-semibold">Description</th>
-                                <th class="px-6 py-4 font-semibold">Category</th>
+                                <th class="px-6 py-4 font-semibold">Description / Category</th>
                                 <th class="px-6 py-4 font-semibold">Amount</th>
-                                <th class="px-6 py-4 font-semibold">Paid By</th>
                                 <th class="px-6 py-4 font-semibold text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="expenses-table-body" class="divide-y divide-gray-100 dark:divide-gray-800">
-                             <!-- Rendered dynamically -->
+                             <!-- Populated dynamically -->
                         </tbody>
                     </table>
                 </div>
@@ -349,70 +329,11 @@
 
             <!-- Partners View -->
             <div id="view-partners" class="view-section hidden space-y-6">
-                <div class="bg-white dark:bg-dark-panel p-6 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm mb-6">
-                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Partner Ledger & Profit Split</h2>
-                    <p class="text-gray-500 text-sm">Formula: (Total Collected Payments - Total Expenses) / 2</p>
-                </div>
-                
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="partners-grid">
-                    <!-- Aryaveer Card -->
-                    <div class="bg-white dark:bg-dark-panel rounded-2xl border border-gray-200 dark:border-dark-border shadow-md overflow-hidden relative">
-                        <div class="h-2 w-full bg-blue-500"></div>
-                        <div class="p-6 sm:p-8">
-                            <div class="flex items-center gap-4 mb-6">
-                                <div class="w-14 h-14 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xl font-bold">A</div>
-                                <div>
-                                    <h3 class="text-xl font-bold dark:text-white">Aryaveer</h3>
-                                    <p class="text-sm text-gray-500">Managing Partner</p>
-                                </div>
-                            </div>
-                            <div class="space-y-4">
-                                <div class="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-800">
-                                    <span class="text-gray-500">Leads Owned</span>
-                                    <span class="font-bold dark:text-white" id="partner-a-leads">0</span>
-                                </div>
-                                <div class="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-800">
-                                    <span class="text-gray-500">Clients Won</span>
-                                    <span class="font-bold dark:text-white" id="partner-a-clients">0</span>
-                                </div>
-                                <div class="flex justify-between items-center py-4 mt-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg px-4">
-                                    <span class="font-semibold text-gray-700 dark:text-gray-300">50% Net Profit Share</span>
-                                    <span class="text-2xl font-bold text-blue-600 dark:text-blue-400" id="partner-a-payout">₹0</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Partner Card -->
-                    <div class="bg-white dark:bg-dark-panel rounded-2xl border border-gray-200 dark:border-dark-border shadow-md overflow-hidden relative">
-                        <div class="h-2 w-full bg-purple-500"></div>
-                        <div class="p-6 sm:p-8">
-                            <div class="flex items-center gap-4 mb-6">
-                                <div class="w-14 h-14 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-xl font-bold">P</div>
-                                <div>
-                                    <h3 class="text-xl font-bold dark:text-white">Partner</h3>
-                                    <p class="text-sm text-gray-500">Managing Partner</p>
-                                </div>
-                            </div>
-                            <div class="space-y-4">
-                                <div class="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-800">
-                                    <span class="text-gray-500">Leads Owned</span>
-                                    <span class="font-bold dark:text-white" id="partner-p-leads">0</span>
-                                </div>
-                                <div class="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-800">
-                                    <span class="text-gray-500">Clients Won</span>
-                                    <span class="font-bold dark:text-white" id="partner-p-clients">0</span>
-                                </div>
-                                <div class="flex justify-between items-center py-4 mt-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg px-4">
-                                    <span class="font-semibold text-gray-700 dark:text-gray-300">50% Net Profit Share</span>
-                                    <span class="text-2xl font-bold text-purple-600 dark:text-purple-400" id="partner-p-payout">₹0</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="bg-white dark:bg-dark-panel p-6 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm text-center">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Partner Ledger Dashboard</h2>
+                    <p class="text-gray-500">Check the dashboard view for real-time 50/50 split calculations based on database figures.</p>
                 </div>
             </div>
-
         </div>
     </main>
 
@@ -420,12 +341,12 @@
     
     <!-- Lead Modal -->
     <div id="leadModal" class="fixed inset-0 bg-gray-900/60 modal-backdrop z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-dark-panel w-full max-w-lg rounded-2xl shadow-2xl border border-gray-200 dark:border-dark-border overflow-hidden transform transition-all">
+        <div class="bg-white dark:bg-dark-panel w-full max-w-lg rounded-2xl shadow-2xl border border-gray-200 dark:border-dark-border overflow-hidden transform scale-95 opacity-0 transition-all duration-300">
             <div class="flex justify-between items-center p-5 border-b border-gray-100 dark:border-gray-800">
                 <h3 class="text-lg font-bold text-gray-900 dark:text-white" id="leadModalTitle">Add New Lead</h3>
                 <button onclick="closeModal('leadModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
-            <form id="form-lead" class="p-5 space-y-4" onsubmit="saveLead(event)">
+            <form id="form-lead" class="p-5 space-y-4" onsubmit="saveData(event, 'leads')">
                 <input type="hidden" id="lead-id">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Business Name *</label>
@@ -458,8 +379,8 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Source</label>
                         <select id="lead-source" class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
-                            <option value="Instagram">Instagram</option>
                             <option value="WhatsApp">WhatsApp</option>
+                            <option value="Instagram">Instagram</option>
                             <option value="Referral">Referral</option>
                             <option value="Website">Website</option>
                             <option value="Other">Other</option>
@@ -467,8 +388,8 @@
                     </div>
                 </div>
                 <div class="pt-4 flex justify-end gap-3">
-                    <button type="button" onclick="closeModal('leadModal')" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 rounded-lg transition-colors">Cancel</button>
-                    <button type="submit" id="btn-save-lead" class="px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-500 rounded-lg transition-colors">Save Lead</button>
+                    <button type="button" onclick="closeModal('leadModal')" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg">Cancel</button>
+                    <button type="submit" id="btn-save-leads" class="px-5 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-500 rounded-lg shadow-sm">Save Lead</button>
                 </div>
             </form>
         </div>
@@ -476,26 +397,45 @@
 
     <!-- Client Modal -->
     <div id="clientModal" class="fixed inset-0 bg-gray-900/60 modal-backdrop z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-dark-panel w-full max-w-lg rounded-2xl shadow-2xl border border-gray-200 dark:border-dark-border overflow-hidden transform transition-all">
+        <div class="bg-white dark:bg-dark-panel w-full max-w-md rounded-2xl shadow-2xl border border-gray-200 dark:border-dark-border overflow-hidden transform scale-95 opacity-0 transition-all duration-300">
             <div class="flex justify-between items-center p-5 border-b border-gray-100 dark:border-gray-800">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white" id="clientModalTitle">Add Client</h3>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Add New Client</h3>
                 <button onclick="closeModal('clientModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
-            <form id="form-client" class="p-5 space-y-4" onsubmit="saveClient(event)">
+            <form id="form-client" class="p-5 space-y-4" onsubmit="saveData(event, 'clients')">
                 <input type="hidden" id="client-id">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Client Business Name *</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Business Name *</label>
                     <input type="text" id="client-business" required class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
                 </div>
+                <div class="pt-4 flex justify-end gap-3">
+                    <button type="button" onclick="closeModal('clientModal')" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg">Cancel</button>
+                    <button type="submit" id="btn-save-clients" class="px-5 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-500 rounded-lg shadow-sm">Save Client</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="fixed inset-0 bg-gray-900/60 modal-backdrop z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-dark-panel w-full max-w-md rounded-2xl shadow-2xl border border-gray-200 dark:border-dark-border overflow-hidden transform scale-95 opacity-0 transition-all duration-300">
+            <div class="flex justify-between items-center p-5 border-b border-gray-100 dark:border-gray-800">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Record Payment</h3>
+                <button onclick="closeModal('paymentModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form id="form-payment" class="p-5 space-y-4" onsubmit="saveData(event, 'payments')">
+                <input type="hidden" id="payment-id">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Linked Lead (Optional)</label>
-                    <select id="client-lead-id" class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
-                        <option value="">-- Select Lead --</option>
-                    </select>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Client Name *</label>
+                    <input type="text" id="payment-client" required class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none" placeholder="e.g. ABC Corp">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Amount Received (₹) *</label>
+                    <input type="number" id="payment-amount" required class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
                 </div>
                 <div class="pt-4 flex justify-end gap-3">
-                    <button type="button" onclick="closeModal('clientModal')" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 rounded-lg transition-colors">Cancel</button>
-                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-500 rounded-lg transition-colors">Save Client</button>
+                    <button type="button" onclick="closeModal('paymentModal')" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg">Cancel</button>
+                    <button type="submit" id="btn-save-payments" class="px-5 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-500 rounded-lg shadow-sm">Save Payment</button>
                 </div>
             </form>
         </div>
@@ -503,12 +443,12 @@
 
     <!-- Expense Modal -->
     <div id="expenseModal" class="fixed inset-0 bg-gray-900/60 modal-backdrop z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-dark-panel w-full max-w-md rounded-2xl shadow-2xl border border-gray-200 dark:border-dark-border overflow-hidden transform transition-all">
+        <div class="bg-white dark:bg-dark-panel w-full max-w-md rounded-2xl shadow-2xl border border-gray-200 dark:border-dark-border overflow-hidden transform scale-95 opacity-0 transition-all duration-300">
             <div class="flex justify-between items-center p-5 border-b border-gray-100 dark:border-gray-800">
                 <h3 class="text-lg font-bold text-gray-900 dark:text-white">Record Expense</h3>
                 <button onclick="closeModal('expenseModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
-            <form id="form-expense" class="p-5 space-y-4" onsubmit="saveExpense(event)">
+            <form id="form-expense" class="p-5 space-y-4" onsubmit="saveData(event, 'expenses')">
                 <input type="hidden" id="expense-id">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description *</label>
@@ -531,44 +471,8 @@
                     </div>
                 </div>
                 <div class="pt-4 flex justify-end gap-3">
-                    <button type="button" onclick="closeModal('expenseModal')" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 rounded-lg transition-colors">Cancel</button>
-                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-500 rounded-lg transition-colors">Save Expense</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Payment Modal -->
-    <div id="paymentModal" class="fixed inset-0 bg-gray-900/60 modal-backdrop z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-dark-panel w-full max-w-md rounded-2xl shadow-2xl border border-gray-200 dark:border-dark-border overflow-hidden transform transition-all">
-            <div class="flex justify-between items-center p-5 border-b border-gray-100 dark:border-gray-800">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Record Payment</h3>
-                <button onclick="closeModal('paymentModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
-            <form id="form-payment" class="p-5 space-y-4" onsubmit="savePayment(event)">
-                <input type="hidden" id="payment-id">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Select Client *</label>
-                    <select id="payment-client-id" required class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
-                        <option value="">-- Select Client --</option>
-                    </select>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Amount (₹) *</label>
-                        <input type="number" id="payment-amount" required class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
-                        <select id="payment-status" class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
-                            <option value="PAID">PAID</option>
-                            <option value="PENDING">PENDING</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="pt-4 flex justify-end gap-3">
-                    <button type="button" onclick="closeModal('paymentModal')" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 rounded-lg transition-colors">Cancel</button>
-                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-500 rounded-lg transition-colors">Save Payment</button>
+                    <button type="button" onclick="closeModal('expenseModal')" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg">Cancel</button>
+                    <button type="submit" id="btn-save-expenses" class="px-5 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-500 rounded-lg shadow-sm">Save Expense</button>
                 </div>
             </form>
         </div>
@@ -579,8 +483,9 @@
 
     <!-- JavaScript & Firebase -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         // Provided Firebase Config
         const firebaseConfig = {
@@ -596,30 +501,54 @@
         
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
 
-        // Global State (Replaces Demo Data)
-        window.crmState = {
-            leads: [],
-            clients: [],
-            projects: [],
-            payments: [],
-            expenses: []
-        };
-        
+        // State Manager
+        window.crmState = { leads: [], clients: [], projects: [], payments: [], expenses: [] };
         let chartInstance = null;
         let isInitialLoad = true;
+        let currentUser = null;
 
-        function setupFirebaseListeners() {
-            const collections = ['leads', 'clients', 'projects', 'payments', 'expenses'];
+        // Path Resolver (CRITICAL for permissions)
+        const getColPath = (colName) => {
+            // Using a safe namespace in the DB to avoid root-level permission issues
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'feasibility-crm-v2';
+            return `artifacts/${appId}/public/data/${colName}`;
+        };
+
+        async function initFirebase() {
+            try {
+                // Ensure auth before any DB calls
+                if (typeof __initial_auth_token !== 'undefined') {
+                    const cred = await signInWithCustomToken(auth, __initial_auth_token);
+                    currentUser = cred.user;
+                } else {
+                    const cred = await signInAnonymously(auth);
+                    currentUser = cred.user;
+                }
+                
+                document.getElementById('conn-status').innerHTML = `<i class="fa-solid fa-circle text-[8px] text-green-400"></i> Connected`;
+                setupListeners();
+            } catch (err) {
+                console.error("Auth Error:", err);
+                window.showToast("Database Connection Failed. Check console.", "error");
+                document.getElementById('conn-status').innerHTML = `<i class="fa-solid fa-circle text-[8px] text-red-500"></i> Auth Failed`;
+            }
+        }
+
+        function setupListeners() {
+            if (!currentUser) return;
+
+            const collections = ['leads', 'clients', 'payments', 'expenses'];
             let loadedCount = 0;
 
             collections.forEach(colName => {
-                const q = query(collection(db, colName));
-                onSnapshot(q, (snapshot) => {
+                const ref = collection(db, getColPath(colName));
+                
+                onSnapshot(ref, (snapshot) => {
+                    // Filter and map in memory (avoids index requirement errors)
                     crmState[colName] = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    
-                    // Sort descending by created timestamp if exists
-                    crmState[colName].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+                    crmState[colName].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)); // Descending sort
 
                     if(isInitialLoad) {
                         loadedCount++;
@@ -629,11 +558,11 @@
                             setTimeout(() => renderAll(), 300);
                         }
                     } else {
-                        renderAll(); // Re-render UI efficiently on any DB change
+                        renderAll(); // Reactive UI update on any DB change
                     }
                 }, (error) => {
-                    console.error(`Error loading ${colName}:`, error);
-                    window.showToast(`Error connecting to database (${colName})`, 'error');
+                    console.error(`Listen Error on ${colName}:`, error);
+                    window.showToast(`Error syncing ${colName}`, 'error');
                 });
             });
         }
@@ -644,16 +573,16 @@
             renderLeads();
             renderPipeline();
             renderClients();
-            renderProjects();
             renderPayments();
             renderExpenses();
-            updateSelectDropdowns();
+            
+            // Render Projects Empty State
+            document.getElementById('projects-grid').innerHTML = getEmptyState('No Projects Yet', 'Start tracking active client builds here.', 'fa-folder-open');
         };
 
-        // Reusable Empty State Generator
         function getEmptyState(title, subtitle, icon) {
             return `
-                <div class="flex flex-col items-center justify-center p-12 text-center border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-xl m-4 bg-gray-50/50 dark:bg-gray-800/20">
+                <div class="flex flex-col items-center justify-center py-16 px-4 text-center border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-2xl bg-gray-50/50 dark:bg-gray-800/20 w-full">
                     <div class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4 text-2xl text-gray-400 dark:text-gray-500">
                         <i class="fa-solid ${icon}"></i>
                     </div>
@@ -664,69 +593,31 @@
         }
 
         function calculateFinances() {
-            // Formula: (Total Collected Payments - Total Expenses) / 2
-            const totalCollected = crmState.payments
-                .filter(p => p.status === 'PAID')
-                .reduce((sum, p) => sum + Number(p.amount || 0), 0);
-                
-            const totalExpenses = crmState.expenses
-                .reduce((sum, e) => sum + Number(e.amount || 0), 0);
+            // Core Formula: (Total Collected - Total Expenses) / 2
+            const totalCollected = crmState.payments.reduce((sum, p) => sum + Number(p.amount || 0), 0);
+            const totalExpenses = crmState.expenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
                 
             const netProfit = totalCollected - totalExpenses;
             const splitShare = netProfit / 2;
 
-            // Dashboard updates
+            // DOM Updates
             document.getElementById('stat-collected').innerText = `₹${totalCollected.toLocaleString()}`;
             document.getElementById('stat-expenses').innerText = `₹${totalExpenses.toLocaleString()}`;
+            
             document.getElementById('dash-net-profit').innerText = `₹${netProfit.toLocaleString()}`;
             document.getElementById('dash-aryaveer-share').innerText = `₹${splitShare.toLocaleString()}`;
             document.getElementById('dash-partner-share').innerText = `₹${splitShare.toLocaleString()}`;
-            
-            // Partners view updates
-            document.getElementById('partner-a-payout').innerText = `₹${splitShare.toLocaleString()}`;
-            document.getElementById('partner-p-payout').innerText = `₹${splitShare.toLocaleString()}`;
-            
-            // Count Leads and Clients by Owner
-            const counts = { Aryaveer: {leads:0, clients:0}, Partner: {leads:0, clients:0} };
-            crmState.leads.forEach(l => { if(counts[l.owner]) counts[l.owner].leads++; });
-            
-            document.getElementById('partner-a-leads').innerText = counts.Aryaveer.leads;
-            document.getElementById('partner-p-leads').innerText = counts.Partner.leads;
         }
 
         function renderDashboard() {
             document.getElementById('stat-total-leads').innerText = crmState.leads.length;
             document.getElementById('stat-active-clients').innerText = crmState.clients.length;
-
-            // Render Recent Activity (simulated from latest leads/payments)
-            const recentList = document.getElementById('recent-activity-list');
-            const activities = [
-                ...crmState.leads.map(l => ({ type: 'lead', title: `New Lead: ${l.business}`, time: l.timestamp })),
-                ...crmState.payments.map(p => ({ type: 'payment', title: `Payment ${p.status}: ₹${p.amount}`, time: p.timestamp }))
-            ].sort((a,b) => b.time - a.time).slice(0, 5);
-
-            if (activities.length === 0) {
-                recentList.innerHTML = `<p class="text-sm text-gray-500 text-center py-4">No recent activity.</p>`;
-            } else {
-                recentList.innerHTML = activities.map(act => `
-                    <div class="flex items-center gap-3 py-2 border-b border-gray-100 dark:border-gray-800 last:border-0">
-                        <div class="w-8 h-8 rounded bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500">
-                            <i class="fa-solid ${act.type === 'lead' ? 'fa-user' : 'fa-indian-rupee-sign'} text-xs"></i>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium dark:text-white">${act.title}</p>
-                            <p class="text-xs text-gray-400">Recently updated</p>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
             updateDashboardChart();
         }
 
         function updateDashboardChart() {
             const canvas = document.getElementById('pipelineChart');
-            if(!canvas || canvas.offsetParent === null) return;
+            if(!canvas || canvas.offsetParent === null) return; // Don't render if hidden
             
             const stages = ['NEW', 'CONTACTED', 'NEGOTIATING', 'WON', 'LOST'];
             const counts = stages.map(st => crmState.leads.filter(l => l.status === st).length);
@@ -745,7 +636,8 @@
                         data: counts,
                         backgroundColor: '#0ea5e9',
                         borderRadius: 6,
-                        borderWidth: 0
+                        borderWidth: 0,
+                        barThickness: 30
                     }]
                 },
                 options: {
@@ -762,12 +654,11 @@
 
         function renderLeads() {
             const tbody = document.getElementById('leads-table-body');
-            const searchQuery = document.getElementById('search-leads')?.value.toLowerCase() || '';
-            
-            const filtered = crmState.leads.filter(l => (l.business||'').toLowerCase().includes(searchQuery));
+            const search = document.getElementById('search-leads')?.value.toLowerCase() || '';
+            const filtered = crmState.leads.filter(l => (l.business||'').toLowerCase().includes(search));
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-0">${getEmptyState('No Leads Found', 'Add a lead to start tracking.', 'fa-users')}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="p-0">${getEmptyState('No Leads Yet', 'Add a lead to start building the pipeline.', 'fa-users')}</td></tr>`;
                 return;
             }
 
@@ -778,18 +669,17 @@
                         <p class="text-xs text-gray-500">${l.source || 'Unknown source'}</p>
                     </td>
                     <td class="px-6 py-4">
-                        <span class="px-2 py-1 rounded text-xs font-medium ${l.owner === 'Aryaveer' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'}">
+                        <span class="px-2.5 py-1 rounded-md text-xs font-semibold ${l.owner === 'Aryaveer' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400' : 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400'}">
                             ${l.owner}
                         </span>
                     </td>
                     <td class="px-6 py-4">
-                        <span class="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                        <span class="px-2.5 py-1 rounded-full text-xs font-medium border ${l.status==='WON'?'border-green-500 text-green-600':l.status==='LOST'?'border-red-500 text-red-600':'border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300'}">
                             ${l.status}
                         </span>
                     </td>
                     <td class="px-6 py-4 text-gray-900 dark:text-white font-medium">₹${Number(l.value||0).toLocaleString()}</td>
                     <td class="px-6 py-4 text-right">
-                        <button onclick="editLead('${l.id}')" class="text-gray-400 hover:text-primary-500 mr-3 transition-colors"><i class="fa-solid fa-pen"></i></button>
                         <button onclick="deleteDocHandler('leads', '${l.id}')" class="text-gray-400 hover:text-red-500 transition-colors"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
@@ -801,27 +691,27 @@
             const stages = ['NEW', 'CONTACTED', 'NEGOTIATING', 'WON', 'LOST'];
             
             if (crmState.leads.length === 0) {
-                board.innerHTML = `<div class="w-full">${getEmptyState('Empty Pipeline', 'Add leads to see them on the board.', 'fa-columns')}</div>`;
+                board.innerHTML = `<div class="w-full">${getEmptyState('Empty Pipeline', 'Add leads to see them on the board.', 'fa-bars-staggered')}</div>`;
                 return;
             }
 
             board.innerHTML = stages.map(stage => {
                 const stageLeads = crmState.leads.filter(l => l.status === stage);
                 return `
-                <div class="kanban-col w-72 bg-gray-100/50 dark:bg-gray-800/30 rounded-xl p-3 flex flex-col border border-gray-200 dark:border-gray-800" data-stage="${stage}" ondragover="allowDrop(event)" ondrop="drop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+                <div class="kanban-col w-72 bg-gray-100/60 dark:bg-gray-800/40 rounded-xl p-3 flex flex-col border border-gray-200 dark:border-gray-800/60" data-stage="${stage}" ondragover="allowDrop(event)" ondrop="drop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
                     <div class="flex justify-between items-center mb-4 px-1">
                         <h4 class="font-semibold text-sm text-gray-700 dark:text-gray-300 uppercase tracking-wider">${stage}</h4>
-                        <span class="text-xs bg-white dark:bg-gray-700 px-2 py-0.5 rounded-full text-gray-600 dark:text-gray-400 font-medium">${stageLeads.length}</span>
+                        <span class="text-xs bg-white dark:bg-gray-700 px-2.5 py-1 rounded-full text-gray-600 dark:text-gray-400 font-bold shadow-sm">${stageLeads.length}</span>
                     </div>
                     <div class="flex-1 space-y-3 overflow-y-auto hide-scroll">
                         ${stageLeads.map(l => `
-                            <div class="bg-white dark:bg-dark-panel p-4 rounded-lg shadow-sm border border-gray-200 dark:border-dark-border cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow relative group" draggable="true" ondragstart="drag(event)" data-id="${l.id}">
+                            <div class="bg-white dark:bg-dark-panel p-4 rounded-xl shadow-sm border border-gray-200 dark:border-dark-border cursor-grab active:cursor-grabbing hover:shadow-md transition-all relative group" draggable="true" ondragstart="drag(event)" data-id="${l.id}">
                                 <div class="flex justify-between items-start mb-2">
-                                    <h5 class="font-medium text-sm text-gray-900 dark:text-white truncate pr-4">${l.business}</h5>
+                                    <h5 class="font-bold text-sm text-gray-900 dark:text-white truncate">${l.business}</h5>
                                 </div>
-                                <div class="flex justify-between items-center mt-3">
-                                    <span class="text-xs font-semibold text-green-600 dark:text-green-400">₹${Number(l.value||0).toLocaleString()}</span>
-                                    <span class="text-[10px] px-1.5 py-0.5 rounded font-medium ${l.owner === 'Aryaveer' ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400'}">${l.owner}</span>
+                                <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100 dark:border-gray-800">
+                                    <span class="text-xs font-bold text-gray-700 dark:text-gray-300">₹${Number(l.value||0).toLocaleString()}</span>
+                                    <span class="text-[10px] px-2 py-1 rounded font-bold ${l.owner === 'Aryaveer' ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400'}">${l.owner.substring(0,1)}</span>
                                 </div>
                             </div>
                         `).join('')}
@@ -850,14 +740,16 @@
             document.querySelectorAll('.kanban-col').forEach(c => c.classList.remove('drag-over'));
             document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
             
-            if(col) {
+            if(col && currentUser) {
                 const leadId = ev.dataTransfer.getData("text");
                 const newStage = col.dataset.stage;
                 try {
-                    await updateDoc(doc(db, 'leads', leadId), { status: newStage });
-                    window.showToast(`Moved to ${newStage}`, 'success');
+                    // Update Firestore strictly
+                    await updateDoc(doc(db, getColPath('leads'), leadId), { status: newStage });
+                    window.showToast(`Updated to ${newStage}`, 'success');
                 } catch(e) {
-                    window.showToast(`Error updating pipeline`, 'error');
+                    console.error(e);
+                    window.showToast(`Error updating status`, 'error');
                 }
             }
         };
@@ -865,38 +757,30 @@
         function renderClients() {
             const grid = document.getElementById('clients-grid');
             if (crmState.clients.length === 0) {
-                grid.innerHTML = `<div class="col-span-full">${getEmptyState('No Clients Found', 'Convert a lead or add a client directly.', 'fa-handshake')}</div>`;
+                grid.innerHTML = `<div class="col-span-full">${getEmptyState('No Active Clients', 'Convert a lead to start managing clients.', 'fa-handshake')}</div>`;
                 return;
             }
             grid.innerHTML = crmState.clients.map(c => `
                 <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm flex flex-col relative group">
                     <button onclick="deleteDocHandler('clients', '${c.id}')" class="absolute top-4 right-4 text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><i class="fa-solid fa-trash text-sm"></i></button>
-                    <div class="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-lg flex items-center justify-center text-xl mb-4 font-bold uppercase">${c.business.charAt(0)}</div>
+                    <div class="w-12 h-12 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-lg flex items-center justify-center text-xl mb-4 font-bold uppercase">${c.business.charAt(0)}</div>
                     <h4 class="font-bold text-gray-900 dark:text-white text-lg">${c.business}</h4>
-                    <p class="text-sm text-gray-500 mt-1">Client ID: ${c.id.substring(0,6).toUpperCase()}</p>
+                    <p class="text-xs text-gray-500 mt-1"><i class="fa-regular fa-clock"></i> Added ${new Date(c.timestamp).toLocaleDateString()}</p>
                 </div>
             `).join('');
-        }
-        
-        function renderProjects() {
-            const grid = document.getElementById('projects-grid');
-            grid.innerHTML = `<div class="col-span-full">${getEmptyState('Projects Coming Soon', 'This module will be expanded in the next update.', 'fa-bars-progress')}</div>`;
         }
 
         function renderPayments() {
             const tbody = document.getElementById('payments-table-body');
             if (crmState.payments.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-0">${getEmptyState('No Payments Recorded', 'Record incoming payments here.', 'fa-file-invoice-dollar')}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="p-0">${getEmptyState('No Payments Recorded', 'Income tracked here increases total profit.', 'fa-indian-rupee-sign')}</td></tr>`;
                 return;
             }
             tbody.innerHTML = crmState.payments.map(p => `
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                     <td class="px-6 py-4 text-gray-500 text-sm">${new Date(p.timestamp).toLocaleDateString()}</td>
-                    <td class="px-6 py-4 font-medium dark:text-white">${p.clientName || 'Unknown'}</td>
-                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">₹${Number(p.amount).toLocaleString()}</td>
-                    <td class="px-6 py-4">
-                        <span class="px-2 py-1 rounded text-xs font-bold ${p.status === 'PAID' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'}">${p.status}</span>
-                    </td>
+                    <td class="px-6 py-4 font-bold dark:text-white">${p.client}</td>
+                    <td class="px-6 py-4 font-bold text-green-600">₹${Number(p.amount).toLocaleString()}</td>
                     <td class="px-6 py-4 text-right">
                         <button onclick="deleteDocHandler('payments', '${p.id}')" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
                     </td>
@@ -907,16 +791,17 @@
         function renderExpenses() {
             const tbody = document.getElementById('expenses-table-body');
             if (crmState.expenses.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-0">${getEmptyState('No Expenses', 'Track domain, hosting, and software costs.', 'fa-receipt')}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="p-0">${getEmptyState('No Expenses', 'Track costs to accurately calculate splits.', 'fa-receipt')}</td></tr>`;
                 return;
             }
             tbody.innerHTML = crmState.expenses.map(e => `
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                     <td class="px-6 py-4 text-gray-500 text-sm">${new Date(e.timestamp).toLocaleDateString()}</td>
-                    <td class="px-6 py-4 font-medium dark:text-white">${e.desc}</td>
-                    <td class="px-6 py-4 text-gray-500 text-sm">${e.category}</td>
-                    <td class="px-6 py-4 font-semibold text-red-500">₹${Number(e.amount).toLocaleString()}</td>
-                    <td class="px-6 py-4 text-gray-500 text-sm">System</td>
+                    <td class="px-6 py-4">
+                        <p class="font-medium dark:text-white">${e.desc}</p>
+                        <p class="text-xs text-gray-500">${e.category}</p>
+                    </td>
+                    <td class="px-6 py-4 font-bold text-red-500">₹${Number(e.amount).toLocaleString()}</td>
                     <td class="px-6 py-4 text-right">
                         <button onclick="deleteDocHandler('expenses', '${e.id}')" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
                     </td>
@@ -924,152 +809,85 @@
             `).join('');
         }
 
-        function updateSelectDropdowns() {
-            // Update Client Select in Payment Modal
-            const pClient = document.getElementById('payment-client-id');
-            pClient.innerHTML = `<option value="">-- Select Client --</option>` + 
-                crmState.clients.map(c => `<option value="${c.id}">${c.business}</option>`).join('');
-                
-            // Update Lead Select in Client Modal
-            const cLead = document.getElementById('client-lead-id');
-            cLead.innerHTML = `<option value="">-- Select Lead --</option>` + 
-                crmState.leads.filter(l=>l.status==='WON').map(l => `<option value="${l.id}">${l.business}</option>`).join('');
-        }
-
-        window.saveLead = async (e) => {
+        window.saveData = async (e, type) => {
             e.preventDefault();
-            const btn = document.getElementById('btn-save-lead');
+            if(!currentUser) {
+                window.showToast("Cannot save. Database not connected.", "error");
+                return;
+            }
+
+            const btn = document.getElementById(`btn-save-${type}`);
+            const ogText = btn.innerHTML;
             btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Saving...`;
             btn.disabled = true;
 
-            const id = document.getElementById('lead-id').value;
-            const data = {
-                business: document.getElementById('lead-business').value,
-                owner: document.getElementById('lead-owner').value,
-                status: document.getElementById('lead-status').value,
-                value: document.getElementById('lead-value').value || 0,
-                source: document.getElementById('lead-source').value,
-                timestamp: id ? undefined : Date.now()
-            };
+            let data = { timestamp: Date.now() };
+
+            if(type === 'leads') {
+                data.business = document.getElementById('lead-business').value;
+                data.owner = document.getElementById('lead-owner').value;
+                data.status = document.getElementById('lead-status').value;
+                data.value = document.getElementById('lead-value').value || 0;
+                data.source = document.getElementById('lead-source').value;
+            } else if (type === 'clients') {
+                data.business = document.getElementById('client-business').value;
+            } else if (type === 'payments') {
+                data.client = document.getElementById('payment-client').value;
+                data.amount = document.getElementById('payment-amount').value;
+            } else if (type === 'expenses') {
+                data.desc = document.getElementById('expense-desc').value;
+                data.amount = document.getElementById('expense-amount').value;
+                data.category = document.getElementById('expense-category').value;
+            }
 
             try {
-                if (id) {
-                    delete data.timestamp; // don't overwrite
-                    await updateDoc(doc(db, 'leads', id), data);
-                    window.showToast("Lead updated successfully", "success");
-                } else {
-                    await addDoc(collection(db, 'leads'), data);
-                    window.showToast("New lead created", "success");
-                }
-                closeModal('leadModal');
+                // Save to Firestore strictly
+                await addDoc(collection(db, getColPath(type)), data);
+                window.showToast("Record saved successfully", "success");
+                
+                // Clear Form & Close
+                e.target.reset();
+                closeModal(`${type.replace(/s$/, '')}Modal`);
             } catch (err) {
-                console.error(err);
-                window.showToast("Failed to save lead", "error");
+                console.error("Save Error:", err);
+                window.showToast("Permission Denied or Error Saving", "error");
             } finally {
-                btn.innerHTML = `Save Lead`;
+                btn.innerHTML = ogText;
                 btn.disabled = false;
             }
         };
 
-        window.saveClient = async (e) => {
-            e.preventDefault();
-            const data = {
-                business: document.getElementById('client-business').value,
-                leadId: document.getElementById('client-lead-id').value,
-                timestamp: Date.now()
-            };
-            try {
-                await addDoc(collection(db, 'clients'), data);
-                window.showToast("Client added", "success");
-                closeModal('clientModal');
-            } catch(err) {
-                window.showToast("Failed to add client", "error");
-            }
-        };
-
-        window.savePayment = async (e) => {
-            e.preventDefault();
-            const clientId = document.getElementById('payment-client-id').value;
-            const client = crmState.clients.find(c => c.id === clientId);
-            
-            const data = {
-                clientId: clientId,
-                clientName: client ? client.business : 'Unknown',
-                amount: document.getElementById('payment-amount').value,
-                status: document.getElementById('payment-status').value,
-                timestamp: Date.now()
-            };
-            try {
-                await addDoc(collection(db, 'payments'), data);
-                window.showToast("Payment recorded", "success");
-                closeModal('paymentModal');
-            } catch(err) {
-                window.showToast("Failed to record payment", "error");
-            }
-        };
-
-        window.saveExpense = async (e) => {
-            e.preventDefault();
-            const data = {
-                desc: document.getElementById('expense-desc').value,
-                amount: document.getElementById('expense-amount').value,
-                category: document.getElementById('expense-category').value,
-                timestamp: Date.now()
-            };
-            try {
-                await addDoc(collection(db, 'expenses'), data);
-                window.showToast("Expense recorded", "success");
-                closeModal('expenseModal');
-            } catch(err) {
-                window.showToast("Failed to record expense", "error");
-            }
-        };
-
         window.deleteDocHandler = async (colName, id) => {
-            if(confirm("Are you sure you want to delete this record?")) {
+            if(!currentUser) return;
+            if(confirm("Are you sure you want to delete this record forever?")) {
                 try {
-                    await deleteDoc(doc(db, colName, id));
+                    await deleteDoc(doc(db, getColPath(colName), id));
                     window.showToast("Record deleted", "success");
                 } catch(err) {
+                    console.error(err);
                     window.showToast("Failed to delete record", "error");
                 }
             }
         };
 
-        window.editLead = (id) => {
-            const lead = crmState.leads.find(l => l.id === id);
-            if(!lead) return;
-            
-            document.getElementById('lead-id').value = lead.id;
-            document.getElementById('lead-business').value = lead.business;
-            document.getElementById('lead-owner').value = lead.owner;
-            document.getElementById('lead-status').value = lead.status;
-            document.getElementById('lead-value').value = lead.value || '';
-            document.getElementById('lead-source').value = lead.source || 'Other';
-            
-            document.getElementById('leadModalTitle').innerText = 'Edit Lead';
-            openModal('leadModal');
-        };
-
-
+        // Modal Controls
         window.openModal = (id) => {
             const modal = document.getElementById(id);
-            if(modal.querySelector('form')) modal.querySelector('form').reset();
-            if(modal.querySelector('#lead-id')) modal.querySelector('#lead-id').value = '';
-            
             modal.classList.remove('hidden');
-            // Animate in
+            // Small timeout to allow display:block to apply before animating opacity
             setTimeout(() => {
-                modal.querySelector('div').classList.remove('scale-95', 'opacity-0');
-                modal.querySelector('div').classList.add('scale-100', 'opacity-100');
+                const inner = modal.querySelector('div');
+                inner.classList.remove('scale-95', 'opacity-0');
+                inner.classList.add('scale-100', 'opacity-100');
             }, 10);
         };
         
         window.closeModal = (id) => {
             const modal = document.getElementById(id);
-            modal.querySelector('div').classList.remove('scale-100', 'opacity-100');
-            modal.querySelector('div').classList.add('scale-95', 'opacity-0');
-            setTimeout(() => modal.classList.add('hidden'), 200);
+            const inner = modal.querySelector('div');
+            inner.classList.remove('scale-100', 'opacity-100');
+            inner.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
         };
 
         window.showToast = (msg, type = 'info') => {
@@ -1086,15 +904,15 @@
             setTimeout(() => {
                 toast.classList.add('opacity-0', 'translate-x-full');
                 setTimeout(() => toast.remove(), 300);
-            }, 4000);
+            }, 3000);
         };
 
-        // Navigation and View Switching
+        // SPA Router
         document.querySelectorAll('.nav-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const target = e.currentTarget.dataset.view;
                 
-                // Update active nav styling
+                // Nav Styling
                 document.querySelectorAll('.nav-btn').forEach(b => {
                     b.classList.remove('bg-primary-600', 'text-white', 'shadow-md');
                     b.classList.add('text-gray-400', 'hover:bg-gray-800');
@@ -1102,48 +920,41 @@
                 e.currentTarget.classList.add('bg-primary-600', 'text-white', 'shadow-md');
                 e.currentTarget.classList.remove('text-gray-400', 'hover:bg-gray-800');
 
-                // Switch view container
+                // View Switching
                 document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden'));
                 document.getElementById(`view-${target}`).classList.remove('hidden');
 
-                // Update Header Title
+                // Header Title
                 document.getElementById('current-view-title').innerText = e.currentTarget.innerText.trim();
 
-                // Close sidebar on mobile
+                // Mobile Sidebar Auto-close
                 if (window.innerWidth < 768) {
                     document.getElementById('sidebar').classList.add('-translate-x-full');
                 }
 
-                // Render specific things that depend on container visibility (e.g., charts)
+                // Render specific things on show
                 if (target === 'dashboard') updateDashboardChart();
             });
         });
 
-        // Theme Toggle Logic
+        // Theme
         window.toggleTheme = () => {
             document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
             if(chartInstance) updateDashboardChart();
         };
 
-        // Sidebar Toggle Mobile
         window.toggleSidebar = () => {
             document.getElementById('sidebar').classList.toggle('-translate-x-full');
         };
         
-        // Search Filter Attach
+        // Listen to search
         document.getElementById('search-leads').addEventListener('input', renderLeads);
 
-        // Bootstrap on Load
+        // Boot
         document.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-            setupFirebaseListeners();
+            document.documentElement.classList.add('dark'); // Default to dark for premium feel
+            initFirebase();
         });
-
     </script>
 </body>
 </html>
