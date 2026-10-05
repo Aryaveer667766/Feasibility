@@ -6,12 +6,6 @@
     <title>Velora Fashion | Style That Feels Like You</title>
     <meta name="description" content="Velora Fashion is a premium local clothing store in Ranchi offering everyday essentials, statement pieces, and timeless styles.">
     
-    <!-- Open Graph Metadata -->
-    <meta property="og:title" content="Velora Fashion | Premium Local Clothing">
-    <meta property="og:description" content="Discover our latest collections and premium styles for the whole family.">
-    <meta property="og:type" content="website">
-
-    <!-- Fonts: Playfair Display for editorial elegance, Inter for clean UI -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
@@ -20,18 +14,19 @@
         /* CSS VARIABLES & RESET */
         :root {
             --bg-main: #FAFAFA;
-            --bg-alt: #F2F0ED;
+            --bg-alt: #F0EFEB;
+            --bg-dark: #1C1C1C;
             --text-main: #1C1C1C;
-            --text-muted: #5A5A5A;
-            --accent: #8C6B52; /* Premium warm taupe/brown */
+            --text-muted: #666666;
+            --accent: #8C6B52; 
             --accent-hover: #70543F;
             --white: #FFFFFF;
             
             --font-display: 'Playfair Display', serif;
             --font-body: 'Inter', sans-serif;
             
-            --section-pad: 100px 0;
-            --container-w: 1200px;
+            --section-pad: 120px 0;
+            --container-w: 1240px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -56,8 +51,8 @@
             line-height: 1.2;
         }
 
-        h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); margin-bottom: 20px; }
-        h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 15px; }
+        h1 { font-size: clamp(2.8rem, 6vw, 5rem); margin-bottom: 20px; letter-spacing: -1px; }
+        h2 { font-size: clamp(2.2rem, 4vw, 3.5rem); margin-bottom: 15px; letter-spacing: -0.5px; }
         h3 { font-size: 1.5rem; }
 
         .subtitle {
@@ -71,43 +66,21 @@
 
         /* BUTTONS */
         .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 14px 32px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 1px solid transparent;
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 15px 35px; font-size: 0.95rem; font-weight: 500;
+            letter-spacing: 1px; text-transform: uppercase;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            cursor: pointer; border: 1px solid transparent;
+            position: relative; overflow: hidden;
         }
 
-        .btn-primary {
-            background-color: var(--text-main);
-            color: var(--white);
-        }
+        .btn-primary { background-color: var(--bg-dark); color: var(--white); }
+        .btn-primary:hover { background-color: var(--accent); transform: translateY(-2px); }
 
-        .btn-primary:hover {
-            background-color: var(--accent);
-        }
+        .btn-outline { background-color: transparent; border-color: var(--text-main); color: var(--text-main); }
+        .btn-outline:hover { background-color: var(--text-main); color: var(--white); }
 
-        .btn-outline {
-            background-color: transparent;
-            border-color: var(--text-main);
-            color: var(--text-main);
-        }
-
-        .btn-outline:hover {
-            background-color: var(--text-main);
-            color: var(--white);
-        }
-
-        .btn-whatsapp {
-            background-color: #25D366;
-            color: white;
-            border-color: #25D366;
-        }
+        .btn-whatsapp { background-color: #25D366; color: white; border-color: #25D366; }
         .btn-whatsapp:hover { background-color: #128C7E; }
 
         /* LAYOUT */
@@ -117,268 +90,239 @@
 
         /* DEMO BANNER */
         .demo-banner {
-            background-color: var(--accent);
-            color: white;
-            text-align: center;
-            padding: 8px;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
+            background-color: var(--accent); color: white; text-align: center;
+            padding: 10px; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
+        }
+
+        /* SCROLLING MARQUEE */
+        .marquee-container {
+            background-color: var(--bg-dark);
+            color: var(--white);
+            padding: 15px 0;
+            overflow: hidden;
+            display: flex;
+            white-space: nowrap;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
             text-transform: uppercase;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 25s linear infinite;
+        }
+        .marquee-content span { margin: 0 30px; }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
 
         /* NAVIGATION */
         nav {
-            position: sticky;
-            top: 0;
-            background: rgba(250, 250, 250, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            z-index: 1000;
-            padding: 20px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            position: sticky; top: 0;
+            background: rgba(250, 250, 250, 0.95); backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 1000;
+            padding: 20px 5%; display: flex; justify-content: space-between; align-items: center;
             transition: padding 0.3s ease;
         }
-        nav.scrolled { padding: 15px 5%; }
+        nav.scrolled { padding: 15px 5%; box-shadow: 0 5px 20px rgba(0,0,0,0.03); }
 
         .logo {
-            font-family: var(--font-display);
-            font-size: 1.8rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            z-index: 1001;
+            font-family: var(--font-display); font-size: 2rem;
+            font-weight: 600; letter-spacing: 1px; text-transform: uppercase; z-index: 1001;
         }
 
-        .nav-links { display: flex; gap: 30px; align-items: center; }
-        .nav-links a { font-size: 0.9rem; transition: color 0.3s; }
+        .nav-links { display: flex; gap: 35px; align-items: center; }
+        .nav-links a { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; transition: color 0.3s; }
         .nav-links a:hover { color: var(--accent); }
 
-        .hamburger {
-            display: none;
-            background: none; border: none;
-            cursor: pointer; z-index: 1001;
-        }
+        .hamburger { display: none; background: none; border: none; cursor: pointer; z-index: 1001; }
 
         /* HERO */
         .hero {
-            height: 90vh;
-            min-height: 600px;
-            display: flex;
-            align-items: center;
-            position: relative;
+            height: 85vh; min-height: 600px;
+            display: flex; align-items: center; position: relative;
         }
-
         .hero-img {
-            position: absolute;
-            top: 0; right: 0;
-            width: 60%; height: 100%;
-            object-fit: cover;
-            z-index: -1;
+            position: absolute; top: 0; right: 0; width: 55%; height: 100%;
+            object-fit: cover; z-index: -1;
         }
-
         .hero-content {
-            background: rgba(250, 250, 250, 0.9);
-            padding: 60px;
-            max-width: 600px;
-            backdrop-filter: blur(5px);
+            background: rgba(250, 250, 250, 0.95); padding: 70px;
+            max-width: 650px; backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,0,0,0.05);
         }
-
         .location-indicator {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--accent);
-            margin-bottom: 20px;
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;
+            color: var(--accent); margin-bottom: 25px; font-weight: 600;
         }
-
         .hero-btns { margin-top: 40px; display: flex; gap: 15px; flex-wrap: wrap; }
 
         /* COLLECTIONS */
-        .collections-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-        
+        .collections-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
         .col-card {
-            position: relative;
-            height: 400px;
-            overflow: hidden;
-            display: flex;
-            align-items: flex-end;
-            padding: 40px;
-            color: white;
-            transition: transform 0.3s;
+            position: relative; height: 450px; overflow: hidden;
+            display: flex; align-items: flex-end; padding: 40px; color: white;
         }
-
         .col-card::before {
             content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-            z-index: 1;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); z-index: 1;
         }
-
         .col-img {
             position: absolute; top:0; left:0; width:100%; height:100%;
-            transition: transform 0.7s ease; z-index: 0;
+            transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 0;
         }
-
-        .col-card:hover .col-img { transform: scale(1.05); }
-
+        .col-card:hover .col-img { transform: scale(1.08); }
         .col-content { position: relative; z-index: 2; }
-        .col-content h3 { margin-bottom: 10px; font-size: 2rem; }
-        
-        /* Layout modifiers for collections */
-        .col-full { grid-column: 1 / -1; height: 300px; }
+        .col-content h3 { margin-bottom: 10px; font-size: 2.2rem; }
+        .col-full { grid-column: 1 / -1; height: 350px; }
 
-        /* PRODUCTS (NEW ARRIVALS) */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px 20px;
+        /* PRODUCT FILTERS */
+        .filter-container {
+            display: flex; justify-content: center; gap: 15px;
+            margin-bottom: 40px; flex-wrap: wrap;
         }
-
-        .product-card {
-            transition: transform 0.3s;
-            display: flex; flex-direction: column;
+        .filter-btn {
+            background: transparent; border: 1px solid #ddd;
+            padding: 8px 24px; border-radius: 30px; cursor: pointer;
+            font-family: var(--font-body); font-size: 0.9rem; transition: all 0.3s;
         }
+        .filter-btn.active, .filter-btn:hover { background: var(--bg-dark); color: white; border-color: var(--bg-dark); }
 
-        .product-card:hover { transform: translateY(-5px); }
-
-        .product-img {
-            height: 400px; width: 100%;
-            margin-bottom: 20px;
-            background: #EAE8E3;
-            overflow: hidden;
-        }
-
-        .product-img img {
-            width: 100%; height: 100%;
-            transition: transform 0.5s ease;
-        }
-        
+        /* PRODUCTS */
+        .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px 30px; }
+        .product-card { transition: transform 0.4s; display: flex; flex-direction: column; animation: fadeIn 0.6s ease; }
+        .product-card:hover { transform: translateY(-8px); }
+        .product-img { height: 420px; width: 100%; margin-bottom: 20px; background: #EAE8E3; overflow: hidden; position: relative; }
+        .product-img img { width: 100%; height: 100%; transition: transform 0.8s ease; }
         .product-card:hover .product-img img { transform: scale(1.05); }
-
-        .product-cat { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        .product-title { font-family: var(--font-body); font-weight: 500; font-size: 1.1rem; margin-bottom: 5px; }
-        .product-price { font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 20px; color: var(--accent); }
-        .product-card .btn { width: 100%; margin-top: auto; padding: 12px; }
+        
+        .product-cat { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
+        .product-title { font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 5px; }
+        .product-price { font-family: var(--font-body); font-weight: 600; font-size: 1.1rem; margin-bottom: 20px; color: var(--accent); }
+        .product-card .btn { width: 100%; margin-top: auto; padding: 14px; font-size: 0.85rem; border-color: #ddd; }
 
         /* FEATURED EDIT */
         .featured-edit {
-            position: relative;
-            height: 70vh; min-height: 500px;
-            display: flex; align-items: center; justify-content: center; text-align: center;
-            color: white;
+            position: relative; height: 80vh; min-height: 600px;
+            display: flex; align-items: center; justify-content: center; text-align: center; color: white;
+            background-attachment: fixed; /* Parallax effect */
+            background-position: center; background-size: cover;
         }
-        
         .featured-edit::before {
             content:''; position:absolute; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.4); z-index: 1;
+            background: rgba(0,0,0,0.5); z-index: 1;
         }
+        .featured-content { position: relative; z-index: 2; max-width: 700px; padding: 0 20px; }
 
-        .featured-edit img { position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; }
-        .featured-content { position: relative; z-index: 2; max-width: 600px; padding: 0 20px; }
+        /* REVIEWS */
+        .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .review-card {
+            background: var(--white); padding: 40px;
+            border: 1px solid rgba(0,0,0,0.05); text-align: left;
+        }
+        .stars { color: #D4AF37; margin-bottom: 20px; letter-spacing: 2px; }
+        .review-text { font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 25px; line-height: 1.6; font-style: italic; }
+        .review-author { font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); }
 
         /* BENEFITS */
         .benefits-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; text-align: center; }
-        .benefit-card { padding: 30px 20px; background: var(--white); }
-        .benefit-icon { margin-bottom: 20px; color: var(--accent); }
-        .benefit-card h4 { font-family: var(--font-body); font-weight: 600; margin-bottom: 10px; }
-        .benefit-card p { font-size: 0.9rem; color: var(--text-muted); }
+        .benefit-card { padding: 40px 20px; background: transparent; }
+        .benefit-icon { margin-bottom: 25px; color: var(--accent); }
+        .benefit-card h4 { font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 12px; }
+        .benefit-card p { font-size: 0.95rem; color: var(--text-muted); }
 
-        /* ABOUT */
-        .about-split { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-        .about-img { height: 500px; }
-        
-        /* GALLERY */
-        .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
-        .gal-item { height: 300px; overflow: hidden; }
-        .gal-item img { transition: transform 0.5s; width: 100%; height: 100%; }
-        .gal-item:hover img { transform: scale(1.05); }
-        .gal-large { grid-column: span 2; grid-row: span 2; height: 100%; }
+        /* NEWSLETTER */
+        .newsletter-section { background: var(--accent); color: white; text-align: center; padding: 80px 5%; }
+        .newsletter-form { max-width: 500px; margin: 30px auto 0; display: flex; gap: 10px; }
+        .newsletter-input { flex: 1; padding: 15px 20px; border: none; font-family: var(--font-body); font-size: 1rem; outline: none; }
+        .newsletter-btn { padding: 15px 30px; background: var(--bg-dark); color: white; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; transition: background 0.3s; }
+        .newsletter-btn:hover { background: white; color: var(--bg-dark); }
+
+        /* INSTAGRAM / GALLERY */
+        .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+        .gal-item { height: 350px; overflow: hidden; position: relative; }
+        .gal-item img { transition: transform 0.6s; width: 100%; height: 100%; }
+        .gal-item:hover img { transform: scale(1.1); }
+        .gal-overlay {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s; color: white;
+        }
+        .gal-item:hover .gal-overlay { opacity: 1; }
 
         /* LOCATION & CONTACT */
-        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
-        .info-block { margin-bottom: 30px; }
-        .info-block h4 { margin-bottom: 10px; font-family: var(--font-body); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; color: var(--accent); }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+        .info-block { margin-bottom: 35px; }
+        .info-block h4 { margin-bottom: 12px; font-family: var(--font-body); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 2px; color: var(--accent); }
         .map-placeholder {
-            background: #EAE8E3; height: 100%; min-height: 300px;
+            background: #EAE8E3; height: 100%; min-height: 400px;
             display: flex; align-items: center; justify-content: center;
             color: var(--text-muted); font-size: 0.9rem;
         }
 
         /* FOOTER */
-        footer { background: var(--text-main); color: var(--bg-alt); padding: 80px 5% 30px; }
-        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 60px; }
-        .footer-logo { font-size: 2rem; color: white; margin-bottom: 15px; }
-        .footer-links h4 { color: white; margin-bottom: 20px; font-family: var(--font-body); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; }
-        .footer-links li { margin-bottom: 12px; }
+        footer { background: var(--bg-dark); color: #F0EFEB; padding: 100px 5% 40px; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; margin-bottom: 80px; }
+        .footer-logo { font-size: 2.5rem; color: white; margin-bottom: 20px; }
+        .footer-links h4 { color: white; margin-bottom: 25px; font-family: var(--font-body); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 2px; }
+        .footer-links li { margin-bottom: 15px; }
         .footer-links a { color: #A0A0A0; transition: color 0.3s; }
         .footer-links a:hover { color: white; }
-        
         .footer-bottom {
             display: flex; justify-content: space-between; align-items: center;
             padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.85rem; color: #A0A0A0;
+            font-size: 0.85rem; color: #666;
         }
 
         /* MOBILE BOTTOM CTA */
         .mobile-cta {
-            display: none;
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background: white; box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
-            z-index: 999; padding: 10px;
+            display: none; position: fixed; bottom: 0; left: 0; width: 100%;
+            background: white; box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
+            z-index: 999; padding: 15px;
         }
         .mobile-cta-inner { display: flex; gap: 10px; }
-        .mobile-cta .btn { flex: 1; padding: 12px; font-size: 0.9rem; }
+        .mobile-cta .btn { flex: 1; padding: 14px; font-size: 0.9rem; }
 
         /* ANIMATIONS */
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.9s cubic-bezier(0.165, 0.84, 0.44, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         /* RESPONSIVE */
         @media (max-width: 1024px) {
-            .about-split, .contact-grid { grid-template-columns: 1fr; }
-            .hero-content { padding: 40px; margin: 0 5%; }
+            .hero-content { padding: 50px; margin: 0 5%; }
             .hero-img { width: 100%; }
-            .hero::before { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(250,250,250,0.7); z-index: -1; }
-            .products-grid { grid-template-columns: repeat(2, 1fr); }
-            .benefits-grid { grid-template-columns: repeat(2, 1fr); }
-            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-            .gal-large { grid-column: span 1; grid-row: span 1; height: 300px; }
+            .hero::before { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(250,250,250,0.75); z-index: -1; }
+            .products-grid, .reviews-grid, .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .benefits-grid, .contact-grid { grid-template-columns: 1fr; }
             .footer-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
-            body { padding-bottom: 70px; } /* Space for mobile CTA */
+            body { padding-bottom: 80px; }
             .hamburger { display: block; }
             .nav-links {
                 position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
                 background: var(--bg-main); flex-direction: column; justify-content: center;
-                transition: 0.3s;
+                transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             }
             .nav-links.active { right: 0; }
-            .nav-links a { font-size: 1.5rem; font-family: var(--font-display); }
+            .nav-links a { font-size: 1.8rem; font-family: var(--font-display); text-transform: none; }
             .nav-links .btn { display: none; }
             
-            .collections-grid { grid-template-columns: 1fr; }
-            /* Keep products 2-col on mobile for fashion, or 1 col if too tight. 2 col is standard. */
-            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 20px 10px; }
-            .product-img { height: 250px; }
-            .product-title { font-size: 0.9rem; }
-            .product-price { font-size: 1rem; }
-            .product-card .btn { font-size: 0.8rem; padding: 10px 5px; }
+            .collections-grid, .reviews-grid { grid-template-columns: 1fr; }
+            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 20px 15px; }
+            .product-img { height: 280px; }
+            .product-title { font-size: 1.1rem; }
+            .product-card .btn { font-size: 0.8rem; padding: 12px 5px; }
 
-            .benefits-grid { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 2.8rem; }
+            .hero h1 { font-size: 3rem; }
+            .hero-content { padding: 30px 20px; }
             
             .mobile-cta { display: block; }
-            .footer-bottom { flex-direction: column; gap: 15px; text-align: center; }
+            .footer-bottom { flex-direction: column; gap: 20px; text-align: center; }
         }
     </style>
 </head>
@@ -388,6 +332,19 @@
         Demo website concept — Velora Fashion is a fictional brand.
     </div>
 
+    <div class="marquee-container">
+        <div class="marquee-content">
+            <span>FREE SHIPPING ON ORDERS OVER ₹1,999</span> • 
+            <span>NEW ARRIVALS EVERY WEEK</span> • 
+            <span>VISIT OUR RANCHI STORE</span> • 
+            <span>PREMIUM ETHNIC WEAR</span> • 
+            <span>FREE SHIPPING ON ORDERS OVER ₹1,999</span> • 
+            <span>NEW ARRIVALS EVERY WEEK</span> • 
+            <span>VISIT OUR RANCHI STORE</span> • 
+            <span>PREMIUM ETHNIC WEAR</span>
+        </div>
+    </div>
+
     <!-- NAVIGATION -->
     <nav id="navbar">
         <a href="#" class="logo ui-bind" data-key="businessName">VELORA</a>
@@ -395,14 +352,14 @@
         <div class="nav-links" id="navLinks">
             <a href="#collections">Collections</a>
             <a href="#new-arrivals">New Arrivals</a>
+            <a href="#reviews">Reviews</a>
             <a href="#about">About</a>
-            <a href="#gallery">Gallery</a>
             <a href="#contact">Contact</a>
             <a href="#" class="btn btn-primary ui-bind-wa" data-msg="Hi, I'm reaching out from your website.">WhatsApp Us</a>
         </div>
 
         <button class="hamburger" id="hamburger">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </button>
     </nav>
 
@@ -412,14 +369,14 @@
         <div class="container" style="width: 100%;">
             <div class="hero-content reveal">
                 <div class="location-indicator">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                    <span class="ui-bind" data-key="location">Location</span>'s Local Fashion Destination
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    <span class="ui-bind" data-key="location">Location</span>'s Premium Boutique
                 </div>
                 <h1 class="ui-bind" data-key="tagline">Style That Feels Like You.</h1>
-                <p class="subtitle">Discover everyday essentials, statement pieces and timeless styles for the whole family.</p>
+                <p class="subtitle">Discover everyday essentials, statement pieces and timeless styles curated for the modern wardrobe.</p>
                 <div class="hero-btns">
                     <a href="#new-arrivals" class="btn btn-primary">Explore Collection</a>
-                    <a href="#" class="btn btn-outline ui-bind-wa" data-msg="Hi, I'm reaching out from your website to enquire about your collections.">WhatsApp Us</a>
+                    <a href="#" class="btn btn-outline ui-bind-wa" data-msg="Hi, I'd like to enquire about your collections.">WhatsApp Us</a>
                 </div>
             </div>
         </div>
@@ -437,29 +394,29 @@
                 <a href="#new-arrivals" class="col-card">
                     <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&q=80" alt="Men's Wear" class="col-img">
                     <div class="col-content">
-                        <h3 class="font-display">Men's Wear</h3>
-                        <p>Classic staples and modern fits.</p>
+                        <h3 class="font-display">Men's Edit</h3>
+                        <p style="font-family: var(--font-body);">Classic staples and modern fits.</p>
                     </div>
                 </a>
                 <a href="#new-arrivals" class="col-card">
                     <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80" alt="Women's Wear" class="col-img">
                     <div class="col-content">
-                        <h3 class="font-display">Women's Wear</h3>
-                        <p>Effortless style for every day.</p>
+                        <h3 class="font-display">Women's Edit</h3>
+                        <p style="font-family: var(--font-body);">Effortless style for every day.</p>
                     </div>
                 </a>
                 <a href="#new-arrivals" class="col-card col-full">
                     <img src="https://images.unsplash.com/photo-1583391733958-675240212354?auto=format&fit=crop&q=80" alt="Ethnic Wear" class="col-img">
                     <div class="col-content">
-                        <h3 class="font-display">Ethnic Wear & Kids</h3>
-                        <p>Traditional craftsmanship and comfortable fits for the little ones.</p>
+                        <h3 class="font-display">Ethnic & Festive</h3>
+                        <p style="font-family: var(--font-body);">Traditional craftsmanship meets contemporary design.</p>
                     </div>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- NEW ARRIVALS (PRODUCT GRID) -->
+    <!-- NEW ARRIVALS (PRODUCT GRID WITH FILTERS) -->
     <section id="new-arrivals" class="section">
         <div class="container">
             <div class="section-header reveal">
@@ -467,88 +424,90 @@
                 <p class="subtitle">Our latest pieces, available in-store now.</p>
             </div>
             
+            <div class="filter-container reveal" id="filterContainer">
+                <button class="filter-btn active" data-filter="All">All Items</button>
+                <button class="filter-btn" data-filter="Women's">Women's</button>
+                <button class="filter-btn" data-filter="Men's">Men's</button>
+                <button class="filter-btn" data-filter="Kids">Kids</button>
+            </div>
+
             <!-- Products injected via JS -->
             <div class="products-grid reveal" id="productGrid"></div>
         </div>
     </section>
 
-    <!-- FEATURED EDIT -->
-    <section class="featured-edit reveal">
-        <img src="https://images.unsplash.com/photo-1550614000-4b95d466f204?auto=format&fit=crop&q=80" alt="Festive Collection">
+    <!-- FEATURED EDIT (PARALLAX) -->
+    <section class="featured-edit reveal" style="background-image: url('https://images.unsplash.com/photo-1550614000-4b95d466f204?auto=format&fit=crop&q=80');">
         <div class="featured-content">
-            <h2 class="font-display" style="font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 20px;">Festive Edit 2026</h2>
-            <p style="font-size: 1.2rem; margin-bottom: 30px;">Fresh styles for celebrations, gatherings and everything in between.</p>
+            <h2 class="font-display" style="font-size: clamp(3rem, 6vw, 5rem); margin-bottom: 20px;">Festive Edit 2026</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 40px; font-weight: 300;">Fresh styles for celebrations, gatherings and everything in between.</p>
             <a href="#" class="btn btn-primary ui-bind-wa" data-msg="Hi, I'd like to know more about the Festive Edit 2026 collection." style="background: white; color: var(--text-main);">Enquire on WhatsApp</a>
         </div>
     </section>
 
+    <!-- SOCIAL PROOF / REVIEWS -->
+    <section id="reviews" class="section bg-alt">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>What Our Customers Say</h2>
+                <p class="subtitle">Don't just take our word for it.</p>
+            </div>
+            
+            <div class="reviews-grid reveal" id="reviewsGrid">
+                <!-- Injected via JS -->
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;" class="reveal">
+                <p style="font-size: 0.85rem; color: var(--text-muted); font-style: italic;">*Demo reviews for portfolio display.</p>
+            </div>
+        </div>
+    </section>
+
     <!-- WHY SHOP WITH US -->
-    <section class="section bg-alt">
+    <section class="section">
         <div class="container">
             <div class="benefits-grid reveal">
                 <div class="benefit-card">
-                    <svg class="benefit-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                    <svg class="benefit-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
                     <h4>Curated Collections</h4>
                     <p>Styles handpicked for quality, comfort, and modern trends.</p>
                 </div>
                 <div class="benefit-card">
-                    <svg class="benefit-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <svg class="benefit-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                     <h4>Quality You Can Trust</h4>
                     <p>Premium fabrics and excellent stitching that lasts.</p>
                 </div>
                 <div class="benefit-card">
-                    <svg class="benefit-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <svg class="benefit-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                     <h4>Friendly Local Service</h4>
-                    <p>Personalized styling advice from our dedicated in-store team.</p>
+                    <p>Personalized styling advice from our dedicated team.</p>
                 </div>
                 <div class="benefit-card">
-                    <svg class="benefit-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                    <h4>Easy WhatsApp Enquiries</h4>
+                    <svg class="benefit-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                    <h4>Instant Enquiries</h4>
                     <p>Check availability or reserve items instantly via WhatsApp.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ABOUT -->
-    <section id="about" class="section">
-        <div class="container about-split reveal">
-            <div>
-                <h2 class="font-display">Your Local Style Destination.</h2>
-                <p class="subtitle" style="margin-bottom: 20px;">We believe that great fashion shouldn't be complicated. We curate collections that help our local community look and feel their best, offering a mix of daily essentials and standout pieces.</p>
-                <p class="subtitle" style="margin-bottom: 30px; font-style: italic; font-size: 0.9rem;">Please note: Velora Fashion is a fictional local clothing store concept created for demonstration purposes, showcasing the ability to blend modern digital presence with local retail service.</p>
-                <a href="#gallery" class="btn btn-outline">View Store Gallery</a>
-            </div>
-            <div class="about-img">
-                <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&q=80" alt="Clothing Store Interior" style="width:100%; height:100%; border-radius: 4px;">
-            </div>
+    <!-- NEWSLETTER -->
+    <section class="newsletter-section reveal">
+        <div class="container">
+            <h2 class="font-display">Join The Velora Club</h2>
+            <p style="font-size: 1.1rem; opacity: 0.9;">Subscribe to get early access to new arrivals and exclusive store events.</p>
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="email" class="newsletter-input" placeholder="Your email address" required>
+                <button type="submit" class="newsletter-btn">Subscribe</button>
+            </form>
+            <p id="newsletterMsg" style="display: none; margin-top: 15px; font-weight: 500;">Thanks! (Demo subscription successful)</p>
         </div>
     </section>
 
-    <!-- GALLERY -->
-    <section id="gallery" class="section bg-alt">
-        <div class="container">
-            <div class="section-header reveal">
-                <h2>Inside the Store</h2>
-                <p class="subtitle">Visit us in store to explore our full range.</p>
-            </div>
-            <div class="gallery-grid reveal">
-                <div class="gal-item gal-large">
-                    <img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?auto=format&fit=crop&q=80" alt="Store Displays" loading="lazy">
-                </div>
-                <div class="gal-item">
-                    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80" alt="Racks" loading="lazy">
-                </div>
-                <div class="gal-item">
-                    <img src="https://images.unsplash.com/photo-1607083206968-13611e3d76db?auto=format&fit=crop&q=80" alt="Shopping" loading="lazy">
-                </div>
-                <div class="gal-item">
-                    <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80" alt="Exterior feel" loading="lazy">
-                </div>
-                <div class="gal-item">
-                    <img src="https://images.unsplash.com/photo-1489987707023-afc3161ce9fd?auto=format&fit=crop&q=80" alt="Details" loading="lazy">
-                </div>
-            </div>
+    <!-- INSTAGRAM / GALLERY -->
+    <section id="gallery">
+        <div class="gallery-grid reveal" id="instagramGrid">
+            <!-- Injected via JS -->
         </div>
     </section>
 
@@ -559,11 +518,11 @@
                 <!-- Info -->
                 <div>
                     <h2 class="font-display">Come Say Hello.</h2>
-                    <p class="subtitle" style="margin-bottom: 40px;">Looking for something specific? Send us a message and our team will help you find the right style.</p>
+                    <p class="subtitle" style="margin-bottom: 50px;">Looking for something specific? Send us a message and our team will help you find the right style.</p>
                     
                     <div class="info-block">
                         <h4>Location</h4>
-                        <p class="ui-bind" data-key="businessName" style="font-weight: 500;">Velora Fashion</p>
+                        <p class="ui-bind font-display" data-key="businessName" style="font-size: 1.5rem; margin-bottom: 5px;">Velora Fashion</p>
                         <p class="ui-bind" data-key="location">Ranchi, Jharkhand</p>
                     </div>
 
@@ -573,7 +532,7 @@
                         <p class="ui-bind" data-key="hours.sunday">Sun: 11:00 AM – 7:00 PM</p>
                     </div>
 
-                    <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 30px;">
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 40px;">
                         <a href="#" class="btn btn-outline ui-bind-wa" data-msg="Hi, I'd like to visit the store. Can you share directions?">Get Directions</a>
                         <a href="#" class="btn btn-outline ui-bind-call">Call Store</a>
                         <a href="#" class="btn btn-whatsapp ui-bind-wa" data-msg="Hi, I have an enquiry.">WhatsApp Us</a>
@@ -583,8 +542,8 @@
                 <!-- Map Placeholder -->
                 <div class="map-placeholder">
                     <div style="text-align: center;">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 10px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                        <p>Google Maps Visual Placeholder</p>
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 15px; color: var(--accent);"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <p style="font-family: var(--font-display); font-size: 1.2rem;">Google Maps Location Area</p>
                     </div>
                 </div>
             </div>
@@ -605,7 +564,7 @@
                     <ul>
                         <li><a href="#collections">Collections</a></li>
                         <li><a href="#new-arrivals">New Arrivals</a></li>
-                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#reviews">Reviews</a></li>
                         <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
@@ -616,9 +575,9 @@
                         <li class="ui-bind" data-key="location">Ranchi, Jharkhand</li>
                         <li><a href="#" class="ui-bind-call ui-bind" data-key="phone">Phone</a></li>
                         <li><a href="#" class="ui-bind-wa">WhatsApp</a></li>
-                        <li style="margin-top: 15px;">
-                            <a href="#" class="ui-bind-ig" style="margin-right: 15px;">Instagram</a>
-                            <a href="#" class="ui-bind-fb">Facebook</a>
+                        <li style="margin-top: 20px;">
+                            <a href="#" class="ui-bind-ig" style="margin-right: 20px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">Instagram</a>
+                            <a href="#" class="ui-bind-fb" style="font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">Facebook</a>
                         </li>
                     </ul>
                 </div>
@@ -626,9 +585,9 @@
             
             <div class="footer-bottom">
                 <p>&copy; 2026 <span class="ui-bind" data-key="businessName">Velora Fashion</span> — Demo Website</p>
-                <a href="https://feasibilitymedia.in" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 5px;">
+                <a href="https://feasibilitymedia.in" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 8px;">
                     Website by Feasibility Media
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
                 </a>
             </div>
         </div>
@@ -637,7 +596,7 @@
     <!-- MOBILE BOTTOM CTA -->
     <div class="mobile-cta">
         <div class="mobile-cta-inner">
-            <a href="#" class="btn btn-outline ui-bind-call" style="border-color: #ddd;">Call</a>
+            <a href="#" class="btn btn-outline ui-bind-call" style="border-color: #EAE8E3;">Call</a>
             <a href="#" class="btn btn-whatsapp ui-bind-wa" data-msg="Hi, I have an enquiry from the website.">WhatsApp</a>
         </div>
     </div>
@@ -646,106 +605,134 @@
     <script>
         /**
          * CENTRALIZED CONFIGURATION OBJECT
-         * Modify this object to repurpose the template for real clients.
          */
         const storeConfig = {
             businessName: "VELORA FASHION",
             tagline: "Style That Feels Like You.",
             location: "Ranchi, Jharkhand",
             phone: "+910000000000",
-            whatsapp: "910000000000", // pure numbers for API link
+            whatsapp: "910000000000", 
             email: "hello@velorafashion-demo.in",
             instagram: "https://instagram.com",
             facebook: "https://facebook.com",
-            googleMaps: "https://maps.google.com",
             hours: {
                 weekdays: "Monday–Saturday: 10:00 AM – 8:30 PM",
                 sunday: "Sunday: 11:00 AM – 7:00 PM"
             },
+            reviews: [
+                { name: "Priya S.", text: "Absolutely love the ethnic collection! The fabric quality is top-notch and exactly what I needed for the festive season." },
+                { name: "Rahul V.", text: "Great fit and really helpful staff in the store. Highly recommend dropping by if you're in Ranchi." },
+                { name: "Anjali M.", text: "My go-to place for everyday wear. The new summer arrivals are incredibly comfortable and stylish." }
+            ],
+            instagramImages: [
+                "https://images.unsplash.com/photo-1520975954732-57ddb6ede138?auto=format&fit=crop&q=80",
+                "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80",
+                "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80",
+                "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80"
+            ],
             products: [
-                {
-                    name: "Classic Linen Shirt", category: "Men's", price: "₹1,499",
-                    image: "https://images.unsplash.com/photo-1596755094514-f87e32f85e2c?auto=format&fit=crop&q=80"
-                },
-                {
-                    name: "Everyday Oversized Tee", category: "Women's", price: "₹899",
-                    image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&q=80"
-                },
-                {
-                    name: "Embroidered Kurta Set", category: "Women's", price: "₹2,199",
-                    image: "https://images.unsplash.com/photo-1667985472175-9c983a54d5d9?auto=format&fit=crop&q=80"
-                },
-                {
-                    name: "Premium Cotton Shirt", category: "Men's", price: "₹1,299",
-                    image: "https://images.unsplash.com/photo-1626497764746-6dc36546b388?auto=format&fit=crop&q=80"
-                },
-                {
-                    name: "Festive Kids Kurta", category: "Kids", price: "₹999",
-                    image: "https://images.unsplash.com/photo-1621535787137-b4dff8a7a00f?auto=format&fit=crop&q=80"
-                },
-                {
-                    name: "Classic Denim Jacket", category: "Men's", price: "₹1,999",
-                    image: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&q=80"
-                }
+                { name: "Classic Linen Shirt", category: "Men's", price: "₹1,499", image: "https://images.unsplash.com/photo-1596755094514-f87e32f85e2c?auto=format&fit=crop&q=80" },
+                { name: "Everyday Oversized Tee", category: "Women's", price: "₹899", image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&q=80" },
+                { name: "Embroidered Kurta Set", category: "Women's", price: "₹2,199", image: "https://images.unsplash.com/photo-1667985472175-9c983a54d5d9?auto=format&fit=crop&q=80" },
+                { name: "Premium Cotton Shirt", category: "Men's", price: "₹1,299", image: "https://images.unsplash.com/photo-1626497764746-6dc36546b388?auto=format&fit=crop&q=80" },
+                { name: "Festive Kids Kurta", category: "Kids", price: "₹999", image: "https://images.unsplash.com/photo-1621535787137-b4dff8a7a00f?auto=format&fit=crop&q=80" },
+                { name: "Classic Denim Jacket", category: "Men's", price: "₹1,999", image: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&q=80" }
             ]
         };
 
         document.addEventListener('DOMContentLoaded', () => {
             
-            // 1. DATA BINDING (Injecting text based on data-key)
+            // 1. DATA BINDING
             document.querySelectorAll('.ui-bind').forEach(el => {
                 const keyPath = el.getAttribute('data-key');
                 if(!keyPath) return;
-                
-                // Handle nested keys (e.g., hours.weekdays)
                 const keys = keyPath.split('.');
                 let value = storeConfig;
-                for (let k of keys) {
-                    if (value[k] !== undefined) value = value[k];
-                    else value = "";
-                }
-                
+                for (let k of keys) value = value[k] !== undefined ? value[k] : "";
                 if (value) el.textContent = value;
             });
 
-            // 2. ACTION BINDING (WhatsApp, Call, Socials)
+            // 2. ACTION BINDING
             document.querySelectorAll('.ui-bind-wa').forEach(btn => {
                 const customMsg = btn.getAttribute('data-msg') || 'Hi, I have an enquiry.';
                 btn.href = `https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent(customMsg)}`;
                 btn.target = "_blank";
             });
-
-            document.querySelectorAll('.ui-bind-call').forEach(btn => {
-                btn.href = `tel:${storeConfig.phone}`;
-            });
-
+            document.querySelectorAll('.ui-bind-call').forEach(btn => btn.href = `tel:${storeConfig.phone}`);
             document.querySelectorAll('.ui-bind-ig').forEach(btn => { btn.href = storeConfig.instagram; btn.target = "_blank"; });
             document.querySelectorAll('.ui-bind-fb').forEach(btn => { btn.href = storeConfig.facebook; btn.target = "_blank"; });
 
-
-            // 3. RENDER PRODUCTS DYNAMICALLY
-            const productGrid = document.getElementById('productGrid');
-            storeConfig.products.forEach(prod => {
-                const waMessage = `Hi ${storeConfig.businessName}, I'm interested in the ${prod.name}. Is it currently available?`;
-                const waLink = `https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent(waMessage)}`;
-                
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                card.innerHTML = `
-                    <div class="product-img">
-                        <img src="${prod.image}" alt="${prod.name}" loading="lazy">
+            // 3. RENDER REVIEWS
+            const reviewsGrid = document.getElementById('reviewsGrid');
+            storeConfig.reviews.forEach(rev => {
+                reviewsGrid.innerHTML += `
+                    <div class="review-card">
+                        <div class="stars">★★★★★</div>
+                        <p class="review-text">"${rev.text}"</p>
+                        <p class="review-author">— ${rev.name}</p>
                     </div>
-                    <div class="product-cat">${prod.category}</div>
-                    <div class="product-title">${prod.name}</div>
-                    <div class="product-price">${prod.price}</div>
-                    <a href="${waLink}" target="_blank" class="btn btn-outline" style="border-color: #ddd;">Ask on WhatsApp</a>
                 `;
-                productGrid.appendChild(card);
             });
 
-            // 4. UI INTERACTIONS
+            // 4. RENDER INSTAGRAM FEED
+            const instaGrid = document.getElementById('instagramGrid');
+            storeConfig.instagramImages.forEach(img => {
+                instaGrid.innerHTML += `
+                    <a href="${storeConfig.instagram}" target="_blank" class="gal-item">
+                        <img src="${img}" alt="Instagram post" loading="lazy">
+                        <div class="gal-overlay">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                        </div>
+                    </a>
+                `;
+            });
+
+            // 5. RENDER PRODUCTS & FILTERING
+            const productGrid = document.getElementById('productGrid');
+            const filterBtns = document.querySelectorAll('.filter-btn');
             
-            // Mobile Menu
+            function renderProducts(filter = 'All') {
+                productGrid.innerHTML = '';
+                storeConfig.products.forEach(prod => {
+                    if(filter !== 'All' && prod.category !== filter) return;
+                    
+                    const waMessage = `Hi ${storeConfig.businessName}, I'm interested in the ${prod.name}. Is it currently available?`;
+                    const waLink = `https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent(waMessage)}`;
+                    
+                    productGrid.innerHTML += `
+                        <div class="product-card">
+                            <div class="product-img">
+                                <img src="${prod.image}" alt="${prod.name}" loading="lazy">
+                            </div>
+                            <div class="product-cat">${prod.category}</div>
+                            <div class="product-title">${prod.name}</div>
+                            <div class="product-price">${prod.price}</div>
+                            <a href="${waLink}" target="_blank" class="btn btn-outline">Ask on WhatsApp</a>
+                        </div>
+                    `;
+                });
+            }
+            
+            renderProducts(); // Initial load
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    renderProducts(e.target.getAttribute('data-filter'));
+                });
+            });
+
+            // 6. NEWSLETTER DEMO
+            document.getElementById('newsletterForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const msg = document.getElementById('newsletterMsg');
+                msg.style.display = 'block';
+                e.target.reset();
+                setTimeout(() => msg.style.display = 'none', 4000);
+            });
+
+            // 7. UI INTERACTIONS (Nav & Scroll)
             const hamburger = document.getElementById('hamburger');
             const navLinks = document.getElementById('navLinks');
             const navItems = navLinks.querySelectorAll('a');
@@ -753,14 +740,12 @@
             hamburger.addEventListener('click', () => navLinks.classList.toggle('active'));
             navItems.forEach(item => item.addEventListener('click', () => navLinks.classList.remove('active')));
 
-            // Sticky Navbar
             const navbar = document.getElementById('navbar');
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 50) navbar.classList.add('scrolled');
                 else navbar.classList.remove('scrolled');
             });
 
-            // Scroll Reveal Animation
             const observer = new IntersectionObserver((entries, obs) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
