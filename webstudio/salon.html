@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LUMIÈRE SALON | Premium Hair &amp; Beauty Salon in Ranchi</title>
+<meta name="description" content="Discover premium hair, beauty and styling services at LUMIÈRE SALON in Ranchi. Book your appointment today.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LUMIÈRE SALON | Premium Hair &amp; Beauty Salon in Ranchi">
+<meta property="og:description" content="Premium hair, beauty and styling services designed around you. Book your appointment today.">
+<meta name="theme-color" content="#f6efe6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;1,400&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HairSalon","name":"LUMIÈRE SALON","description":"Premium hair, beauty and styling salon in Ranchi.","telephone":"+919876543210","address":{"@type":"PostalAddress","addressLocality":"Ranchi","addressRegion":"Jharkhand","addressCountry":"IN"},"openingHours":"Mo-Su 10:00-20:00","sameAs":["https://instagram.com/lumieresalon"]}
+</script>
+<style>
+:root{--cream:#f6efe6;--sand:#ece1d3;--ink:#231f1e;--muted:#6b605a;--wine:#7a1f2e;--wine-d:#5b1522;--white:#fffaf4;
+--serif:"Bodoni Moda","Didot",Georgia,serif;--sans:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+--r:22px;--sh:0 10px 30px -12px rgba(60,30,25,.22)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{font-family:var(--sans);background:var(--cream);color:var(--ink);line-height:1.65;font-size:1rem;-webkit-font-smoothing:antialiased;padding-bottom:64px}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--wine);outline-offset:3px;border-radius:6px}
+.wrap{width:min(1180px,100% - 40px);margin-inline:auto}
+section{padding:72px 0}
+h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.08;letter-spacing:-.01em}
+h1{font-size:clamp(2.7rem,9vw,5.6rem)}
+h2{font-size:clamp(2rem,5.5vw,3.4rem);margin-bottom:14px}
+h3{font-size:1.35rem;line-height:1.2}
+em{font-style:italic;color:var(--wine)}
+.lead{color:var(--muted);max-width:52ch;font-size:1.08rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 26px;border-radius:999px;font:600 .98rem var(--sans);border:1.5px solid var(--wine);cursor:pointer;transition:transform .25s,background .25s,color .25s,box-shadow .25s}
+.btn:hover{transform:translateY(-2px);box-shadow:var(--sh)}
+.btn-fill{background:var(--wine);color:var(--white)}.btn-fill:hover{background:var(--wine-d)}
+.btn-line{background:transparent;color:var(--wine)}.btn-line:hover{background:var(--wine);color:var(--white)}
+.btn-sm{min-height:42px;padding:8px 18px;font-size:.9rem}
+/* image slots: gradients stand in until real photos are set in salonConfig.images */
+.ph{background:var(--g,linear-gradient(145deg,#c9a28f,#7a1f2e));background-size:cover;background-position:center;position:relative;overflow:hidden}
+.ph::after{content:attr(data-label);position:absolute;left:14px;bottom:12px;color:rgba(255,250,244,.8);font-size:.78rem;font-family:var(--serif);font-style:italic}
+.ph.has-img::after{display:none}
+/* nav */
+header{position:sticky;top:0;z-index:50;background:rgba(246,239,230,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(35,31,30,.08);transition:box-shadow .3s}
+header.scrolled{box-shadow:var(--sh)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{font-family:var(--serif);font-size:1.3rem;letter-spacing:.14em}
+.logo b{color:var(--wine);font-weight:400}
+.menu{display:none;list-style:none;gap:30px;align-items:center}
+.menu a:not(.btn){font-weight:500;position:relative;padding:6px 0}
+.menu a:not(.btn)::after{content:"";position:absolute;left:0;bottom:0;height:1.5px;width:0;background:var(--wine);transition:width .3s}
+.menu a:not(.btn):hover::after{width:100%}
+.burger{width:48px;height:48px;border:0;background:none;display:grid;place-content:center;gap:6px;cursor:pointer}
+.burger span{display:block;width:26px;height:2px;background:var(--ink);transition:transform .3s,opacity .3s}
+.burger[aria-expanded=true] span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.burger[aria-expanded=true] span:nth-child(2){opacity:0}
+.burger[aria-expanded=true] span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+.menu.open{display:flex;flex-direction:column;position:absolute;top:68px;left:0;right:0;background:var(--cream);padding:18px 20px 28px;gap:4px;align-items:stretch;box-shadow:var(--sh)}
+.menu.open a:not(.btn){font-family:var(--serif);font-size:1.7rem;padding:12px 0;border-bottom:1px solid rgba(35,31,30,.1)}
+.menu.open .btn{margin-top:16px}
+.nav-cta{display:none}
+/* hero */
+.hero{padding:40px 0 56px}
+.hero-grid{display:grid;gap:36px}
+.hero h1{margin:14px 0 20px}
+.hero .ph{min-height:420px;border-radius:var(--r) var(--r) 180px var(--r);--g:linear-gradient(160deg,#d8b5a2 0%,#a8505a 55%,#4a1420 100%)}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0}
+.trust{list-style:none;display:flex;flex-wrap:wrap;gap:10px 22px;color:var(--muted);font-weight:500;font-size:.95rem}
+.trust li::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--wine);margin-right:9px}
+/* services */
+.cats{display:grid;gap:52px;margin-top:40px}
+.cat h3{font-size:1.8rem;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid rgba(35,31,30,.15)}
+.cards{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.card{background:var(--white);border-radius:var(--r);padding:24px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:8px;transition:transform .3s}
+.card:hover{transform:translateY(-4px)}
+.card p{color:var(--muted);font-size:.95rem;flex:1}
+.from{color:var(--wine);font-weight:600;font-size:.92rem}
+.card .btn{margin-top:10px;align-self:flex-start}
+/* featured */
+.feat{background:var(--ink);color:var(--white)}
+.feat-grid{display:grid;gap:36px;align-items:center}
+.feat .ph{aspect-ratio:4/5;border-radius:var(--r);--g:linear-gradient(200deg,#e0c3b2,#8c3441 60%,#2c0c13)}
+.feat em{color:#e6a9b2}
+.feat .lead{color:#cfc4bc}
+.feat ul{list-style:none;margin:22px 0;display:grid;gap:10px}
+.feat li{padding-left:28px;position:relative}
+.feat li::before{content:"✓";position:absolute;left:0;color:#e6a9b2}
+.feat .from{color:#e6a9b2;font-size:1.05rem;display:block;margin-bottom:20px}
+.feat .btn-fill{background:var(--white);color:var(--wine-d);border-color:var(--white)}
+/* about */
+.about-grid{display:grid;gap:40px;align-items:center}
+.collage{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.collage .ph{border-radius:var(--r);min-height:200px}
+.collage .ph:nth-child(1){grid-row:span 2;min-height:420px;--g:linear-gradient(160deg,#cfa896,#8c3441)}
+.collage .ph:nth-child(2){--g:linear-gradient(140deg,#e8d3c2,#b56a6f)}
+.collage .ph:nth-child(3){--g:linear-gradient(140deg,#3a2a28,#7a1f2e)}
+.about p+p{margin-top:14px}
+.stats{display:flex;flex-wrap:wrap;gap:28px 44px;margin-top:30px}
+.stats strong{display:block;font-family:var(--serif);font-size:2.4rem;font-weight:400;color:var(--wine);line-height:1}
+.stats span{color:var(--muted);font-size:.92rem}
+/* why */
+.why{background:var(--sand)}
+.why .cards{margin-top:36px}
+.ico{width:46px;height:46px;border-radius:50%;background:var(--wine);color:var(--white);display:grid;place-items:center;margin-bottom:6px}
+.ico svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+/* gallery */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0}
+.chip{min-height:44px;padding:8px 20px;border-radius:999px;border:1.5px solid rgba(35,31,30,.2);background:transparent;font:500 .92rem var(--sans);cursor:pointer;transition:.25s}
+.chip[aria-pressed=true],.chip:hover{background:var(--wine);border-color:var(--wine);color:var(--white)}
+.masonry{columns:2;column-gap:12px}
+.tile{break-inside:avoid;margin-bottom:12px;border-radius:18px;overflow:hidden;cursor:pointer;transition:transform .3s,opacity .3s}
+.tile:hover{transform:scale(1.015)}
+.tile.hide{display:none}
+.tile .ph{width:100%}
+.center{text-align:center;margin-top:30px}
+/* testimonials */
+.quotes{display:grid;gap:16px;margin-top:34px}
+.quote{background:var(--white);border-radius:var(--r);padding:30px;box-shadow:var(--sh)}
+.quote p{font-family:var(--serif);font-size:1.25rem;line-height:1.45}
+.quote cite{display:block;margin-top:16px;font-style:normal;color:var(--wine);font-weight:600}
+/* social */
+.social{background:var(--sand)}
+.igrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:30px 0}
+.igrid .ph{aspect-ratio:1;border-radius:14px;transition:transform .3s}
+.igrid a:hover .ph{transform:scale(.97)}
+/* location */
+.loc-grid{display:grid;gap:32px}
+.info{display:grid;gap:18px;margin-top:22px}
+.info dt{font-weight:600}
+.info dd{color:var(--muted)}
+.info a{color:var(--wine);font-weight:500}
+.map{min-height:340px;border-radius:var(--r);background:linear-gradient(135deg,#e3d6c6,#d6c5b2);position:relative;display:grid;place-items:center;text-align:center;padding:24px;overflow:hidden}
+.map::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 58px,rgba(255,255,255,.4) 58px 60px),repeating-linear-gradient(0deg,transparent 0 58px,rgba(255,255,255,.4) 58px 60px)}
+.map>*{position:relative}
+.pin{width:30px;height:30px;background:var(--wine);border-radius:50% 50% 50% 0;transform:rotate(-45deg);margin:0 auto 14px;box-shadow:0 6px 14px rgba(0,0,0,.25)}
+/* book */
+.book{background:var(--wine);color:var(--white);text-align:center;border-radius:var(--r);padding:64px 24px;margin-inline:auto}
+.book h2{margin-bottom:12px}
+.book p{opacity:.88;margin:0 auto 28px;max-width:46ch}
+.book .cta-row{justify-content:center;margin:0}
+.book .btn-fill{background:var(--white);color:var(--wine-d);border-color:var(--white)}
+.book .btn-line{color:var(--white);border-color:var(--white)}
+.book .btn-line:hover{background:var(--white);color:var(--wine-d)}
+/* footer */
+footer{background:var(--ink);color:#cfc4bc;padding:60px 0 28px;margin-top:72px}
+.foot{display:grid;gap:34px}
+footer h3{color:var(--white);font-size:1.1rem;margin-bottom:12px;font-family:var(--sans);font-weight:600}
+footer ul{list-style:none;display:grid;gap:6px}
+footer a:hover{color:var(--white)}
+footer .logo{color:var(--white);display:block;margin-bottom:12px}
+.legal{margin-top:40px;padding-top:20px;border-top:1px solid rgba(255,255,255,.12);font-size:.88rem;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+/* floating */
+.sticky-bar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;gap:8px;padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:rgba(246,239,230,.96);backdrop-filter:blur(8px);box-shadow:0 -6px 24px rgba(0,0,0,.1)}
+.sticky-bar .btn{flex:1}
+#top{position:fixed;right:16px;bottom:84px;z-index:55;width:46px;height:46px;border-radius:50%;border:0;background:var(--ink);color:var(--white);font-size:1.2rem;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s}
+#top.show{opacity:1;pointer-events:auto}
+/* reveal: one gentle entrance, hero + section headings only */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .8s,transform .8s}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}.rv{opacity:1;transform:none}}
+@media (min-width:768px){
+ section{padding:100px 0}
+ .hero-grid{grid-template-columns:1.05fr .95fr;align-items:center;gap:56px}
+ .hero .ph{min-height:620px}
+ .feat-grid,.about-grid,.loc-grid{grid-template-columns:1fr 1fr;gap:64px}
+ .masonry{columns:3;column-gap:16px}.tile{margin-bottom:16px}
+ .quotes{grid-template-columns:repeat(3,1fr)}
+ .igrid{grid-template-columns:repeat(6,1fr)}
+ .foot{grid-template-columns:1.5fr 1fr 1fr 1.2fr}
+}
+@media (min-width:1024px){
+ .burger{display:none}
+ .menu{display:flex}
+ .nav-cta{display:inline-flex}
+ .sticky-bar{display:none}body{padding-bottom:0}
+ #top{bottom:24px}
+}
+@media (max-width:360px){.btn{padding:12px 18px}.logo{font-size:1.1rem}}
+</style>
+</head>
+<body>
+<header id="hdr">
+ <div class="wrap nav">
+  <a href="#home" class="logo" aria-label="LUMIÈRE SALON home">LUMI<b>È</b>RE</a>
+  <button class="burger" id="burger" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <ul class="menu" id="menu">
+   <li><a href="#home">Home</a></li>
+   <li><a href="#services">Services</a></li>
+   <li><a href="#about">About</a></li>
+   <li><a href="#gallery">Gallery</a></li>
+   <li><a href="#contact">Contact</a></li>
+   <li><a href="#" class="btn btn-fill btn-sm" data-wa>Book Appointment</a></li>
+  </ul>
+ </div>
+</header>
+
+<main>
+<section class="hero" id="home">
+ <div class="wrap hero-grid">
+  <div class="rv">
+   <p class="lead" data-cfg="tagline"></p>
+   <h1>Your Beauty. <em>Your Confidence.</em></h1>
+   <p class="lead">Premium hair, beauty and styling services designed around you.</p>
+   <div class="cta-row">
+    <a href="#" class="btn btn-fill" data-wa>Book an Appointment</a>
+    <a href="#" class="btn btn-line" data-wa="Hi! I'd like to know more about your services at LUMIÈRE SALON.">WhatsApp Us</a>
+   </div>
+   <ul class="trust"><li>Professional Stylists</li><li>Premium Products</li><li>Personalized Service</li></ul>
+  </div>
+  <div class="ph rv" data-img="hero" data-label="Hero photo — hair & styling" role="img" aria-label="Stylist finishing a client's glossy blow-dry at LUMIÈRE SALON"></div>
+ </div>
+</section>
+
+<section id="services">
+ <div class="wrap">
+  <h2 class="rv">Beauty, <em>Tailored to You</em></h2>
+  <p class="lead">From a clean trim to a full bridal look, every service starts with a conversation about what suits you.</p>
+  <div class="cats" id="cats"></div>
+ </div>
+</section>
+
+<section class="feat" id="signature">
+ <div class="wrap feat-grid">
+  <div class="ph" data-img="signature" data-label="Signature transformation photo" role="img" aria-label="Before and after of a Signature Hair Transformation"></div>
+  <div>
+   <h2>Signature Hair <em>Transformation</em></h2>
+   <p class="lead">A complete hair makeover: consultation, cut, colour and finish, planned around your face shape, lifestyle and hair type.</p>
+   <ul><li>One-on-one consultation with a senior stylist</li><li>Colour and cut customised to you</li><li>Nourishing treatment included</li><li>Take-home care guide for lasting shine</li></ul>
+   <span class="from">Starting at ₹2,999</span>
+   <a href="#" class="btn btn-fill" data-wa="Hi! I'm interested in the Signature Hair Transformation at LUMIÈRE SALON.">Enquire on WhatsApp</a>
+  </div>
+ </div>
+</section>
+
+<section id="about" class="about">
+ <div class="wrap about-grid">
+  <div class="collage">
+   <div class="ph" data-img="about1" data-label="Salon floor" role="img" aria-label="Styling stations at LUMIÈRE SALON"></div>
+   <div class="ph" data-img="about2" data-label="Colour work" role="img" aria-label="Hair colour in progress"></div>
+   <div class="ph" data-img="about3" data-label="Products" role="img" aria-label="Premium hair care products"></div>
+  </div>
+  <div>
+   <h2 class="rv">More Than <em>a Salon.</em></h2>
+   <p>LUMIÈRE began with a simple idea: nobody should leave a salon unsure about how they look. Our experienced stylists take time to understand your hair, your routine and what you want to feel like when you walk out.</p>
+   <p>We use quality, professional-grade products, follow strict hygiene practices with sanitised tools for every client, and keep the studio calm and comfortable, so a salon visit feels like time for yourself.</p>
+   <div class="stats">
+    <div><strong>5+</strong><span>Years Experience</span></div>
+    <div><strong>2,000+</strong><span>Happy Clients</span></div>
+    <div><strong>10+</strong><span>Beauty Services</span></div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="why">
+ <div class="wrap">
+  <h2 class="rv">Why Choose <em>LUMIÈRE</em></h2>
+  <div class="cards" id="why"></div>
+ </div>
+</section>
+
+<section id="gallery">
+ <div class="wrap">
+  <h2 class="rv">Our <em>Work</em></h2>
+  <p class="lead">A look at recent hair, makeup and styling, and the studio where it happens.</p>
+  <div class="filters" id="filters" role="group" aria-label="Filter gallery"></div>
+  <div class="masonry" id="masonry"></div>
+  <div class="center"><a class="btn btn-line" data-ig target="_blank" rel="noopener">View Our Instagram</a></div>
+ </div>
+</section>
+
+<section>
+ <div class="wrap">
+  <h2 class="rv">Kind Words</h2>
+  <div class="quotes">
+   <figure class="quote"><p>Absolutely loved my hair transformation. The stylist understood exactly what I wanted.</p><cite>Ananya</cite></figure>
+   <figure class="quote"><p>Beautiful ambience, professional staff and excellent service.</p><cite>Riya</cite></figure>
+   <figure class="quote"><p>One of the best salon experiences I've had in Ranchi.</p><cite>Priya</cite></figure>
+  </div>
+ </div>
+</section>
+
+<section class="social">
+ <div class="wrap center">
+  <h2 class="rv">Follow <em>Our Work</em></h2>
+  <p class="lead" style="margin-inline:auto">Fresh looks, behind-the-scenes and styling tips, shared often.</p>
+  <div class="igrid" id="igrid"></div>
+  <a class="btn btn-fill" data-ig target="_blank" rel="noopener" id="igbtn"></a>
+ </div>
+</section>
+
+<section id="contact">
+ <div class="wrap loc-grid">
+  <div>
+   <h2>Visit <em>LUMIÈRE</em></h2>
+   <address style="font-style:normal" class="lead" id="addr"></address>
+   <dl class="info">
+    <div><dt>Opening Hours</dt><dd>Monday – Sunday<br><span id="hours"></span></dd></div>
+    <div><dt>Phone</dt><dd><a id="phoneL"></a></dd></div>
+    <div><dt>WhatsApp</dt><dd><a href="#" data-wa id="waL"></a></dd></div>
+    <div><dt>Instagram</dt><dd><a data-ig target="_blank" rel="noopener" id="igL"></a></dd></div>
+   </dl>
+  </div>
+  <div class="map" role="img" aria-label="Map placeholder showing salon location in Ranchi">
+   <div><div class="pin"></div><p style="font-family:var(--serif);font-size:1.3rem;margin-bottom:16px" id="mapName"></p><a class="btn btn-fill btn-sm" id="dir" target="_blank" rel="noopener">Get Directions</a></div>
+  </div>
+ </div>
+</section>
+
+<section style="padding-top:0">
+ <div class="wrap">
+  <div class="book">
+   <h2>Ready for Your <em style="color:#f0b9c1">Next Look?</em></h2>
+   <p>Book your appointment and let our experts take care of the rest.</p>
+   <div class="cta-row"><a href="#" class="btn btn-fill" data-wa>WhatsApp to Book</a><a class="btn btn-line" data-tel>Call Now</a></div>
+  </div>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div class="wrap">
+  <div class="foot">
+   <div><a href="#home" class="logo">LUMIÈRE</a><p>Premium hair, beauty and styling in Ranchi, designed around you.</p></div>
+   <div><h3>Quick Links</h3><ul><li><a href="#home">Home</a></li><li><a href="#services">Services</a></li><li><a href="#about">About</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#contact">Contact</a></li></ul></div>
+   <div><h3>Services</h3><ul><li><a href="#services">Hair</a></li><li><a href="#services">Skin</a></li><li><a href="#services">Bridal &amp; Occasions</a></li><li><a href="#services">Beauty</a></li></ul></div>
+   <div><h3>Contact</h3><ul><li id="fAddr"></li><li><a data-tel id="fPhone"></a></li><li><a href="#" data-wa>WhatsApp</a></li><li><a data-ig target="_blank" rel="noopener" id="fIg"></a></li></ul></div>
+  </div>
+  <div class="legal"><span id="copy"></span><span>Website by Feasibility Media</span></div>
+ </div>
+</footer>
+
+<div class="sticky-bar"><a href="#" class="btn btn-fill btn-sm" data-wa>Book on WhatsApp</a><a class="btn btn-line btn-sm" data-tel>Call</a></div>
+<button id="top" aria-label="Back to top">↑</button>
+
+<script>
+/* ===== EDIT THIS OBJECT FOR EACH NEW SALON ===== */
+const salonConfig = {
+  name: "LUMIÈRE SALON",
+  tagline: "Where Beauty Meets Confidence",
+  phone: "+919876543210",
+  phoneDisplay: "+91 98765 43210",
+  whatsapp: "919876543210",              // country code + number, no + or spaces
+  instagram: "lumieresalon",
+  address: "Ranchi, Jharkhand",
+  openingHours: "10:00 AM – 8:00 PM",
+  mapsUrl: "https://www.google.com/maps/search/?api=1&query=Ranchi+Jharkhand",
+  bookingMessage: "Hi! I'd like to book an appointment at LUMIÈRE SALON. Please let me know the available slots.",
+  /* Add photo paths (e.g. "images/hero.jpg") to replace gradient placeholders. Keys: hero, signature, about1-3, gallery0-9, ig0-5 */
+  images: {}
+};
+const services = {
+  "Hair": [["Haircut & Styling","Precision cuts and finishes shaped to your face and routine.",499],["Hair Spa","Deep nourishment and relaxation for healthier-looking hair.",799],["Hair Coloring","Rich, even colour with care for your hair's health.",1499],["Global Hair Color","All-over colour for a bold, uniform new shade.",2499],["Highlights","Dimension and brightness, blended to look natural.",2999],["Keratin Treatment","Smoother, shinier, more manageable hair for months.",3999]],
+  "Skin": [["Cleanup","A quick refresh that clears and brightens tired skin.",499],["Facial","Targeted care for a calm, glowing complexion.",999],["De-Tan","Gently lifts tan for an even, fresh tone.",699],["Skin Polishing","Smooth, radiant skin with a soft finish.",1299]],
+  "Bridal & Special Occasions": [["Bridal Makeup","A long-lasting look planned with you well before the day.",9999],["Engagement Makeup","Soft, photo-ready makeup for your ring ceremony.",5999],["Party Makeup","Polished looks for evenings, sangeets and celebrations.",1999],["Hairstyling","Updos, curls and braids set to last all event.",899]],
+  "Beauty": [["Manicure","Shaped, cared-for hands with a clean polish finish.",499],["Pedicure","Relaxing foot care that leaves feet soft and fresh.",699],["Threading","Clean, precise shaping for brows and face.",50],["Waxing","Smooth results with skin-friendly wax.",199]]
+};
+const why = [
+ ["Experienced Professionals","Trained stylists who listen first and keep learning the latest techniques.","M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z"],
+ ["Premium Products","Professional-grade colour, care and skin products chosen for results.","M9 3h6v4l3 4v9a1 1 0 01-1 1H7a1 1 0 01-1-1v-9l3-4zM9 7h6"],
+ ["Personalized Consultations","Every visit starts with a conversation, never a one-size-fits-all menu.","M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"],
+ ["Hygienic & Comfortable Studio","Sanitised tools, clean stations and a calm space to unwind.","M12 3c3 4 6 6.5 6 10a6 6 0 01-12 0c0-3.500 3-6 6-10z"]
+];
+const galleryCats = ["Hair","Makeup","Salon","Styling","Interior"];
+const grads = ["#d8b5a2,#8c3441","#e9d6c4,#b56a6f","#3a2a28,#7a1f2e","#cfa896,#5b1522","#efe0d0,#c9928c"];
+const heights = [300,220,260,340,240,280,320,230,270,300];
+
+/* ===== helpers ===== */
+const $ = (s, r=document) => r.querySelector(s), $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const c = salonConfig;
+const igUrl = "https://instagram.com/" + c.instagram;
+/* reusable WhatsApp function: every WhatsApp CTA calls this */
+function openWhatsApp(message = c.bookingMessage) {
+  window.open("https://wa.me/" + c.whatsapp + "?text=" + encodeURIComponent(message), "_blank", "noopener");
+}
+const rupee = n => "₹" + n.toLocaleString("en-IN");
+function applyImg(el, key){
+  const src = c.images[key];
+  if(src){ el.style.backgroundImage = `url("${src}")`; el.classList.add("has-img"); }
+}
+
+/* ===== render ===== */
+$("[data-cfg=tagline]").textContent = c.tagline;
+$("#cats").innerHTML = Object.entries(services).map(([cat, items]) =>
+  `<div class="cat"><h3>${cat}</h3><div class="cards">` + items.map(([n,d,p]) =>
+   `<article class="card"><h4 style="font-family:var(--serif);font-weight:400;font-size:1.3rem">${n}</h4><p>${d}</p><span class="from">Starting at ${rupee(p)}</span><button class="btn btn-line btn-sm" data-wa="Hi! I'd like to enquire about ${n} at ${c.name}.">Enquire on WhatsApp</button></article>`).join("") + `</div></div>`).join("");
+$("#why").innerHTML = why.map(([t,d,p]) =>
+  `<article class="card"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${p}"/></svg></div><h3>${t}</h3><p>${d}</p></article>`).join("");
+$("#filters").innerHTML = ["All",...galleryCats].map((t,i) => `<button class="chip" aria-pressed="${i===0}" data-f="${t}">${t}</button>`).join("");
+$("#masonry").innerHTML = heights.map((h,i) => {
+  const cat = galleryCats[i % 5];
+  return `<div class="tile" data-cat="${cat}"><div class="ph" style="height:${h}px;--g:linear-gradient(150deg,${grads[i%5]})" data-img="gallery${i}" data-label="${cat}" role="img" aria-label="${cat} photo from ${c.name}"></div></div>`;
+}).join("");
+$("#igrid").innerHTML = [0,1,2,3,4,5].map(i => `<a data-ig target="_blank" rel="noopener" aria-label="Open Instagram post ${i+1}"><div class="ph" style="--g:linear-gradient(150deg,${grads[i%5]})" data-img="ig${i}"></div></a>`).join("");
+$("#igbtn").textContent = "Follow @" + c.instagram;
+$("#addr").textContent = c.name + ", " + c.address;
+$("#hours").textContent = c.openingHours;
+$("#phoneL").textContent = c.phoneDisplay; $("#phoneL").href = "tel:" + c.phone;
+$("#waL").textContent = c.phoneDisplay;
+$("#igL").textContent = "@" + c.instagram;
+$("#mapName").textContent = c.name;
+$("#dir").href = c.mapsUrl;
+$("#fAddr").textContent = c.address;
+$("#fPhone").textContent = c.phoneDisplay;
+$("#fIg").textContent = "Instagram @" + c.instagram;
+$("#copy").textContent = "© " + new Date().getFullYear() + " " + c.name + ". All rights reserved.";
+$$("[data-tel]").forEach(a => a.href = "tel:" + c.phone);
+$$("[data-ig]").forEach(a => a.href = igUrl);
+$$("[data-img]").forEach(el => applyImg(el, el.dataset.img));
+
+/* ===== wire WhatsApp CTAs (every one goes through openWhatsApp) ===== */
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-wa]");
+  if(!t) return;
+  e.preventDefault();
+  openWhatsApp(t.dataset.wa || undefined);
+});
+
+/* ===== nav ===== */
+const burger = $("#burger"), menu = $("#menu");
+function setMenu(open){ menu.classList.toggle("open", open); burger.setAttribute("aria-expanded", open); burger.setAttribute("aria-label", open ? "Close menu" : "Open menu"); }
+burger.addEventListener("click", () => setMenu(!menu.classList.contains("open")));
+$$("#menu a").forEach(a => a.addEventListener("click", () => setMenu(false)));
+document.addEventListener("keydown", e => { if(e.key === "Escape") setMenu(false); });
+
+/* ===== gallery filter ===== */
+$("#filters").addEventListener("click", e => {
+  const b = e.target.closest(".chip"); if(!b) return;
+  $$(".chip").forEach(x => x.setAttribute("aria-pressed", x === b));
+  $$(".tile").forEach(t => t.classList.toggle("hide", b.dataset.f !== "All" && t.dataset.cat !== b.dataset.f));
+});
+$("#masonry").addEventListener("click", () => window.open(igUrl, "_blank", "noopener"));
+
+/* ===== scroll: header shadow, back-to-top, reveal ===== */
+const toTop = $("#top");
+addEventListener("scroll", () => {
+  $("#hdr").classList.toggle("scrolled", scrollY > 10);
+  toTop.classList.toggle("show", scrollY > 700);
+}, {passive:true});
+toTop.addEventListener("click", () => scrollTo({top:0, behavior:"smooth"}));
+const io = new IntersectionObserver(es => es.forEach(x => { if(x.isIntersecting){ x.target.classList.add("in"); io.unobserve(x.target); } }), {threshold:.15});
+$$(".rv").forEach(el => io.observe(el));
+</script>
+</body>
+</html>
