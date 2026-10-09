@@ -51,7 +51,17 @@ table{font-size:13.5px}th{text-transform:uppercase;letter-spacing:.06em;font-siz
 .empty{border-style:dashed}
 #toast div{background:#18181d;color:#fff;border:1px solid var(--line);border-left:3px solid #E11D48;box-shadow:0 10px 30px #0008}
 @media(max-width:1024px){.body{padding:16px}.side{width:260px}}
-</style></head><body><div id="app"></div><div id="modal"></div><div id="toast"></div>
+
+.splash{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:radial-gradient(circle at 50% 35%,#2a0a14,#09090b 62%)}.splash.inl{min-height:55vh;background:none}
+.orb{position:relative;width:96px;height:96px;display:grid;place-items:center}.orb svg{position:absolute;inset:0;animation:spin 1.3s linear infinite}
+.trk{fill:none;stroke:#26262c;stroke-width:3}.arc{fill:none;stroke:#E11D48;stroke-width:3;stroke-linecap:round;stroke-dasharray:70 200;filter:drop-shadow(0 0 6px #E11D48)}
+.orb b{width:52px;height:52px;border-radius:15px;background:linear-gradient(135deg,#E11D48,#9f1239);display:grid;place-items:center;font-size:24px;animation:pulse 1.8s ease-in-out infinite;box-shadow:0 8px 30px #e11d4866}
+.wm{font-weight:700;font-size:18px;letter-spacing:.02em}.msg{color:#8a8a93;font-size:13px;animation:fade 1.8s ease-in-out infinite}
+.bar{width:170px;height:3px;background:#1c1c22;border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;width:40%;background:linear-gradient(90deg,transparent,#E11D48,transparent);animation:slide 1.2s ease-in-out infinite}
+.bar u{display:block;height:100%;background:linear-gradient(90deg,#9f1239,#E11D48);border-radius:3px;transition:width .35s ease;box-shadow:0 0 10px #E11D48}.pc{font:600 12px ui-monospace,monospace;color:#a1a1aa}
+.body>*{animation:rise .35s ease both}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{50%{transform:scale(1.07)}}@keyframes fade{50%{opacity:.4}}@keyframes slide{from{transform:translateX(-100%)}to{transform:translateX(350%)}}@keyframes rise{from{opacity:0;transform:translateY(8px)}}
+</style></head><body><div id="app"><div class="splash"><div class="orb"><svg viewBox="0 0 100 100"><circle class="trk" cx="50" cy="50" r="42"/><circle class="arc" cx="50" cy="50" r="42"/></svg><b>F</b></div><div class="wm">Feasibility Media</div><div class="msg">Starting up…</div><div class="bar"><i></i></div></div></div><div id="modal"></div><div id="toast"></div>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {getStorage,ref,uploadBytes,getDownloadURL} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
@@ -91,7 +101,7 @@ const toast=m=>{const d=document.createElement('div');d.textContent=m;$('#toast'
 const create=async(c,data)=>{await addDoc(collection(db,c),{...data,archived:false,createdAt:serverTimestamp()});await log(`${S[c]?.[0].replace(/s$/,'')} created: ${data.name||data.who||data.category||''}`)};
 const upd=(c,id,d)=>updateDoc(doc(db,c,id),d);
 const arch=async(c,r)=>{await upd(c,r.id,{archived:true});await log(`${S[c][0].replace(/s$/,'')} archived: ${r.name||r.who||r.category||''}`)};
-let started=0;const start=()=>{if(started)return;started=1;COLS.forEach(c=>onSnapshot(collection(db,c),s=>{D[c]=s.docs.map(d=>({id:d.id,...d.data()})).filter(x=>!x.archived);L[c]=1;sched()},e=>{err=`Unable to read "${c}": ${e.code}. Check Firestore rules.`;sched()}));};
+let started=0;const start=()=>{if(started)return;started=1;COLS.forEach(c=>onSnapshot(collection(db,c),s=>{D[c]=s.docs.map(d=>({id:d.id,...d.data()})).filter(x=>!x.archived);L[c]=1;lastL=c;sched()},e=>{err=`Unable to read "${c}": ${e.code}. Check Firestore rules.`;sched()}));};
 let t0;const sched=()=>{cancelAnimationFrame(t0);t0=requestAnimationFrame(render)};
 const rev=p=>p.status==='Paid'||p.status==='Partial'?+p.amount||0:p.status==='Refunded'?-(+p.amount||0):0;
 const sum=(a,f)=>a.reduce((x,y)=>x+(+f(y)||0),0);
@@ -100,7 +110,7 @@ const PG=/^(won|paid|completed|active client|active|returning client|done)$/i,PR
 const val=(f,v,r)=>f[2]==='s'&&['status','priority'].includes(f[0])&&v?`<span class="pill ${PG.test(v)?'g':PR.test(v)?'r':PA.test(v)?'a':''}">${E(v)}</span>`:f[2]==='r'?lbl(f[3],v):f[2]==='n'&&/₹/.test(f[1])?inr(v):E(v??'');
 
 function render(){
- if(!authReady){$('#app').innerHTML='<div class="muted" style="padding:40px">Loading…</div>';return}
+ if(!authReady){$('#app').innerHTML=splash(stage);return}
  if(!me){$('#app').innerHTML=loginView();return}
  OWN.splice(0,OWN.length,...new Set([...D.users.map(u=>u.name),'Other']));
  const nav=NAV.filter(n=>!(meet&&MEETHIDE.includes(n[0])));
@@ -108,11 +118,14 @@ function render(){
  $('#app').innerHTML=`<div class="app"><aside class="side ${open?'open':''}"><div class="logo"><b>F</b> Feasibility Media</div>${nav.map(([k,l])=>`${({dashboard:'Overview',clients:'Sales',projects:'Delivery',payments:'Finance',team:'Workspace',notifications:'System'})[k]?`<div class="grp">${({dashboard:'Overview',clients:'Sales',projects:'Delivery',payments:'Finance',team:'Workspace',notifications:'System'})[k]}</div>`:''}<button class="nav ${page===k?'on':''}" data-a="nav" data-v="${k}">${l||S[k][0]}</button>`).join('')}</aside>
  <main>${meet?'<div class="meet"><b>Client Meeting Mode</b><button class="ghost" data-a="meet">Exit Meeting Mode</button></div>':''}
  <header><button class="ghost menu" data-a="menu">☰</button><span class="muted">Feasibility Media / ${E(nav.find(n=>n[0]===page)?.[1]||S[page]?.[0]||page)}</span><span class="sp"></span>${meet?'':`<button class="ghost" data-a="nav" data-v="notifications">🔔 ${notes().filter(n=>!read[n.id]).length||''}</button>`}<button class="ghost" data-a="search">🔍 Search ⌘K</button>${meet?'':'<button class="ghost" data-a="meet">Meeting Mode</button>'}<button class="ghost" data-a="mine" title="Toggle between all data and only your assigned work">${mine?'👤 My work':'👥 Everyone'}</button><button class="ghost" data-a="out" title="Sign out">${E(me.name)} ⎋</button></header>
- ${err?`<div class="err">${E(err)}</div>`:''}<div class="body">${!ready&&!err?'<div class="muted">Loading…</div>':PAGES[page]?PAGES[page]():entity(page)}</div></main></div>`;
+ ${err?`<div class="err">${E(err)}</div>`:''}<div class="body">${!ready&&!err?splash(`Syncing ${COLS.filter(c=>L[c]).length} of ${COLS.length} collections · ${lastL?'loaded '+lastL:'connecting…'}`,1):PAGES[page]?PAGES[page]():entity(page)}</div></main></div>`;
  if(page==='workbench'&&W)pv();
 }
 const PAGES={dashboard,finance,workbench,notifications,activity,reports,settings};
 
+let stage='Connecting to Firebase…',sp=10,lastL='';
+const prog=()=>authReady?Math.round(60+COLS.filter(c=>L[c]).length/COLS.length*40):sp;
+const splash=(m,i)=>{const p=prog();return `<div class="splash ${i?'inl':''}"><div class="orb"><svg viewBox="0 0 100 100"><circle class="trk" cx="50" cy="50" r="42"/><circle class="arc" cx="50" cy="50" r="42"/></svg><b>F</b></div><div class="wm">Feasibility Media</div><div class="msg">${m}</div><div class="bar"><u style="width:${p}%"></u></div><div class="pc">${p}%</div></div>`};
 const RG={'7d':7,'30d':30,'3m':90,'6m':180,'1y':365};
 const iso=n=>{const d=new Date(Date.now()-n*864e5);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
 const per=(a,b)=>{const f=x=>(x.date||'')>=a&&(x.date||'')<b,r=sum(D.payments.filter(f),rev),x=sum(D.expenses.filter(f),e=>e.amount);return{r,x,p:r-x}};
@@ -318,8 +331,8 @@ async function doAuth(){const em=($('#au_em')?.value||'').trim(),pw=$('#au_pw')?
   try{localStorage.setItem('fm_acct','1')}catch{}render()}
  catch(e){signingUp=false;aerr={'auth/email-already-in-use':'An account with this email exists. Please sign in.','auth/invalid-credential':'Wrong email or password.','auth/wrong-password':'Wrong email or password.','auth/weak-password':'Password must be at least 6 characters.','auth/invalid-email':'Enter a valid email.','auth/operation-not-allowed':'Enable Email/Password sign-in in Firebase Console → Authentication.'}[e.code]||('Sign-in failed: '+e.code);render()}}
 try{if(localStorage.getItem('fm_acct'))authMode='in'}catch{}
-onAuthStateChanged(auth,async u=>{authReady=true;if(signingUp)return;if(!u){me=null;render();return}
- if(!me){try{const r=doc(db,'users',u.uid),g=await getDoc(r);if(g.exists())me={uid:u.uid,...g.data()};else{const p={name:(u.email||'User').split('@')[0],email:u.email};await setDoc(r,{...p,createdAt:serverTimestamp()});me={uid:u.uid,...p}}}catch(e){aerr='Could not load your profile: '+e.code;}}
- if(me)start();render()});
+onAuthStateChanged(auth,async u=>{if(signingUp){authReady=true;return}stage='Verifying account…';sp=35;if(!u){authReady=true;me=null;render();return}
+ if(!me){stage='Loading your profile…';sp=55;authReady=false;render();try{const r=doc(db,'users',u.uid),g=await getDoc(r);if(g.exists())me={uid:u.uid,...g.data()};else{const p={name:(u.email||'User').split('@')[0],email:u.email};await setDoc(r,{...p,createdAt:serverTimestamp()});me={uid:u.uid,...p}}}catch(e){aerr='Could not load your profile: '+e.code;}}
+ authReady=true;if(me)start();render()});
 render();
 </script></body></html>
