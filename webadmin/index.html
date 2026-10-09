@@ -1,960 +1,325 @@
-<!DOCTYPE html>
-<html lang="en" class="light">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feasibility Media CRM</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: { 50: '#f0f9ff', 100: '#e0f2fe', 500: '#0ea5e9', 600: '#0284c7', 900: '#0c4a6e' },
-                        dark: { bg: '#0f172a', panel: '#1e293b', border: '#334155' }
-                    },
-                    fontFamily: { sans: ['Inter', 'sans-serif'] }
-                }
-            }
-        }
-    </script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Feasibility OS</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b0b0d;color:#f4f4f5;font:14px Inter,system-ui,sans-serif}
+.app{display:flex;min-height:100vh}.side{width:220px;background:#111114;border-right:1px solid #232328;padding:14px 10px;position:sticky;top:0;height:100vh;overflow:auto;flex-shrink:0}
+.logo{font-weight:700;padding:6px 10px 14px;display:flex;gap:8px;align-items:center}.logo b{background:#E11D48;border-radius:8px;width:26px;height:26px;display:grid;place-items:center}
+.nav{display:block;width:100%;text-align:left;background:none;border:0;color:#a1a1aa;padding:11px 12px;border-radius:10px;font:inherit;cursor:pointer}.nav:hover{background:#1b1b20}.nav.on{background:#1f1f25;color:#fff;box-shadow:inset 3px 0 #E11D48}
+main{flex:1;min-width:0}header{height:56px;display:flex;align-items:center;gap:10px;padding:0 20px;border-bottom:1px solid #232328}header .sp{flex:1}.muted{color:#8a8a93}.menu{display:none}
+.body{padding:20px;max-width:1500px}h1{font-size:23px;margin:0 0 4px}h2{margin-top:0}h3{margin:0 0 10px;font-size:14px}
+.card{background:#141418;border:1px solid #232328;border-radius:14px;padding:16px;box-shadow:0 4px 18px #0006}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:18px 0}.kpi{font-size:23px;font-weight:700;margin-top:6px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}.row{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid #202026}
+.bar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px}.gap{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.end{justify-content:flex-end;margin-top:14px}
+input,select,textarea{background:#0e0e11;border:1px solid #2a2a31;color:#fff;border-radius:10px;padding:10px 12px;font:inherit;min-height:44px;width:100%}textarea{min-height:70px}
+.bar input,.bar select{width:auto;min-width:150px}
+.btn,.ghost{min-height:44px;padding:0 15px;border-radius:10px;font:inherit;cursor:pointer;border:1px solid #2a2a31;color:#fff;background:#18181d}.btn{background:#E11D48;border-color:#E11D48;font-weight:600}.btn:hover{filter:brightness(1.1)}.ghost:hover{background:#202026}.on2{background:#E11D48;border-color:#E11D48}
+.scroll{overflow-x:auto;padding:0}table{width:100%;border-collapse:collapse}th,td{padding:11px 13px;text-align:left;border-bottom:1px solid #202026;white-space:nowrap}th{color:#8a8a93;font-weight:500;font-size:12px}.act{text-align:right}
+.tag{background:#E11D4833;color:#fda4af;border-radius:6px;padding:1px 6px;font-size:10px;margin-left:6px}
+.kanban{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px}.col{min-width:220px;background:#101013;border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:8px}.k{cursor:grab;padding:12px}
+.overlay{position:fixed;inset:0;background:#000b;display:grid;place-items:center;padding:14px;z-index:10}.modal{background:#141418;border:1px solid #2a2a31;border-radius:16px;padding:20px;width:min(660px,100%);max-height:90vh;overflow:auto;animation:pop .15s}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:flex;flex-direction:column;gap:6px;color:#a1a1aa;font-size:12px}small{color:#fb7185}
+.empty{text-align:center;padding:44px}.err{background:#3b0a14;color:#fecdd3;padding:12px 20px}.meet{background:#E11D48;padding:10px 20px;display:flex;justify-content:space-between;align-items:center}
+#toast{position:fixed;bottom:20px;right:20px;z-index:30}#toast div{background:#fff;color:#111;padding:12px 18px;border-radius:12px;animation:pop .2s;margin-top:6px}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}}
+.wb{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(300px,1fr);gap:12px}.browser{border:1px solid #2a2a31;border-radius:12px;overflow:hidden;background:#fff;color:#111}.chrome{background:#e5e5e8;padding:8px 12px;display:flex;gap:6px;align-items:center;font-size:11px;color:#555}.chrome i{width:10px;height:10px;border-radius:50%;background:#bbb}.chrome span{background:#fff;border-radius:6px;padding:3px 10px;margin-left:10px;flex:1}
+#pv{max-height:620px;overflow:auto}#pv section{padding:30px 24px}#pv .btnx{display:inline-block;padding:10px 18px;color:#fff;margin-top:10px}
+.console{background:#07070a;border:1px solid #232328;border-radius:12px;padding:12px;font:12px ui-monospace,monospace;height:150px;overflow:auto;color:#86efac}.console div{margin:2px 0}
+.chk{display:flex;gap:8px;align-items:center;padding:6px 0}.chk input{width:20px;min-height:20px}
+.prog{height:10px;background:#232328;border-radius:9px;overflow:hidden}.prog>div{height:100%;background:#E11D48;transition:width .4s}
+@media(max-width:1024px){.side{position:fixed;z-index:9;transform:translateX(-100%);transition:.2s}.side.open{transform:none}.menu{display:block}.wb{grid-template-columns:1fr}}
+@media(max-width:700px){.form{grid-template-columns:1fr}.body{padding:12px}}
 
-    <!-- Google Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+:root{--line:#26262c;--panel:#131317}
+body{background:#09090b;-webkit-font-smoothing:antialiased;letter-spacing:-.005em}
+::-webkit-scrollbar{height:8px;width:8px}::-webkit-scrollbar-thumb{background:#2c2c33;border-radius:8px}
+.side{background:#0c0c0f;width:236px;padding:16px 12px}.logo{font-size:15px;padding:4px 10px 18px}.logo b{background:linear-gradient(135deg,#E11D48,#9f1239);box-shadow:0 4px 14px #e11d4855}
+.grp{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#5b5b66;padding:16px 12px 6px}
+.nav{padding:9px 12px;font-size:13.5px;margin-bottom:2px;transition:.15s}.nav.on{background:#1a1a20;box-shadow:none;color:#fff;position:relative}.nav.on:before{content:'';position:absolute;left:-12px;top:9px;bottom:9px;width:3px;border-radius:3px;background:#E11D48}
+header{position:sticky;top:0;z-index:5;background:#09090bcc;backdrop-filter:blur(12px);height:60px}
+.body{padding:28px 32px}h1{font-size:26px;font-weight:700;letter-spacing:-.025em}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 1px 0 #ffffff08 inset,0 8px 24px #0005;transition:border-color .2s}
+.kpis .card{position:relative;overflow:hidden;padding:18px}.kpis .card:before{content:'';position:absolute;left:0;top:0;right:0;height:2px;background:linear-gradient(90deg,#E11D48,transparent)}.kpis .card:hover{border-color:#3a3a43}
+.kpis .muted{font-size:12px;text-transform:uppercase;letter-spacing:.06em}.kpi{font-size:28px;letter-spacing:-.03em;margin:8px 0 4px}
+.btn{border-radius:10px;box-shadow:0 4px 14px #e11d4840;transition:.15s}.btn:active,.ghost:active{transform:scale(.97)}.ghost{background:#16161b;border-color:var(--line);transition:.15s}
+input,select,textarea{background:#0c0c0f;border-color:var(--line);transition:.15s}input:focus,select:focus,textarea:focus{outline:0;border-color:#E11D48;box-shadow:0 0 0 3px #e11d4826}
+table{font-size:13.5px}th{text-transform:uppercase;letter-spacing:.06em;font-size:11px;background:#101014;position:sticky;top:0}tbody tr{transition:.12s}tbody tr:hover{background:#18181d}
+.pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11.5px;font-weight:600;background:#27272e;color:#c4c4cc}.pill.g{background:#14532d66;color:#86efac}.pill.r{background:#7f1d1d66;color:#fda4af}.pill.a{background:#78350f66;color:#fcd34d}
+.col{background:#0e0e12;border:1px solid var(--line)}.k:hover{border-color:#E11D48}
+.modal{border-radius:20px;box-shadow:0 30px 80px #000a}.overlay{backdrop-filter:blur(4px)}
+.row{border-bottom:1px solid #1d1d23;padding:9px 0}.row:last-child{border:0}
+.empty{border-style:dashed}
+#toast div{background:#18181d;color:#fff;border:1px solid var(--line);border-left:3px solid #E11D48;box-shadow:0 10px 30px #0008}
+@media(max-width:1024px){.body{padding:16px}.side{width:260px}}
+</style></head><body><div id="app"></div><div id="modal"></div><div id="toast"></div>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getStorage,ref,uploadBytes,getDownloadURL} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+import {getAuth,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getFirestore,getDoc,setDoc,collection,onSnapshot,addDoc,updateDoc,doc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const CONFIG={apiKey:"AIzaSyAZ_c3EaDxSZ6RrNrwQjR_TauJHrPfk_lk",authDomain:"designsnap-f3309.firebaseapp.com",projectId:"designsnap-f3309",storageBucket:"designsnap-f3309.firebasestorage.app",messagingSenderId:"741888249963",appId:"1:741888249963:web:9540c9f68d6f0d5da9a12e"};
+const app=initializeApp(CONFIG),db=getFirestore(app),st=getStorage(app),auth=getAuth(app);
+const $=s=>document.querySelector(s),E=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const inr=n=>'₹'+Math.round(n||0).toLocaleString('en-IN'),ms=x=>x?.toMillis?x.toMillis():Date.parse(x)||0;
+const OWN=['Other'],STG=['New','Contacted','Replied','Interested','Demo Sent','Negotiation','Won','Lost'];
+const PST=['Planning','Requirements','Content Collection','Photography','Video Shoot','Design','Development','Review','Revision','Deployment','Completed','On Hold'];
+// field: [key,label,type(t,n,d,m,s,r,a),opts/ref,required]
+const S={
+clients:['Clients',[['name','Business name','t',0,1],['contact','Contact person'],['phone','Phone'],['whatsapp','WhatsApp'],['email','Email'],['city','City'],['category','Category'],['instagram','Instagram'],['source','Lead source','s',['Instagram','WhatsApp','Google Maps','Referral','Website','Direct visit','Existing client','Other']],['owner','Assigned to','s',OWN],['status','Status','s',['Prospect','Contacted','Interested','Proposal Sent','Won','Active Client','Completed','Lost','Returning Client']],['notes','Notes','a']]],
+leads:['Leads',[['name','Business name','t',0,1],['contact','Contact person'],['phone','Phone'],['source','Source','s',['Instagram','WhatsApp','Google Maps','Referral','Website','Direct visit','Existing client','Other']],['owner','Lead owner','s',OWN,1],['status','Stage','s',STG],['value','Potential value ₹','n'],['prob','Probability %','n'],['followup','Next follow-up','d'],['notes','Notes','a']]],
+projects:['Projects',[['name','Project name','t',0,1],['clientId','Client','r','clients',1],['service','Service'],['value','Project value ₹','n',0,1],['status','Status','s',PST],['priority','Priority','s',['Low','Medium','High','Urgent']],['progress','Progress %','n'],['start','Start date','d'],['due','Expected delivery','d'],['dev','Developer'],['notes','Notes','a']]],
+tasks:['Tasks',[['name','Task','t',0,1],['projectId','Project','r','projects'],['assignee','Assigned to','s',OWN],['priority','Priority','s',['Low','Medium','High','Urgent']],['status','Status','s',['Todo','In Progress','Review','Completed']],['due','Due date','d'],['description','Description','a']]],
+services:['Services',[['name','Name','t',0,1],['description','Description'],['price','Base price ₹','n'],['days','Delivery (days)','n'],['active','Active','s',['Active','Inactive']]]],
+payments:['Payments',[['clientId','Client','r','clients',1],['projectId','Project','r','projects'],['amount','Amount ₹','n',0,1],['method','Method','s',['UPI','Cash','Bank Transfer','Card','Other']],['status','Status','s',['Paid','Pending','Partial','Refunded']],['date','Date','d',0,1],['ref','Reference ID'],['notes','Notes']]],
+expenses:['Expenses',[['category','Category','s',['Software','Hosting','Domain','Travel','Photography','Equipment','Marketing','Advertising','Transport','Freelancers','Subscriptions','Office','Other'],1],['amount','Amount ₹','n',0,1],['date','Date','d',0,1],['description','Description'],['projectId','Project','r','projects'],['vendor','Vendor'],['method','Method','s',['UPI','Cash','Bank Transfer','Card','Other']],['by','Added by','s',OWN]]],
+team:['Team',[['name','Name','t',0,1],['role','Role','s',['Founder','Developer','Sales','Designer','Photographer','Video Editor','Marketing']],['phone','Phone'],['email','Email'],['active','Active','s',['Active','Inactive']]]],
+media:['Media',[['name','File name','t',0,1],['clientId','Client','r','clients'],['projectId','Project','r','projects'],['type','Type','s',['Photo','Video','Logo','Document','Other']],['category','Category','s',['Website','Instagram','Portfolio','Gallery','Raw','Final']],['url','URL (e.g. Firebase Storage)'],['notes','Notes']]],
+appointments:['Appointments',[['clientId','Client','r','clients',1],['projectId','Project','r','projects'],['date','Date','d',0,1],['time','Time','m'],['type','Type','s',['Client Meeting','Photo Shoot','Video Shoot','Revision','Demo','Other']],['location','Location'],['notes','Notes']]],
+followups:['Follow-ups',[['who','Lead / client','t',0,1],['date','Date','d',0,1],['time','Time','m'],['reason','Reason'],['assignee','Assigned to','s',OWN],['status','Status','s',['Upcoming','Completed','Missed','Rescheduled']],['notes','Notes']]]};
+const KAN=['leads','projects','tasks'],COLS=[...Object.keys(S),'activities','users'];
+const MEETHIDE=['payments','expenses','finance','reports','settings','team','notifications'];
+const NAV=[['dashboard','Dashboard'],['clients'],['leads'],['projects'],['tasks'],['services'],['payments'],['expenses'],['finance','Profit & Finance'],['team'],['media'],['workbench','Website Workbench'],['appointments'],['followups'],['notifications','Notifications'],['activity','Activity'],['reports','Reports'],['settings','Settings']];
+const CH={'Website Setup':['Client information','Logo','Brand colors','Domain','Content','Photos','Services','Contact details'],Development:['Homepage','Responsive design','Navigation','Services','Gallery','Contact','WhatsApp','Google Maps','SEO'],'Final QA':['Mobile test','Desktop test','Links checked','WhatsApp tested','Contact tested','Images optimized','SEO checked'],Deployment:['Domain connected','Final approval','Website live']};
+const SEC=['Hero','About','Services','Gallery','Testimonials','Location','Contact','WhatsApp CTA'];
+const D={};COLS.forEach(c=>D[c]=[]);const L={};
+let me=null,authReady=false,signingUp=false,mine=false,aerr='',aform={},authMode='up',rg='6m',sort={},rd={},calM=new Date(),read={};try{read=JSON.parse(localStorage.getItem('fmread')||'{}')}catch{}
+const saveRead=()=>{try{localStorage.setItem('fmread',JSON.stringify(read))}catch{}};
+let page='dashboard',meet=false,view={},q={},fl={},err='',W=null,wbTab='Content',wbLog=[],open=false;
+const lbl=(c,id)=>D[c].find(x=>x.id===id)?.name||'—';
+const log=t=>addDoc(collection(db,'activities'),{text:t,user:me?.name||'System',createdAt:serverTimestamp()});
+const toast=m=>{const d=document.createElement('div');d.textContent=m;$('#toast').append(d);setTimeout(()=>d.remove(),2500)};
+const create=async(c,data)=>{await addDoc(collection(db,c),{...data,archived:false,createdAt:serverTimestamp()});await log(`${S[c]?.[0].replace(/s$/,'')} created: ${data.name||data.who||data.category||''}`)};
+const upd=(c,id,d)=>updateDoc(doc(db,c,id),d);
+const arch=async(c,r)=>{await upd(c,r.id,{archived:true});await log(`${S[c][0].replace(/s$/,'')} archived: ${r.name||r.who||r.category||''}`)};
+let started=0;const start=()=>{if(started)return;started=1;COLS.forEach(c=>onSnapshot(collection(db,c),s=>{D[c]=s.docs.map(d=>({id:d.id,...d.data()})).filter(x=>!x.archived);L[c]=1;sched()},e=>{err=`Unable to read "${c}": ${e.code}. Check Firestore rules.`;sched()}));};
+let t0;const sched=()=>{cancelAnimationFrame(t0);t0=requestAnimationFrame(render)};
+const rev=p=>p.status==='Paid'||p.status==='Partial'?+p.amount||0:p.status==='Refunded'?-(+p.amount||0):0;
+const sum=(a,f)=>a.reduce((x,y)=>x+(+f(y)||0),0);
+const paid=pid=>sum(D.payments.filter(p=>p.projectId===pid),rev);
+const PG=/^(won|paid|completed|active client|active|returning client|done)$/i,PR=/^(lost|missed|refunded|urgent|on hold|inactive)$/i,PA=/^(pending|partial|review|high|upcoming|todo|negotiation|revision|rescheduled)$/i;
+const val=(f,v,r)=>f[2]==='s'&&['status','priority'].includes(f[0])&&v?`<span class="pill ${PG.test(v)?'g':PR.test(v)?'r':PA.test(v)?'a':''}">${E(v)}</span>`:f[2]==='r'?lbl(f[3],v):f[2]==='n'&&/₹/.test(f[1])?inr(v):E(v??'');
 
-    <style>
-        body { font-family: 'Inter', sans-serif; overflow: hidden; }
-        
-        /* Custom Scrollbars */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        .dark ::-webkit-scrollbar-thumb { background: #475569; }
-        .hide-scroll::-webkit-scrollbar { display: none; }
-        
-        /* Kanban Styles */
-        .kanban-col { min-height: 60vh; }
-        .drag-over { border: 2px dashed #0ea5e9; background-color: rgba(14, 165, 233, 0.05); }
-        .dragging { opacity: 0.5; transform: scale(0.95); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-        
-        /* Modal Backdrop */
-        .modal-backdrop { backdrop-filter: blur(4px); transition: all 0.3s ease; }
-        
-        /* Utilities */
-        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); }
-        .dark .glass-panel { background: rgba(30, 41, 59, 0.7); }
-    </style>
-</head>
-<body class="bg-gray-50 text-gray-900 dark:bg-dark-bg dark:text-gray-100 h-screen w-screen flex">
+function render(){
+ if(!authReady){$('#app').innerHTML='<div class="muted" style="padding:40px">Loading…</div>';return}
+ if(!me){$('#app').innerHTML=loginView();return}
+ OWN.splice(0,OWN.length,...new Set([...D.users.map(u=>u.name),'Other']));
+ const nav=NAV.filter(n=>!(meet&&MEETHIDE.includes(n[0])));
+ const ready=COLS.every(c=>L[c]);
+ $('#app').innerHTML=`<div class="app"><aside class="side ${open?'open':''}"><div class="logo"><b>F</b> Feasibility Media</div>${nav.map(([k,l])=>`${({dashboard:'Overview',clients:'Sales',projects:'Delivery',payments:'Finance',team:'Workspace',notifications:'System'})[k]?`<div class="grp">${({dashboard:'Overview',clients:'Sales',projects:'Delivery',payments:'Finance',team:'Workspace',notifications:'System'})[k]}</div>`:''}<button class="nav ${page===k?'on':''}" data-a="nav" data-v="${k}">${l||S[k][0]}</button>`).join('')}</aside>
+ <main>${meet?'<div class="meet"><b>Client Meeting Mode</b><button class="ghost" data-a="meet">Exit Meeting Mode</button></div>':''}
+ <header><button class="ghost menu" data-a="menu">☰</button><span class="muted">Feasibility Media / ${E(nav.find(n=>n[0]===page)?.[1]||S[page]?.[0]||page)}</span><span class="sp"></span>${meet?'':`<button class="ghost" data-a="nav" data-v="notifications">🔔 ${notes().filter(n=>!read[n.id]).length||''}</button>`}<button class="ghost" data-a="search">🔍 Search ⌘K</button>${meet?'':'<button class="ghost" data-a="meet">Meeting Mode</button>'}<button class="ghost" data-a="mine" title="Toggle between all data and only your assigned work">${mine?'👤 My work':'👥 Everyone'}</button><button class="ghost" data-a="out" title="Sign out">${E(me.name)} ⎋</button></header>
+ ${err?`<div class="err">${E(err)}</div>`:''}<div class="body">${!ready&&!err?'<div class="muted">Loading…</div>':PAGES[page]?PAGES[page]():entity(page)}</div></main></div>`;
+ if(page==='workbench'&&W)pv();
+}
+const PAGES={dashboard,finance,workbench,notifications,activity,reports,settings};
 
-    <!-- Sidebar -->
-    <aside id="sidebar" class="w-64 bg-gray-900 text-white flex flex-col h-full fixed md:relative z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shadow-xl flex-shrink-0">
-        <div class="p-6 flex items-center justify-between border-b border-gray-800">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center shadow-lg shadow-primary-500/30">
-                    <i class="fa-solid fa-bolt text-white"></i>
-                </div>
-                <span class="font-bold text-lg tracking-wide">Feasibility CRM</span>
-            </div>
-            <button onclick="toggleSidebar()" class="md:hidden text-gray-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-xl"></i>
-            </button>
-        </div>
-        
-        <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-1">
-            <button data-view="dashboard" class="nav-btn active w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium bg-primary-600 text-white transition-all shadow-md shadow-primary-600/20">
-                <i class="fa-solid fa-chart-pie w-5"></i> Dashboard
-            </button>
-            <button data-view="leads" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
-                <i class="fa-solid fa-users w-5"></i> Leads
-            </button>
-            <button data-view="pipeline" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
-                <i class="fa-solid fa-bars-staggered w-5"></i> Sales Pipeline
-            </button>
-            <button data-view="clients" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
-                <i class="fa-solid fa-handshake w-5"></i> Clients
-            </button>
-            <button data-view="projects" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
-                <i class="fa-solid fa-folder-open w-5"></i> Projects
-            </button>
-            <button data-view="payments" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
-                <i class="fa-solid fa-indian-rupee-sign w-5"></i> Payments
-            </button>
-            <button data-view="expenses" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
-                <i class="fa-solid fa-receipt w-5"></i> Expenses
-            </button>
-            <button data-view="partners" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-all">
-                <i class="fa-solid fa-scale-balanced w-5"></i> Partners (Split)
-            </button>
-        </nav>
-        
-        <div class="p-4 border-t border-gray-800 bg-gray-900/50">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-gray-700 to-gray-600 flex items-center justify-center border border-gray-500 text-white font-bold text-sm">
-                    <i class="fa-solid fa-user-tie"></i>
-                </div>
-                <div>
-                    <p class="text-sm font-semibold text-white">Aryaveer & Partner</p>
-                    <p class="text-xs text-green-400 flex items-center gap-1" id="conn-status">
-                        <i class="fa-solid fa-circle text-[8px] animate-pulse"></i> Connecting...
-                    </p>
-                </div>
-            </div>
-        </div>
-    </aside>
+const RG={'7d':7,'30d':30,'3m':90,'6m':180,'1y':365};
+const iso=n=>{const d=new Date(Date.now()-n*864e5);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const per=(a,b)=>{const f=x=>(x.date||'')>=a&&(x.date||'')<b,r=sum(D.payments.filter(f),rev),x=sum(D.expenses.filter(f),e=>e.amount);return{r,x,p:r-x}};
+const trend=(c,p,inv)=>{if(!p)return'<small class="muted">no prior data</small>';const d=(c-p)/Math.abs(p)*100,up=inv?d<=0:d>=0;return `<small style="color:${up?'#4ade80':'#fb7185'}">${d>=0?'▲':'▼'} ${Math.abs(d).toFixed(0)}% vs prev period</small>`};
+function notes(){const t=iso(0),tm=iso(-1),in3=iso(-3),n=[];
+ D.projects.forEach(p=>{const pd=(+p.value||0)-paid(p.id);if(pd>0&&p.status!=='On Hold')n.push({id:'pay'+p.id+pd,t:`Payment pending from ${lbl('clients',p.clientId)}: ${inr(pd)}`});if(p.due&&p.due<=in3&&p.status!=='Completed')n.push({id:'due'+p.id+p.due,t:`Deadline ${p.due<t?'passed':'approaching'}: ${p.name} (${p.due})`});if(p.status==='Review')n.push({id:'rev'+p.id,t:`Client review pending: ${p.name}`})});
+ D.appointments.filter(a=>a.date===tm||a.date===t).forEach(a=>n.push({id:'ap'+a.id,t:`${a.type} ${a.date===t?'today':'tomorrow'}: ${lbl('clients',a.clientId)} ${a.time||''}`}));
+ D.followups.filter(f=>f.status==='Upcoming'&&f.date<=t).forEach(f=>n.push({id:'fu'+f.id,t:`Follow-up ${f.date<t?'overdue':'today'}: ${f.who}`}));
+ D.leads.filter(l=>l.status==='New').forEach(l=>n.push({id:'ld'+l.id,t:`New lead assigned to ${l.owner}: ${l.name}`}));
+ D.tasks.filter(x=>x.due&&x.due<t&&x.status!=='Completed').forEach(x=>n.push({id:'tk'+x.id,t:`Overdue task: ${x.name}`}));return n}
+function notifications(){const n=notes();return `<div class="bar"><h1>Notifications</h1><button class="ghost" data-a="rdall">Mark all read</button></div><div class="card">${n.map(x=>`<div class="row" style="opacity:${read[x.id]?.5:1}"><span>${read[x.id]?'':'● '}${E(x.t)}</span>${read[x.id]?'':`<button class="ghost" data-a="rd" data-v="${x.id}">Mark read</button>`}</div>`).join('')||'<div class="muted">You are all caught up.</div>'}</div>`}
+function dashboard(){
+ const n=RG[rg],cur=per(iso(n-1),iso(-1)),prv=per(iso(2*n-1),iso(n-1)),R=sum(D.payments,rev),X=sum(D.expenses,e=>e.amount),billed=sum(D.projects,p=>p.value),today=iso(0);
+ const won=D.leads.filter(l=>l.status==='Won').length,act=D.projects.filter(p=>!['Completed','On Hold'].includes(p.status)).length;
+ const mn=me.name,K=[['My Open Tasks',D.tasks.filter(t=>t.assignee===mn&&t.status!=='Completed').length,''],['My Active Leads',D.leads.filter(l=>l.owner===mn&&!['Won','Lost'].includes(l.status)).length,''],['My Follow-ups Today',D.followups.filter(f=>f.assignee===mn&&f.date===today&&f.status==='Upcoming').length,''],['Active Projects',act,''],['Total Clients',D.clients.length,''],['New Leads',D.leads.filter(l=>l.status==='New').length,''],['Conversion',(D.leads.length?won/D.leads.length*100:0).toFixed(1)+'%','']];
+ if(!meet)K.unshift(['Total Revenue',inr(R),trend(cur.r,prv.r)],['Total Expenses',inr(X),trend(cur.x,prv.x,1)],['Net Profit',inr(R-X),trend(cur.p,prv.p)],['Pending Payments',inr(Math.max(0,billed-R)),'']);
+ const daily=n<=30,nb=daily?n:Math.ceil(n/30);
+ const bk=[...Array(nb)].map((_,i)=>{let k;if(daily)k=iso(n-1-i);else{const t=new Date(new Date().getFullYear(),new Date().getMonth()-(nb-1-i),1);k=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')}
+  const m=x=>(x.date||'').startsWith(k),r=sum(D.payments.filter(m),rev),x=sum(D.expenses.filter(m),e=>e.amount);return{k,r,x,p:r-x}});
+ const mx=Math.max(1,...bk.flatMap(b=>[b.r,b.x,Math.abs(b.p)])),w=400/nb,bw=Math.max(2,w/2-1),lab=Math.ceil(nb/8),cm=today.slice(0,7),mm=x=>(x.date||'').startsWith(cm),mr=sum(D.payments.filter(mm),rev),mxp=sum(D.expenses.filter(mm),e=>e.amount);
+ const up=D.appointments.filter(a=>a.date>=today).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,5),fu=D.followups.filter(f=>f.date===today&&f.status==='Upcoming');
+ const h=new Date().getHours();
+ return `<h1>Good ${h<12?'morning':h<17?'afternoon':'evening'}, ${E(me.name)}.</h1><p class="muted">Here's what's happening at Feasibility Media.</p>
+ <div class="gap" style="margin-top:12px">${[['clients','Client'],['leads','Lead'],['payments','Payment'],['expenses','Expense'],['tasks','Task'],['appointments','Appointment']].filter(x=>!(meet&&['payments','expenses'].includes(x[0]))).map(([c,l])=>`<button class="ghost" data-a="add" data-v="${c}">+ ${l}</button>`).join('')}</div>
+ <div class="kpis">${K.map(([l,v,t])=>`<div class="card"><span class="muted">${l}</span><div class="kpi">${v}</div>${t}</div>`).join('')}</div>
+ <div class="grid2">${meet?'':`<div class="card"><div class="bar" style="margin:0 0 8px"><h3 style="margin:0">Revenue · Expenses · Profit</h3><div class="gap">${Object.keys(RG).map(k=>`<button class="ghost ${rg===k?'on2':''}" style="min-height:34px;padding:0 10px" data-a="rg" data-v="${k}">${k}</button>`).join('')}</div></div>
+ <svg viewBox="0 0 400 150" width="100%">${bk.map((b,i)=>`<rect x="${i*w+1}" y="${130-b.r/mx*110}" width="${bw}" height="${b.r/mx*110}" fill="#E11D48" rx="2"/><rect x="${i*w+1+bw}" y="${130-b.x/mx*110}" width="${bw}" height="${b.x/mx*110}" fill="#52525b" rx="2"/>${i%lab===0?`<text x="${i*w+w/2}" y="145" font-size="8" fill="#a1a1aa" text-anchor="middle">${b.k.slice(5)}</text>`:''}`).join('')}<polyline fill="none" stroke="#4ade80" stroke-width="2" points="${bk.map((b,i)=>`${i*w+w/2},${130-b.p/mx*110}`).join(' ')}"/></svg>
+ <span class="muted"><span style="color:#E11D48">■</span> Revenue <span style="color:#a1a1aa">■</span> Expenses <span style="color:#4ade80">━</span> Profit</span>
+ <div class="row"><span>This month</span><span>Revenue ${inr(mr)} · Expenses ${inr(mxp)} · Profit ${inr(mr-mxp)}</span></div><div class="row"><span>Projects</span><span>${D.projects.filter(p=>p.status==='Completed').length} completed · ${act} in progress</span></div></div>`}
+ <div class="card"><h3>Today's follow-ups</h3>${fu.length?fu.map(f=>`<div class="row"><span>${E(f.who)}</span><span class="muted">${E(f.time||'')} · ${E(f.assignee)}</span></div>`).join(''):'<span class="muted">None today.</span>'}
+ <h3 style="margin-top:16px">Upcoming appointments</h3>${up.map(a=>`<div class="row"><span>${E(a.type)} · ${E(lbl('clients',a.clientId))}</span><span class="muted">${E(a.date)} ${E(a.time||'')}</span></div>`).join('')||'<span class="muted">None scheduled.</span>'}
+ <h3 style="margin-top:16px">Recent activity</h3>${[...D.activities].sort((a,b)=>ms(b.createdAt)-ms(a.createdAt)).slice(0,5).map(a=>`<div class="row"><span>${E(a.text)}</span><span class="muted">${E(a.user)}</span></div>`).join('')||'<span class="muted">No activity yet.</span>'}</div></div>`;
+}
+function calendar(list){const y=calM.getFullYear(),m=calM.getMonth(),first=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate(),pre=`${y}-${String(m+1).padStart(2,'0')}-`;
+ const cells=[...Array(first)].map(()=>'<div></div>');
+ for(let d=1;d<=dim;d++){const k=pre+String(d).padStart(2,'0');cells.push(`<div style="min-height:80px;background:#101013;border-radius:8px;padding:6px;font-size:11px"><span class="muted">${d}</span>${list.filter(a=>a.date===k).map(a=>`<div class="tag" style="display:block;margin:2px 0;cursor:pointer" data-a="edit" data-v="${a.id}">${E(a.time||'')} ${E(a.type)}</div>`).join('')}</div>`)}
+ return `<div class="gap" style="margin-bottom:10px"><button class="ghost" data-a="cal" data-v="-1">‹</button><b>${calM.toLocaleString('default',{month:'long',year:'numeric'})}</b><button class="ghost" data-a="cal" data-v="1">›</button></div><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d=>`<b class="muted">${d}</b>`).join('')}${cells.join('')}</div>`}
+function profile(id){const c=D.clients.find(x=>x.id===id),ps=D.projects.filter(p=>p.clientId===id),pids=ps.map(p=>p.id),pay=D.payments.filter(p=>p.clientId===id),ex=D.expenses.filter(e=>pids.includes(e.projectId)),R=sum(pay,rev),V=sum(ps,p=>p.value),X=sum(ex,e=>e.amount);
+ const sec=(t,r)=>`<h3 style="margin-top:14px">${t}</h3>${r.join('')||'<span class="muted">None yet.</span>'}`,row=(a,b)=>`<div class="row"><span>${E(a)}</span><span class="muted">${E(b)}</span></div>`;
+ $('#modal').innerHTML=`<div class="overlay" data-a="close"><div class="modal" data-stop style="width:min(820px,100%)"><h2>${E(c.name)} <span class="tag">${E(c.status)}</span></h2><p class="muted">${E(c.contact||'')} · ${E(c.phone||'')} · ${E(c.email||'')} · ${E(c.city||'')}</p>
+ <div class="kpis" style="margin:10px 0">${[['Project value',inr(V)],['Paid',inr(R)],['Pending',inr(Math.max(0,V-R))],...(meet?[]:[['Expenses',inr(X)],['Profit',inr(R-X)]])].map(([l,v])=>`<div class="card"><span class="muted">${l}</span><div class="kpi" style="font-size:18px">${v}</div></div>`).join('')}</div>
+ ${sec('Projects',ps.map(p=>row(p.name,`${p.status} · ${p.progress||0}%`)))}${sec('Payments',pay.map(p=>row(inr(p.amount)+' · '+p.method,`${p.status} · ${p.date}`)))}
+ ${sec('Tasks',D.tasks.filter(t=>pids.includes(t.projectId)).map(t=>row(t.name,t.status)))}${sec('Appointments',D.appointments.filter(a=>a.clientId===id).map(a=>row(a.type,a.date+' '+(a.time||''))))}
+ ${sec('Media',D.media.filter(m=>m.clientId===id).map(m=>row(m.name,m.type)))}${meet?'':sec('Notes',[`<p>${E(c.notes||'')}</p>`])}
+ <div class="gap end">${ps.length?`<button class="btn" data-a="wbopen" data-v="${ps[0].id}">Open Website Workbench</button>`:''}<button class="ghost" data-a="close">Close</button></div></div></div>`}
 
-    <!-- Main Content -->
-    <main class="flex-1 flex flex-col h-full overflow-hidden bg-gray-50/50 dark:bg-dark-bg relative">
-        
-        <!-- Topbar -->
-        <header class="h-16 bg-white/80 dark:bg-dark-panel/80 backdrop-blur-md border-b border-gray-200 dark:border-dark-border flex items-center justify-between px-6 flex-shrink-0 z-10">
-            <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="md:hidden text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-                    <i class="fa-solid fa-bars text-xl"></i>
-                </button>
-                <h2 id="current-view-title" class="text-xl font-bold text-gray-800 dark:text-white hidden sm:block">Dashboard</h2>
-            </div>
-            
-            <div class="flex items-center gap-4">
-                <button onclick="toggleTheme()" class="w-9 h-9 flex items-center justify-center text-gray-500 bg-gray-100 rounded-full hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 transition-colors">
-                    <i class="fa-solid fa-moon dark:hidden"></i>
-                    <i class="fa-solid fa-sun hidden dark:block"></i>
-                </button>
-            </div>
-        </header>
+function entity(c){
+ if(!S[c])return'';const [title,F]=S[c],rows=D[c],sf=F.find(f=>f[0]==='status'||f[0]==='type');
+ const qq=(q[c]||'').toLowerCase(),f=fl[c]||'';
+ const df=F.find(x=>x[2]==='d'),so=sort[c],rr=rd[c]||{};
+ let list=rows.filter(r=>JSON.stringify(r).toLowerCase().includes(qq)&&(()=>{const ow=[r.owner,r.assignee,r.by].filter(Boolean);return!mine||!ow.length||ow.includes(me.name)})()&&(!f||r[sf[0]]===f)&&(!df||((!rr.a||(r[df[0]]||'')>=rr.a)&&(!rr.b||(r[df[0]]||'')<=rr.b)))).sort((a,b)=>so?String(a[so.k]??'').localeCompare(String(b[so.k]??''),undefined,{numeric:true})*so.d:ms(b.createdAt)-ms(a.createdAt));
+ const proj=c==='projects',cols=F.slice(0,7);
+ const body=!rows.length?`<div class="card empty"><h3>No ${title.toLowerCase()} yet.</h3><p class="muted">Add your first record to get started.</p><button class="btn" data-a="add" data-v="${c}">+ Add ${title.replace(/s$/,'')}</button></div>`
+ :c==='appointments'&&view[c]==='k'?calendar(list):KAN.includes(c)&&view[c]==='k'?`<div class="kanban">${S[c][1].find(x=>x[0]==='status')[3].map(st=>`<div class="col" data-drop="${st}"><b>${st} <span class="muted">${list.filter(r=>r.status===st).length}</span></b>${list.filter(r=>r.status===st).map(r=>`<div class="card k" draggable="true" data-drag="${r.id}" data-a="edit" data-v="${r.id}"><div>${E(r.name)}</div><span class="muted">${c==='leads'?E(r.owner)+' · '+inr(r.value):c==='projects'?E(lbl('clients',r.clientId))+' · '+(r.progress||0)+'%':E(r.assignee||'')}</span></div>`).join('')}</div>`).join('')}</div>`
+ :`<div class="scroll card"><table><thead><tr>${cols.map(x=>`<th data-sort="${x[0]}" style="cursor:pointer">${x[1]}${so?.k===x[0]?(so.d>0?' ▲':' ▼'):''}</th>`).join('')}${proj?'<th>Paid</th><th>Pending</th>':''}<th></th></tr></thead><tbody>${list.map((r,i)=>`<tr>${cols.map((x,j)=>`<td>${j===0&&c==='clients'?`<a data-a="profile" data-v="${r.id}" style="color:#fda4af;cursor:pointer">${val(x,r[x[0]])}</a>`:val(x,r[x[0]])}${j===0&&r.demo?'<span class="tag">DEMO</span>':''}</td>`).join('')}${proj?`<td>${inr(paid(r.id))}</td><td>${inr((+r.value||0)-paid(r.id))}</td>`:''}<td class="act"><button class="ghost" data-a="edit" data-v="${r.id}">Edit</button> <button class="ghost" data-a="arch" data-v="${r.id}">Archive</button></td></tr>`).join('')}</tbody></table></div>`;
+ return `<div class="bar"><h1>${title}</h1><div class="gap"><input placeholder="Search…" value="${E(q[c]||'')}" data-q="${c}">${sf?`<select data-f="${c}"><option value="">All ${sf[1]}</option>${sf[3].map(o=>`<option ${f===o?'selected':''}>${o}</option>`).join('')}</select>`:''}${KAN.includes(c)?`<button class="ghost" data-a="view" data-v="${c}">${view[c]==='k'?'Table':'Kanban'}</button>`:''}${df?`<input type="date" data-rd="${c}:a" value="${rr.a||''}" title="From"><input type="date" data-rd="${c}:b" value="${rr.b||''}" title="To">`:''}${c==='appointments'?`<button class="ghost" data-a="view" data-v="appointments">${view[c]==='k'?'List':'Calendar'}</button>`:''}<button class="ghost" data-a="csv" data-v="${c}">CSV</button><button class="btn" data-a="add" data-v="${c}">+ Add</button></div></div>${body}`;
+}
+function form(c,r={}){
+ const F=S[c][1];
+ $('#modal').innerHTML=`<div class="overlay" data-a="close"><div class="modal" data-stop><h2>${r.id?'Edit':'Add'} ${S[c][0].replace(/s$/,'')}</h2><div class="form">${F.map(f=>{const v=r[f[0]]??(!r.id&&['owner','assignee','by'].includes(f[0])?me.name:''),t=f[2]||'t';return `<label>${f[1]}${f[4]?' *':''}${t==='s'?`<select data-k="${f[0]}">${f[3].map(o=>`<option ${v===o?'selected':''}>${o}</option>`).join('')}</select>`:t==='r'?`<select data-k="${f[0]}"><option value="">Select…</option>${D[f[3]].map(o=>`<option value="${o.id}" ${v===o.id?'selected':''}>${E(o.name)}</option>`).join('')}</select>`:t==='a'?`<textarea data-k="${f[0]}">${E(v)}</textarea>`:`<input data-k="${f[0]}" type="${{n:'number',d:'date',m:'time'}[t]||'text'}" value="${E(v)}">`}<small data-e="${f[0]}"></small></label>`}).join('')}</div>${c==='media'?'<label style="margin-top:10px">Or upload to Firebase Storage<input type="file" id="up"></label>':''}<div class="gap end"><button class="ghost" data-a="close">Cancel</button><button class="btn" data-a="save" data-c="${c}" data-v="${r.id||''}">Save</button></div></div></div>`;
+}
+async function save(c,id){
+ const F=S[c][1],o={};let bad=0;
+ F.forEach(f=>{const el=$(`[data-k="${f[0]}"]`);let v=el.value,e='';
+  if(f[4]&&!v.trim())e='Required';if(f[2]==='n'&&v!==''&&(isNaN(v)||+v<0))e='Invalid number';
+  $(`[data-e="${f[0]}"]`).textContent=e;if(e)bad=1;o[f[0]]=f[2]==='n'?(v===''?0:+v):v});
+ if(bad)return;
+ try{id?(await upd(c,id,o),await log(`${S[c][0].replace(/s$/,'')} updated: ${o.name||o.who||''}`)):await create(c,o);$('#modal').innerHTML='';toast('Saved successfully.')}catch(e){toast('Unable to save changes.')}
+}
 
-        <!-- Loading Overlay -->
-        <div id="loading-overlay" class="absolute inset-0 bg-white/90 dark:bg-dark-bg/90 backdrop-blur-sm z-30 flex flex-col items-center justify-center transition-opacity duration-300">
-            <i class="fa-solid fa-circle-notch fa-spin text-5xl text-primary-500 mb-4"></i>
-            <p class="text-gray-600 dark:text-gray-300 font-medium text-lg">Syncing Real-Time Database...</p>
-        </div>
+function finance(){
+ const R=sum(D.payments,rev),X=sum(D.expenses,e=>e.amount),P=D.projects;
+ const rows=P.map(p=>{const r=paid(p.id),x=sum(D.expenses.filter(e=>e.projectId===p.id),e=>e.amount);return{p,r,x,n:r-x,m:r?(r-x)/r*100:0,pend:(+p.value||0)-r}});
+ const byOwn=OWN.map(o=>({o,n:D.leads.filter(l=>l.owner===o).length,w:D.leads.filter(l=>l.owner===o&&l.status==='Won').length,v:sum(D.leads.filter(l=>l.owner===o&&l.status==='Won'),l=>l.value)}));
+ return `<h1>Profit & Finance</h1><div class="kpis">${[['Revenue',inr(R)],['Expenses',inr(X)],['Net Profit',inr(R-X)],['Margin',(R?(R-X)/R*100:0).toFixed(1)+'%'],['Pending',inr(Math.max(0,sum(P,p=>p.value)-R))],['Avg Project Value',inr(P.length?sum(P,p=>p.value)/P.length:0)],['Avg Profit / Project',inr(P.length?(R-X)/P.length:0)]].map(([l,v])=>`<div class="card"><span class="muted">${l}</span><div class="kpi">${v}</div></div>`).join('')}</div>
+ <h3>Profit per project</h3><div class="scroll card"><table><thead><tr><th>Project</th><th>Value</th><th>Revenue</th><th>Expenses</th><th>Net profit</th><th>Margin</th><th>Pending</th></tr></thead><tbody>${rows.map(x=>`<tr><td>${E(x.p.name)}</td><td>${inr(x.p.value)}</td><td>${inr(x.r)}</td><td>${inr(x.x)}</td><td>${inr(x.n)}</td><td>${x.m.toFixed(1)}%</td><td>${inr(x.pend)}</td></tr>`).join('')||'<tr><td class="muted">No projects yet.</td></tr>'}</tbody></table></div>
+ <h3 style="margin-top:18px">Lead owners</h3><div class="scroll card"><table><thead><tr><th>Owner</th><th>Leads</th><th>Won</th><th>Won value</th></tr></thead><tbody>${byOwn.map(x=>`<tr><td>${x.o}</td><td>${x.n}</td><td>${x.w}</td><td>${inr(x.v)}</td></tr>`).join('')}</tbody></table></div>`;
+}
+function activity(){return `<h1>Activity</h1><div class="card" style="margin-top:14px">${[...D.activities].sort((a,b)=>ms(b.createdAt)-ms(a.createdAt)).slice(0,200).map(a=>`<div class="row"><span>${E(a.text)}</span><span class="muted">${E(a.user)} · ${ms(a.createdAt)?new Date(ms(a.createdAt)).toLocaleString():'now'}</span></div>`).join('')||'<div class="muted">No activity yet.</div>'}</div>`}
+function reports(){return `<h1>Reports</h1><p class="muted">Export any dataset as CSV or JSON.</p><div class="grid2">${Object.keys(S).map(c=>`<div class="card"><h3>${S[c][0]} <span class="muted">(${D[c].length})</span></h3><div class="gap"><button class="ghost" data-a="csv" data-v="${c}">CSV</button><button class="ghost" data-a="json" data-v="${c}">JSON</button></div></div>`).join('')}</div>`}
+function settings(){return `<h1>Settings</h1><div class="grid2" style="margin-top:14px"><div class="card"><h3>Company</h3><div class="row"><span>Name</span><span>Feasibility Media</span></div><div class="row"><span>Website</span><span>feasibilitymedia.in</span></div><div class="row"><span>Currency</span><span>INR ₹</span></div></div>
+ <div class="card"><h3>Data management</h3><div class="gap"><button class="btn" data-a="demo">Load Demo Data</button><button class="ghost" data-a="cleardemo">Clear Demo Data</button><button class="ghost" data-a="exportall">Export all</button><label class="ghost" style="flex-direction:row;align-items:center;cursor:pointer">Import<input type="file" accept=".json" id="imp" hidden></label></div><p class="muted">Demo records are tagged DEMO and archived (not deleted) when cleared.</p></div><div class="card"><h3>Team accounts</h3>${D.users.map(u=>`<div class="row"><span>${E(u.name)}</span><span class="muted">${E(u.email)}</span></div>`).join('')}</div></div>`}
 
-        <!-- Views Container -->
-        <div id="views-container" class="flex-1 overflow-y-auto p-4 sm:p-8 custom-scrollbar">
-            
-            <!-- Dashboard View -->
-            <div id="view-dashboard" class="view-section space-y-6">
-                <!-- 50/50 Split Highlight -->
-                <div class="bg-gradient-to-br from-gray-900 to-gray-800 dark:from-dark-panel dark:to-gray-900 rounded-2xl p-6 sm:p-8 shadow-xl text-white relative overflow-hidden border border-gray-800">
-                    <div class="absolute -top-10 -right-10 p-8 opacity-5 transform rotate-12">
-                        <i class="fa-solid fa-indian-rupee-sign text-[200px]"></i>
-                    </div>
-                    <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
-                        <div>
-                            <h3 class="text-gray-400 font-medium mb-1 uppercase tracking-wider text-xs">Financial Overview</h3>
-                            <h2 class="text-3xl font-bold">Net Profit Split (50/50)</h2>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-sm text-gray-400">Total Net Profit</p>
-                            <p class="text-4xl font-bold text-green-400" id="dash-net-profit">₹0</p>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
-                        <div class="bg-white/10 backdrop-blur-md rounded-xl p-5 border border-white/10 flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-full bg-primary-500/20 text-primary-400 flex items-center justify-center text-xl font-bold border border-primary-500/30">A</div>
-                            <div>
-                                <p class="text-sm text-gray-300">Aryaveer's Share</p>
-                                <p class="text-2xl font-bold text-white" id="dash-aryaveer-share">₹0</p>
-                            </div>
-                        </div>
-                        <div class="bg-white/10 backdrop-blur-md rounded-xl p-5 border border-white/10 flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold border border-purple-500/30">P</div>
-                            <div>
-                                <p class="text-sm text-gray-300">Partner's Share</p>
-                                <p class="text-2xl font-bold text-white" id="dash-partner-share">₹0</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+// Website Workbench
+function workbench(){
+ const ps=D.projects;if(!ps.length)return `<div class="card empty"><h3>No projects yet.</h3><p class="muted">Create a project first to open its website workbench.</p><button class="btn" data-a="add" data-v="projects">+ Add Project</button></div>`;
+ if(!W||!ps.find(p=>p.id===W.id))loadW(ps[0]);
+ const p=ps.find(p=>p.id===W.id),tot=Object.values(CH).flat().length,done=Object.keys(W.checks).filter(k=>W.checks[k]).length,pct=Math.round(done/tot*100),s=W.site;
+ const TAB={Content:[['name','Business name'],['tagline','Tagline'],['desc','Description','a'],['about','About text','a'],['services','Services (one per line: Name - ₹price)','a'],['testi','Testimonials (one per line)','a']],Design:[['c1','Primary color','color'],['c2','Secondary color','color'],['font','Font','sel',['Inter,sans-serif','Georgia,serif','Courier New,monospace']],['btn','Button style','sel',['rounded','pill','square']],['card','Card style','sel',['shadow','border','flat']]],SEO:[['seoTitle','Page title'],['seoDesc','Meta description','a'],['keywords','Keywords'],['og','OG image URL']],Contact:[['phone','Phone'],['whatsapp','WhatsApp'],['email','Email'],['address','Address'],['maps','Google Maps URL']],Social:[['instagram','Instagram'],['facebook','Facebook'],['youtube','YouTube']],Settings:[]}[wbTab];
+ return `<div class="bar"><div><h1>${E(lbl('clients',p.clientId))} · ${E(p.name)}</h1><span class="muted">${E(p.status)} · ${pct}% complete</span></div><div class="gap"><select data-a="wbsel">${ps.map(x=>`<option value="${x.id}" ${x.id===W.id?'selected':''}>${E(x.name)}</option>`).join('')}</select><button class="ghost" data-a="present">Presentation</button><button class="btn" data-a="wbsave">Save to Firebase</button></div></div>
+ <div class="prog" style="margin-bottom:14px"><div style="width:${pct}%"></div></div>
+ <div class="wb"><div><div class="browser"><div class="chrome"><i></i><i></i><i></i><span>${E(s.name||'yourbusiness')}.com</span></div><div id="pv"></div></div>
+ <h3 style="margin:14px 0 6px">Activity console</h3><div class="console" id="con">${wbLog.map(l=>`<div>${E(l)}</div>`).join('')}</div></div>
+ <div><div class="card"><div class="gap" style="margin-bottom:12px">${['Content','Design','SEO','Contact','Social','Settings'].map(t=>`<button class="ghost ${t===wbTab?'on2':''}" data-a="wbtab" data-v="${t}">${t}</button>`).join('')}</div>
+ ${wbTab==='Settings'?`<h3>Website sections</h3>${SEC.map(x=>`<label class="chk"><input type="checkbox" data-sec="${x}" ${W.sections[x]!==false?'checked':''}>${x}</label>`).join('')}<label>Project progress override %<input type="number" data-prog value="${W.progress??pct}"></label>`:TAB.map(([k,l,t,o])=>`<label style="margin-bottom:10px">${l}${t==='a'?`<textarea data-s="${k}">${E(s[k])}</textarea>`:t==='sel'?`<select data-s="${k}">${o.map(x=>`<option ${s[k]===x?'selected':''}>${x}</option>`).join('')}</select>`:`<input data-s="${k}" type="${t||'text'}" value="${E(s[k]||(t==='color'?'#E11D48':''))}">`}</label>`).join('')}</div>
+ <div class="card" style="margin-top:12px"><h3>Build checklist · ${done}/${tot}</h3>${Object.entries(CH).map(([g,items])=>`<b>${g}</b>${items.map(i=>`<label class="chk"><input type="checkbox" data-chk="${g}|${i}" ${W.checks[g+'|'+i]?'checked':''}>${i}</label>`).join('')}`).join('')}</div></div></div>`;
+}
+function loadW(p){const c=D.clients.find(x=>x.id===p.clientId)||{};W={id:p.id,site:{name:c.name||p.name,tagline:'Welcome',c1:'#E11D48',c2:'#111111',font:'Inter,sans-serif',btn:'rounded',card:'shadow',phone:c.phone||'',whatsapp:c.whatsapp||'',email:c.email||'',instagram:c.instagram||'',address:c.city||'',...(p.site||{})},checks:{...(p.checks||{})},sections:{...(p.sections||{})},progress:p.progress};wbLog=[];wl('Loading client configuration...');wl('Initializing website project...')}
+function wl(t){wbLog.push(new Date().toLocaleTimeString()+'  '+t);if(wbLog.length>60)wbLog.shift();const c=$('#con');if(c){c.innerHTML=wbLog.map(l=>`<div>${E(l)}</div>`).join('');c.scrollTop=1e9}}
+function pv(){
+ const s=W.site,sec=x=>W.sections[x]!==false,r={rounded:'8px',pill:'30px',square:'0'}[s.btn],cd={shadow:'box-shadow:0 2px 10px #0002',border:'border:1px solid #ddd',flat:'background:#f4f4f5'}[s.card];
+ const sv=(s.services||'').split('\n').filter(Boolean),ph=D.media.filter(m=>m.projectId===W.id&&m.type==='Photo'&&m.url).slice(0,6);
+ const b=(t,h)=>`<a class="btnx" style="background:${s.c1};border-radius:${r}" href="${E(h||'#')}">${t}</a>`;
+ $('#pv').innerHTML=`<div style="font-family:${s.font}">${sec('Hero')?`<section style="background:${s.c2};color:#fff;text-align:center"><h1>${E(s.name)}</h1><p>${E(s.tagline)}</p><p style="opacity:.7">${E(s.desc)}</p>${b('Get in touch')}</section>`:''}
+ ${sec('About')&&s.about?`<section><h2>About</h2><p>${E(s.about)}</p></section>`:''}
+ ${sec('Services')&&sv.length?`<section><h2>Services</h2><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">${sv.map(x=>`<div style="padding:14px;border-radius:10px;${cd}">${E(x)}</div>`).join('')}</div></section>`:''}
+ ${sec('Gallery')?`<section><h2>Gallery</h2><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${(ph.length?ph.map(m=>`<img src="${E(m.url)}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px">`):[1,2,3].map(()=>'<div style="aspect-ratio:1;background:#e5e5e8;border-radius:8px"></div>')).join('')}</div></section>`:''}
+ ${sec('Testimonials')&&s.testi?`<section style="background:#f4f4f5"><h2>Testimonials</h2>${s.testi.split('\n').filter(Boolean).map(x=>`<p>“${E(x)}”</p>`).join('')}</section>`:''}
+ ${sec('Location')&&s.address?`<section><h2>Location</h2><p>${E(s.address)}</p>${s.maps?b('Open in Maps',s.maps):''}</section>`:''}
+ ${sec('Contact')?`<section><h2>Contact</h2><p>${E(s.phone)} ${E(s.email)}</p><p>${[s.instagram&&'Instagram',s.facebook&&'Facebook',s.youtube&&'YouTube'].filter(Boolean).join(' · ')}</p></section>`:''}
+ ${sec('WhatsApp CTA')&&s.whatsapp?`<div style="position:sticky;bottom:10px;text-align:right;padding:10px"><a class="btnx" style="background:#25D366;border-radius:30px" href="https://wa.me/${E(s.whatsapp.replace(/\D/g,''))}">WhatsApp us</a></div>`:''}</div>`;
+}
+function present(){
+ const p=D.projects.find(x=>x.id===W.id),all=Object.entries(CH),tot=Object.values(CH).flat().length,dn=Object.keys(W.checks).filter(k=>W.checks[k]),pct=Math.round(dn.length/tot*100);
+ const todo=Object.values(CH).flat().length-dn.length;
+ $('#modal').innerHTML=`<div class="overlay" style="background:#0b0b0d" data-a="close"><div class="modal" data-stop style="width:min(900px,100%);text-align:center"><h1 style="font-size:36px">${E(lbl('clients',p.clientId))}</h1><p class="muted">${E(p.name)}</p><div style="font-size:84px;font-weight:700;color:#E11D48">${pct}%</div><div class="prog"><div style="width:${pct}%"></div></div><p class="muted">Estimated completion: ${E(p.due||'to be confirmed')} · ${todo} steps remaining</p><div style="text-align:left;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">${all.map(([g,items])=>`<div><b>${g}</b>${items.map(i=>`<div class="${W.checks[g+'|'+i]?'':'muted'}">${W.checks[g+'|'+i]?'✓':'○'} ${i}</div>`).join('')}</div>`).join('')}</div><div class="gap end"><button class="btn" data-a="close">Close</button></div></div></div>`;
+}
 
-                <!-- Stats Grid -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Total Leads</p>
-                        <h3 id="stat-total-leads" class="text-3xl font-bold text-gray-800 dark:text-white">0</h3>
-                    </div>
-                    <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Active Clients</p>
-                        <h3 id="stat-active-clients" class="text-3xl font-bold text-gray-800 dark:text-white">0</h3>
-                    </div>
-                    <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Collected Revenue</p>
-                        <h3 id="stat-collected" class="text-3xl font-bold text-green-600">₹0</h3>
-                    </div>
-                    <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Total Expenses</p>
-                        <h3 id="stat-expenses" class="text-3xl font-bold text-red-500">₹0</h3>
-                    </div>
-                </div>
+// Data tools
+const csv=c=>{const F=S[c][1];const t=[F.map(f=>f[1]),...D[c].map(r=>F.map(f=>f[2]==='r'?lbl(f[3],r[f[0]]):r[f[0]]??''))].map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');dl(c+'.csv',t,'text/csv')};
+const dl=(n,t,m)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:m}));a.download=n;a.click()};
+const strip=r=>{const{id,createdAt,...x}=r;return x};
+async function demo(){
+ if(D.clients.some(c=>c.demo)&&!confirm('Demo data already loaded. Load again?'))return;
+ const mk=async(c,d)=>(await addDoc(collection(db,c),{...d,demo:true,archived:false,createdAt:serverTimestamp()})).id;
+ const day=n=>{const d=new Date();d.setDate(d.getDate()-n);return d.toISOString().slice(0,10)};
+ try{for(const [i,[n,cat,st,paidAmt]] of [['ABC Salon','Salon','Photography',1500],['Urban Brew Café','Café','Development',3000],['Forge Athletics','Fitness','Design',1000],['Nova Fashion','Fashion','Planning',0]].entries()){
+  const cid=await mk('clients',{name:n,category:cat,status:'Active Client',owner:OWN[i%2],city:'Jamshedpur',phone:'',notes:''});
+  const pid=await mk('projects',{name:n+' Website',clientId:cid,value:3000,status:st,progress:20+i*20,priority:'Medium',due:day(-14)});
+  if(paidAmt)await mk('payments',{clientId:cid,projectId:pid,amount:paidAmt,method:'UPI',status:'Paid',date:day(i*10)});
+  await mk('expenses',{category:'Photography',amount:300+i*100,date:day(i*8),projectId:pid,description:'Shoot',by:me.name});
+  await mk('leads',{name:n+' (lead)',owner:OWN[i%2],status:['Won','Interested','Demo Sent','New'][i],value:3000,source:'Instagram'});
+  await mk('tasks',{name:'Collect content for '+n,projectId:pid,status:'Todo',priority:'High'})}
+  await log('Demo data loaded');toast('Demo data loaded.')}catch{toast('Unable to load demo data.')}
+}
+async function clearDemo(){if(!confirm('Archive all demo records?'))return;let n=0;for(const c of Object.keys(S))for(const r of D[c].filter(r=>r.demo)){await upd(c,r.id,{archived:true});n++}toast(`Archived ${n} demo records.`)}
 
-                <div class="bg-white dark:bg-dark-panel p-6 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
-                    <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Lead Pipeline Analytics</h3>
-                    <div class="h-64 flex items-center justify-center w-full relative">
-                        <canvas id="pipelineChart"></canvas>
-                    </div>
-                </div>
-            </div>
+// Global search
+function gsearch(){
+ $('#modal').innerHTML=`<div class="overlay" data-a="close" style="align-items:start"><div class="modal" data-stop style="margin-top:8vh"><input id="gs" placeholder="Search clients, leads, projects, tasks, payments, expenses…" autofocus><div id="gr" style="margin-top:10px"></div></div></div>`;
+ $('#gs').focus();$('#gs').oninput=e=>{const v=e.target.value.toLowerCase();$('#gr').innerHTML=v?['clients','leads','projects','tasks','payments','expenses'].flatMap(c=>D[c].filter(r=>JSON.stringify(r).toLowerCase().includes(v)).slice(0,5).map(r=>`<div class="row" style="cursor:pointer" data-a="go" data-v="${c}"><span>${E(r.name||lbl('clients',r.clientId)||r.category)}</span><span class="muted">${S[c][0]}</span></div>`)).join('')||'<span class="muted">No results.</span>':''};
+}
 
-            <!-- Leads View -->
-            <div id="view-leads" class="view-section hidden space-y-4">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
-                    <div class="relative w-full sm:w-72">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" id="search-leads" placeholder="Search leads by name..." class="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none transition-all">
-                    </div>
-                    <button onclick="openModal('leadModal')" class="w-full sm:w-auto bg-primary-600 hover:bg-primary-500 text-white px-5 py-2.5 rounded-lg text-sm font-medium flex items-center justify-center gap-2 shadow-md transition-colors">
-                        <i class="fa-solid fa-plus"></i> Add New Lead
-                    </button>
-                </div>
-                
-                <div class="bg-white dark:bg-dark-panel rounded-xl border border-gray-200 dark:border-dark-border shadow-sm overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm whitespace-nowrap">
-                            <thead class="bg-gray-50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-                                <tr>
-                                    <th class="px-6 py-4 font-semibold">Business / Source</th>
-                                    <th class="px-6 py-4 font-semibold">Owner</th>
-                                    <th class="px-6 py-4 font-semibold">Status</th>
-                                    <th class="px-6 py-4 font-semibold">Est. Value</th>
-                                    <th class="px-6 py-4 font-semibold text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="leads-table-body" class="divide-y divide-gray-100 dark:divide-gray-800">
-                                <!-- Populated dynamically -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pipeline (Kanban) View -->
-            <div id="view-pipeline" class="view-section hidden h-full flex flex-col">
-                <div class="flex items-center justify-between mb-4 bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Drag & Drop Pipeline</h3>
-                        <p class="text-sm text-gray-500">Changes are saved automatically to the database.</p>
-                    </div>
-                </div>
-                <div class="flex-1 overflow-x-auto pb-4 custom-scrollbar">
-                    <div id="kanban-board" class="flex gap-4 h-full min-w-max items-start">
-                        <!-- Columns populated dynamically -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Clients View -->
-            <div id="view-clients" class="view-section hidden space-y-4">
-                <div class="flex justify-between items-center bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Active Clients</h3>
-                    <button onclick="openModal('clientModal')" class="bg-primary-600 hover:bg-primary-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">Add Client</button>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="clients-grid">
-                    <!-- Populated dynamically -->
-                </div>
-            </div>
-
-            <!-- Projects View -->
-            <div id="view-projects" class="view-section hidden space-y-4">
-                 <div class="flex justify-between items-center bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Projects</h3>
-                </div>
-                <div id="projects-grid" class="w-full">
-                     <!-- Empty state populated by JS -->
-                </div>
-            </div>
-
-            <!-- Payments View -->
-            <div id="view-payments" class="view-section hidden space-y-4">
-                <div class="flex justify-between items-center bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Payments Received</h3>
-                        <p class="text-sm text-gray-500">Income added here increases net profit.</p>
-                    </div>
-                    <button onclick="openModal('paymentModal')" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-md transition-colors">
-                        <i class="fa-solid fa-plus mr-1"></i> Record Payment
-                    </button>
-                </div>
-                <div class="bg-white dark:bg-dark-panel rounded-xl border border-gray-200 dark:border-dark-border shadow-sm overflow-hidden">
-                    <table class="w-full text-left text-sm whitespace-nowrap">
-                        <thead class="bg-gray-50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-                            <tr>
-                                <th class="px-6 py-4 font-semibold">Date</th>
-                                <th class="px-6 py-4 font-semibold">Client</th>
-                                <th class="px-6 py-4 font-semibold">Amount</th>
-                                <th class="px-6 py-4 font-semibold text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="payments-table-body" class="divide-y divide-gray-100 dark:divide-gray-800">
-                             <!-- Populated dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Expenses View -->
-            <div id="view-expenses" class="view-section hidden space-y-4">
-                 <div class="flex justify-between items-center bg-white dark:bg-dark-panel p-4 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Business Expenses</h3>
-                        <p class="text-sm text-gray-500">Expenses added here decrease net profit.</p>
-                    </div>
-                    <button onclick="openModal('expenseModal')" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-md transition-colors">
-                        <i class="fa-solid fa-plus mr-1"></i> Record Expense
-                    </button>
-                </div>
-                <div class="bg-white dark:bg-dark-panel rounded-xl border border-gray-200 dark:border-dark-border shadow-sm overflow-hidden">
-                    <table class="w-full text-left text-sm whitespace-nowrap">
-                        <thead class="bg-gray-50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-                            <tr>
-                                <th class="px-6 py-4 font-semibold">Date</th>
-                                <th class="px-6 py-4 font-semibold">Description / Category</th>
-                                <th class="px-6 py-4 font-semibold">Amount</th>
-                                <th class="px-6 py-4 font-semibold text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="expenses-table-body" class="divide-y divide-gray-100 dark:divide-gray-800">
-                             <!-- Populated dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Partners View -->
-            <div id="view-partners" class="view-section hidden space-y-6">
-                <div class="bg-white dark:bg-dark-panel p-6 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm text-center">
-                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Partner Ledger Dashboard</h2>
-                    <p class="text-gray-500">Check the dashboard view for real-time 50/50 split calculations based on database figures.</p>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Global Modals -->
-    
-    <!-- Lead Modal -->
-    <div id="leadModal" class="fixed inset-0 bg-gray-900/60 modal-backdrop z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-dark-panel w-full max-w-lg rounded-2xl shadow-2xl border border-gray-200 dark:border-dark-border overflow-hidden transform scale-95 opacity-0 transition-all duration-300">
-            <div class="flex justify-between items-center p-5 border-b border-gray-100 dark:border-gray-800">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white" id="leadModalTitle">Add New Lead</h3>
-                <button onclick="closeModal('leadModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
-            <form id="form-lead" class="p-5 space-y-4" onsubmit="saveData(event, 'leads')">
-                <input type="hidden" id="lead-id">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Business Name *</label>
-                    <input type="text" id="lead-business" required class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Lead Owner *</label>
-                        <select id="lead-owner" required class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
-                            <option value="Aryaveer">Aryaveer</option>
-                            <option value="Partner">Partner</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
-                        <select id="lead-status" class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
-                            <option value="NEW">NEW</option>
-                            <option value="CONTACTED">CONTACTED</option>
-                            <option value="NEGOTIATING">NEGOTIATING</option>
-                            <option value="WON">WON</option>
-                            <option value="LOST">LOST</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Estimated Value (₹)</label>
-                        <input type="number" id="lead-value" class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Source</label>
-                        <select id="lead-source" class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
-                            <option value="WhatsApp">WhatsApp</option>
-                            <option value="Instagram">Instagram</option>
-                            <option value="Referral">Referral</option>
-                            <option value="Website">Website</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="pt-4 flex justify-end gap-3">
-                    <button type="button" onclick="closeModal('leadModal')" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg">Cancel</button>
-                    <button type="submit" id="btn-save-leads" class="px-5 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-500 rounded-lg shadow-sm">Save Lead</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Client Modal -->
-    <div id="clientModal" class="fixed inset-0 bg-gray-900/60 modal-backdrop z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-dark-panel w-full max-w-md rounded-2xl shadow-2xl border border-gray-200 dark:border-dark-border overflow-hidden transform scale-95 opacity-0 transition-all duration-300">
-            <div class="flex justify-between items-center p-5 border-b border-gray-100 dark:border-gray-800">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Add New Client</h3>
-                <button onclick="closeModal('clientModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
-            <form id="form-client" class="p-5 space-y-4" onsubmit="saveData(event, 'clients')">
-                <input type="hidden" id="client-id">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Business Name *</label>
-                    <input type="text" id="client-business" required class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
-                </div>
-                <div class="pt-4 flex justify-end gap-3">
-                    <button type="button" onclick="closeModal('clientModal')" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg">Cancel</button>
-                    <button type="submit" id="btn-save-clients" class="px-5 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-500 rounded-lg shadow-sm">Save Client</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Payment Modal -->
-    <div id="paymentModal" class="fixed inset-0 bg-gray-900/60 modal-backdrop z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-dark-panel w-full max-w-md rounded-2xl shadow-2xl border border-gray-200 dark:border-dark-border overflow-hidden transform scale-95 opacity-0 transition-all duration-300">
-            <div class="flex justify-between items-center p-5 border-b border-gray-100 dark:border-gray-800">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Record Payment</h3>
-                <button onclick="closeModal('paymentModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
-            <form id="form-payment" class="p-5 space-y-4" onsubmit="saveData(event, 'payments')">
-                <input type="hidden" id="payment-id">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Client Name *</label>
-                    <input type="text" id="payment-client" required class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none" placeholder="e.g. ABC Corp">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Amount Received (₹) *</label>
-                    <input type="number" id="payment-amount" required class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
-                </div>
-                <div class="pt-4 flex justify-end gap-3">
-                    <button type="button" onclick="closeModal('paymentModal')" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg">Cancel</button>
-                    <button type="submit" id="btn-save-payments" class="px-5 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-500 rounded-lg shadow-sm">Save Payment</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Expense Modal -->
-    <div id="expenseModal" class="fixed inset-0 bg-gray-900/60 modal-backdrop z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-dark-panel w-full max-w-md rounded-2xl shadow-2xl border border-gray-200 dark:border-dark-border overflow-hidden transform scale-95 opacity-0 transition-all duration-300">
-            <div class="flex justify-between items-center p-5 border-b border-gray-100 dark:border-gray-800">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Record Expense</h3>
-                <button onclick="closeModal('expenseModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
-            <form id="form-expense" class="p-5 space-y-4" onsubmit="saveData(event, 'expenses')">
-                <input type="hidden" id="expense-id">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description *</label>
-                    <input type="text" id="expense-desc" required class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Amount (₹) *</label>
-                        <input type="number" id="expense-amount" required class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
-                        <select id="expense-category" class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 dark:text-white outline-none">
-                            <option value="Domain">Domain</option>
-                            <option value="Hosting">Hosting</option>
-                            <option value="Software">Software</option>
-                            <option value="Advertising">Advertising</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="pt-4 flex justify-end gap-3">
-                    <button type="button" onclick="closeModal('expenseModal')" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg">Cancel</button>
-                    <button type="submit" id="btn-save-expenses" class="px-5 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-500 rounded-lg shadow-sm">Save Expense</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Toast Notifications -->
-    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3"></div>
-
-    <!-- JavaScript & Firebase -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
-        // Provided Firebase Config
-        const firebaseConfig = {
-            apiKey: "AIzaSyAZ_c3EaDxSZ6RrNrwQjR_TauJHrPfk_lk",
-            authDomain: "designsnap-f3309.firebaseapp.com",
-            databaseURL: "https://designsnap-f3309-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "designsnap-f3309",
-            storageBucket: "designsnap-f3309.firebasestorage.app",
-            messagingSenderId: "741888249963",
-            appId: "1:741888249963:web:9540c9f68d6f0d5da9a12e",
-            measurementId: "G-YC8TDQF1MM"
-        };
-        
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-
-        // State Manager
-        window.crmState = { leads: [], clients: [], projects: [], payments: [], expenses: [] };
-        let chartInstance = null;
-        let isInitialLoad = true;
-        let currentUser = null;
-
-        // Path Resolver (CRITICAL for permissions)
-        const getColPath = (colName) => {
-            // Using a safe namespace in the DB to avoid root-level permission issues
-            const appId = typeof __app_id !== 'undefined' ? __app_id : 'feasibility-crm-v2';
-            return `artifacts/${appId}/public/data/${colName}`;
-        };
-
-        async function initFirebase() {
-            try {
-                // Ensure auth before any DB calls
-                if (typeof __initial_auth_token !== 'undefined') {
-                    const cred = await signInWithCustomToken(auth, __initial_auth_token);
-                    currentUser = cred.user;
-                } else {
-                    const cred = await signInAnonymously(auth);
-                    currentUser = cred.user;
-                }
-                
-                document.getElementById('conn-status').innerHTML = `<i class="fa-solid fa-circle text-[8px] text-green-400"></i> Connected`;
-                setupListeners();
-            } catch (err) {
-                console.error("Auth Error:", err);
-                window.showToast("Database Connection Failed. Check console.", "error");
-                document.getElementById('conn-status').innerHTML = `<i class="fa-solid fa-circle text-[8px] text-red-500"></i> Auth Failed`;
-            }
-        }
-
-        function setupListeners() {
-            if (!currentUser) return;
-
-            const collections = ['leads', 'clients', 'payments', 'expenses'];
-            let loadedCount = 0;
-
-            collections.forEach(colName => {
-                const ref = collection(db, getColPath(colName));
-                
-                onSnapshot(ref, (snapshot) => {
-                    // Filter and map in memory (avoids index requirement errors)
-                    crmState[colName] = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    crmState[colName].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)); // Descending sort
-
-                    if(isInitialLoad) {
-                        loadedCount++;
-                        if(loadedCount === collections.length) {
-                            isInitialLoad = false;
-                            document.getElementById('loading-overlay').classList.add('opacity-0', 'pointer-events-none');
-                            setTimeout(() => renderAll(), 300);
-                        }
-                    } else {
-                        renderAll(); // Reactive UI update on any DB change
-                    }
-                }, (error) => {
-                    console.error(`Listen Error on ${colName}:`, error);
-                    window.showToast(`Error syncing ${colName}`, 'error');
-                });
-            });
-        }
-
-        window.renderAll = function() {
-            calculateFinances();
-            renderDashboard();
-            renderLeads();
-            renderPipeline();
-            renderClients();
-            renderPayments();
-            renderExpenses();
-            
-            // Render Projects Empty State
-            document.getElementById('projects-grid').innerHTML = getEmptyState('No Projects Yet', 'Start tracking active client builds here.', 'fa-folder-open');
-        };
-
-        function getEmptyState(title, subtitle, icon) {
-            return `
-                <div class="flex flex-col items-center justify-center py-16 px-4 text-center border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-2xl bg-gray-50/50 dark:bg-gray-800/20 w-full">
-                    <div class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4 text-2xl text-gray-400 dark:text-gray-500">
-                        <i class="fa-solid ${icon}"></i>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-1">${title}</h3>
-                    <p class="text-sm text-gray-500">${subtitle}</p>
-                </div>
-            `;
-        }
-
-        function calculateFinances() {
-            // Core Formula: (Total Collected - Total Expenses) / 2
-            const totalCollected = crmState.payments.reduce((sum, p) => sum + Number(p.amount || 0), 0);
-            const totalExpenses = crmState.expenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
-                
-            const netProfit = totalCollected - totalExpenses;
-            const splitShare = netProfit / 2;
-
-            // DOM Updates
-            document.getElementById('stat-collected').innerText = `₹${totalCollected.toLocaleString()}`;
-            document.getElementById('stat-expenses').innerText = `₹${totalExpenses.toLocaleString()}`;
-            
-            document.getElementById('dash-net-profit').innerText = `₹${netProfit.toLocaleString()}`;
-            document.getElementById('dash-aryaveer-share').innerText = `₹${splitShare.toLocaleString()}`;
-            document.getElementById('dash-partner-share').innerText = `₹${splitShare.toLocaleString()}`;
-        }
-
-        function renderDashboard() {
-            document.getElementById('stat-total-leads').innerText = crmState.leads.length;
-            document.getElementById('stat-active-clients').innerText = crmState.clients.length;
-            updateDashboardChart();
-        }
-
-        function updateDashboardChart() {
-            const canvas = document.getElementById('pipelineChart');
-            if(!canvas || canvas.offsetParent === null) return; // Don't render if hidden
-            
-            const stages = ['NEW', 'CONTACTED', 'NEGOTIATING', 'WON', 'LOST'];
-            const counts = stages.map(st => crmState.leads.filter(l => l.status === st).length);
-
-            if(chartInstance) chartInstance.destroy();
-            
-            const isDark = document.documentElement.classList.contains('dark');
-            const textColor = isDark ? '#94a3b8' : '#475569';
-
-            chartInstance = new Chart(canvas.getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: stages,
-                    datasets: [{
-                        label: 'Leads Count',
-                        data: counts,
-                        backgroundColor: '#0ea5e9',
-                        borderRadius: 6,
-                        borderWidth: 0,
-                        barThickness: 30
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { beginAtZero: true, ticks: { precision: 0, color: textColor }, grid: { color: isDark ? '#334155' : '#f1f5f9' } },
-                        x: { ticks: { color: textColor }, grid: { display: false } }
-                    }
-                }
-            });
-        }
-
-        function renderLeads() {
-            const tbody = document.getElementById('leads-table-body');
-            const search = document.getElementById('search-leads')?.value.toLowerCase() || '';
-            const filtered = crmState.leads.filter(l => (l.business||'').toLowerCase().includes(search));
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-0">${getEmptyState('No Leads Yet', 'Add a lead to start building the pipeline.', 'fa-users')}</td></tr>`;
-                return;
-            }
-
-            tbody.innerHTML = filtered.map(l => `
-                <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                    <td class="px-6 py-4">
-                        <p class="font-medium text-gray-900 dark:text-white">${l.business}</p>
-                        <p class="text-xs text-gray-500">${l.source || 'Unknown source'}</p>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="px-2.5 py-1 rounded-md text-xs font-semibold ${l.owner === 'Aryaveer' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400' : 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400'}">
-                            ${l.owner}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="px-2.5 py-1 rounded-full text-xs font-medium border ${l.status==='WON'?'border-green-500 text-green-600':l.status==='LOST'?'border-red-500 text-red-600':'border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300'}">
-                            ${l.status}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 text-gray-900 dark:text-white font-medium">₹${Number(l.value||0).toLocaleString()}</td>
-                    <td class="px-6 py-4 text-right">
-                        <button onclick="deleteDocHandler('leads', '${l.id}')" class="text-gray-400 hover:text-red-500 transition-colors"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        window.renderPipeline = function() {
-            const board = document.getElementById('kanban-board');
-            const stages = ['NEW', 'CONTACTED', 'NEGOTIATING', 'WON', 'LOST'];
-            
-            if (crmState.leads.length === 0) {
-                board.innerHTML = `<div class="w-full">${getEmptyState('Empty Pipeline', 'Add leads to see them on the board.', 'fa-bars-staggered')}</div>`;
-                return;
-            }
-
-            board.innerHTML = stages.map(stage => {
-                const stageLeads = crmState.leads.filter(l => l.status === stage);
-                return `
-                <div class="kanban-col w-72 bg-gray-100/60 dark:bg-gray-800/40 rounded-xl p-3 flex flex-col border border-gray-200 dark:border-gray-800/60" data-stage="${stage}" ondragover="allowDrop(event)" ondrop="drop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
-                    <div class="flex justify-between items-center mb-4 px-1">
-                        <h4 class="font-semibold text-sm text-gray-700 dark:text-gray-300 uppercase tracking-wider">${stage}</h4>
-                        <span class="text-xs bg-white dark:bg-gray-700 px-2.5 py-1 rounded-full text-gray-600 dark:text-gray-400 font-bold shadow-sm">${stageLeads.length}</span>
-                    </div>
-                    <div class="flex-1 space-y-3 overflow-y-auto hide-scroll">
-                        ${stageLeads.map(l => `
-                            <div class="bg-white dark:bg-dark-panel p-4 rounded-xl shadow-sm border border-gray-200 dark:border-dark-border cursor-grab active:cursor-grabbing hover:shadow-md transition-all relative group" draggable="true" ondragstart="drag(event)" data-id="${l.id}">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h5 class="font-bold text-sm text-gray-900 dark:text-white truncate">${l.business}</h5>
-                                </div>
-                                <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100 dark:border-gray-800">
-                                    <span class="text-xs font-bold text-gray-700 dark:text-gray-300">₹${Number(l.value||0).toLocaleString()}</span>
-                                    <span class="text-[10px] px-2 py-1 rounded font-bold ${l.owner === 'Aryaveer' ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400'}">${l.owner.substring(0,1)}</span>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>`;
-            }).join('');
-        }
-
-        window.allowDrop = (ev) => ev.preventDefault();
-        window.drag = (ev) => {
-            ev.dataTransfer.setData("text", ev.currentTarget.dataset.id);
-            ev.currentTarget.classList.add('dragging');
-        };
-        window.dragEnter = (ev) => {
-            ev.preventDefault();
-            const col = ev.target.closest('.kanban-col');
-            if(col) col.classList.add('drag-over');
-        };
-        window.dragLeave = (ev) => {
-            const col = ev.target.closest('.kanban-col');
-            if(col) col.classList.remove('drag-over');
-        };
-        window.drop = async (ev) => {
-            ev.preventDefault();
-            const col = ev.target.closest('.kanban-col');
-            document.querySelectorAll('.kanban-col').forEach(c => c.classList.remove('drag-over'));
-            document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
-            
-            if(col && currentUser) {
-                const leadId = ev.dataTransfer.getData("text");
-                const newStage = col.dataset.stage;
-                try {
-                    // Update Firestore strictly
-                    await updateDoc(doc(db, getColPath('leads'), leadId), { status: newStage });
-                    window.showToast(`Updated to ${newStage}`, 'success');
-                } catch(e) {
-                    console.error(e);
-                    window.showToast(`Error updating status`, 'error');
-                }
-            }
-        };
-
-        function renderClients() {
-            const grid = document.getElementById('clients-grid');
-            if (crmState.clients.length === 0) {
-                grid.innerHTML = `<div class="col-span-full">${getEmptyState('No Active Clients', 'Convert a lead to start managing clients.', 'fa-handshake')}</div>`;
-                return;
-            }
-            grid.innerHTML = crmState.clients.map(c => `
-                <div class="bg-white dark:bg-dark-panel p-5 rounded-xl border border-gray-200 dark:border-dark-border shadow-sm flex flex-col relative group">
-                    <button onclick="deleteDocHandler('clients', '${c.id}')" class="absolute top-4 right-4 text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><i class="fa-solid fa-trash text-sm"></i></button>
-                    <div class="w-12 h-12 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-lg flex items-center justify-center text-xl mb-4 font-bold uppercase">${c.business.charAt(0)}</div>
-                    <h4 class="font-bold text-gray-900 dark:text-white text-lg">${c.business}</h4>
-                    <p class="text-xs text-gray-500 mt-1"><i class="fa-regular fa-clock"></i> Added ${new Date(c.timestamp).toLocaleDateString()}</p>
-                </div>
-            `).join('');
-        }
-
-        function renderPayments() {
-            const tbody = document.getElementById('payments-table-body');
-            if (crmState.payments.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="p-0">${getEmptyState('No Payments Recorded', 'Income tracked here increases total profit.', 'fa-indian-rupee-sign')}</td></tr>`;
-                return;
-            }
-            tbody.innerHTML = crmState.payments.map(p => `
-                <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                    <td class="px-6 py-4 text-gray-500 text-sm">${new Date(p.timestamp).toLocaleDateString()}</td>
-                    <td class="px-6 py-4 font-bold dark:text-white">${p.client}</td>
-                    <td class="px-6 py-4 font-bold text-green-600">₹${Number(p.amount).toLocaleString()}</td>
-                    <td class="px-6 py-4 text-right">
-                        <button onclick="deleteDocHandler('payments', '${p.id}')" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function renderExpenses() {
-            const tbody = document.getElementById('expenses-table-body');
-            if (crmState.expenses.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="p-0">${getEmptyState('No Expenses', 'Track costs to accurately calculate splits.', 'fa-receipt')}</td></tr>`;
-                return;
-            }
-            tbody.innerHTML = crmState.expenses.map(e => `
-                <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                    <td class="px-6 py-4 text-gray-500 text-sm">${new Date(e.timestamp).toLocaleDateString()}</td>
-                    <td class="px-6 py-4">
-                        <p class="font-medium dark:text-white">${e.desc}</p>
-                        <p class="text-xs text-gray-500">${e.category}</p>
-                    </td>
-                    <td class="px-6 py-4 font-bold text-red-500">₹${Number(e.amount).toLocaleString()}</td>
-                    <td class="px-6 py-4 text-right">
-                        <button onclick="deleteDocHandler('expenses', '${e.id}')" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        window.saveData = async (e, type) => {
-            e.preventDefault();
-            if(!currentUser) {
-                window.showToast("Cannot save. Database not connected.", "error");
-                return;
-            }
-
-            const btn = document.getElementById(`btn-save-${type}`);
-            const ogText = btn.innerHTML;
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Saving...`;
-            btn.disabled = true;
-
-            let data = { timestamp: Date.now() };
-
-            if(type === 'leads') {
-                data.business = document.getElementById('lead-business').value;
-                data.owner = document.getElementById('lead-owner').value;
-                data.status = document.getElementById('lead-status').value;
-                data.value = document.getElementById('lead-value').value || 0;
-                data.source = document.getElementById('lead-source').value;
-            } else if (type === 'clients') {
-                data.business = document.getElementById('client-business').value;
-            } else if (type === 'payments') {
-                data.client = document.getElementById('payment-client').value;
-                data.amount = document.getElementById('payment-amount').value;
-            } else if (type === 'expenses') {
-                data.desc = document.getElementById('expense-desc').value;
-                data.amount = document.getElementById('expense-amount').value;
-                data.category = document.getElementById('expense-category').value;
-            }
-
-            try {
-                // Save to Firestore strictly
-                await addDoc(collection(db, getColPath(type)), data);
-                window.showToast("Record saved successfully", "success");
-                
-                // Clear Form & Close
-                e.target.reset();
-                closeModal(`${type.replace(/s$/, '')}Modal`);
-            } catch (err) {
-                console.error("Save Error:", err);
-                window.showToast("Permission Denied or Error Saving", "error");
-            } finally {
-                btn.innerHTML = ogText;
-                btn.disabled = false;
-            }
-        };
-
-        window.deleteDocHandler = async (colName, id) => {
-            if(!currentUser) return;
-            if(confirm("Are you sure you want to delete this record forever?")) {
-                try {
-                    await deleteDoc(doc(db, getColPath(colName), id));
-                    window.showToast("Record deleted", "success");
-                } catch(err) {
-                    console.error(err);
-                    window.showToast("Failed to delete record", "error");
-                }
-            }
-        };
-
-        // Modal Controls
-        window.openModal = (id) => {
-            const modal = document.getElementById(id);
-            modal.classList.remove('hidden');
-            // Small timeout to allow display:block to apply before animating opacity
-            setTimeout(() => {
-                const inner = modal.querySelector('div');
-                inner.classList.remove('scale-95', 'opacity-0');
-                inner.classList.add('scale-100', 'opacity-100');
-            }, 10);
-        };
-        
-        window.closeModal = (id) => {
-            const modal = document.getElementById(id);
-            const inner = modal.querySelector('div');
-            inner.classList.remove('scale-100', 'opacity-100');
-            inner.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => modal.classList.add('hidden'), 300);
-        };
-
-        window.showToast = (msg, type = 'info') => {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            const color = type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-gray-800';
-            const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-circle-xmark' : 'fa-info-circle';
-            
-            toast.className = `${color} text-white px-5 py-3 rounded-lg shadow-xl text-sm font-medium transition-all duration-300 transform translate-x-full flex items-center gap-3 border border-white/10`;
-            toast.innerHTML = `<i class="fa-solid ${icon} text-lg"></i> ${msg}`;
-            container.appendChild(toast);
-            
-            setTimeout(() => toast.classList.remove('translate-x-full'), 10);
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-x-full');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        };
-
-        // SPA Router
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const target = e.currentTarget.dataset.view;
-                
-                // Nav Styling
-                document.querySelectorAll('.nav-btn').forEach(b => {
-                    b.classList.remove('bg-primary-600', 'text-white', 'shadow-md');
-                    b.classList.add('text-gray-400', 'hover:bg-gray-800');
-                });
-                e.currentTarget.classList.add('bg-primary-600', 'text-white', 'shadow-md');
-                e.currentTarget.classList.remove('text-gray-400', 'hover:bg-gray-800');
-
-                // View Switching
-                document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden'));
-                document.getElementById(`view-${target}`).classList.remove('hidden');
-
-                // Header Title
-                document.getElementById('current-view-title').innerText = e.currentTarget.innerText.trim();
-
-                // Mobile Sidebar Auto-close
-                if (window.innerWidth < 768) {
-                    document.getElementById('sidebar').classList.add('-translate-x-full');
-                }
-
-                // Render specific things on show
-                if (target === 'dashboard') updateDashboardChart();
-            });
-        });
-
-        // Theme
-        window.toggleTheme = () => {
-            document.documentElement.classList.toggle('dark');
-            if(chartInstance) updateDashboardChart();
-        };
-
-        window.toggleSidebar = () => {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
-        };
-        
-        // Listen to search
-        document.getElementById('search-leads').addEventListener('input', renderLeads);
-
-        // Boot
-        document.addEventListener('DOMContentLoaded', () => {
-            document.documentElement.classList.add('dark'); // Default to dark for premium feel
-            initFirebase();
-        });
-    </script>
-</body>
-</html>
+// Events
+document.addEventListener('click',async e=>{
+ const so0=e.target.closest('[data-sort]');if(so0){const k=so0.dataset.sort;sort[page]=sort[page]?.k===k?{k,d:-sort[page].d}:{k,d:1};render();return}
+ const t=e.target.closest('[data-a]');if(!t)return;
+ if(e.target.closest('[data-stop]')&&t.dataset.a==='close'&&t===t.closest('.overlay')&&!e.target.closest('button')&&e.target.closest('.modal'))return;
+ const a=t.dataset.a,v=t.dataset.v,c=page;
+ if(a==='nav'){page=v;open=false;render()}
+ else if(a==='menu'){open=!open;render()}
+ else if(a==='meet'){meet=!meet;if(meet&&MEETHIDE.includes(page))page='dashboard';render()}
+ else if(a==='search')gsearch();
+ else if(a==='mine'){mine=!mine;render()}
+ else if(a==='out'){await signOut(auth);location.reload()}
+ else if(a==='mode'){authMode=authMode==='up'?'in':'up';aerr='';render()}
+ else if(a==='auth')doAuth();
+ else if(a==='rg'){rg=v;render()}
+ else if(a==='rd'){read[v]=1;saveRead();render()}
+ else if(a==='rdall'){notes().forEach(x=>read[x.id]=1);saveRead();render()}
+ else if(a==='cal'){calM=new Date(calM.getFullYear(),calM.getMonth()+ +v,1);render()}
+ else if(a==='profile')profile(v);
+ else if(a==='wbopen'){loadW(D.projects.find(x=>x.id===v));page='workbench';$('#modal').innerHTML='';render()}
+ else if(a==='go'){$('#modal').innerHTML='';page=v;render()}
+ else if(a==='add')form(v||c);
+ else if(a==='edit')form(c,D[c].find(r=>r.id===v));
+ else if(a==='arch'){if(confirm('Archive this record? It is hidden but kept in the database.'))try{await arch(c,D[c].find(r=>r.id===v));toast('Archived.')}catch{toast('Unable to archive.')}}
+ else if(a==='view'){view[v]=view[v]==='k'?'t':'k';render()}
+ else if(a==='save')save(t.dataset.c,v||'');
+ else if(a==='close'&&(t.classList.contains('overlay')?e.target===t:true))$('#modal').innerHTML='';
+ else if(a==='csv')csv(v);
+ else if(a==='json')dl(v+'.json',JSON.stringify(D[v].map(strip),null,2),'application/json');
+ else if(a==='exportall')dl('feasibility-export.json',JSON.stringify(Object.fromEntries(Object.keys(S).map(k=>[k,D[k].map(strip)])),null,2),'application/json');
+ else if(a==='demo')demo();else if(a==='cleardemo')clearDemo();
+ else if(a==='wbtab'){wbTab=v;render()}
+ else if(a==='present')present();
+ else if(a==='wbsave'){const tot=Object.values(CH).flat().length,pct=W.progress??Math.round(Object.values(W.checks).filter(Boolean).length/tot*100);wl('Saving configuration...');try{await upd('projects',W.id,{site:W.site,checks:W.checks,sections:W.sections,progress:pct});await log('Website updated: '+lbl('projects',W.id));wl('Website configuration saved.');toast('Website saved.')}catch{wl('Save failed.');toast('Unable to save changes.')}}
+});
+document.addEventListener('change',async e=>{const t=e.target;
+ if(t.dataset.rd){const[c,k]=t.dataset.rd.split(':');(rd[c]=rd[c]||{})[k]=t.value;render()}
+ if(t.id==='up'&&t.files[0]){const f=t.files[0];toast('Uploading…');try{const r=ref(st,'media/'+Date.now()+'-'+f.name);await uploadBytes(r,f);$('[data-k="url"]').value=await getDownloadURL(r);if(!$('[data-k="name"]').value)$('[data-k="name"]').value=f.name;toast('Uploaded.')}catch{toast('Upload failed. Check Storage rules.')}}
+ if(t.dataset.a==='wbsel'){loadW(D.projects.find(p=>p.id===t.value));render()}
+ if(t.dataset.f){fl[t.dataset.f]=t.value;render()}
+ if(t.dataset.chk){W.checks[t.dataset.chk]=t.checked;W.progress=undefined;wl((t.checked?'Completed: ':'Reopened: ')+t.dataset.chk.split('|')[1]);render()}
+ if(t.dataset.sec){W.sections[t.dataset.sec]=t.checked;wl((t.checked?'Enabled ':'Disabled ')+t.dataset.sec+' section...');pv()}
+ if(t.id==='imp'){const r=new FileReader();r.onload=async()=>{try{const j=JSON.parse(r.result);let n=0;for(const c of Object.keys(S))for(const x of j[c]||[]){await addDoc(collection(db,c),{...x,archived:false,createdAt:serverTimestamp()});n++}toast(`Imported ${n} records.`)}catch{toast('Invalid import file.')}};r.readAsText(t.files[0])}
+});
+document.addEventListener('input',e=>{const t=e.target;
+ if(t.dataset.q){q[t.dataset.q]=t.value;const p=t.selectionStart;render();const n=$(`[data-q="${t.dataset.q}"]`);n.focus();n.setSelectionRange(p,p)}
+ if(t.dataset.s){W.site[t.dataset.s]=t.value;pv();clearTimeout(window.wt);window.wt=setTimeout(()=>wl('Website preview updated.'),600)}
+ if(t.dataset.prog!==undefined)W.progress=+t.value;
+});
+document.addEventListener('dragstart',e=>{const d=e.target.closest?.('[data-drag]');if(d)e.dataTransfer.setData('id',d.dataset.drag)});
+document.addEventListener('dragover',e=>{if(e.target.closest?.('[data-drop]'))e.preventDefault()});
+document.addEventListener('drop',async e=>{const c=e.target.closest?.('[data-drop]');if(!c)return;const id=e.dataTransfer.getData('id');if(!id)return;try{await upd(page,id,{status:c.dataset.drop});await log(`${S[page][0].replace(/s$/,'')} moved to ${c.dataset.drop}: ${D[page].find(r=>r.id===id)?.name}`);toast('Moved to '+c.dataset.drop)}catch{toast('Unable to save changes.')}});
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();if(me)gsearch()}if(e.key==='Escape')$('#modal').innerHTML='';if(e.key==='Enter'&&e.target.id?.startsWith('au_'))doAuth()});
+function loginView(){const up=authMode==='up';return `<div style="min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 20% 10%,#2a0a14,#0b0b0d 55%)"><div class="card" style="width:min(420px,100%);padding:30px"><div class="logo" style="padding:0 0 16px"><b>F</b> Feasibility Media</div><h1>${up?'Create your account':'Welcome back'}</h1><p class="muted">${up?'First time here? Tell us who you are.':'Sign in to your workspace.'}</p>${aerr?`<div class="err" style="border-radius:10px;margin:10px 0">${E(aerr)}</div>`:''}
+<div class="form" style="grid-template-columns:1fr;margin-top:14px">${up?`<label>Your name<input id="au_nm" value="${E(aform.nm||'')}" placeholder="e.g. Aryaveer"></label>`:''}<label>Email<input id="au_em" type="email" value="${E(aform.em||'')}"></label><label>Password<input id="au_pw" type="password" placeholder="min. 6 characters"></label></div>
+<button class="btn" style="width:100%;margin-top:16px" data-a="auth">${up?'Create account':'Sign in'}</button><p class="muted" style="text-align:center">${up?'Already have an account?':'New to the team?'} <a data-a="mode" style="color:#fda4af;cursor:pointer">${up?'Sign in':'Create account'}</a></p></div></div>`}
+async function doAuth(){const em=($('#au_em')?.value||'').trim(),pw=$('#au_pw')?.value||'',nm=($('#au_nm')?.value||'').trim();aform={em,nm};aerr='';
+ if(!em||!pw||(authMode==='up'&&!nm)){aerr='Please fill in all fields.';render();return}
+ try{if(authMode==='up'){signingUp=true;const c=await createUserWithEmailAndPassword(auth,em,pw),p={name:nm,email:em};await setDoc(doc(db,'users',c.user.uid),{...p,createdAt:serverTimestamp()});me={uid:c.user.uid,...p};signingUp=false;await log('Joined the workspace');start()}else await signInWithEmailAndPassword(auth,em,pw);
+  try{localStorage.setItem('fm_acct','1')}catch{}render()}
+ catch(e){signingUp=false;aerr={'auth/email-already-in-use':'An account with this email exists. Please sign in.','auth/invalid-credential':'Wrong email or password.','auth/wrong-password':'Wrong email or password.','auth/weak-password':'Password must be at least 6 characters.','auth/invalid-email':'Enter a valid email.','auth/operation-not-allowed':'Enable Email/Password sign-in in Firebase Console → Authentication.'}[e.code]||('Sign-in failed: '+e.code);render()}}
+try{if(localStorage.getItem('fm_acct'))authMode='in'}catch{}
+onAuthStateChanged(auth,async u=>{authReady=true;if(signingUp)return;if(!u){me=null;render();return}
+ if(!me){try{const r=doc(db,'users',u.uid),g=await getDoc(r);if(g.exists())me={uid:u.uid,...g.data()};else{const p={name:(u.email||'User').split('@')[0],email:u.email};await setDoc(r,{...p,createdAt:serverTimestamp()});me={uid:u.uid,...p}}}catch(e){aerr='Could not load your profile: '+e.code;}}
+ if(me)start();render()});
+render();
+</script></body></html>
