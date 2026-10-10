@@ -57,15 +57,15 @@ table{font-size:13.5px}th{text-transform:uppercase;letter-spacing:.06em;font-siz
 .trk{fill:none;stroke:#26262c;stroke-width:3}.arc{fill:none;stroke:#E11D48;stroke-width:3;stroke-linecap:round;stroke-dasharray:70 200;filter:drop-shadow(0 0 6px #E11D48)}
 .orb b{width:52px;height:52px;border-radius:15px;background:linear-gradient(135deg,#E11D48,#9f1239);display:grid;place-items:center;font-size:24px;animation:pulse 1.8s ease-in-out infinite;box-shadow:0 8px 30px #e11d4866}
 .wm{font-weight:700;font-size:18px;letter-spacing:.02em}.msg{color:#8a8a93;font-size:13px;animation:fade 1.8s ease-in-out infinite}
-.bar{width:170px;height:3px;background:#1c1c22;border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;width:40%;background:linear-gradient(90deg,transparent,#E11D48,transparent);animation:slide 1.2s ease-in-out infinite}
-.bar u{display:block;height:100%;background:linear-gradient(90deg,#9f1239,#E11D48);border-radius:3px;transition:width .35s ease;box-shadow:0 0 10px #E11D48}.pc{font:600 12px ui-monospace,monospace;color:#a1a1aa}
+.pbar{width:170px;height:3px;background:#1c1c22;border-radius:3px;overflow:hidden}.pbar i{display:block;height:100%;width:40%;background:linear-gradient(90deg,transparent,#E11D48,transparent);animation:slide 1.2s ease-in-out infinite}
+.pbar u{display:block;height:100%;background:linear-gradient(90deg,#9f1239,#E11D48);border-radius:3px;transition:width .35s ease;box-shadow:0 0 10px #E11D48}.pc{font:600 12px ui-monospace,monospace;color:#a1a1aa}
 .body>*{animation:rise .35s ease both}
 @keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{50%{transform:scale(1.07)}}@keyframes fade{50%{opacity:.4}}@keyframes slide{from{transform:translateX(-100%)}to{transform:translateX(350%)}}@keyframes rise{from{opacity:0;transform:translateY(8px)}}
 
 html.light{filter:invert(1) hue-rotate(180deg);background:#fff}html.light img,html.light #pv,html.light .pill,html.light .tag{filter:invert(1) hue-rotate(180deg)}
 .irow input{min-height:40px}
 .fab{position:fixed;right:22px;bottom:22px;width:58px;height:58px;border-radius:50%;font-size:30px;line-height:1;z-index:8;background:#E11D48;color:#fff;border:0;box-shadow:0 10px 30px #e11d4866;cursor:pointer;transition:.15s}.fab:hover{transform:scale(1.08)}
-</style></head><body><div id="app"><div class="splash"><div class="orb"><svg viewBox="0 0 100 100"><circle class="trk" cx="50" cy="50" r="42"/><circle class="arc" cx="50" cy="50" r="42"/></svg><b>F</b></div><div class="wm">Feasibility Media</div><div class="msg">Starting up…</div><div class="bar"><i></i></div></div></div><div id="modal"></div><div id="toast"></div>
+</style></head><body><div id="app"><div class="splash"><div class="orb"><svg viewBox="0 0 100 100"><circle class="trk" cx="50" cy="50" r="42"/><circle class="arc" cx="50" cy="50" r="42"/></svg><b>F</b></div><div class="wm">Feasibility Media</div><div class="msg">Starting up…</div><div class="pbar"><i></i></div></div></div><div id="modal"></div><div id="toast"></div>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {getStorage,ref,uploadBytes,getDownloadURL} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
@@ -131,7 +131,7 @@ const PAGES={dashboard,finance,workbench,notifications,archive:archived,invoices
 
 let stage='Connecting to Firebase…',sp=10,lastL='';
 const prog=()=>authReady?Math.round(60+COLS.filter(c=>L[c]).length/COLS.length*40):sp;
-const splash=(m,i)=>{const p=prog();return `<div class="splash ${i?'inl':''}"><div class="orb"><svg viewBox="0 0 100 100"><circle class="trk" cx="50" cy="50" r="42"/><circle class="arc" cx="50" cy="50" r="42"/></svg><b>F</b></div><div class="wm">Feasibility Media</div><div class="msg">${m}</div><div class="bar"><u style="width:${p}%"></u></div><div class="pc">${p}%</div></div>`};
+const splash=(m,i)=>{const p=prog();return `<div class="splash ${i?'inl':''}"><div class="orb"><svg viewBox="0 0 100 100"><circle class="trk" cx="50" cy="50" r="42"/><circle class="arc" cx="50" cy="50" r="42"/></svg><b>F</b></div><div class="wm">Feasibility Media</div><div class="msg">${m}</div><div class="pbar"><u style="width:${p}%"></u></div><div class="pc">${p}%</div></div>`};
 
 try{if(localStorage.getItem('fm_theme')==='l')document.documentElement.classList.add('light')}catch{}
 const IC={dashboard:'▦',clients:'◍',leads:'◈',projects:'▤',tasks:'☑',services:'✦',payments:'₹',expenses:'↘',finance:'◔',team:'◎',media:'▣',workbench:'✎',appointments:'▥',followups:'↻',notifications:'◉',archive:'⌫',activity:'≋',invoices:'▭',reports:'▨',settings:'⚙'};
