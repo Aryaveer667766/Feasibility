@@ -60,6 +60,9 @@ let R=null,CODE=null,ref=null,tab='orders',editId=null,audio=null,alarmT=null,ma
 const me=()=>{try{return JSON.parse(sessionStorage.getItem('fm_login'))}catch(e){return null}};
 const custUrl=(t)=>new URL('index.html',location.href).href+'?r='+CODE+(t?'&t='+t:'');
 
+let swReg=null;if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').then(r=>swReg=r).catch(()=>{});
+async function webNotify(t,b,tag){try{if(!('Notification' in window)||Notification.permission!=='granted')return;const r=swReg||await navigator.serviceWorker.getRegistration();
+ if(r&&r.showNotification)await r.showNotification(t,{body:b,tag,requireInteraction:true,vibrate:[400,150,400],data:{url:location.href}});else new Notification(t,{body:b,tag})}catch(e){}}
 /* ---------- login ---------- */
 function loginView(msg){$('#app').innerHTML=`<div class="login"><h1>🍽️ Restaurant login</h1><p class="mut">Sign in to manage orders, your menu and QR codes.</p>
  <div class="card"><label>Restaurant code</label><input id="lc" autocapitalize="characters" placeholder="e.g. DEMO"><label>PIN</label><input id="lp" type="password" inputmode="numeric" placeholder="PIN" onkeydown="if(event.key==='Enter')login()">
@@ -81,7 +84,7 @@ function start(c){CODE=c;if(ref)ref.off();first=true;maxSeen=-1;
   R=v;R.menu=arr(R.menu);R.promos=arr(R.promos);R.notes=arr(R.notes);R.orders=arr(R.orders).sort((a,b)=>a.id-b.id);R.tables=R.tables||1;
   document.documentElement.style.setProperty('--ac',R.color||'#d62828');
   const newest=R.orders.reduce((a,o)=>Math.max(a,o.id),0);
-  if(!first&&newest>maxSeen){const o=R.orders[R.orders.length-1];try{if(Notification.permission==='granted')new Notification('🔔 New order #'+o.id,{body:'Table '+(o.table||'—')+' · '+money(o.total)})}catch(e){}}
+  if(!first&&newest>maxSeen){const o=R.orders[R.orders.length-1];webNotify('🔔 New order #'+o.id,'Table '+(o.table||'—')+' · '+money(o.total),'order-'+o.id)}
   maxSeen=newest;first=false;
   if(!$('#tb')||!/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))render();else checkAlarm()})}
 function saveR(){F.ref('restaurants/'+CODE).update({name:R.name,pin:R.pin,color:R.color||'#d62828',tables:R.tables,menu:R.menu.length?R.menu:null,promos:R.promos.length?R.promos:null,notes:R.notes.length?R.notes:null})}
@@ -101,7 +104,7 @@ function tOrders(){const act=R.orders.filter(o=>o.status!=='served').reverse(),d
  <div class="row sp"><b>${money(o.total)}</b>${o.promo?`<span class="mut">promo ${esc(o.promo)}</span>`:''}</div>
  <button class="${o.status==='new'?'':'ok'}" style="width:100%;margin-top:10px;padding:14px" onclick="adv(${o.id})">${o.status==='new'?'✅ Accept order':o.status==='preparing'?'Mark ready':'Mark served'}</button></div>`).join('')||'<p class="mut">No active orders. New ones will appear here with an alarm.</p>'}</div>
  ${done.length?`<h2 style="margin-top:24px">Recently served</h2>${done.map(o=>`<div class="card row sp"><span>#${o.id} · Table ${esc(o.table||'—')} · ${o.items.map(i=>i.q+'× '+esc(i.n)).join(', ')}</span><b>${money(o.total)}</b></div>`).join('')}`:''}`}
-function adv(id){initAudio();const o=R.orders.find(x=>x.id===id);F.ref('restaurants/'+CODE+'/orders/'+id+'/status').set({new:'preparing',preparing:'ready',ready:'served'}[o.status])}
+function adv(id){initAudio();const o=R.orders.find(x=>x.id===id),nx={new:'preparing',preparing:'ready',ready:'served'}[o.status],u={status:nx};if(nx==='served')u.servedAt=Date.now();F.ref('restaurants/'+CODE+'/orders/'+id).update(u)}
 
 /* ---------- menu ---------- */
 function tMenu(){const e=R.menu.find(m=>m.id===editId)||{};
