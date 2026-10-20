@@ -63,6 +63,7 @@ footer{text-align:center;color:var(--mut);font-size:.9rem;padding:10px 0 40px}
 .qty button{width:36px;height:36px;border-radius:50%;background:var(--ac);color:#fff;font-size:1.3rem;line-height:1}
 .qty button.m{background:var(--bd);color:var(--tx)}
 .soldout{background:var(--bd);color:var(--mut);border-radius:99px;padding:5px 12px;font-size:.85rem;font-weight:700}
+.thanks{background:linear-gradient(135deg,var(--gold),#f9a826);color:#2b1810;border:0}.thanks .btn.sm{background:#2b1810;color:#fff8ee}
 .track{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:16px;margin:12px 0}
 .steps4{display:flex;gap:6px;margin-top:10px}.steps4 i{flex:1;height:7px;border-radius:9px;background:var(--bd)}.steps4 i.on{background:var(--ok)}
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:12px 18px calc(12px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--bd);box-shadow:0 -10px 30px rgba(0,0,0,.12)}
@@ -97,7 +98,12 @@ firebase.initializeApp({apiKey:"AIzaSyAZ_c3EaDxSZ6RrNrwQjR_TauJHrPfk_lk",authDom
 const F=firebase.database();
 let R=null,loaded=false,cart={},promo=null,stream=null,scanning=false;
 const arr=x=>x?Object.values(x).filter(Boolean):[];
-const myKey='fm_my_'+CODE,myIds=()=>{try{return JSON.parse(localStorage.getItem(myKey)||'[]')}catch(e){return[]}};
+const myKey='fm_my2_'+CODE,myList=()=>{try{return JSON.parse(localStorage.getItem(myKey)||'[]')}catch(e){return[]}},setMy=l=>{try{localStorage.setItem(myKey,JSON.stringify(l))}catch(e){}};
+let swReg=null;if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').then(r=>swReg=r).catch(()=>{});
+async function webNotify(title,body,tag){try{if(!('Notification' in window)||Notification.permission!=='granted')return;
+ const r=swReg||await navigator.serviceWorker.getRegistration();
+ if(r&&r.showNotification)await r.showNotification(title,{body,tag,vibrate:[200,100,200],data:{url:location.href}});else new Notification(title,{body,tag})}catch(e){}}
+function enableNotify(){if('Notification' in window)Notification.requestPermission().then(()=>menu())}
 
 /* ---------- HOME (no code): hero + CTA ---------- */
 function home(){$('#app').innerHTML=`
@@ -133,19 +139,32 @@ function handle(t){try{const u=new URL(t),r=u.searchParams.get('r');if(r){closeS
  $('#sm').textContent='That QR code isn’t one of ours. Try your table’s code.';setTimeout(()=>{if(scanning)startCam()},0)}
 
 /* ---------- MENU ---------- */
-if(CODE){F.ref('restaurants/'+CODE).on('value',s=>{R=s.val();if(R){R.menu=arr(R.menu);R.promos=arr(R.promos);R.notes=arr(R.notes);R.orders=arr(R.orders).sort((a,b)=>a.id-b.id)}
- loaded=true;if(R&&R.color)document.documentElement.style.setProperty('--ac',R.color);menu();if(!$('#sheet').hidden)sheet()})}else home();
+/* Customers read ONLY the public parts of a restaurant (never PINs or other people's orders) */
+const KEYS=['name','color','menu','promos','notes'],parts={},got=new Set(),my={},watched={};
+function build(){if(got.size<KEYS.length)return;R=parts.name==null?null:{name:parts.name,color:parts.color,menu:arr(parts.menu),promos:arr(parts.promos),notes:arr(parts.notes)};
+ loaded=true;if(R&&R.color)document.documentElement.style.setProperty('--ac',R.color);menu();if(!$('#sheet').hidden)sheet()}
+function noteNotify(){const ns=arr(parts.notes).sort((a,b)=>a.ts-b.ts);if(!ns.length)return;const top=ns[ns.length-1],key='fm_note_'+CODE,last=localStorage.getItem(key);
+ if(last===null){localStorage.setItem(key,top.ts);return}if(top.ts>+last){localStorage.setItem(key,top.ts);webNotify(parts.name||'New offer',top.text,'note')}}
+function statusNotify(o){const m={preparing:['Order accepted 👨‍🍳','The kitchen is preparing order #'+o.id],ready:['Your order is ready! 🎉','Order #'+o.id+' is ready'],served:['Enjoy your meal 😋','Thanks for ordering from '+(parts.name||'us')]}[o.status];if(m)webNotify(m[0],m[1],'o'+o.id)}
+function dismissLocal(id){setMy(myList().filter(e=>e.id!==id));if(watched[id]){watched[id].off();delete watched[id]}delete my[id];if(R)menu()}
+function watchOrder(id,initial){if(watched[id])return;let fs=true;watched[id]=F.ref('restaurants/'+CODE+'/orders/'+id);
+ watched[id].on('value',s=>{const o=s.val();
+  if(!o){dismissLocal(id);return}
+  if(fs&&initial&&o.status==='served'){fs=false;dismissLocal(id);return}   // finished in an earlier visit: start fresh
+  const prev=my[id]&&my[id].status;my[id]=o;if(!fs&&prev&&prev!==o.status)statusNotify(o);fs=false;if(R)menu()})}
+if(CODE){KEYS.forEach(k=>F.ref('restaurants/'+CODE+'/'+k).on('value',s=>{parts[k]=s.val();got.add(k);if(k==='notes')noteNotify();build()}));
+ setMy(myList().filter(e=>Date.now()-e.ts<6*36e5));myList().forEach(e=>watchOrder(e.id,true));setInterval(()=>{if(R)menu()},60000)}else home();
 const sub=()=>R.menu.reduce((a,m)=>a+(!m.out&&cart[m.id]?cart[m.id]*m.price:0),0);
 const cnt=()=>R.menu.reduce((a,m)=>a+(!m.out?cart[m.id]||0:0),0);
 const STAT=['new','preparing','ready','served'],LBL={new:'Order received',preparing:'Being prepared 👨‍🍳',ready:'Ready! 🎉',served:'Enjoy your meal 😋'};
 function menu(){if(!loaded){$('#app').innerHTML='<p class="center mut" style="padding:60px 18px">Loading menu…</p>';return}
  if(!R){$('#app').innerHTML=`<div class="wrap center" style="padding:80px 18px"><h1>Hmm, we can’t find that restaurant</h1><p class="mut">The code “${esc(CODE)}” doesn’t match any restaurant.</p><a href="./"><button class="btn sm">Scan again</button></a></div>`;return}
- const cats=[...new Set(R.menu.map(m=>m.cat||'Menu'))],n=R.notes.filter(x=>Date.now()-x.ts<864e5).slice(-1)[0],mine=R.orders.filter(o=>myIds().includes(o.id)).slice(-3).reverse(),c=cnt();
+ const perm=('Notification' in window)?Notification.permission:'unsupported',webOK=perm==='granted',cats=[...new Set(R.menu.map(m=>m.cat||'Menu'))],n=R.notes.filter(x=>Date.now()-x.ts<864e5).slice(-1)[0],mine=Object.values(my).filter(o=>o.status!=='served'||Date.now()-(o.servedAt||o.ts)<6e5).sort((a,b)=>b.id-a.id),c=cnt();
  const y=scrollY;
  $('#app').innerHTML=`<header class="mh"><div class="wrap"><h1>${esc(R.name)}</h1>${TABLE?`<span class="tb">Table ${esc(TABLE)}</span>`:''}</div></header>
  <main class="wrap" style="padding-bottom:110px">
- ${n?`<div class="note">📣 ${esc(n.text)}</div>`:''}
- ${mine.map(o=>{const i=STAT.indexOf(o.status);return`<div class="track"><div class="row"><b>Order #${o.id}</b><b style="color:var(--ok)">${LBL[o.status]||o.status}</b></div><div class="mut">${o.items.map(i=>i.q+'× '+esc(i.n)).join(', ')}</div><div class="steps4">${STAT.map((s,k)=>`<i class="${k<=i?'on':''}"></i>`).join('')}</div></div>`}).join('')}
+ ${(n&&!webOK)?`<div class="note">📣 ${esc(n.text)}</div>`:''}${perm==='default'?`<button class="note" style="width:100%;border:0;text-align:left;font:inherit;cursor:pointer" onclick="enableNotify()">🔔 Turn on notifications for order updates &amp; offers</button>`:''}
+ ${mine.map(o=>{if(o.status==='served')return`<div class="track thanks"><h3>Thanks for dining with us! 💛</h3><p class="mut" style="margin:6px 0 10px">Order #${o.id} is complete. We hope you loved it.</p><button class="btn sm" onclick="dismissLocal(${o.id})">Order something else</button></div>`;const i=STAT.indexOf(o.status);return`<div class="track"><div class="row"><b>Order #${o.id}</b><b style="color:var(--ok)">${LBL[o.status]||o.status}</b></div><div class="mut">${o.items.map(i=>i.q+'× '+esc(i.n)).join(', ')}</div><div class="steps4">${STAT.map((s,k)=>`<i class="${k<=i?'on':''}"></i>`).join('')}</div></div>`}).join('')}
  ${cats.length>1?`<div class="chips">${cats.map((k,i)=>`<button class="chip ${i?'':'on'}" onclick="document.getElementById('c${i}').scrollIntoView({behavior:'smooth'})">${esc(k)}</button>`).join('')}</div>`:''}
  ${cats.map((k,i)=>`<h2 class="sec" id="c${i}">${esc(k)}</h2><div class="grid">${R.menu.filter(m=>(m.cat||'Menu')===k).map(m=>`<div class="item"><div><h3>${esc(m.name)}</h3>${m.desc?`<p>${esc(m.desc)}</p>`:''}<span class="price">${money(m.price)}</span></div>
   ${m.out?'<span class="soldout">Sold out</span>':`<div class="qty">${cart[m.id]?`<button class="m" onclick="cq(${m.id},-1)" aria-label="Remove one">−</button><span>${cart[m.id]}</span>`:''}<button onclick="cq(${m.id},1)" aria-label="Add one">+</button></div>`}</div>`).join('')}</div>`).join('')}
@@ -172,9 +191,9 @@ function sheet(){if(!R||!cnt()){closeSheet();return}
 function applyPromo(){const v=$('#pc').value.trim().toUpperCase(),p=R.promos.find(x=>String(x.code).toUpperCase()===v);if(!p){toast('That promo code isn’t valid',true);return}promo=p;sheet();toast('Promo applied 🎉')}
 function toast(t,bad){const e=document.createElement('div');e.className='toast';e.textContent=t;if(bad)e.style.background='#b3121b';document.body.appendChild(e);setTimeout(()=>e.remove(),2500)}
 function place(){const items=R.menu.filter(m=>!m.out&&cart[m.id]).map(m=>({n:m.name,q:cart[m.id],p:m.price}));if(!items.length)return;
- const s=items.reduce((a,i)=>a+i.q*i.p,0),d=promo?s*promo.pct/100:0,pc=promo?String(promo.code):'',nt=($('#nt').value||'').trim(),b=$('#pb');b.disabled=true;b.textContent='Sending to kitchen…';
+ const s=items.reduce((a,i)=>a+i.q*i.p,0),d=promo?s*promo.pct/100:0,pc=promo?String(promo.code):'',nt=($('#nt').value||'').trim(),b=$('#pb');b.disabled=true;b.textContent='Sending to kitchen…';if('Notification' in window&&Notification.permission==='default')Notification.requestPermission();
  F.ref('restaurants/'+CODE+'/counter').transaction(n=>(n||0)+1,(err,ok,snap)=>{if(err||!ok){toast('Couldn’t place the order. Try again.',true);b.disabled=false;return}const id=snap.val();
   F.ref('restaurants/'+CODE+'/orders/'+id).set({id,table:TABLE,items,sub:s,disc:d,total:s-d,promo:pc,note:nt,status:'new',ts:Date.now()}).then(()=>{
-   try{localStorage.setItem(myKey,JSON.stringify([...myIds(),id]))}catch(e){}cart={};promo=null;closeSheet();menu();scrollTo({top:0,behavior:'smooth'});toast('Order #'+id+' sent to the kitchen ✅')
+   setMy([...myList(),{id,ts:Date.now()}]);watchOrder(id,false);cart={};promo=null;closeSheet();menu();scrollTo({top:0,behavior:'smooth'});toast('Order #'+id+' sent to the kitchen ✅')
   }).catch(()=>{toast('Order failed. Please try again.',true);b.disabled=false})})}
 </script></body></html>
