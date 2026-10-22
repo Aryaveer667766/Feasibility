@@ -19,79 +19,89 @@
             background-color: #020617;
             color: #f8fafc;
             overflow: hidden;
-            height: 100dvh; /* Mobile viewport fix */
+            height: 100dvh;
             background-image: 
-                radial-gradient(circle at top left, rgba(245, 158, 11, 0.08) 0%, transparent 40%), 
-                radial-gradient(circle at bottom right, rgba(139, 92, 246, 0.06) 0%, transparent 40%);
+                radial-gradient(circle at top right, rgba(245, 158, 11, 0.08) 0%, transparent 40%), 
+                radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
         }
         .font-heading { font-family: 'Outfit', sans-serif; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
 
-        .glass-panel { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .glass-card { 
             background: linear-gradient(180deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
-            border: 1px solid rgba(255,255,255,0.08); border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255,255,255,0.06); border-top: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 1.25rem; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); 
         }
 
-        input, select, textarea { background: rgba(2, 6, 23, 0.6); border: 1px solid rgba(255, 255, 255, 0.15); color: white; transition: all 0.2s; border-radius: 0.75rem; width: 100%; }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: #f59e0b; background: rgba(2, 6, 23, 0.9); box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25); }
+        input, select, textarea { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; border-radius: 0.75rem; width: 100%; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #f59e0b; background: rgba(0, 0, 0, 0.7); box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2); }
 
-        ::-webkit-scrollbar { width: 0px; height: 0px; display: none; } /* Hide scrollbar for mobile clean look */
+        ::-webkit-scrollbar { width: 0px; height: 0px; display: none; }
         
-        .tab-content { display: none; padding-bottom: 90px; } /* Padding for mobile nav */
-        .tab-content.active { display: block; animation: fadeUp 0.3s forwards; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .tab-content { display: none; padding-bottom: 100px; opacity: 0; transform: translateY(10px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .tab-content.active { display: block; opacity: 1; transform: translateY(0); }
 
         /* Desktop Nav */
-        .desktop-nav-btn { border-left: 3px solid transparent; color: #94a3b8; transition: all 0.2s; border-radius: 0 0.75rem 0.75rem 0; margin-right: 1rem;}
-        .desktop-nav-btn.active { background: linear-gradient(90deg, rgba(245, 158, 11, 0.15) 0%, transparent 100%); border-left-color: #f59e0b; color: #fff; font-weight: 700; }
+        .desktop-nav-btn { border-left: 3px solid transparent; color: #64748b; transition: all 0.2s; border-radius: 0 0.75rem 0.75rem 0; margin-right: 1rem;}
+        .desktop-nav-btn.active { background: linear-gradient(90deg, rgba(245, 158, 11, 0.1) 0%, transparent 100%); border-left-color: #f59e0b; color: #f59e0b; font-weight: 700; }
         
         /* Mobile Nav */
-        .mobile-nav-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #64748b; flex: 1; padding: 10px 0; transition: all 0.2s;}
+        .mobile-nav-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #64748b; flex: 1; padding: 12px 0; transition: all 0.2s;}
         .mobile-nav-btn.active { color: #f59e0b; }
-        .mobile-nav-btn i { font-size: 1.25rem; transition: transform 0.2s; }
-        .mobile-nav-btn.active i { transform: scale(1.15); }
-        .mobile-nav-btn span { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .mobile-nav-btn i { font-size: 1.25rem; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .mobile-nav-btn.active i { transform: scale(1.2) translateY(-2px); }
+        .mobile-nav-btn span { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        .btn-primary { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; font-weight: 800; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); transition: all 0.2s; }
-        .btn-primary:active { transform: scale(0.98); }
+        .btn-primary { background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); color: white; font-weight: 800; box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3); transition: all 0.2s; }
+        .btn-primary:active { transform: scale(0.97); box-shadow: 0 2px 10px rgba(245, 158, 11, 0.2); }
         
-        .btn-checkin { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; font-weight: 800; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
+        .btn-checkin { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; font-weight: 800; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3); transition: all 0.2s; }
+        .btn-checkin:active { transform: scale(0.97); }
 
         .pulse-dot { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); animation: pulse 2s infinite; }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } }
 
-        /* Lock screen for Add Form */
-        .locked-form { opacity: 0.4; pointer-events: none; filter: grayscale(100%); transition: all 0.4s ease; }
-        .unlocked-form { opacity: 1; pointer-events: auto; filter: grayscale(0%); }
+        /* Progress Ring */
+        .circular-chart { display: block; margin: 0 auto; max-width: 80%; max-height: 250px; }
+        .circle-bg { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 3.8; }
+        .circle { fill: none; stroke-width: 2.8; stroke-linecap: round; transition: stroke-dasharray 1s ease-out; }
+        .color-amber { stroke: #f59e0b; filter: drop-shadow(0 0 4px rgba(245,158,11,0.5)); }
+
+        /* Hide sections smoothly */
+        .collapse-section { overflow: hidden; max-height: 0; opacity: 0; transition: max-height 0.4s ease, opacity 0.4s ease, margin 0.4s ease; margin-top: 0; }
+        .collapse-section.open { max-height: 800px; opacity: 1; margin-top: 1rem; }
     </style>
 </head>
 <body class="flex flex-col md:flex-row w-full h-[100dvh]">
 
     <!-- LOGIN SCREEN -->
     <div id="login-screen" class="absolute inset-0 z-50 flex items-center justify-center backdrop-blur-xl bg-[#020617]/95 p-4">
-        <div class="glass-panel p-6 sm:p-8 w-full max-w-sm relative overflow-hidden rounded-3xl shadow-2xl">
-            <div class="text-center mb-8">
-                <div class="w-16 h-16 mx-auto bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center rounded-2xl text-3xl font-black shadow-lg mb-4">
+        <div class="glass-panel p-8 w-full max-w-sm relative overflow-hidden rounded-[2rem] shadow-2xl border border-white/10">
+            <!-- Neon Accents -->
+            <div class="absolute -top-20 -right-20 w-40 h-40 bg-amber-500/20 rounded-full blur-[40px]"></div>
+            <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-emerald-500/10 rounded-full blur-[40px]"></div>
+
+            <div class="text-center mb-8 relative z-10">
+                <div class="w-16 h-16 mx-auto bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center rounded-2xl text-2xl font-black shadow-[0_10px_20px_rgba(245,158,11,0.3)] mb-5">
                     <i class="fa-solid fa-map-location-dot"></i>
                 </div>
-                <h2 class="text-2xl font-black text-white font-heading tracking-tight">Field Ops</h2>
-                <p class="text-xs text-amber-400 font-bold uppercase tracking-widest mt-1">Feasibility Media</p>
+                <h2 class="text-3xl font-black text-white font-heading tracking-tight">Field Ops</h2>
+                <p class="text-[10px] text-amber-400 font-bold uppercase tracking-widest mt-2 border border-amber-500/20 bg-amber-500/10 inline-block px-3 py-1 rounded-full">Secure Access</p>
             </div>
 
             <form id="login-form" class="space-y-4 relative z-10">
                 <div class="relative">
-                    <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-slate-500"></i>
-                    <input type="email" id="login-email" required class="w-full pl-11 pr-4 py-3 text-sm" placeholder="rep@feasibility.com">
+                    <i class="fa-solid fa-envelope absolute left-4 top-4 text-slate-500 text-sm"></i>
+                    <input type="email" id="login-email" required class="w-full pl-11 pr-4 py-3.5 text-sm bg-black/50" placeholder="rep@feasibility.com">
                 </div>
                 <div class="relative">
-                    <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-500"></i>
-                    <input type="password" id="login-pwd" required class="w-full pl-11 pr-4 py-3 text-sm" placeholder="••••••••">
+                    <i class="fa-solid fa-lock absolute left-4 top-4 text-slate-500 text-sm"></i>
+                    <input type="password" id="login-pwd" required class="w-full pl-11 pr-4 py-3.5 text-sm bg-black/50" placeholder="••••••••">
                 </div>
-                <div id="login-error" class="hidden bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold text-center py-2 rounded-lg backdrop-blur-sm">Error</div>
-                <button type="submit" id="btn-login" class="btn-primary w-full py-3.5 rounded-xl text-sm tracking-widest uppercase flex items-center justify-center gap-3 mt-2">
-                    <span>Enter Field</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                <div id="login-error" class="hidden bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold text-center py-3 rounded-xl">Error</div>
+                <button type="submit" id="btn-login" class="btn-primary w-full py-4 rounded-xl text-sm tracking-widest uppercase flex items-center justify-center gap-3 mt-2">
+                    <span>Deploy to Field</span> <i class="fa-solid fa-bolt"></i>
                 </button>
             </form>
         </div>
@@ -100,8 +110,8 @@
     <!-- MAIN APP WRAPPER -->
     <div id="app-screen" class="hidden w-full h-full flex-col md:flex-row relative">
         
-        <!-- DESKTOP SIDEBAR (Hidden on Mobile) -->
-        <aside class="hidden md:flex w-64 glass-panel border-r border-white/10 flex-col z-40 shrink-0">
+        <!-- DESKTOP SIDEBAR -->
+        <aside class="hidden md:flex w-64 glass-panel border-r border-white/10 flex-col z-40 shrink-0 bg-[#020617]/50">
             <div class="p-6 border-b border-white/10 flex items-center gap-3">
                 <div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center rounded-xl text-lg font-black shadow-lg"><i class="fa-solid fa-map-location-dot text-sm"></i></div>
                 <div class="flex flex-col">
@@ -111,128 +121,160 @@
             </div>
             <nav id="desktop-nav" class="flex flex-col flex-1 py-6 space-y-1">
                 <button onclick="switchTab('dashboard')" class="desktop-nav-btn active w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left"><i class="fa-solid fa-compass w-5 text-center text-lg"></i> <span>Dashboard</span></button>
-                <button onclick="switchTab('hunt')" class="desktop-nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left text-amber-400"><i class="fa-solid fa-crosshairs w-5 text-center text-lg"></i> <span>Hunt / Claim</span></button>
-                <button onclick="switchTab('checkin')" class="desktop-nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left"><i class="fa-solid fa-location-crosshairs w-5 text-center text-lg"></i> <span>Check-In</span></button>
-                <button onclick="switchTab('ledger')" class="desktop-nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left"><i class="fa-solid fa-file-invoice-dollar w-5 text-center text-lg text-emerald-400"></i> <span>Ledger</span></button>
+                <button onclick="switchTab('hunt')" class="desktop-nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left"><i class="fa-solid fa-crosshairs w-5 text-center text-lg"></i> <span>Hunt / Claim</span></button>
+                <button onclick="switchTab('checkin')" class="desktop-nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left"><i class="fa-solid fa-location-crosshairs w-5 text-center text-lg"></i> <span>Field Check-In</span></button>
+                <button onclick="switchTab('rank')" class="desktop-nav-btn w-full flex items-center gap-4 px-6 py-3.5 text-sm text-left"><i class="fa-solid fa-trophy w-5 text-center text-lg"></i> <span>Leaderboard</span></button>
             </nav>
             <div class="p-4 border-t border-white/10">
-                <button onclick="logout()" class="w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm font-bold text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+                <button onclick="logout()" class="w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm font-bold text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"><i class="fa-solid fa-arrow-right-from-bracket"></i> Disconnect</button>
             </div>
         </aside>
 
         <!-- MAIN CONTENT AREA -->
         <main class="flex-1 h-full flex flex-col relative z-10 w-full bg-[#020617]">
             
-            <!-- Mobile & Desktop Header -->
+            <!-- Mobile Header -->
             <header class="flex h-16 md:h-20 border-b border-white/10 glass-panel justify-between items-center px-4 md:px-8 shrink-0 sticky top-0 z-30">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-amber-500 overflow-hidden shrink-0">
+                    <div class="w-9 h-9 rounded-full border-2 border-amber-500 overflow-hidden shrink-0 shadow-[0_0_10px_rgba(245,158,11,0.2)]">
                         <img id="desk-avatar" src="" class="w-full h-full object-cover">
                     </div>
                     <div class="flex flex-col leading-tight">
-                        <span id="desk-user-name" class="text-sm md:text-base font-bold text-white">Loading...</span>
-                        <span class="text-[9px] md:text-[10px] text-emerald-400 font-bold uppercase tracking-widest" id="gps-status-header"><i class="fa-solid fa-satellite-dish mr-1"></i> GPS Active</span>
+                        <span id="desk-user-name" class="text-sm font-bold text-white tracking-wide">Loading...</span>
+                        <div class="flex items-center gap-1.5 mt-0.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span class="text-[9px] text-emerald-400 font-bold uppercase tracking-widest" id="gps-status-header">GPS Locked</span>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="flex items-center gap-3">
-                    <div id="btn-clock" onclick="toggleAttendance()" class="bg-white/5 border border-white/10 px-3 py-1.5 rounded-full flex items-center gap-2 cursor-pointer hover:bg-white/10 transition-colors">
+                    <div id="btn-clock" onclick="toggleAttendance()" class="bg-black/50 border border-white/10 px-3 py-2 rounded-xl flex items-center gap-2 cursor-pointer hover:bg-white/10 transition-all shadow-inner">
                         <span id="duty-dot" class="w-2 h-2 rounded-full bg-slate-500"></span>
                         <span id="duty-text" class="text-[10px] font-bold text-slate-300 uppercase tracking-widest hidden sm:inline">Off Duty</span>
+                        <i class="fa-solid fa-power-off text-[10px] text-slate-500 sm:hidden ml-1" id="duty-icon-mob"></i>
                     </div>
                 </div>
             </header>
 
-            <!-- Scrollable Content -->
-            <div class="flex-1 overflow-y-auto p-3 md:p-6 pb-24 md:pb-6">
+            <!-- Scrollable Content Wrapper -->
+            <div class="flex-1 overflow-y-auto p-3 md:p-6 pb-28 md:pb-6 relative scroll-smooth">
                 
                 <!-- TAB: DASHBOARD -->
-                <div id="tab-dashboard" class="tab-content active space-y-4">
-                    <!-- KPIs -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        <div class="glass-card p-4 border-t-2 border-t-amber-500 relative overflow-hidden">
-                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">My Stores</p>
-                            <h3 id="kpi-pipeline" class="text-2xl font-black text-white font-mono">0</h3>
+                <div id="tab-dashboard" class="tab-content active">
+                    
+                    <!-- HUD: Daily Progress & Stats -->
+                    <div class="grid grid-cols-3 gap-3 mb-6">
+                        <!-- Goal Ring -->
+                        <div class="glass-card p-4 flex flex-col items-center justify-center col-span-3 sm:col-span-1 relative overflow-hidden group">
+                            <div class="absolute top-0 right-0 w-24 h-24 bg-amber-500/10 rounded-bl-full blur-2xl"></div>
+                            <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest w-full text-left mb-2">Daily Target</h4>
+                            <div class="relative w-24 h-24 flex items-center justify-center">
+                                <svg viewBox="0 0 36 36" class="circular-chart color-amber w-full h-full transform -rotate-90">
+                                    <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path class="circle" id="target-ring" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                </svg>
+                                <div class="absolute flex flex-col items-center justify-center text-center">
+                                    <span class="text-xl font-black text-white font-mono leading-none" id="kpi-visits">0</span>
+                                    <span class="text-[8px] font-bold text-slate-500 uppercase mt-1">/ 15 Visits</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="glass-card p-4 border-t-2 border-t-emerald-500 relative overflow-hidden">
-                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Deals Won</p>
-                            <h3 id="kpi-won" class="text-xl md:text-2xl font-black text-emerald-400 font-mono">₹0</h3>
-                        </div>
-                        <div class="glass-card p-4 border-t-2 border-t-blue-500 relative overflow-hidden">
-                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Visits Today</p>
-                            <h3 id="kpi-visits" class="text-2xl font-black text-white font-mono">0</h3>
-                        </div>
-                        <div class="glass-card p-4 border-t-2 border-t-purple-500 relative overflow-hidden">
-                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Ledger Payout</p>
-                            <h3 id="kpi-pending" class="text-xl md:text-2xl font-black text-purple-400 font-mono">₹0</h3>
+
+                        <!-- Mini Stats -->
+                        <div class="col-span-3 sm:col-span-2 grid grid-cols-2 gap-3">
+                            <div class="glass-card p-4 border-l-2 border-emerald-500 flex flex-col justify-center">
+                                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Deals Won (Offline)</p>
+                                <h3 id="kpi-won" class="text-xl md:text-2xl font-black text-emerald-400 font-mono">₹0</h3>
+                            </div>
+                            <div class="glass-card p-4 border-l-2 border-blue-500 flex flex-col justify-center">
+                                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Active Pipeline</p>
+                                <h3 id="kpi-pipeline" class="text-xl font-black text-white font-mono">0 Stores</h3>
+                            </div>
+                            <div class="glass-card p-4 border-l-2 border-purple-500 flex flex-col justify-center col-span-2 sm:col-span-1">
+                                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Est. Commission</p>
+                                <h3 id="kpi-commission" class="text-lg font-black text-purple-400 font-mono">₹0</h3>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Action Banner -->
-                    <div class="bg-gradient-to-r from-amber-600/20 to-orange-600/20 border border-amber-500/30 rounded-xl p-4 flex items-center justify-between shadow-[0_0_15px_rgba(245,158,11,0.1)]">
-                        <div>
-                            <h4 class="text-sm font-bold text-white">Find Your Next Target</h4>
-                            <p class="text-[10px] text-amber-200/70 mt-0.5">Search and claim storefronts before someone else does.</p>
+                    <!-- Call to Action -->
+                    <div class="bg-gradient-to-r from-amber-600/20 to-orange-600/20 border border-amber-500/30 rounded-2xl p-4 flex items-center justify-between shadow-[0_0_20px_rgba(245,158,11,0.1)] mb-6 cursor-pointer transform transition-transform hover:scale-[1.02]" onclick="switchTab('hunt')">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-amber-500/20 rounded-full flex items-center justify-center text-amber-400 border border-amber-500/50">
+                                <i class="fa-solid fa-radar"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Find Your Next Target</h4>
+                                <p class="text-[10px] text-amber-200/70 mt-0.5">Search and claim storefronts nearby.</p>
+                            </div>
                         </div>
-                        <button onclick="switchTab('hunt')" class="bg-amber-500 text-black w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-lg shrink-0"><i class="fa-solid fa-arrow-right"></i></button>
+                        <i class="fa-solid fa-chevron-right text-amber-500/50"></i>
                     </div>
 
-                    <!-- My Claimed Stores (Quick View) -->
-                    <h3 class="text-sm font-bold text-white font-heading mt-6 mb-3 flex items-center"><i class="fa-solid fa-store mr-2 text-slate-400"></i> My Active Claims</h3>
+                    <!-- Territory List -->
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-6 mb-3 flex items-center"><i class="fa-solid fa-thumbtack mr-2 text-slate-500"></i> My Claimed Territory</h3>
                     <div id="my-leads-body" class="space-y-3">
                         <!-- Filled by JS -->
                     </div>
                 </div>
 
-                <!-- TAB: HUNT & CLAIM (Collision Prevention) -->
+                <!-- TAB: HUNT & CLAIM -->
                 <div id="tab-hunt" class="tab-content">
-                    <div class="glass-card p-4 md:p-6 w-full">
-                        <div class="text-center mb-5">
-                            <h3 class="text-xl font-bold text-white font-heading"><i class="fa-solid fa-crosshairs text-amber-500 mr-2"></i> Store Hunt</h3>
-                            <p class="text-[11px] text-slate-400 mt-1">Search the storefront name to ensure it isn't already claimed.</p>
+                    <div class="glass-card p-5 md:p-8 w-full border-t-2 border-amber-500">
+                        <div class="text-center mb-6">
+                            <h3 class="text-2xl font-bold text-white font-heading tracking-tight"><i class="fa-solid fa-crosshairs text-amber-500 mr-2"></i> Store Hunt</h3>
+                            <p class="text-xs text-slate-400 mt-1">Verify availability before claiming a merchant.</p>
                         </div>
 
-                        <!-- 1. Search Bar -->
+                        <!-- Search Bar -->
                         <div class="relative mb-6">
-                            <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-amber-500"></i>
-                            <input type="text" id="hunt-search" placeholder="Type store name (e.g., Aggarwal Sweets)..." class="w-full pl-11 pr-4 py-3 text-sm font-bold focus:border-amber-500 shadow-inner" autocomplete="off">
-                            <div id="hunt-status" class="absolute right-4 top-3.5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Type to search</div>
+                            <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-amber-500"></i>
+                            <input type="text" id="hunt-search" placeholder="Type store name (e.g. Aggarwal Sweets)..." class="w-full pl-11 pr-4 py-3.5 text-sm font-bold focus:border-amber-500 bg-black/60 shadow-inner" autocomplete="off">
+                            <div id="hunt-status" class="absolute right-4 top-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest transition-opacity">Search</div>
                         </div>
 
-                        <!-- 2. Search Results / Collision Warnings -->
+                        <!-- Search Results (Conflicts) -->
                         <div id="hunt-results" class="space-y-3 mb-6 hidden">
                             <!-- Populated by JS -->
                         </div>
 
-                        <!-- 3. Unlockable Add Form -->
-                        <div id="add-lead-section" class="locked-form relative">
-                            <div id="lock-overlay" class="absolute inset-0 z-10 flex items-center justify-center flex-col bg-black/60 rounded-xl backdrop-blur-[2px]">
-                                <i class="fa-solid fa-lock text-3xl text-slate-400 mb-2"></i>
-                                <span class="text-xs font-bold text-white">Search to unlock claim form</span>
+                        <!-- Manual Proceed Button (Only shown when search is clear) -->
+                        <div id="btn-proceed-claim" class="hidden text-center transition-all">
+                            <div class="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-xl mb-4">
+                                <p class="text-sm font-bold text-emerald-400"><i class="fa-solid fa-check-circle mr-2"></i> No conflicts found.</p>
+                                <p class="text-[10px] text-emerald-400/70 mt-1">This territory appears unclaimed.</p>
                             </div>
-                            
-                            <form id="form-add-lead" class="space-y-4 border border-white/10 p-4 rounded-xl bg-white/5">
-                                <h4 class="text-sm font-bold text-amber-400 border-b border-white/10 pb-2 mb-3">Claim & Onboard Merchant</h4>
+                            <button onclick="revealClaimForm()" class="btn-primary w-full py-4 rounded-xl text-sm uppercase tracking-widest font-bold flex items-center justify-center gap-2">
+                                Proceed to Claim <i class="fa-solid fa-arrow-down"></i>
+                            </button>
+                        </div>
+
+                        <!-- Onboard Form (Hidden initially via CSS collapse) -->
+                        <div id="add-lead-section" class="collapse-section">
+                            <form id="form-add-lead" class="space-y-4 border border-white/10 p-5 rounded-2xl bg-black/40 shadow-inner">
+                                <h4 class="text-sm font-bold text-amber-400 border-b border-white/10 pb-3 mb-4 flex items-center"><i class="fa-solid fa-file-signature mr-2"></i> Registration Details</h4>
+                                
                                 <div>
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Store / Business Name *</label>
-                                    <input type="text" id="ld-company" required class="w-full px-3 py-2.5 text-sm bg-black/50 font-bold text-white">
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Store / Business Name *</label>
+                                    <input type="text" id="ld-company" required class="w-full px-4 py-3 text-sm bg-black/60 font-bold text-white border-amber-500/30">
                                 </div>
                                 <div>
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Area / Full Address *</label>
-                                    <input type="text" id="ld-address" required class="w-full px-3 py-2.5 text-sm bg-black/50" placeholder="e.g. Shop 12, Main Market">
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Area / Full Address *</label>
+                                    <input type="text" id="ld-address" required class="w-full px-4 py-3 text-sm bg-black/60" placeholder="e.g. Shop 12, Main Market">
                                 </div>
-                                <div class="grid grid-cols-2 gap-3">
+                                <div class="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Owner Contact</label>
-                                        <input type="tel" id="ld-phone" class="w-full px-3 py-2.5 text-sm bg-black/50">
+                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Owner Phone</label>
+                                        <input type="tel" id="ld-phone" class="w-full px-4 py-3 text-sm bg-black/60 font-mono">
                                     </div>
                                     <div>
-                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Est. Value (₹) *</label>
-                                        <input type="number" id="ld-value" required min="0" class="w-full px-3 py-2.5 text-sm font-mono bg-black/50">
+                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Est. Value (₹) *</label>
+                                        <input type="number" id="ld-value" required min="0" class="w-full px-4 py-3 text-sm font-mono bg-black/60 border-emerald-500/30">
                                     </div>
                                 </div>
-                                <button type="submit" id="btn-submit-lead" class="btn-primary w-full py-3.5 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-thumbtack"></i> Claim Territory
+                                <button type="submit" id="btn-submit-lead" class="btn-checkin w-full py-4 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-2 mt-4">
+                                    <i class="fa-solid fa-thumbtack text-lg"></i> Lock Territory Claim
                                 </button>
                             </form>
                         </div>
@@ -241,35 +283,40 @@
 
                 <!-- TAB: CHECK-IN -->
                 <div id="tab-checkin" class="tab-content">
-                    <div class="glass-card p-4 md:p-6 w-full border-t-2 border-emerald-500">
-                        <div class="text-center mb-6">
-                            <div class="w-12 h-12 mx-auto bg-emerald-500/20 text-emerald-400 flex items-center justify-center rounded-full text-xl mb-2">
+                    <div class="glass-card p-5 md:p-8 w-full border-t-2 border-emerald-500">
+                        <div class="text-center mb-6 border-b border-white/10 pb-6">
+                            <div class="w-14 h-14 mx-auto bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center justify-center rounded-full text-2xl mb-3 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
                                 <i class="fa-solid fa-location-crosshairs"></i>
                             </div>
-                            <h3 class="text-xl font-bold text-white font-heading">Log Store Visit</h3>
+                            <h3 class="text-2xl font-bold text-white font-heading tracking-tight">Log Store Visit</h3>
+                            <p class="text-xs text-slate-400 mt-1">Record interactions to update deal status.</p>
                         </div>
                         
-                        <form id="form-checkin" class="space-y-4">
+                        <form id="form-checkin" class="space-y-5">
                             <div>
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Select Claimed Store *</label>
-                                <select id="ci-lead-id" required class="w-full px-3 py-3 text-sm font-bold bg-slate-900 border-emerald-500/30">
-                                    <option value="">-- Loading... --</option>
-                                </select>
-                            </div>
-
-                            <div class="bg-black/40 border border-white/5 p-3 rounded-xl flex items-center gap-3">
-                                <button type="button" onclick="fetchGPS()" class="bg-blue-600 hover:bg-blue-500 text-white w-10 h-10 rounded-lg shrink-0 flex items-center justify-center">
-                                    <i class="fa-solid fa-satellite"></i>
-                                </button>
-                                <div class="flex-1">
-                                    <input type="text" id="ci-location" readonly required placeholder="Tap satellite for GPS tag..." class="w-full bg-transparent border-none p-0 text-xs font-mono text-slate-300 focus:ring-0">
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Select Claimed Store *</label>
+                                <div class="relative">
+                                    <i class="fa-solid fa-store absolute left-4 top-4 text-slate-500"></i>
+                                    <select id="ci-lead-id" required class="w-full pl-11 pr-4 py-3.5 text-sm font-bold bg-black/50 border-white/10 appearance-none">
+                                        <option value="">-- Loading... --</option>
+                                    </select>
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-blue-900/10 border border-blue-500/20 p-4 rounded-xl flex items-center gap-4">
+                                <button type="button" onclick="fetchGPS()" class="bg-blue-600/20 hover:bg-blue-500 text-blue-400 hover:text-white border border-blue-500/30 w-12 h-12 rounded-xl shrink-0 flex items-center justify-center transition-all">
+                                    <i class="fa-solid fa-satellite-dish"></i>
+                                </button>
+                                <div class="flex-1">
+                                    <p class="text-[9px] font-bold text-blue-400 uppercase tracking-widest mb-1">GPS Coordinate Tag</p>
+                                    <input type="text" id="ci-location" readonly required placeholder="Tap satellite to fetch GPS..." class="w-full bg-transparent border-none p-0 text-sm font-mono text-slate-300 focus:ring-0">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Visit Outcome *</label>
-                                    <select id="ci-outcome" required class="w-full px-3 py-2.5 text-sm font-bold bg-slate-900">
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Visit Outcome *</label>
+                                    <select id="ci-outcome" required class="w-full px-4 py-3.5 text-sm font-bold bg-black/50">
                                         <option value="First Visit Done">First Visit Done</option>
                                         <option value="Follow-up Scheduled">Follow-up Scheduled</option>
                                         <option value="In Negotiation">In Negotiation</option>
@@ -278,44 +325,46 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Upload Photo</label>
-                                    <!-- UI mockup for mobile storefront capture -->
-                                    <div class="w-full h-[42px] border border-dashed border-slate-500 rounded-lg flex items-center justify-center text-slate-400 text-xs bg-black/30 cursor-pointer hover:bg-white/5" onclick="showToast('Camera API Mockup')">
-                                        <i class="fa-solid fa-camera mr-2"></i> Snap Store
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Visual Proof</label>
+                                    <div class="w-full h-[50px] border border-dashed border-slate-600 rounded-xl flex items-center justify-center text-slate-400 text-xs bg-black/30 cursor-pointer hover:bg-white/5 hover:border-slate-400 transition-colors" onclick="showToast('Camera integration ready for native app wrapper.')">
+                                        <i class="fa-solid fa-camera mr-2"></i> Snap Storefront
                                     </div>
                                 </div>
                             </div>
 
                             <div>
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Field Notes</label>
-                                <textarea id="ci-notes" rows="2" required class="w-full px-3 py-2.5 text-sm resize-none" placeholder="Met with owner..."></textarea>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Field Notes</label>
+                                <textarea id="ci-notes" rows="3" required class="w-full px-4 py-3 text-sm resize-none bg-black/50" placeholder="Discussed pricing... Owner requested callback on Monday."></textarea>
                             </div>
                             
-                            <button type="submit" id="btn-submit-checkin" class="btn-checkin w-full py-3.5 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-2 mt-2">
-                                <i class="fa-solid fa-clipboard-check"></i> Submit Check-In
+                            <button type="submit" id="btn-submit-checkin" class="btn-checkin w-full py-4 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-3 mt-2 shadow-[0_10px_20px_rgba(16,185,129,0.2)]">
+                                <i class="fa-solid fa-clipboard-check text-lg"></i> Push Visit Data
                             </button>
                         </form>
                     </div>
                 </div>
 
-                <!-- TAB: LEDGER -->
-                <div id="tab-ledger" class="tab-content">
-                    <div class="glass-card p-4 md:p-6 w-full">
-                        <h3 class="text-lg font-bold text-emerald-400 font-heading mb-4 border-b border-white/10 pb-3"><i class="fa-solid fa-file-invoice-dollar mr-2"></i> Commissions Ledger</h3>
-                        
-                        <div class="bg-black/30 border border-white/5 rounded-xl p-4 mb-5 flex justify-between items-center">
+                <!-- TAB: LEADERBOARD / RANK (New Gamification) -->
+                <div id="tab-rank" class="tab-content">
+                    <div class="glass-card p-4 md:p-6 w-full border-t-2 border-purple-500">
+                        <div class="flex justify-between items-end mb-6 border-b border-white/10 pb-4">
                             <div>
-                                <p class="text-[10px] text-slate-400 uppercase font-bold mb-1">Total Disbursed</p>
-                                <p class="text-lg font-mono font-bold text-white" id="ledger-total-paid">₹0</p>
+                                <h3 class="text-xl md:text-2xl font-bold text-white font-heading tracking-tight"><i class="fa-solid fa-trophy text-amber-400 mr-2"></i> Field Leaderboard</h3>
+                                <p class="text-[10px] text-slate-400 uppercase tracking-widest mt-1">Live Agency Rankings</p>
                             </div>
-                            <div class="text-right">
-                                <p class="text-[10px] text-purple-400 uppercase font-bold mb-1">Pending Clearance</p>
-                                <p class="text-xl font-mono font-black text-purple-400" id="ledger-pending">₹0</p>
+                            <div class="bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 rounded-lg text-center">
+                                <p class="text-[8px] text-purple-400 font-bold uppercase tracking-widest">Your Rank</p>
+                                <p class="text-xl font-black text-white font-mono" id="my-rank-display">#--</p>
                             </div>
                         </div>
 
-                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Closed Won Deals</h4>
-                        <div id="ledger-deals-body" class="space-y-3">
+                        <div class="flex text-[9px] font-bold text-slate-500 uppercase tracking-widest px-4 mb-2">
+                            <div class="w-8">Rank</div>
+                            <div class="flex-1">Executive</div>
+                            <div class="text-right">Revenue Closed</div>
+                        </div>
+                        
+                        <div id="leaderboard-body" class="space-y-2">
                             <!-- Populated by JS -->
                         </div>
                     </div>
@@ -325,31 +374,34 @@
         </main>
 
         <!-- MOBILE BOTTOM NAVIGATION -->
-        <nav class="md:hidden fixed bottom-0 w-full glass-panel border-t border-white/10 flex justify-between items-center z-50 px-2 pb-safe pt-1" style="padding-bottom: env(safe-area-inset-bottom);">
+        <nav class="md:hidden fixed bottom-0 w-full glass-panel border-t border-white/10 flex justify-between items-center z-50 px-1 pb-safe pt-1 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]" style="padding-bottom: env(safe-area-inset-bottom);">
             <button onclick="switchTab('dashboard')" class="mobile-nav-btn active" id="mob-nav-dashboard">
                 <i class="fa-solid fa-compass"></i><span>Dash</span>
             </button>
             <button onclick="switchTab('hunt')" class="mobile-nav-btn" id="mob-nav-hunt">
                 <i class="fa-solid fa-crosshairs"></i><span>Hunt</span>
             </button>
-            <button onclick="switchTab('checkin')" class="mobile-nav-btn" id="mob-nav-checkin">
-                <div class="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.4)] -mt-6 border-4 border-[#020617]">
-                    <i class="fa-solid fa-location-dot !text-xl !transform-none"></i>
+            
+            <!-- Check-in FAB (Floating Action Button) styling -->
+            <button onclick="switchTab('checkin')" class="mobile-nav-btn relative flex-col items-center justify-start h-full px-2" id="mob-nav-checkin">
+                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 text-white flex items-center justify-center shadow-[0_5px_15px_rgba(16,185,129,0.5)] border-4 border-[#020617] absolute -top-6 transform transition-transform active:scale-95">
+                    <i class="fa-solid fa-location-dot !text-xl !transform-none !text-white"></i>
                 </div>
-                <span class="mt-1">Check-in</span>
+                <span class="mt-8">Check-in</span>
             </button>
-            <button onclick="switchTab('ledger')" class="mobile-nav-btn" id="mob-nav-ledger">
-                <i class="fa-solid fa-wallet"></i><span>Ledger</span>
+
+            <button onclick="switchTab('rank')" class="mobile-nav-btn" id="mob-nav-rank">
+                <i class="fa-solid fa-trophy"></i><span>Rank</span>
             </button>
-            <button onclick="logout()" class="mobile-nav-btn text-rose-400/70">
+            <button onclick="logout()" class="mobile-nav-btn text-rose-400/70 hover:text-rose-400">
                 <i class="fa-solid fa-power-off"></i><span>Exit</span>
             </button>
         </nav>
     </div>
 
     <!-- TOAST NOTIFICATION -->
-    <div id="toast" class="fixed top-4 left-4 right-4 md:left-auto md:right-8 md:bottom-8 md:top-auto text-white px-4 py-3 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] font-bold text-xs transform -translate-y-24 md:translate-y-32 md:translate-x-0 opacity-0 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md bg-amber-600/90 text-center justify-center">
-        <i class="fa-solid fa-circle-info text-lg"></i> <span id="toast-msg">Success</span>
+    <div id="toast" class="fixed top-4 left-4 right-4 md:left-auto md:right-8 md:bottom-8 md:top-auto text-white px-5 py-4 rounded-xl shadow-[0_20px_40px_rgba(0,0,0,0.8)] font-bold text-sm transform -translate-y-32 md:translate-y-32 md:translate-x-0 opacity-0 transition-all duration-400 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md bg-emerald-600/95 text-center justify-center">
+        <i class="fa-solid fa-circle-check text-lg"></i> <span id="toast-msg">Success</span>
     </div>
 
     <script type="module">
@@ -372,8 +424,6 @@
             }
             return matrix[b.length][a.length];
         }
-
-        // Returns similarity percentage (0 to 1)
         function similarity(s1, s2) {
             let longer = s1.toLowerCase(); let shorter = s2.toLowerCase();
             if (s1.length < s2.length) { longer = s2.toLowerCase(); shorter = s1.toLowerCase(); }
@@ -403,33 +453,39 @@
             const mobBtn = document.getElementById('mob-nav-' + tabId);
             if(mobBtn) mobBtn.classList.add('active');
 
-            if(tabId === 'hunt') { document.getElementById('hunt-search').focus(); }
+            if(tabId === 'hunt') { 
+                document.getElementById('hunt-search').value = '';
+                document.getElementById('hunt-search').dispatchEvent(new Event('input'));
+            }
         };
 
         window.showToast = (msg, isError=false) => {
             const toast = document.getElementById('toast');
-            toast.className = `fixed top-4 left-4 right-4 md:left-auto md:right-8 md:bottom-8 md:top-auto text-white px-4 py-3 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] font-bold text-sm transform translate-y-0 opacity-100 transition-all duration-300 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md justify-center ${isError ? 'bg-red-600/95' : 'bg-emerald-600/95'}`;
+            const icon = toast.querySelector('i');
+            
+            toast.className = `fixed top-4 left-4 right-4 md:left-auto md:right-8 md:bottom-8 md:top-auto text-white px-5 py-4 rounded-xl shadow-[0_20px_40px_rgba(0,0,0,0.8)] font-bold text-sm transform translate-y-0 opacity-100 transition-all duration-400 z-[200] flex items-center gap-3 border border-white/10 backdrop-blur-md justify-center ${isError ? 'bg-red-600/95' : 'bg-emerald-600/95'}`;
             document.getElementById('toast-msg').innerText = msg;
+            icon.className = isError ? "fa-solid fa-circle-exclamation text-xl" : "fa-solid fa-circle-check text-xl";
+
             setTimeout(() => { 
-                toast.classList.replace('translate-y-0', '-translate-y-24'); // Mobile out
+                toast.classList.replace('translate-y-0', '-translate-y-32'); // Mobile out
                 if(window.innerWidth >= 768) toast.classList.replace('translate-y-0', 'translate-y-32'); // Desktop out
                 toast.classList.replace('opacity-100', 'opacity-0'); 
-            }, 2500);
+            }, 3000);
         };
 
-        // GPS MOCK / FETCH
+        // GPS MOCK
         window.fetchGPS = () => {
             const locInput = document.getElementById('ci-location');
             const gpsIcon = document.getElementById('gps-status-header');
-            locInput.value = "Acquiring...";
+            locInput.value = "Acquiring satellites...";
             
             if ("geolocation" in navigator) {
                 navigator.geolocation.getCurrentPosition((position) => {
                     locInput.value = `${position.coords.latitude.toFixed(5)}, ${position.coords.longitude.toFixed(5)}`;
-                    gpsIcon.innerHTML = `<i class="fa-solid fa-satellite-dish mr-1"></i> Locked`;
-                    gpsIcon.classList.replace('text-amber-400', 'text-emerald-400');
+                    showToast("GPS Coordinate Locked");
                 }, (error) => {
-                    locInput.value = "23.3441° N, 85.3096° E (Zone Default)"; 
+                    locInput.value = "23.3441° N, 85.3096° E (Zone Fallback)"; 
                     showToast("GPS denied, using zone default", true);
                 }, { timeout: 5000 });
             } else {
@@ -454,7 +510,10 @@
         // LOGIN
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('btn-login'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true;
+            const btn = document.getElementById('btn-login'); 
+            const ogBtn = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-lg"></i>'; btn.disabled = true;
+            
             const email = document.getElementById('login-email').value.trim().toLowerCase();
             const pwd = document.getElementById('login-pwd').value.trim();
 
@@ -470,11 +529,12 @@
                     showToast(`Active: ${u.name}`);
                 } else {
                     document.getElementById('login-error').classList.remove('hidden');
-                    btn.innerHTML = '<span>Enter Field</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>'; btn.disabled = false;
+                    document.getElementById('login-error').innerText = 'Invalid credentials';
+                    btn.innerHTML = ogBtn; btn.disabled = false;
                 }
             } catch (e) { 
                 document.getElementById('login-error').innerText = "Network Error."; document.getElementById('login-error').classList.remove('hidden');
-                btn.innerHTML = 'Retry'; btn.disabled = false; 
+                btn.innerHTML = ogBtn; btn.disabled = false; 
             }
         });
 
@@ -483,24 +543,19 @@
             activeUserRecord = null; myLeads = []; allAgencyLeads = [];
             document.getElementById('app-screen').classList.add('hidden'); document.getElementById('app-screen').classList.remove('flex');
             document.getElementById('login-screen').classList.remove('hidden'); document.getElementById('login-pwd').value = "";
-            switchTab('dashboard'); // reset state
+            switchTab('dashboard');
         };
 
         function initializeAppWorkspace() {
             document.getElementById('desk-user-name').innerText = activeUserRecord.name;
             document.getElementById('desk-avatar').src = `https://ui-avatars.com/api/?name=${activeUserRecord.name.replace(/ /g, '+')}&background=0f172a&color=f59e0b`;
             
-            // User Data Sub
             unsubscribeUser = onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', activeUserRecord.id), (snap) => {
                 if(!snap.exists() || snap.data().status === 'Suspended') return logout();
-                const d = snap.data();
-                const awarded = Number(d.commission_awarded)||0; const paid = Number(d.commission_paid)||0;
-                document.getElementById('ledger-total-paid').innerText = "₹" + paid.toLocaleString('en-IN');
-                document.getElementById('ledger-pending').innerText = "₹" + Math.max(0, awarded - paid).toLocaleString('en-IN');
-                document.getElementById('kpi-pending').innerText = "₹" + Math.max(0, awarded - paid).toLocaleString('en-IN');
+                // User updates handled here if needed
             });
 
-            // Global Leads Sub (Needed for collision detection)
+            // Global Leads Sub
             unsubscribeLeads = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), (snap) => {
                 myLeads = []; allAgencyLeads = [];
                 snap.forEach(d => {
@@ -516,7 +571,7 @@
                     myLeads.filter(l => l.status !== 'Closed Won' && l.status !== 'Rejected').map(l => `<option value="${l.id}">${l.company}</option>`).join('');
                 
                 renderDashboard();
-                renderLedger();
+                renderLeaderboard();
             });
 
             // Attendance Sub
@@ -527,17 +582,20 @@
                 const btn = document.getElementById('btn-clock');
                 const dot = document.getElementById('duty-dot');
                 const txt = document.getElementById('duty-text');
+                const iconMob = document.getElementById('duty-icon-mob');
 
                 if(activeShift) {
                     activeShiftId = activeShift.id;
-                    btn.classList.add('bg-amber-500/20', 'border-amber-500/50'); btn.classList.remove('bg-white/5');
+                    btn.classList.add('bg-amber-500/20', 'border-amber-500/50'); btn.classList.remove('bg-black/50', 'border-white/10');
                     dot.className = "w-2 h-2 rounded-full bg-amber-500 pulse-dot";
                     txt.innerText = "On Field"; txt.classList.replace('text-slate-300', 'text-amber-400');
+                    iconMob.classList.replace('text-slate-500', 'text-amber-400');
                 } else {
                     activeShiftId = null;
-                    btn.classList.remove('bg-amber-500/20', 'border-amber-500/50'); btn.classList.add('bg-white/5');
+                    btn.classList.remove('bg-amber-500/20', 'border-amber-500/50'); btn.classList.add('bg-black/50', 'border-white/10');
                     dot.className = "w-2 h-2 rounded-full bg-slate-500";
                     txt.innerText = "Off Duty"; txt.classList.replace('text-amber-400', 'text-slate-300');
+                    iconMob.classList.replace('text-amber-400', 'text-slate-500');
                 }
             });
         }
@@ -546,46 +604,49 @@
             try {
                 if(!activeShiftId) {
                     await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'attendance_logs'), { rep: activeUserRecord.name, clockIn: Date.now(), status: 'Active' });
-                    showToast("Shift Started");
+                    showToast("Shift Started - Go get 'em!");
                 } else {
                     await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'attendance_logs', activeShiftId), { clockOut: Date.now(), status: 'Completed' });
-                    showToast("Shift Ended");
+                    showToast("Shift Ended - Good work.");
                 }
             } catch(e) {}
         };
 
-        // --- HUNT & COLLISION DETECTION LOGIC ---
+        // --- HUNT & COLLISION DETECTION (DEBOUNCED & FIX APPLIED) ---
         const searchInput = document.getElementById('hunt-search');
         const resultsDiv = document.getElementById('hunt-results');
         const addFormSection = document.getElementById('add-lead-section');
+        const proceedBtn = document.getElementById('btn-proceed-claim');
         const statusText = document.getElementById('hunt-status');
+        let searchTimeout = null;
 
         searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
             const query = e.target.value.trim().toLowerCase();
             
+            // Reset UI states immediately while typing
+            resultsDiv.classList.add('hidden');
+            proceedBtn.classList.add('hidden');
+            addFormSection.classList.remove('open'); // Hide form if it was open
+            
             if(query.length < 3) {
-                resultsDiv.classList.add('hidden');
-                addFormSection.className = "locked-form relative";
-                statusText.innerText = "Type to search"; statusText.className = "absolute right-4 top-3.5 text-[10px] font-bold text-slate-500 uppercase";
+                statusText.innerText = "Search"; statusText.className = "absolute right-4 top-4 text-[10px] font-bold text-slate-500 uppercase";
                 return;
             }
 
-            statusText.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-amber-500 text-sm"></i>';
+            statusText.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-amber-500"></i>';
 
-            // Find matches in global agency database
-            let matches = [];
-            allAgencyLeads.forEach(lead => {
-                const comp = lead.company.toLowerCase();
-                // Substring match OR High Fuzzy Similarity (>0.7)
-                if(comp.includes(query) || similarity(query, comp) > 0.65) { matches.push(lead); }
-            });
+            // Debounce actual search execution
+            searchTimeout = setTimeout(() => {
+                let matches = [];
+                allAgencyLeads.forEach(lead => {
+                    const comp = lead.company.toLowerCase();
+                    if(comp.includes(query) || similarity(query, comp) > 0.65) { matches.push(lead); }
+                });
 
-            setTimeout(() => {
-                resultsDiv.classList.remove('hidden');
-                
                 if(matches.length > 0) {
-                    statusText.innerText = "Conflicts Found"; statusText.className = "absolute right-4 top-3.5 text-[10px] font-bold text-red-400 uppercase";
-                    addFormSection.className = "locked-form relative"; // Lock creation
+                    statusText.innerText = "Conflict"; statusText.className = "absolute right-4 top-4 text-[10px] font-bold text-red-400 uppercase";
+                    resultsDiv.classList.remove('hidden');
                     
                     resultsDiv.innerHTML = matches.map(m => {
                         const isMine = m.rep === activeUserRecord.name;
@@ -594,41 +655,37 @@
                             : `<span class="bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded text-[9px] uppercase font-bold">Claimed by ${m.rep}</span>`;
                         
                         return `
-                        <div class="bg-black/40 border border-white/10 p-3 rounded-lg flex justify-between items-center">
+                        <div class="bg-black/60 border border-red-500/20 p-3 rounded-xl flex justify-between items-center shadow-inner">
                             <div>
                                 <p class="text-sm font-bold text-white line-clamp-1">${m.company}</p>
-                                <p class="text-[10px] text-slate-400 mt-1"><i class="fa-solid fa-map-pin"></i> ${m.address || 'Unknown'}</p>
+                                <p class="text-[10px] text-slate-400 mt-1"><i class="fa-solid fa-map-pin text-red-400/50"></i> ${m.address || 'Unknown'}</p>
                             </div>
                             <div class="text-right flex flex-col items-end gap-1">
                                 ${badge}
-                                <span class="text-[9px] text-slate-500">${m.status}</span>
                             </div>
                         </div>`;
-                    }).join('') + `
-                        <div class="text-center mt-2">
-                            <p class="text-[10px] text-slate-400">None of these? <button type="button" onclick="unlockForm()" class="text-amber-400 underline font-bold">Register as New</button></p>
-                        </div>
-                    `;
+                    }).join('');
                 } else {
-                    // Clean - No conflicts
-                    statusText.innerText = "Clear to Claim"; statusText.className = "absolute right-4 top-3.5 text-[10px] font-bold text-emerald-400 uppercase";
-                    resultsDiv.innerHTML = `<div class="bg-emerald-500/10 border border-emerald-500/30 p-3 rounded-lg text-center"><p class="text-xs font-bold text-emerald-400"><i class="fa-solid fa-check-circle mr-1"></i> No matching stores found. You may claim this.</p></div>`;
-                    unlockForm();
+                    // Clean - Show Manual Proceed Button (Fix for focus stealing)
+                    statusText.innerText = "Clear"; statusText.className = "absolute right-4 top-4 text-[10px] font-bold text-emerald-400 uppercase";
+                    proceedBtn.classList.remove('hidden');
                 }
-            }, 300); // Slight delay for UX
+            }, 500); // Wait 500ms after user stops typing
         });
 
-        window.unlockForm = () => {
-            addFormSection.className = "unlocked-form relative";
-            document.getElementById('lock-overlay').style.display = 'none';
-            document.getElementById('ld-company').value = searchInput.value; // Auto-fill
+        // Triggered manually by user tap
+        window.revealClaimForm = () => {
+            proceedBtn.classList.add('hidden');
+            addFormSection.classList.add('open');
+            document.getElementById('ld-company').value = searchInput.value;
+            // Focus on address since company is filled. Mobile browsers allow focus inside click handlers.
             document.getElementById('ld-address').focus();
         };
 
         // --- SUBMIT NEW CLAIM ---
         document.getElementById('form-add-lead').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('btn-submit-lead'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true;
+            const btn = document.getElementById('btn-submit-lead'); btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing'; btn.disabled = true;
             
             const newLead = {
                 company: document.getElementById('ld-company').value.trim(), address: document.getElementById('ld-address').value.trim(),
@@ -639,11 +696,10 @@
             
             try {
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), newLead);
-                showToast("Store Claimed!"); 
+                showToast("Store Claimed Successfully!"); 
                 document.getElementById('form-add-lead').reset();
-                searchInput.value = ''; searchInput.dispatchEvent(new Event('input')); // Reset search UI
                 switchTab('dashboard');
-            } catch (err) { showToast("Failed", true); } finally { btn.innerHTML = '<i class="fa-solid fa-thumbtack"></i> Claim Territory'; btn.disabled = false; }
+            } catch (err) { showToast("Network Error", true); } finally { btn.innerHTML = '<i class="fa-solid fa-thumbtack text-lg"></i> Lock Territory Claim'; btn.disabled = false; }
         });
 
 
@@ -670,53 +726,77 @@
 
         // --- RENDERING VIEWS ---
         function renderDashboard() {
-            let pipe=0, won=0, visitsToday = 0;
+            let pipeCount=0, won=0, visitsToday = 0;
             const todayStr = new Date().toISOString().split('T')[0];
 
             myLeads.forEach(l => {
                 const v = Number(l.value)||0;
-                if(l.status === 'Closed Won') won+=v; else if(l.status !== 'Rejected') pipe++;
+                if(l.status === 'Closed Won') won+=v; else if(l.status !== 'Rejected') pipeCount++;
                 
                 if (l.history) { l.history.forEach(h => { if (h.note.includes('Check-in') && h.date.startsWith(todayStr)) visitsToday++; }); }
             });
 
-            document.getElementById('kpi-pipeline').innerText = pipe; // Number of stores
+            document.getElementById('kpi-pipeline').innerText = pipeCount; 
             document.getElementById('kpi-won').innerText = "₹" + won.toLocaleString('en-IN');
             document.getElementById('kpi-visits').innerText = visitsToday;
+            document.getElementById('kpi-commission').innerText = "₹" + (won * 0.15).toLocaleString('en-IN'); // 15% estimated
 
-            // My Active Claims List
+            // Update Progress Ring (Goal: 15)
+            const target = 15;
+            const percentage = Math.min(100, (visitsToday / target) * 100);
+            document.getElementById('target-ring').style.strokeDasharray = `${percentage}, 100`;
+
+            // My Active Claims List (Dashboard)
             const activeLeads = myLeads.filter(l => l.status !== 'Closed Won' && l.status !== 'Rejected').slice(0,10);
             document.getElementById('my-leads-body').innerHTML = activeLeads.map(l => {
                 return `
-                <div class="bg-black/30 border border-white/5 rounded-xl p-3 flex justify-between items-center border-l-2 border-l-amber-500">
+                <div class="glass-card p-3 flex justify-between items-center border-l-4 border-l-amber-500">
                     <div class="flex-1">
                         <p class="font-bold text-white text-sm leading-tight">${l.company}</p>
-                        <p class="text-[9px] text-slate-400 font-mono mt-1">${l.status}</p>
+                        <p class="text-[9px] text-slate-400 font-mono mt-1 bg-black/40 inline-block px-1.5 py-0.5 rounded">${l.status}</p>
                     </div>
                     <div class="flex gap-2 shrink-0">
-                        ${l.phone ? `<a href="https://wa.me/91${l.phone.replace(/\D/g,'')}" target="_blank" class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30"><i class="fa-brands fa-whatsapp"></i></a>` : ''}
-                        <button onclick="switchTab('checkin'); setTimeout(()=>document.getElementById('ci-lead-id').value='${l.id}',100);" class="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center border border-blue-500/30"><i class="fa-solid fa-location-dot"></i></button>
+                        ${l.phone ? `<a href="https://wa.me/91${l.phone.replace(/\D/g,'')}" target="_blank" class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20 active:scale-95 transition-transform"><i class="fa-brands fa-whatsapp text-lg"></i></a>` : ''}
+                        <button onclick="switchTab('checkin'); setTimeout(()=>document.getElementById('ci-lead-id').value='${l.id}',100);" class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20 active:scale-95 transition-transform"><i class="fa-solid fa-location-dot"></i></button>
                     </div>
                 </div>`;
-            }).join('') || `<p class="text-xs text-slate-500 italic p-2 text-center">No active claims. Use the Hunt tab to find stores.</p>`;
+            }).join('') || `<div class="p-6 text-center text-slate-500 bg-black/30 rounded-xl border border-white/5"><p class="text-xs font-bold">No active territory.<br>Tap "Find Next Target" above.</p></div>`;
         }
 
-        function renderLedger() {
-            const wonDeals = myLeads.filter(l => l.status === 'Closed Won');
-            document.getElementById('ledger-deals-body').innerHTML = wonDeals.map(l => {
-                const val = Number(l.value) || 0;
+        function renderLeaderboard() {
+            // Aggregate revenue per rep
+            const repStats = {};
+            allAgencyLeads.forEach(l => {
+                if(!repStats[l.rep]) repStats[l.rep] = { name: l.rep, revenue: 0, avatar: `https://ui-avatars.com/api/?name=${l.rep.replace(/ /g, '+')}&background=0f172a&color=fff` };
+                if(l.status === 'Closed Won') repStats[l.rep].revenue += (Number(l.value)||0);
+            });
+
+            // Sort by revenue descending
+            const ranked = Object.values(repStats).sort((a,b) => b.revenue - a.revenue);
+            
+            // Find my rank
+            const myIndex = ranked.findIndex(r => r.name === activeUserRecord.name);
+            document.getElementById('my-rank-display').innerText = myIndex >= 0 ? `#${myIndex + 1}` : '#--';
+
+            document.getElementById('leaderboard-body').innerHTML = ranked.map((r, index) => {
+                const isMe = r.name === activeUserRecord.name;
+                const rankColor = index === 0 ? 'text-amber-400' : (index === 1 ? 'text-slate-300' : (index === 2 ? 'text-orange-400' : 'text-slate-500'));
+                const bgClass = isMe ? 'bg-purple-500/10 border-purple-500/30' : 'bg-black/30 border-white/5';
+                
                 return `
-                <div class="bg-black/30 p-3 rounded-xl border border-emerald-500/20 flex justify-between items-center">
-                    <div>
-                        <p class="font-bold text-white text-sm line-clamp-1">${l.company}</p>
-                        <p class="text-[9px] text-slate-400 font-mono mt-0.5">${new Date(l.timestamp).toLocaleDateString()}</p>
+                <div class="border p-3 rounded-xl flex items-center gap-4 ${bgClass}">
+                    <div class="w-6 font-black font-mono text-lg text-center ${rankColor}">
+                        ${index < 3 ? `<i class="fa-solid fa-medal text-sm mb-1 block"></i>` : ''}${index + 1}
+                    </div>
+                    <img src="${r.avatar}" class="w-8 h-8 rounded-full border border-white/20">
+                    <div class="flex-1">
+                        <p class="font-bold text-white text-sm ${isMe ? 'text-purple-300' : ''}">${r.name} ${isMe ? '(You)' : ''}</p>
                     </div>
                     <div class="text-right">
-                        <p class="text-xs font-mono text-slate-300">Val: ₹${val.toLocaleString('en-IN')}</p>
-                        <p class="text-sm font-bold font-mono text-emerald-400 mt-0.5">+ ₹${(val*0.15).toLocaleString('en-IN')}</p>
+                        <p class="text-base font-black text-emerald-400 font-mono">₹${r.revenue.toLocaleString('en-IN')}</p>
                     </div>
-                </div>`
-            }).join('') || '<div class="py-8 text-center text-slate-500"><i class="fa-solid fa-ghost text-3xl mb-2 opacity-20"></i><p class="text-xs">No closed deals yet.</p></div>';
+                </div>`;
+            }).join('');
         }
 
     </script>
