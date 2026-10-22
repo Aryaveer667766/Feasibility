@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Northlight Studios – Brand, product & interior shoots</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#0c1514;--card:#142220;--card2:#1b2e2b;--ink:#f3efe6;--mute:#9fb0ac;--line:rgba(255,255,255,.12);--amb:#ffb340;--cor:#ff6b4a;--wa:#25d366;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.65 "DM Sans",system-ui,sans-serif;overflow-x:hidden}
+h1,h2,h3{font-family:Syne,"DM Sans",system-ui,sans-serif;margin:0;line-height:1.02;letter-spacing:-.02em}
+a{color:inherit}.w{max-width:1160px;margin:0 auto;padding:0 24px}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--amb);outline-offset:3px}
+header{position:fixed;top:0;left:0;right:0;z-index:20;padding-top:env(safe-area-inset-top,0px);background:linear-gradient(var(--bg),rgba(12,21,20,.6));backdrop-filter:blur(10px)}
+header .w{display:flex;align-items:center;justify-content:space-between;height:66px}
+.logo{font:800 21px Syne,sans-serif;text-decoration:none;display:flex;gap:10px;align-items:center}
+.logo i{width:22px;height:22px;border-radius:50%;background:conic-gradient(var(--amb),var(--cor),var(--amb));box-shadow:0 0 18px var(--amb)}
+nav{display:flex;gap:26px;align-items:center;font-size:15px}nav>a:not(.btn){color:var(--mute);text-decoration:none}nav>a:hover{color:var(--ink)}
+.btn{display:inline-flex;gap:8px;align-items:center;background:var(--amb);color:#201400;padding:14px 26px;border-radius:999px;font-weight:500;text-decoration:none;border:0;font:500 16px "DM Sans",sans-serif;cursor:pointer;transition:transform .25s,box-shadow .25s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(255,179,64,.35)}
+.btn.wa{background:var(--wa);color:#04210f}.btn.gh{background:none;border:1.5px solid var(--line);color:var(--ink)}
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 0 70px;overflow:hidden;background:radial-gradient(900px 600px at 78% 40%,rgba(255,179,64,.2),transparent 65%),radial-gradient(600px 500px at 10% 100%,rgba(255,107,74,.14),transparent 60%),var(--bg)}
+.hero .w{display:grid;grid-template-columns:1.15fr 1fr;gap:20px;align-items:center;position:relative}
+.hero h1{font-size:clamp(46px,8vw,108px);font-weight:800}
+.hero h1 span{display:block}
+.hero p{max-width:44ch;color:var(--mute);font-size:19px;margin:26px 0 34px}
+.row{display:flex;gap:14px;flex-wrap:wrap}
+.still{position:relative}.still svg{width:100%;height:auto;display:block;filter:drop-shadow(0 30px 40px rgba(0,0,0,.5))}
+.beam{transform-origin:200px 0}
+.mq{overflow:hidden;white-space:nowrap;background:var(--amb);color:#201400;padding:15px 0}
+.mq div{display:inline-block;font:800 22px Syne,sans-serif}.mq span{margin:0 28px}.mq span:nth-child(even){opacity:.55}
+section{padding:100px 0}
+h2{font-size:clamp(36px,5.4vw,64px);font-weight:800;max-width:15ch;margin-bottom:16px}
+.lede{color:var(--mute);max-width:50ch;margin:0 0 50px}
+.stats .w{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding-block:44px}
+.stats b{display:block;font:800 clamp(38px,5vw,60px)/1 Syne,sans-serif;color:var(--amb)}.stats span{color:var(--mute);font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.sv{position:relative;padding:34px 28px;min-height:250px;border-radius:18px;background:var(--card);border:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;transition:transform .4s,border-color .4s}
+.sv::before{content:"";position:absolute;inset:0;background:radial-gradient(300px 200px at 100% 0,var(--g,rgba(255,179,64,.3)),transparent 70%);transition:opacity .4s}
+.sv:hover{transform:translateY(-8px);border-color:var(--amb)}
+.sv svg{position:absolute;top:24px;left:26px;width:52px;height:52px;stroke:var(--ink);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.sv h3,.sv p{position:relative}.sv h3{font-size:25px;margin-bottom:8px}.sv p{margin:0;color:var(--mute);font-size:15.5px}
+.showcase{background:var(--card)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.tab{background:none;border:1px solid var(--line);color:var(--mute);padding:10px 20px;border-radius:999px;font:500 15px "DM Sans",sans-serif;cursor:pointer;transition:.25s}
+.tab[aria-selected=true]{background:var(--amb);border-color:var(--amb);color:#201400}
+.stage{display:grid;grid-template-columns:1.5fr 1fr;gap:36px;align-items:center}
+.plate{border-radius:18px;overflow:hidden;aspect-ratio:600/380;position:relative;box-shadow:0 30px 60px rgba(0,0,0,.45)}
+.plate svg{width:100%;height:100%;display:block}
+.plate::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.28) 50%,transparent 65%);transform:translateX(-120%);pointer-events:none}
+.stage h3{font-size:36px;margin-bottom:12px}.stage p{color:var(--mute);margin:0}
+.stage ul{list-style:none;padding:0;margin:22px 0 28px}.stage li{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:15.5px}.stage li span:first-child{color:var(--mute)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.step{padding:34px 26px;border-left:1px solid var(--line);background:linear-gradient(var(--card),var(--bg))}.step:first-child{border-left:0}
+.step b{font:800 14px Syne,sans-serif;color:var(--amb)}.step h3{font-size:26px;margin:8px 0}.step p{margin:0;color:var(--mute);font-size:15.5px}
+.pk{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.pc{padding:34px 28px;border-radius:18px;border:1px solid var(--line);background:var(--card);display:flex;flex-direction:column;transition:transform .4s}.pc:hover{transform:translateY(-8px)}
+.pc.hot{background:linear-gradient(160deg,#3a2a0c,var(--card));border-color:var(--amb)}
+.pc h3{font-size:28px}.pc .q{color:var(--amb);font:600 18px Syne,sans-serif;margin:10px 0 18px}
+.pc ul{padding:0;margin:0 0 26px;list-style:none;flex:1}.pc li{padding:9px 0;border-bottom:1px solid var(--line);color:var(--mute);font-size:15.5px}
+.pc .btn{justify-content:center}
+.visit{display:grid;grid-template-columns:1.3fr 1fr;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--card);margin-bottom:70px}
+.map svg{display:block;width:100%;height:100%;min-height:340px}.vi{padding:36px 30px}.vi h3{font-size:30px;margin-bottom:16px}
+.vi p{margin:0 0 16px;color:var(--mute);font-size:15.5px}.vi b{display:block;color:var(--ink)}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+form{display:grid;gap:14px}label{display:grid;gap:6px;font-size:14px;color:var(--mute)}
+input,select,textarea{font:inherit;color:var(--ink);padding:13px 15px;border-radius:10px;border:1px solid var(--line);background:var(--card);width:100%}
+.ok{display:none;padding:14px;border:1px solid var(--wa);border-radius:10px}
+.fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;gap:10px;align-items:center;background:var(--wa);color:#04210f;font-weight:500;padding:14px 20px;border-radius:999px;text-decoration:none}.fab svg{width:24px;height:24px}
+footer{padding:30px 0;border-top:1px solid var(--line);color:var(--mute);font-size:14px}footer .w{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.07;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+.reel{position:relative;aspect-ratio:21/9;border-radius:18px;overflow:hidden;margin-top:36px;background:#000;box-shadow:0 40px 80px rgba(0,0,0,.55)}
+.reel .f{position:absolute;inset:0;opacity:0;transition:opacity 1.2s}.reel .f.on{opacity:1}.reel .f svg{width:100%;height:100%;display:block;transform:scale(1.02)}
+.reel .vg{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.65)),linear-gradient(#000 0,transparent 12%,transparent 88%,#000 100%);pointer-events:none}
+.reel .c{position:absolute;width:34px;height:34px;border:2px solid rgba(255,255,255,.8)}
+.reel .c1{top:7%;left:3%;border-right:0;border-bottom:0}.reel .c2{top:7%;right:3%;border-left:0;border-bottom:0}.reel .c3{bottom:7%;left:3%;border-right:0;border-top:0}.reel .c4{bottom:7%;right:3%;border-left:0;border-top:0}
+.reel .hud{position:absolute;top:8%;left:0;right:0;padding:0 7%;display:flex;justify-content:space-between;font:600 14px "DM Sans",sans-serif;letter-spacing:.08em;color:#fff;text-shadow:0 1px 6px #000}
+.reel .rec{color:#ff4b3a}.reel .cap{position:absolute;bottom:9%;left:7%;font:800 clamp(18px,3vw,34px) Syne,sans-serif;color:#fff;text-shadow:0 2px 14px #000}
+@media(prefers-reduced-motion:no-preference){@keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.14)}}@keyframes bk{50%{opacity:0}}.reel .f.on svg{animation:kb 5s ease-out both}.reel .rec{animation:bk 1.2s steps(1) infinite}}
+@media(max-width:860px){.reel{aspect-ratio:4/3}.hero .w,.stage,.cg,.visit{grid-template-columns:1fr}.grid,.pk{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}.step:nth-child(3){border-left:0}.stats .w{grid-template-columns:1fr 1fr}nav>a:not(.btn){display:none}.still{max-width:340px}.hero{padding-top:100px}}
+@media(max-width:520px){.fab span{display:none}.fab{padding:15px}.steps{grid-template-columns:1fr}.step{border-left:0;border-top:1px solid var(--line)}}
+@media(prefers-reduced-motion:no-preference){
+@keyframes up{from{opacity:0;transform:translateY(46px);clip-path:inset(0 0 100% 0)}to{opacity:1;transform:none;clip-path:inset(0)}}
+@keyframes mq{to{transform:translateX(-50%)}}@keyframes fl{50%{transform:translateY(-12px)}}
+@keyframes sw{to{transform:translateX(120%)}}@keyframes br{50%{opacity:.55}}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(37,211,102,.6)}100%{box-shadow:0 0 0 22px rgba(37,211,102,0)}}
+@keyframes pl{0%{transform:scale(.5);opacity:.6}100%{transform:scale(2);opacity:0}}
+.hero h1 span{animation:up 1s cubic-bezier(.2,.7,.2,1) both}.hero h1 span:nth-child(2){animation-delay:.15s}.hero h1 span:nth-child(3){animation-delay:.3s}
+.hero p{animation:up 1s .5s both}.hero .row{animation:up 1s .65s both}
+.still .obj{animation:fl 6s ease-in-out infinite}.beam{animation:br 5s ease-in-out infinite}
+.mq div{animation:mq 30s linear infinite}.fab{animation:ring 2.4s infinite}
+.plate.go::after{animation:sw 1.3s ease}.plate.go svg{animation:up .8s both}
+.pin{transform-box:fill-box;transform-origin:center;animation:pl 2.2s ease-out infinite}
+.js .rv{opacity:0;transform:translateY(36px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}.js .rv.in{opacity:1;transform:none}}
+</style></head><body>
+<header><div class="w"><a class="logo" href="#top"><i></i>Northlight Studios</a>
+<nav><a href="#services">Services</a><a href="#sets">Sets</a><a href="#process">Process</a><a href="#visit">Visit</a><a class="btn wa" style="padding:9px 20px" href="https://wa.me/919999999999?text=Hi%20Northlight%2C%20I%27d%20like%20to%20book%20a%20shoot." target="_blank" rel="noopener">WhatsApp us</a></nav></div></header>
+<main id="top">
+<div class="hero"><div class="w"><div>
+<h1><span>Light it.</span><span>Shoot it.</span><span>Sell it.</span></h1>
+<p>Brand films, product photography and four dressed interior sets, all in one studio. Bring the brief. Leave with finished work.</p>
+<div class="row"><a class="btn wa" href="https://wa.me/919999999999?text=Hi%20Northlight%2C%20I%27d%20like%20a%20quote." target="_blank" rel="noopener">Get a quote on WhatsApp</a><a class="btn gh" href="#sets">See our sets</a></div></div>
+<div class="still" id="still"><svg viewBox="0 0 400 440" aria-hidden="true"><defs>
+<linearGradient id="bm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe3a8" stop-opacity=".7"/><stop offset="1" stop-color="#ffb340" stop-opacity="0"/></linearGradient>
+<linearGradient id="gl" x1="0" x2="1"><stop offset="0" stop-color="#7a4a10"/><stop offset=".35" stop-color="#ffd98a"/><stop offset="1" stop-color="#8a4a12"/></linearGradient>
+<radialGradient id="sp" cx=".35" cy=".3"><stop offset="0" stop-color="#fff"/><stop offset=".4" stop-color="#ff6b4a"/><stop offset="1" stop-color="#5a1608"/></radialGradient>
+<linearGradient id="pd" x1="0" x2="1"><stop offset="0" stop-color="#1b2e2b"/><stop offset=".5" stop-color="#3a524d"/><stop offset="1" stop-color="#132220"/></linearGradient></defs>
+<polygon class="beam" points="170,0 230,0 390,380 20,380" fill="url(#bm)"/>
+<ellipse cx="200" cy="395" rx="170" ry="30" fill="#000" opacity=".35"/>
+<path d="M60 340h280v50c0 14-62 26-140 26S60 404 60 390Z" fill="url(#pd)"/><ellipse cx="200" cy="340" rx="140" ry="24" fill="#4b6761"/>
+<g class="obj"><rect x="150" y="150" width="100" height="170" rx="14" fill="url(#gl)"/><rect x="176" y="106" width="48" height="52" rx="8" fill="#201400"/><rect x="160" y="210" width="80" height="60" rx="6" fill="#0c1514" opacity=".8"/><text x="200" y="246" text-anchor="middle" font-family="Syne,sans-serif" font-weight="800" font-size="18" fill="#ffb340">NL</text></g>
+<circle cx="296" cy="304" r="34" fill="url(#sp)"/><polygon points="70,330 118,330 118,284 94,262 70,284" fill="#f3efe6" opacity=".92"/></svg></div></div></div>
+<div class="mq" aria-hidden="true"><div id="mq"></div></div>
+<section id="reel" style="padding:90px 0 0"><div class="w"><h2>See it on screen.</h2><p class="lede" style="margin-bottom:0">A taste of the sets and looks we shoot. Your real showreel can play here.</p><div class="reel" id="reelbox" role="img" aria-label="Slideshow of studio sets"><div id="frames"></div><div class="vg"></div><i class="c c1"></i><i class="c c2"></i><i class="c c3"></i><i class="c c4"></i><div class="hud"><span class="rec">&#9679; REC</span><span id="tc">00:00:00:00</span></div><div class="cap" id="cap"></div></div></div></section>
+<div class="stats"><div class="w"><div><b>600+</b><span>Shoots delivered</span></div><div><b>4</b><span>Dressed interior sets</span></div><div><b>5</b><span>Days to first cut</span></div><div><b>24</b><span>Hours to your quote</span></div></div></div>
+<section id="services"><div class="w"><h2>Every kind of shoot. One crew.</h2><p class="lede">Book a single day or a full campaign. Lighting, styling, shooting and editing are all handled in-house.</p><div class="grid" id="sv"></div></div></section>
+<section class="showcase" id="sets"><div class="w"><h2>Rent the set or bring us in.</h2><p class="lede">Four ready-dressed interiors. Hire the space alone or add our crew.</p>
+<div class="tabs" role="tablist" aria-label="Interior sets"></div>
+<div class="stage"><div class="plate" id="plate" role="img" aria-label="Illustration of the selected set"></div><div><h3 id="sn"></h3><p id="sd"></p><ul id="sl"></ul><a class="btn wa" href="https://wa.me/919999999999?text=Hi%2C%20is%20a%20set%20available%20on%20my%20dates%3F" target="_blank" rel="noopener">Check dates on WhatsApp</a></div></div></div></section>
+<section id="process"><div class="w"><h2>Brief to final files in four steps.</h2><p class="lede">One point of contact stays with you throughout.</p>
+<div class="steps"><div class="step"><b>Step 1</b><h3>Brief</h3><p>Share goals, references and deadline. We reply with a plan and quote in a day.</p></div><div class="step"><b>Step 2</b><h3>Pre-production</h3><p>Moodboard, shot list, casting, props and set booking, all approved by you.</p></div><div class="step"><b>Step 3</b><h3>Shoot day</h3><p>Live monitor preview so you can approve every shot as we go.</p></div><div class="step"><b>Step 4</b><h3>Post</h3><p>Retouching, colour and edit. First cut in five working days.</p></div></div></div></section>
+<section id="packages" style="padding-top:0"><div class="w"><h2>Packages built around your brief.</h2><p class="lede">Rates are shared in ₹ once we know what you’re shooting.</p>
+<div class="pk"><div class="pc"><h3>Product day</h3><div class="q">Quote in ₹ on request</div><ul><li>Up to 20 products</li><li>White background and lifestyle setup</li><li>Retouched files in 3 days</li></ul><a class="btn gh" href="https://wa.me/919999999999?text=Hi%2C%20I%27m%20interested%20in%20the%20Product%20day%20package." target="_blank" rel="noopener">Ask on WhatsApp</a></div>
+<div class="pc hot"><h3>Brand campaign</h3><div class="q">Quote in ₹ on request</div><ul><li>Full-day shoot, stills and film</li><li>Set, stylist and crew included</li><li>Brand film plus campaign stills</li></ul><a class="btn" href="https://wa.me/919999999999?text=Hi%2C%20I%27m%20interested%20in%20the%20Brand%20campaign%20package." target="_blank" rel="noopener">Ask on WhatsApp</a></div>
+<div class="pc"><h3>Set hire</h3><div class="q">Quote in ₹ on request</div><ul><li>Half-day or full-day booking</li><li>Lights and backdrops included</li><li>Add our crew anytime</li></ul><a class="btn gh" href="https://wa.me/919999999999?text=Hi%2C%20I%27d%20like%20to%20hire%20a%20set." target="_blank" rel="noopener">Ask on WhatsApp</a></div></div></div></section>
+<section id="visit" style="padding-top:0"><div class="w"><div class="visit rv"><div class="map"><svg viewBox="0 0 480 340" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Map of the studio location"><rect width="480" height="340" fill="#183230"/><path d="M-10 255C90 225 150 295 260 265S420 195 500 225V360H-10Z" fill="#1f4b5a"/><rect x="300" y="28" width="132" height="92" rx="10" fill="#1f4a3a"/><g stroke="#2d4a46" fill="none" stroke-linecap="round"><path d="M0 150H480" stroke-width="16"/><path d="M210 0V340" stroke-width="16"/><path d="M0 60L480 110" stroke-width="8"/><path d="M110 0V340M340 120V340M0 210H480" stroke-width="6"/></g><circle class="pin" cx="210" cy="150" r="34" fill="#ffb340" opacity=".35"/><path d="M210 170C195 150 189 141 189 128A21 21 0 0 1 231 128C231 141 225 150 210 170Z" fill="#ffb340"/><circle cx="210" cy="128" r="7" fill="#0c1514"/><text x="238" y="124" font-family="DM Sans,sans-serif" font-weight="700" font-size="15" fill="#f3efe6">Northlight Studios</text></svg></div>
+<div class="vi"><h3>Visit the studio</h3><p><b>Address</b>12 Sample Street, Film Nagar, Your City 000000</p><p><b>Hours</b>Mon to Sat, 10am to 7pm. Shoots by appointment.</p><p><b>Parking</b>Free for 6 vehicles with ground-floor loading.</p><div class="row"><a class="btn" href="https://www.google.com/maps/search/?api=1&query=Film+Nagar" target="_blank" rel="noopener">Get directions</a><a class="btn gh" href="tel:+919999999999">Call</a></div></div></div>
+<div class="cg"><div><h2>Tell us what you’re shooting.</h2><p class="lede">Your details open straight in WhatsApp. We reply within one working day.</p></div>
+<form id="f"><label>Your name<input required name="n" autocomplete="name"></label><label>Email<input required type="email" name="e" autocomplete="email"></label><label>Shoot type<select name="t"><option>Brand shoot</option><option>Product shoot</option><option>Interior set hire</option><option>Something else</option></select></label><label>Details<textarea rows="3" name="m" placeholder="Products, dates, number of shots"></textarea></label><button class="btn wa" type="submit" style="justify-content:center">Send on WhatsApp</button><div class="ok" id="ok" role="status">WhatsApp opened with your details. Just press send.</div></form></div></div></section>
+</main>
+<a class="fab" href="https://wa.me/919999999999?text=Hi%20Northlight%2C%20I%20have%20a%20shoot%20enquiry." target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.2 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.800-1.200-4.600-4-4.700-4.200-.1-.2-1.100-1.500-1.100-2.800s.7-2 1-2.300c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.500l.8 1.900c.1.2.1.4 0 .5l-.4.600c-.2.200-.3.400-.1.700.2.300.8 1.3 1.7 2.1 1.1 1 2 1.3 2.3 1.400.3.100.5.100.7-.1l.9-1.100c.2-.3.4-.2.7-.1l1.800.9c.3.1.5.2.5.3.1.2.1.8-.2 1.500Z"/></svg><span>WhatsApp us</span></a>
+<footer><div class="w"><span>© 2026 Northlight Studios (demo)</span><span>Brand · Product · Interiors</span></div></footer>
+<script>
+var WA="919999999999",$=function(s){return document.querySelector(s)};
+$("#mq").innerHTML=Array(4).join("<span>Brand films</span><span>Product shoots</span><span>Interior sets</span><span>Fashion</span><span>Food</span><span>Reels</span>");
+var ic=['<circle cx="26" cy="28" r="12"/><path d="M8 18h8l4-6h12l4 6h8v26H8z"/>','<path d="M8 20l18-10 18 10v22L26 52 8 42zM8 20l18 10 18-10M26 30v22"/>','<path d="M26 10a5 5 0 1 1 5 5l-5 4 22 16H4l22-16"/>','<path d="M12 8v14a6 6 0 0 0 12 0V8M18 8v44M38 8c-6 6-6 18 0 24v20"/>','<rect x="6" y="14" width="40" height="28" rx="4"/><path d="M46 24l10-6v26l-10-6M16 50h20"/>','<rect x="16" y="6" width="24" height="46" rx="5"/><path d="M24 44h8"/>'];
+var sv=[["Brand shoots","Campaign films and stills that show who you are.","255,179,64"],["Product shoots","White-background, lifestyle and detail shots for stores and marketplaces.","255,107,74"],["Fashion and lifestyle","Lookbooks, catalogues and reels with styling arranged.","160,140,255"],["Food and beverage","Menu, packaging and social content, shot fresh.","120,220,160"],["Corporate and testimonial","Interviews, explainers and events that look sharp.","90,190,255"],["Social and short-form","Vertical video batch-shot for a whole month.","255,150,200"]];
+$("#sv").innerHTML=sv.map(function(s,i){return '<div class="sv" style="--g:rgba('+s[2]+',.32)"><svg viewBox="0 0 56 56">'+ic[i]+'</svg><h3>'+s[0]+'</h3><p>'+s[1]+'</p></div>'}).join("");
+var sc=[
+'<svg viewBox="0 0 600 380"><defs><linearGradient id="a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6e6c8"/><stop offset="1" stop-color="#d9b98a"/></linearGradient><linearGradient id="w" x1="0" x2="1"><stop offset="0" stop-color="#fff8e0"/><stop offset="1" stop-color="#cfe7ff"/></linearGradient></defs><rect width="600" height="380" fill="url(#a)"/><rect x="90" y="40" width="260" height="170" fill="url(#w)"/><path d="M220 40v170M90 125h260" stroke="#b08a5a" stroke-width="6"/><rect x="0" y="250" width="600" height="130" fill="#8a5a32"/><rect x="40" y="215" width="520" height="46" fill="#c28a52"/><g stroke="#3a2a1a" stroke-width="3"><path d="M420 0v90M510 0v70"/></g><path d="M395 90a25 25 0 0 1 50 0Z M485 70a25 25 0 0 1 50 0Z" fill="#ffdd88"/><circle cx="420" cy="100" r="40" fill="#ffd978" opacity=".25"/><circle cx="130" cy="205" r="22" fill="#e8553d"/><circle cx="450" cy="300" r="10" fill="#f6e6c8"/><g fill="#2a1a10"><rect x="110" y="290" width="14" height="70"/><rect x="230" y="290" width="14" height="70"/><rect x="350" y="290" width="14" height="70"/></g></svg>',
+'<svg viewBox="0 0 600 380"><defs><linearGradient id="b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef2f4"/><stop offset="1" stop-color="#b8c3c8"/></linearGradient></defs><rect width="600" height="380" fill="url(#b)"/><ellipse cx="190" cy="130" rx="95" ry="105" fill="#fff" stroke="#c9a85b" stroke-width="8"/><ellipse cx="190" cy="130" rx="80" ry="90" fill="#dbe8ee"/><rect x="0" y="300" width="600" height="80" fill="#9aa7ad"/><rect x="290" y="210" width="270" height="100" rx="46" fill="#fff"/><rect x="290" y="285" width="270" height="22" rx="10" fill="#cfd6d9"/><path d="M520 210V150q0-18 20-18" stroke="#c9a85b" stroke-width="7" fill="none"/><path d="M60 330q20-70 40 0 20-60 40 0" fill="#5a8a62"/><circle cx="330" cy="200" r="10" fill="#f0c9d0"/></svg>',
+'<svg viewBox="0 0 600 380"><rect width="600" height="380" fill="#b9c9b8"/><rect x="60" y="60" width="110" height="140" fill="#eadfc9"/><rect x="70" y="70" width="90" height="120" fill="#c9a07a"/><rect x="200" y="90" width="80" height="60" fill="#eadfc9"/><rect x="0" y="300" width="600" height="80" fill="#7e6a52"/><ellipse cx="300" cy="330" rx="230" ry="26" fill="#e8d6a0"/><rect x="110" y="215" width="320" height="90" rx="28" fill="#a8523a"/><rect x="90" y="235" width="50" height="70" rx="20" fill="#8e4330"/><rect x="400" y="235" width="50" height="70" rx="20" fill="#8e4330"/><rect x="170" y="190" width="80" height="50" rx="14" fill="#f1d7a3"/><path d="M520 100v200" stroke="#2a2a2a" stroke-width="5"/><path d="M485 100h70l-14-50h-42Z" fill="#ffd978"/><ellipse cx="520" cy="110" rx="70" ry="30" fill="#ffd978" opacity=".25"/><path d="M475 300q-20-80 30-70 20 40-30 70" fill="#3e7a4a"/></svg>',
+'<svg viewBox="0 0 600 380"><rect width="600" height="380" fill="#2a1630"/><rect x="0" y="260" width="600" height="120" fill="#150a1a"/><text x="300" y="130" text-anchor="middle" font-family="Syne,sans-serif" font-weight="800" font-size="76" fill="#ff6bd6" style="filter:drop-shadow(0 0 14px #ff6bd6)">OPEN</text><rect x="40" y="215" width="520" height="40" rx="6" fill="#5a3a2a"/><rect x="40" y="255" width="520" height="70" fill="#3a2418"/><g fill="#ffb340"><circle cx="110" cy="40" r="9"/><circle cx="300" cy="30" r="9"/><circle cx="490" cy="40" r="9"/></g><g stroke="#ffb340" stroke-width="2"><path d="M110 0v31M300 0v21M490 0v31"/></g><g fill="#e8553d"><ellipse cx="130" cy="345" rx="30" ry="9"/><ellipse cx="300" cy="345" rx="30" ry="9"/><ellipse cx="470" cy="345" rx="30" ry="9"/></g><g stroke="#8a8a8a" stroke-width="5"><path d="M130 345v35M300 345v35M470 345v35"/></g></svg>'];
+var sets=[["The Loft Kitchen","Open kitchen with oak counters, tall north-facing windows and pendant lights for food and lifestyle shoots.",[["Size","900 sq ft"],["Light","Natural, north"],["Best for","Food, appliances, brand"],["Rate","Shared in ₹ on request"]]],["Marble Bath","White marble, brass fittings and soft diffused light for beauty, skincare and fixtures.",[["Size","350 sq ft"],["Light","Diffused, softbox"],["Best for","Beauty, wellness"],["Rate","Shared in ₹ on request"]]],["The Living Room","Mid-century sofa, shelves and warm lamps for furniture, decor and home-brand stories.",[["Size","600 sq ft"],["Light","Mixed, dimmable"],["Best for","Furniture, lifestyle"],["Rate","Shared in ₹ on request"]]],["Corner Café","Bar counter, tiled floor and a neon sign. A ready backdrop for beverage, fashion and reels.",[["Size","500 sq ft"],["Light","Practical, neon"],["Best for","Beverage, fashion, reels"],["Rate","Shared in ₹ on request"]]]];
+var tb=$(".tabs");sets.forEach(function(s,i){var b=document.createElement("button");b.className="tab";b.setAttribute("role","tab");b.textContent=s[0];b.onclick=function(){show(i)};tb.appendChild(b)});
+function show(i){var s=sets[i],p=$("#plate");[].forEach.call(tb.children,function(t,j){t.setAttribute("aria-selected",j==i)});$("#sn").textContent=s[0];$("#sd").textContent=s[1];$("#sl").innerHTML=s[2].map(function(r){return"<li><span>"+r[0]+"</span><span>"+r[1]+"</span></li>"}).join("");p.innerHTML=sc[i];p.classList.remove("go");void p.offsetWidth;p.classList.add("go")}
+show(0);
+document.documentElement.classList.add("js");
+function count(b){var m=b.textContent.match(/^(\d+)(.*)$/);if(!m||matchMedia("(prefers-reduced-motion:reduce)").matches)return;var n=+m[1],t=0;(function f(){t+=1/45;b.textContent=Math.round(n*Math.min(t,1))+m[2];if(t<1)requestAnimationFrame(f)})()}
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);var b=e.target.querySelector("b");if(b&&e.target.closest(".stats"))count(b)}})},{threshold:.15});
+document.querySelectorAll(".sv,.pc,.step,.stats .w>div,h2,.lede,.plate").forEach(function(el,i){el.classList.add("rv");el.style.transitionDelay=(i%3)*90+"ms";io.observe(el)});
+var st=$("#still");document.addEventListener("pointermove",function(e){var x=(e.clientX/innerWidth-.5)*16,y=(e.clientY/innerHeight-.5)*10;st.style.transform="translate("+x+"px,"+y+"px)"});
+var fr=$("#frames"),ri=0,t0=Date.now();fr.innerHTML=sc.map(function(s){return'<div class="f">'+s.replace('<svg ','<svg preserveAspectRatio="xMidYMid slice" ')+'</div>'}).join("");
+function rl(){var f=fr.children;[].forEach.call(f,function(x){x.classList.remove("on")});void fr.offsetWidth;f[ri].classList.add("on");$("#cap").textContent=sets[ri][0];ri=(ri+1)%f.length}rl();setInterval(rl,4500);
+setInterval(function(){var t=Date.now()-t0,p=function(n){return("0"+n).slice(-2)};$("#tc").textContent=p(Math.floor(t/3600000))+":"+p(Math.floor(t/60000)%60)+":"+p(Math.floor(t/1000)%60)+":"+p(Math.floor(t%1000/40))},80);
+$("#f").addEventListener("submit",function(e){e.preventDefault();var d=new FormData(this),t="Hi Northlight, I'm "+d.get("n")+" ("+d.get("e")+"). Shoot type: "+d.get("t")+". "+d.get("m");window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(t),"_blank");$("#ok").style.display="block"});
+</script></body></html>
