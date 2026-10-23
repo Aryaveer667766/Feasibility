@@ -5,44 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Enterprise Field Engine | Feasibility Media</title>
     
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;800;900&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Enterprise Libraries -->
+    <!-- Enterprise Libraries (Required for PDF & QR) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <style>
-        :root { --app-height: 100vh; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #f8fafc; overflow: hidden; height: 100dvh; background-image: radial-gradient(circle at top right, rgba(245, 158, 11, 0.08) 0%, transparent 40%), radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.05) 0%, transparent 40%); }
-        .font-heading { font-family: 'Outfit', sans-serif; } .font-mono { font-family: 'JetBrains Mono', monospace; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #020617; 
+            color: #f8fafc; 
+            overflow: hidden; 
+            height: 100dvh; 
+            background-image: radial-gradient(circle at top right, rgba(245, 158, 11, 0.08) 0%, transparent 40%), radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.05) 0%, transparent 40%); 
+        }
+        .font-heading { font-family: 'Outfit', sans-serif; } 
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
         .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .glass-card { background: linear-gradient(180deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%); border: 1px solid rgba(255,255,255,0.06); border-top: 1px solid rgba(255, 255, 255, 0.12); border-radius: 1.25rem; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
+        
         input, select, textarea { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; border-radius: 0.75rem; width: 100%; }
         input:focus, select:focus, textarea:focus { outline: none; border-color: #f59e0b; background: rgba(0, 0, 0, 0.7); box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2); }
         
+        /* Hide Scrollbar but keep functionality */
         ::-webkit-scrollbar { width: 0px; height: 0px; display: none; }
         .custom-scrollbar::-webkit-scrollbar { display: block; width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
 
-        .tab-content { display: none; padding-bottom: 120px; opacity: 0; transform: translateY(10px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        /* Tabs System */
+        .tab-content { display: none; padding-bottom: 120px; opacity: 0; transform: translateY(10px); transition: all 0.4s ease; }
         .tab-content.active { display: block; opacity: 1; transform: translateY(0); }
+        
+        /* Navigation Buttons */
         .nav-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #64748b; flex: 1; padding: 12px 0; transition: all 0.2s;}
-        .nav-btn.active { color: #f59e0b; } .nav-btn i { font-size: 1.25rem; transition: transform 0.2s; } .nav-btn.active i { transform: scale(1.2) translateY(-2px); } .nav-btn span { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-        .btn-primary { background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); color: white; font-weight: 800; box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3); transition: all 0.2s; } .btn-primary:active { transform: scale(0.97); }
-        .btn-checkin { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; font-weight: 800; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3); }
+        .nav-btn.active { color: #f59e0b; } 
+        .nav-btn i { font-size: 1.25rem; transition: transform 0.2s; } 
+        .nav-btn.active i { transform: scale(1.2) translateY(-2px); } 
+        .nav-btn span { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        /* Primary Buttons */
+        .btn-primary { background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); color: white; font-weight: 800; box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3); transition: all 0.2s; } 
+        .btn-primary:active { transform: scale(0.97); }
+        .btn-checkin { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; font-weight: 800; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3); transition: all 0.2s; }
+        .btn-checkin:active { transform: scale(0.97); }
 
-        .collapse-section { overflow: hidden; max-height: 0; opacity: 0; transition: all 0.4s ease; margin-top: 0; } .collapse-section.open { max-height: 1000px; opacity: 1; margin-top: 1rem; }
-        .menu-overlay, .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 100; opacity: 0; pointer-events: none; transition: all 0.3s ease; }
-        .menu-overlay { display: flex; flex-direction: column; justify-content: flex-end; } .menu-overlay.active, .modal.active { opacity: 1; pointer-events: auto; }
+        /* Modals & Overlays */
+        .collapse-section { overflow: hidden; max-height: 0; opacity: 0; transition: all 0.4s ease; margin-top: 0; } 
+        .collapse-section.open { max-height: 1200px; opacity: 1; margin-top: 1rem; overflow: visible;}
+        
+        .menu-overlay, .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 100; opacity: 0; pointer-events: none; transition: all 0.3s ease; }
+        .menu-overlay { display: flex; flex-direction: column; justify-content: flex-end; } 
+        .menu-overlay.active, .modal.active { opacity: 1; pointer-events: auto; }
         .menu-sheet { transform: translateY(100%); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); background: #0f172a; border-top-left-radius: 1.5rem; border-top-right-radius: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); padding: 1.5rem; padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)); }
         .menu-overlay.active .menu-sheet { transform: translateY(0); }
-        .modal { display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 150; } .modal-content { transform: scale(0.95); transition: all 0.3s ease; width: 100%; max-width: 24rem; max-height: 90vh; overflow-y: auto;} .modal.active .modal-content { transform: scale(1); }
         
-        #sig-canvas { border: 2px dashed rgba(255,255,255,0.2); border-radius: 0.75rem; background: rgba(0,0,0,0.5); touch-action: none; width: 100%; height: 150px; }
-        #qrcode-container img { margin: 0 auto; border-radius: 0.5rem; }
+        .modal { display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 150; } 
+        .modal-content { transform: scale(0.95); transition: all 0.3s ease; width: 100%; max-width: 28rem; max-height: 90vh; overflow-y: auto; } 
+        .modal.active .modal-content { transform: scale(1); }
+        
+        /* Specific Canvas Style */
+        #sig-canvas { border: 2px dashed rgba(255,255,255,0.2); border-radius: 0.75rem; background: rgba(0,0,0,0.6); touch-action: none; width: 100%; height: 200px; cursor: crosshair; }
+        #qrcode-container { display: flex; justify-content: center; align-items: center; padding: 10px; background: white; border-radius: 0.75rem; margin-bottom: 1rem; width: fit-content; margin-left: auto; margin-right: auto;}
     </style>
 </head>
 <body class="flex flex-col w-full h-[100dvh]">
@@ -67,6 +98,7 @@
     <!-- MAIN APP WRAPPER -->
     <div id="app-screen" class="w-full h-full flex-col relative" style="display: none;">
         
+        <!-- HEADER -->
         <header class="flex-none flex h-16 md:h-20 border-b border-white/10 glass-panel justify-between items-center px-4 z-30 relative shadow-md">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full border-2 border-amber-500 overflow-hidden shrink-0 shadow-lg"><img id="desk-avatar" src="" class="w-full h-full object-cover"></div>
@@ -82,7 +114,7 @@
             </div>
         </header>
 
-        <!-- ADMIN BROADCAST -->
+        <!-- ADMIN BROADCAST BANNER -->
         <div id="admin-broadcast" class="hidden flex-none bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 flex items-center justify-between shadow-md">
             <div class="flex items-center gap-3 overflow-hidden">
                 <i class="fa-solid fa-bullhorn animate-bounce"></i>
@@ -91,6 +123,7 @@
             <a id="broadcast-link" href="#" target="_blank" class="hidden shrink-0 bg-white/20 px-3 py-1 rounded text-[10px] font-bold uppercase transition-colors">Open</a>
         </div>
 
+        <!-- MAIN SCROLLABLE AREA -->
         <div class="flex-1 overflow-y-auto p-4 md:p-6 pb-28 relative scroll-smooth w-full custom-scrollbar">
             
             <!-- TAB: DASHBOARD -->
@@ -115,61 +148,81 @@
                     <i class="fa-solid fa-arrow-up-right-from-square text-blue-500/50"></i>
                 </div>
 
-                <div class="flex justify-between items-center mb-3">
+                <div class="flex justify-between items-center mb-4">
                     <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center"><i class="fa-solid fa-thumbtack mr-2 text-slate-500"></i> Active Territory</h3>
                     <button onclick="switchTab('hunt')" class="bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-1 rounded text-[10px] font-bold uppercase">Find Stores</button>
                 </div>
                 
-                <div id="my-leads-body" class="space-y-3"></div>
+                <div id="my-leads-body" class="space-y-4">
+                    <!-- Javascript populates this -->
+                    <div class="p-6 text-center text-slate-500 bg-black/30 rounded-xl border border-white/5"><p class="text-xs font-bold">Loading territory database...</p></div>
+                </div>
             </div>
 
             <!-- TAB: HUNT & ONBOARD -->
             <div id="tab-hunt" class="tab-content">
                 <div class="glass-card p-5 w-full border-t-2 border-amber-500">
-                    <div class="text-center mb-5"><h3 class="text-xl font-bold text-white font-heading"><i class="fa-solid fa-crosshairs text-amber-500 mr-2"></i> Area Scan</h3></div>
+                    <div class="text-center mb-5">
+                        <h3 class="text-xl font-bold text-white font-heading"><i class="fa-solid fa-crosshairs text-amber-500 mr-2"></i> Territory Scan</h3>
+                        <p class="text-[10px] text-slate-400 mt-1">Search the database to prevent duplicate claims.</p>
+                    </div>
+
                     <div class="relative mb-6">
                         <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-amber-500"></i>
-                        <input type="text" id="hunt-search" placeholder="Search Store Name..." class="w-full pl-11 pr-4 py-3.5 text-sm font-bold bg-black/60 shadow-inner" autocomplete="off">
+                        <input type="text" id="hunt-search" placeholder="Type store name to check availability..." class="w-full pl-11 pr-4 py-3.5 text-sm font-bold bg-black/60 shadow-inner" autocomplete="off">
                         <div id="hunt-status" class="absolute right-4 top-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Search</div>
                     </div>
+
                     <div id="hunt-results" class="space-y-3 mb-6 hidden"></div>
-                    <div id="btn-proceed-claim" class="hidden text-center transition-all">
-                        <button onclick="revealClaimForm()" class="btn-primary w-full py-4 rounded-xl text-sm uppercase font-bold flex justify-center gap-2">Clear to Onboard <i class="fa-solid fa-arrow-down"></i></button>
+
+                    <div id="btn-proceed-claim" class="hidden text-center transition-all mb-4">
+                        <button onclick="revealClaimForm()" class="btn-primary w-full py-4 rounded-xl text-sm uppercase font-bold flex justify-center items-center gap-2">Clear to Onboard <i class="fa-solid fa-arrow-down"></i></button>
                     </div>
 
                     <div id="add-lead-section" class="collapse-section">
-                        <form id="form-add-lead" class="space-y-4 border border-white/10 p-4 rounded-2xl bg-black/40 shadow-inner mt-2">
+                        <form id="form-add-lead" class="space-y-4 border border-white/10 p-5 rounded-2xl bg-black/40 shadow-inner">
+                            <h4 class="text-sm font-bold text-amber-400 border-b border-white/10 pb-3 mb-3">Register New Store</h4>
                             <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Business Name *</label><input type="text" id="ld-company" required class="w-full px-4 py-3 text-sm bg-black/60 font-bold border-amber-500/30"></div>
-                            <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Owner Name *</label><input type="text" id="ld-owner" required class="w-full px-4 py-3 text-sm bg-black/60"></div>
-                            <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Phone No. *</label><input type="tel" id="ld-phone" required class="w-full px-4 py-3 text-sm bg-black/60 font-mono"></div>
-                            <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Primary Interest *</label>
+                            <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Owner / Contact Name *</label><input type="text" id="ld-owner" required class="w-full px-4 py-3 text-sm bg-black/60"></div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Phone No. *</label><input type="tel" id="ld-phone" required class="w-full px-4 py-3 text-sm bg-black/60 font-mono"></div>
+                                <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Est. Value (₹) *</label><input type="number" id="ld-value" required min="0" class="w-full px-4 py-3 text-sm font-mono bg-black/60 border-emerald-500/30"></div>
+                            </div>
+                            <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Primary Service Interest *</label>
                                 <select id="ld-service" required class="w-full px-4 py-3 text-sm bg-black/60 text-amber-300 font-bold">
-                                    <option value="">-- Select Service --</option><option value="Social Media">Social Media</option><option value="Web Dev">Web Development</option><option value="Ads">Paid Ads</option><option value="SEO">SEO</option><option value="Overhaul">Digital Makeover</option>
+                                    <option value="">-- Select Service --</option>
+                                    <option value="Social Media">Social Media</option>
+                                    <option value="Web Development">Web Development</option>
+                                    <option value="Paid Ads">Paid Ads (Meta/Google)</option>
+                                    <option value="SEO Optimization">SEO Optimization</option>
+                                    <option value="Full Digital Makeover">Full Digital Makeover</option>
                                 </select>
                             </div>
                             <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Full Address *</label><textarea id="ld-address" required rows="2" class="w-full px-4 py-3 text-sm bg-black/60 resize-none"></textarea></div>
-                            <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Est. Deal Value (₹) *</label><input type="number" id="ld-value" required min="0" class="w-full px-4 py-3 text-sm font-mono bg-black/60 border-emerald-500/30"></div>
-                            <button type="submit" id="btn-submit-lead" class="btn-checkin w-full py-4 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-2 mt-2">
-                                <i class="fa-solid fa-thumbtack text-lg"></i> Lock Client
+                            <button type="submit" id="btn-submit-lead" class="btn-checkin w-full py-4 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-2 mt-4 shadow-lg shadow-emerald-500/20">
+                                <i class="fa-solid fa-lock text-lg"></i> Lock Territory
                             </button>
                         </form>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB: CHECK-IN (With Geofencing) -->
+            <!-- TAB: CHECK-IN (Geofencing enabled) -->
             <div id="tab-checkin" class="tab-content">
                 <div class="glass-card p-5 w-full border-t-2 border-emerald-500">
-                    <div class="text-center mb-6 border-b border-white/10 pb-4"><h3 class="text-2xl font-bold text-white font-heading">Geofenced Check-In</h3></div>
+                    <div class="text-center mb-6 border-b border-white/10 pb-4">
+                        <div class="w-14 h-14 mx-auto bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center justify-center rounded-full text-2xl mb-3"><i class="fa-solid fa-location-crosshairs"></i></div>
+                        <h3 class="text-2xl font-bold text-white font-heading">Geofenced Check-In</h3>
+                    </div>
                     <form id="form-checkin" class="space-y-4">
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Select Client *</label>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Select Store from Territory *</label>
                             <select id="ci-lead-id" required class="w-full px-4 py-3.5 text-sm font-bold bg-black/50 border-emerald-500/30">
-                                <option value="">-- No Stores Available --</option>
+                                <option value="">-- Loading Stores --</option>
                             </select>
                         </div>
                         <div class="bg-black/40 border border-white/5 p-3 rounded-xl flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-lg shrink-0 flex items-center justify-center bg-blue-600/20 text-blue-400 border border-blue-500/30" onclick="fetchGPS()">
+                            <div class="w-10 h-10 rounded-lg shrink-0 flex items-center justify-center bg-blue-600/20 text-blue-400 border border-blue-500/30 cursor-pointer" onclick="fetchGPS()">
                                 <i class="fa-solid fa-satellite-dish"></i>
                             </div>
                             <div class="flex-1">
@@ -180,19 +233,24 @@
                             <div>
                                 <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Visit Outcome *</label>
                                 <select id="ci-outcome" required class="w-full px-3 py-3 text-sm font-bold bg-black/50">
-                                    <option value="Initial Meeting">Initial Meeting</option><option value="Follow-up">Follow-up</option><option value="In Negotiation">In Negotiation</option><option value="Closed Won">Closed Won</option><option value="Rejected">Rejected</option>
+                                    <option value="Initial Meeting">Initial Meeting</option>
+                                    <option value="Follow-up">Follow-up</option>
+                                    <option value="In Negotiation">In Negotiation</option>
+                                    <option value="Closed Won">Closed Won</option>
+                                    <option value="Rejected">Rejected</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Visual Proof (Opt)</label>
-                                <input type="file" id="ci-photo" accept="image/*" class="hidden"><input type="hidden" id="ci-photo-base64">
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Visual Proof</label>
+                                <input type="file" id="ci-photo" accept="image/*" class="hidden">
+                                <input type="hidden" id="ci-photo-base64">
                                 <label for="ci-photo" id="ci-photo-label" class="w-full h-[46px] border border-dashed border-slate-500 rounded-xl flex items-center justify-center text-slate-400 text-xs bg-black/30 cursor-pointer hover:bg-white/5 transition-colors px-2">
                                     <i class="fa-solid fa-camera mr-2"></i> <span>Snap Store</span>
                                 </label>
                             </div>
                         </div>
-                        <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Field Notes</label><textarea id="ci-notes" rows="3" required class="w-full px-4 py-3 text-sm resize-none bg-black/50" placeholder="Discussed pricing..."></textarea></div>
-                        <button type="submit" id="btn-submit-checkin" class="btn-checkin w-full py-4 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-3 mt-2"><i class="fa-solid fa-cloud-arrow-up text-lg"></i> Push Visit Data</button>
+                        <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Field Notes</label><textarea id="ci-notes" rows="3" required class="w-full px-4 py-3 text-sm resize-none bg-black/50" placeholder="Details of the discussion..."></textarea></div>
+                        <button type="submit" id="btn-submit-checkin" class="btn-checkin w-full py-4 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-3 mt-2 shadow-lg shadow-emerald-500/20"><i class="fa-solid fa-cloud-arrow-up text-lg"></i> Push Visit Data</button>
                     </form>
                 </div>
             </div>
@@ -200,16 +258,16 @@
             <!-- TAB: DETAILED LEDGER -->
             <div id="tab-ledger" class="tab-content">
                 <div class="glass-card p-5 w-full border-t-2 border-emerald-500">
-                    <h3 class="text-xl font-bold text-emerald-400 font-heading mb-4 border-b border-white/10 pb-3"><i class="fa-solid fa-wallet mr-2"></i> My Earnings Ledger</h3>
+                    <h3 class="text-xl font-bold text-emerald-400 font-heading mb-4 border-b border-white/10 pb-3"><i class="fa-solid fa-wallet mr-2"></i> Earnings Ledger</h3>
                     <div class="bg-black/40 border border-white/5 p-4 rounded-xl mb-5 flex justify-between items-center shadow-inner">
                         <div><p class="text-[10px] text-slate-400 uppercase font-bold mb-1">Total Earned</p><p class="text-lg font-mono font-bold text-white" id="ledger-total-earned">₹0</p></div>
-                        <div class="text-right"><p class="text-[10px] text-purple-400 uppercase font-bold mb-1">Pending</p><p class="text-xl font-mono font-black text-purple-400" id="ledger-pending">₹0</p></div>
+                        <div class="text-right"><p class="text-[10px] text-purple-400 uppercase font-bold mb-1">Pending Balance</p><p class="text-xl font-mono font-black text-purple-400" id="ledger-pending">₹0</p></div>
                     </div>
-                    <div id="ledger-deals-body" class="space-y-2"></div>
+                    <div id="ledger-deals-body" class="space-y-3"></div>
                 </div>
             </div>
-
-            <!-- TAB: RATES, RANK, DEMOS, SUPPORT -->
+            
+            <!-- MENU TABS (Rates, Leaderboard, Demos, Support) -->
             <div id="tab-rates" class="tab-content">
                 <div class="text-center mb-6"><h3 class="text-2xl font-bold text-white font-heading tracking-tight"><i class="fa-solid fa-tags text-amber-500 mr-2"></i> Agency Rate List</h3></div>
                 <div id="rate-list-body" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
@@ -234,7 +292,7 @@
                 <div class="glass-card p-5 w-full border-t-2 border-rose-500">
                     <h3 class="text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3"><i class="fa-solid fa-headset mr-2 text-rose-400"></i> HR & Support Desk</h3>
                     <form id="form-support" class="space-y-4">
-                        <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Request Type *</label><select id="sup-type" required class="w-full px-4 py-3 text-sm bg-black/60 font-bold"><option value="Leave Application">Leave Application</option><option value="Technical Issue">App/Technical Issue</option><option value="Client Dispute">Client Dispute</option><option value="Other Request">Other Request</option></select></div>
+                        <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Request Type *</label><select id="sup-type" required class="w-full px-4 py-3 text-sm bg-black/60 font-bold"><option value="Leave Application">Leave Application</option><option value="Technical Issue">App/Technical Issue</option><option value="Client Dispute">Client Dispute</option><option value="Other">Other</option></select></div>
                         <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Subject *</label><input type="text" id="sup-subject" required class="w-full px-4 py-3 text-sm bg-black/60"></div>
                         <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Details *</label><textarea id="sup-details" rows="4" required class="w-full px-4 py-3 text-sm resize-none bg-black/60"></textarea></div>
                         <button type="submit" id="btn-submit-support" class="w-full bg-rose-600 hover:bg-rose-500 text-white py-3.5 rounded-xl text-sm font-bold uppercase tracking-widest mt-2"><i class="fa-solid fa-paper-plane mr-2"></i> Submit Request</button>
@@ -262,73 +320,71 @@
     <div id="menu-overlay" class="menu-overlay" onclick="if(event.target === this) toggleMenu()">
         <div class="menu-sheet flex flex-col gap-3">
             <div class="w-12 h-1 bg-white/20 rounded-full mx-auto mb-2"></div>
-            
             <button onclick="toggleMenu(); openLogsModal()" class="w-full bg-white/5 hover:bg-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors">
                 <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center text-lg"><i class="fa-solid fa-clock-rotate-left"></i></div>
                 <div class="text-left"><p class="text-sm font-bold text-white">My Activity Logs</p><p class="text-[10px] text-slate-400">Historical Timeline</p></div>
             </button>
-            <div class="grid grid-cols-2 gap-3">
+            <div class="grid grid-cols-2 gap-3 mt-2">
                 <button onclick="toggleMenu(); switchTab('rates')" class="bg-white/5 hover:bg-white/10 p-3 rounded-xl flex flex-col items-center gap-2"><i class="fa-solid fa-tags text-amber-500 text-lg"></i><span class="text-xs font-bold text-white">Rate List</span></button>
                 <button onclick="toggleMenu(); switchTab('rank')" class="bg-white/5 hover:bg-white/10 p-3 rounded-xl flex flex-col items-center gap-2"><i class="fa-solid fa-trophy text-purple-400 text-lg"></i><span class="text-xs font-bold text-white">Leaderboard</span></button>
                 <button onclick="toggleMenu(); switchTab('demos')" class="bg-white/5 hover:bg-white/10 p-3 rounded-xl flex flex-col items-center gap-2"><i class="fa-solid fa-laptop-code text-blue-400 text-lg"></i><span class="text-xs font-bold text-white">Pitch Demos</span></button>
                 <button onclick="toggleMenu(); switchTab('support')" class="bg-white/5 hover:bg-white/10 p-3 rounded-xl flex flex-col items-center gap-2"><i class="fa-solid fa-headset text-rose-400 text-lg"></i><span class="text-xs font-bold text-white">HR Support</span></button>
             </div>
-            
-            <button onclick="logout()" class="w-full mt-2 p-4 flex items-center justify-center gap-2 text-rose-400 font-bold text-sm bg-rose-500/10 rounded-xl">
-                <i class="fa-solid fa-power-off"></i> Disconnect & Sign Out
+            <button onclick="logout()" class="w-full mt-3 p-4 flex items-center justify-center gap-2 text-rose-400 font-bold text-sm bg-rose-500/10 rounded-xl">
+                <i class="fa-solid fa-power-off"></i> Disconnect Shift & Sign Out
             </button>
         </div>
     </div>
 
     <!-- ENTERPRISE CLOSING TOOLKIT MODAL -->
-    <div id="modal-closing" class="modal bg-black/90 backdrop-blur-md z-[150]" onclick="if(event.target === this) closeModal('modal-closing')">
-        <div class="modal-content bg-slate-900 rounded-2xl border border-amber-500/30 shadow-2xl p-6 relative flex flex-col custom-scrollbar overflow-y-auto">
+    <div id="modal-closing" class="modal bg-black/90 backdrop-blur-md" onclick="if(event.target === this) closeModal('modal-closing')">
+        <div class="modal-content bg-slate-900 rounded-2xl border border-amber-500/30 shadow-2xl p-6 relative flex flex-col custom-scrollbar">
             <button onclick="closeModal('modal-closing')" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-white/5 w-8 h-8 rounded-full z-10"><i class="fa-solid fa-xmark"></i></button>
             <h3 class="text-xl font-bold text-amber-400 mb-1"><i class="fa-solid fa-briefcase mr-2"></i> Closing Toolkit</h3>
-            <p class="text-xs text-slate-400 font-mono mb-4 border-b border-white/10 pb-4" id="close-company-name">Client Name</p>
+            <p class="text-xs text-slate-400 font-mono mb-4 border-b border-white/10 pb-4 truncate" id="close-company-name">Client Name</p>
             
             <input type="hidden" id="close-lead-id">
             <input type="hidden" id="close-lead-val">
             <input type="hidden" id="close-lead-phone">
 
             <div class="space-y-3">
-                <button onclick="generateQuotePDF()" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors text-left">
-                    <div class="w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-lg shrink-0"><i class="fa-solid fa-file-pdf"></i></div>
-                    <div><p class="text-sm font-bold text-white">Generate PDF Quote</p><p class="text-[10px] text-slate-400">Instantly build branded proposal</p></div>
+                <button onclick="generateQuotePDF()" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors text-left group">
+                    <div class="w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-lg shrink-0 group-hover:scale-110 transition-transform"><i class="fa-solid fa-file-pdf"></i></div>
+                    <div><p class="text-sm font-bold text-white">1. Generate PDF Quote</p><p class="text-[10px] text-slate-400">Instantly build branded proposal</p></div>
                 </button>
-                <button onclick="openSignaturePad()" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors text-left">
-                    <div class="w-10 h-10 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg shrink-0"><i class="fa-solid fa-file-signature"></i></div>
-                    <div><p class="text-sm font-bold text-white">Digital E-Sign MSA</p><p class="text-[10px] text-slate-400">Client signs directly on screen</p></div>
+                <button onclick="openSignaturePad()" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors text-left group">
+                    <div class="w-10 h-10 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg shrink-0 group-hover:scale-110 transition-transform"><i class="fa-solid fa-file-signature"></i></div>
+                    <div><p class="text-sm font-bold text-white">2. Digital E-Sign MSA</p><p class="text-[10px] text-slate-400">Client signs legally on screen</p></div>
                 </button>
-                <button onclick="openPaymentQR()" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors text-left">
-                    <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center text-lg shrink-0"><i class="fa-solid fa-indian-rupee-sign"></i></div>
-                    <div><p class="text-sm font-bold text-white">Collect & Log Payment</p><p class="text-[10px] text-slate-400">Show QR & log transaction details</p></div>
+                <button onclick="openPaymentQR()" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors text-left group">
+                    <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center text-lg shrink-0 group-hover:scale-110 transition-transform"><i class="fa-solid fa-qrcode"></i></div>
+                    <div><p class="text-sm font-bold text-white">3. Collect Payment (QR)</p><p class="text-[10px] text-slate-400">Scan to pay instant advance</p></div>
                 </button>
             </div>
         </div>
     </div>
 
     <!-- E-SIGNATURE MODAL -->
-    <div id="modal-esign" class="modal bg-black/95 backdrop-blur-md z-[200]">
+    <div id="modal-esign" class="modal bg-black/95 backdrop-blur-md">
         <div class="modal-content bg-slate-900 rounded-2xl border border-purple-500/30 shadow-2xl p-5 relative">
-            <h3 class="text-lg font-bold text-white mb-2">Sign Master Agreement</h3>
-            <p class="text-[10px] text-slate-400 mb-4">By signing, you agree to Feasibility Media's standard terms of service for the negotiated amount.</p>
+            <h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-pen-nib text-purple-400 mr-2"></i> Client Signature</h3>
+            <p class="text-[10px] text-slate-400 mb-4">By signing, you agree to Feasibility Media's standard terms of service.</p>
             <canvas id="sig-canvas"></canvas>
             <div class="flex gap-2 mt-4">
-                <button onclick="clearCanvas()" class="w-1/3 bg-slate-800 text-slate-300 py-3 rounded-xl text-xs font-bold uppercase">Clear</button>
-                <button onclick="saveSignature()" class="w-2/3 bg-purple-600 text-white py-3 rounded-xl text-xs font-bold uppercase">Confirm & Save</button>
+                <button onclick="clearCanvas()" class="w-1/3 bg-slate-800 text-slate-300 py-3 rounded-xl text-xs font-bold uppercase hover:bg-slate-700 transition-colors">Clear</button>
+                <button onclick="saveSignature()" class="w-2/3 bg-purple-600 text-white py-3 rounded-xl text-xs font-bold uppercase hover:bg-purple-500 transition-colors shadow-lg shadow-purple-500/30">Confirm & Save</button>
             </div>
-            <button onclick="closeModal('modal-esign')" class="w-full mt-2 py-2 text-[10px] text-slate-500 font-bold uppercase">Cancel</button>
+            <button onclick="closeModal('modal-esign')" class="w-full mt-3 py-2 text-[10px] text-slate-500 font-bold uppercase">Cancel</button>
         </div>
     </div>
 
     <!-- PAYMENT & QR MODAL -->
-    <div id="modal-qr" class="modal bg-black/95 backdrop-blur-md z-[200] overflow-y-auto">
-        <div class="modal-content bg-slate-900 rounded-2xl border border-emerald-500/30 shadow-2xl p-5 relative flex flex-col items-center">
+    <div id="modal-qr" class="modal bg-black/95 backdrop-blur-md overflow-y-auto custom-scrollbar">
+        <div class="modal-content bg-slate-900 rounded-2xl border border-emerald-500/30 shadow-2xl p-5 relative flex flex-col items-center my-4">
             <h3 class="text-lg font-bold text-white mb-1"><i class="fa-solid fa-qrcode text-emerald-400 mr-2"></i> Receive Advance</h3>
             <p class="text-[10px] text-emerald-400 font-mono mb-4 w-full text-center" id="qr-amount">Amount: ₹0</p>
             
-            <div class="bg-white p-2 rounded-xl mb-4" id="qrcode-container"></div>
+            <div id="qrcode-container"></div>
             
             <div class="w-full border-t border-white/10 pt-4 mt-2">
                 <h4 class="text-xs font-bold text-slate-300 mb-3">Log Transaction Details</h4>
@@ -349,10 +405,10 @@
                         <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Reference ID / Txn No.</label>
                         <input type="text" id="pay-ref" class="w-full px-3 py-2.5 text-xs font-mono bg-black/60" placeholder="Optional">
                     </div>
-                    <button type="submit" id="btn-submit-payment" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-xl text-xs font-bold uppercase mt-2">Submit & Close Deal</button>
+                    <button type="submit" id="btn-submit-payment" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-xl text-xs font-bold uppercase mt-2 shadow-lg shadow-emerald-500/30 transition-all">Submit & Close Deal</button>
                 </form>
             </div>
-            <button onclick="closeModal('modal-qr')" class="w-full mt-2 py-2 text-[10px] text-slate-500 font-bold uppercase">Cancel</button>
+            <button onclick="closeModal('modal-qr')" class="w-full mt-3 py-2 text-[10px] text-slate-500 font-bold uppercase">Cancel</button>
         </div>
     </div>
 
@@ -404,7 +460,7 @@
         let unsubscribeLeads = null, unsubscribeUser = null, unsubscribeAttendance = null, unsubscribeNotifs = null, unsubscribeDemos = null, unsubscribeRates = null;
         let activeShiftId = null;
 
-        // UI CORE
+        // UI CORE FUNCTIONS
         window.switchTab = (tabId) => {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
@@ -413,10 +469,8 @@
             if(tabId === 'hunt') { document.getElementById('hunt-search').value = ''; document.getElementById('hunt-search').dispatchEvent(new Event('input')); }
             if(tabId === 'checkin') { fetchGPS(); }
         };
-
         window.toggleMenu = () => { document.getElementById('menu-overlay').classList.toggle('active'); };
         window.closeModal = (id) => { document.getElementById(id).classList.remove('active'); };
-
         window.showToast = (msg, isError=false) => {
             const toast = document.getElementById('toast'); const icon = toast.querySelector('i');
             toast.className = `fixed top-4 left-4 right-4 text-white px-5 py-4 rounded-xl shadow-[0_20px_40px_rgba(0,0,0,0.8)] font-bold text-sm transform translate-y-0 opacity-100 transition-all duration-400 z-[400] flex items-center gap-3 border border-white/10 backdrop-blur-md justify-center ${isError ? 'bg-red-600/95' : 'bg-emerald-600/95'}`;
@@ -462,7 +516,7 @@
                     const waypoints = activeLeads.slice(0, 8).map(l => encodeURIComponent(l.address)).join('|');
                     window.open(`https://www.google.com/maps/dir/?api=1&origin=${origin}&waypoints=${waypoints}&travelmode=driving`, '_blank');
                 }, () => { showToast("Need GPS for routing", true); });
-            }
+            } else { showToast("GPS not supported", true); }
         };
 
         // ENTERPRISE CLOSING TOOLKIT (PDF, E-SIGN, QR/PAYMENT)
@@ -474,13 +528,15 @@
         window.generateQuotePDF = () => {
             const { jsPDF } = window.jspdf; const doc = new jsPDF();
             const company = document.getElementById('close-company-name').innerText; const val = document.getElementById('close-lead-val').value;
-            doc.setFontSize(22); doc.text("Feasibility Media", 20, 20);
-            doc.setFontSize(14); doc.text("Official Service Proposal", 20, 30);
-            doc.setFontSize(12); doc.text(`Prepared For: ${company}`, 20, 50); doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 60);
-            doc.text("Services Included:", 20, 80); doc.text("- Digital Marketing Strategy", 30, 90); doc.text("- Web Development & Hosting", 30, 100); doc.text("- SEO Optimization", 30, 110);
-            doc.setFontSize(16); doc.text(`Total Investment: INR ${Number(val).toLocaleString('en-IN')}`, 20, 140);
-            doc.setFontSize(10); doc.text("This quote is valid for 7 days. Generated automatically via Feasibility Field Engine.", 20, 280);
-            doc.save(`Proposal_${company.replace(/\s+/g, '_')}.pdf`); showToast("PDF Downloaded!");
+            
+            doc.setFontSize(22); doc.setTextColor(245, 158, 11); doc.text("Feasibility Media", 20, 20);
+            doc.setFontSize(14); doc.setTextColor(50, 50, 50); doc.text("Official Service Proposal", 20, 30);
+            doc.line(20, 35, 190, 35);
+            doc.setFontSize(12); doc.setTextColor(0, 0, 0); doc.text(`Prepared For: ${company}`, 20, 50); doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 60);
+            doc.text("Services Included in this Package:", 20, 80); doc.text("- Comprehensive Digital Marketing Strategy", 30, 90); doc.text("- Professional Web Development & Hosting", 30, 100); doc.text("- SEO Optimization & Local Ranking", 30, 110);
+            doc.setFontSize(16); doc.setTextColor(16, 185, 129); doc.text(`Total Investment Required: INR ${Number(val).toLocaleString('en-IN')}`, 20, 140);
+            doc.setFontSize(10); doc.setTextColor(100, 100, 100); doc.text("This quote is valid for 7 days. Generated automatically via Feasibility Field Engine.", 20, 280);
+            doc.save(`Proposal_${company.replace(/\s+/g, '_')}.pdf`); showToast("PDF Quote Downloaded!");
         };
 
         let canvas, ctx, isDrawing = false;
@@ -488,8 +544,11 @@
             document.getElementById('modal-closing').classList.remove('active'); document.getElementById('modal-esign').classList.add('active');
             if(!canvas) {
                 canvas = document.getElementById('sig-canvas'); ctx = canvas.getContext('2d');
-                const rect = canvas.getBoundingClientRect(); canvas.width = rect.width; canvas.height = rect.height;
-                ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.strokeStyle = '#fff';
+                // Set canvas resolution based on display size
+                setTimeout(() => {
+                    const rect = canvas.getBoundingClientRect(); canvas.width = rect.width; canvas.height = rect.height;
+                    ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.strokeStyle = '#fff';
+                }, 300); // slight delay for modal transition
                 const startDraw = (e) => { isDrawing = true; ctx.beginPath(); ctx.moveTo(getX(e), getY(e)); e.preventDefault(); };
                 const draw = (e) => { if(!isDrawing) return; ctx.lineTo(getX(e), getY(e)); ctx.stroke(); e.preventDefault(); };
                 const stopDraw = () => { isDrawing = false; };
@@ -497,15 +556,15 @@
                 const getY = (e) => e.touches ? e.touches[0].clientY - canvas.getBoundingClientRect().top : e.offsetY;
                 canvas.addEventListener('mousedown', startDraw); canvas.addEventListener('mousemove', draw); canvas.addEventListener('mouseup', stopDraw);
                 canvas.addEventListener('touchstart', startDraw, {passive:false}); canvas.addEventListener('touchmove', draw, {passive:false}); canvas.addEventListener('touchend', stopDraw);
-            }
+            } else { clearCanvas(); }
         };
 
-        window.clearCanvas = () => { ctx.clearRect(0, 0, canvas.width, canvas.height); };
+        window.clearCanvas = () => { if(ctx) ctx.clearRect(0, 0, canvas.width, canvas.height); };
         
         window.saveSignature = async () => {
             const id = document.getElementById('close-lead-id').value; const b64 = canvas.toDataURL('image/png');
             try {
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), { history: arrayUnion({ note: `[CONTRACT SIGNED] E-Signature Captured.`, date: new Date().toISOString(), user: activeUserRecord.name }) });
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), { history: arrayUnion({ note: `[CONTRACT SIGNED] Master Service Agreement Executed.`, date: new Date().toISOString(), user: activeUserRecord.name }) });
                 showToast("Contract Legally Bound & Saved!"); closeModal('modal-esign');
             } catch(e) { showToast("Error saving", true); }
         };
@@ -526,11 +585,7 @@
 
         document.getElementById('form-payment').addEventListener('submit', async (e) => {
             e.preventDefault(); const btn = document.getElementById('btn-submit-payment'); btn.disabled = true; btn.innerHTML = 'Processing...';
-            const id = document.getElementById('close-lead-id').value;
-            const amt = document.getElementById('pay-amount').value;
-            const method = document.getElementById('pay-method').value;
-            const ref = document.getElementById('pay-ref').value;
-
+            const id = document.getElementById('close-lead-id').value; const amt = document.getElementById('pay-amount').value; const method = document.getElementById('pay-method').value; const ref = document.getElementById('pay-ref').value;
             try {
                 await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), {
                     status: 'Closed Won',
@@ -546,17 +601,14 @@
             let logs = [];
             myLeads.forEach(l => { if(l.history) { l.history.forEach(h => { if(h.user === activeUserRecord.name) { logs.push({ ...h, company: l.company }); } }); } });
             logs.sort((a,b) => new Date(b.date) - new Date(a.date));
-            
             document.getElementById('logs-body').innerHTML = logs.map(l => {
                 const isPay = l.note.includes('[PAYMENT]'); const isSign = l.note.includes('[CONTRACT SIGNED]'); const isCheckin = l.note.includes('Check-in');
                 let icon = '<i class="fa-solid fa-thumbtack text-amber-500"></i>'; let borderClass = 'border-amber-500/30';
                 if(isPay) { icon = '<i class="fa-solid fa-indian-rupee-sign text-emerald-500"></i>'; borderClass = 'border-emerald-500/50 bg-emerald-900/10'; }
                 else if(isSign) { icon = '<i class="fa-solid fa-file-signature text-purple-400"></i>'; borderClass = 'border-purple-500/30 bg-purple-900/10'; }
                 else if(isCheckin) { icon = '<i class="fa-solid fa-location-dot text-blue-400"></i>'; borderClass = 'border-blue-500/30'; }
-                
                 return `<div class="bg-black/40 p-3 rounded-xl border border-l-4 ${borderClass} flex items-start gap-3"><div class="mt-1">${icon}</div><div><p class="font-bold text-white text-sm leading-tight">${l.company}</p><p class="text-[11px] text-slate-300 mt-1">${l.note.replace('[PAYMENT]', '')}</p><p class="text-[9px] text-slate-500 font-mono mt-1">${new Date(l.date).toLocaleString()}</p></div></div>`;
             }).join('') || '<p class="text-slate-500 text-center italic text-sm p-4">No activity found.</p>';
-            
             document.getElementById('modal-logs').classList.add('active');
         };
 
@@ -690,15 +742,14 @@
             catch (err) { showToast("Network Error", true); } finally { btn.innerHTML = '<i class="fa-solid fa-thumbtack text-lg"></i> Lock Client'; btn.disabled = false; }
         });
 
-        // --- CHECK-IN (Geofenced Check) ---
+        // --- CHECK-IN (Geofenced) ---
         document.getElementById('form-checkin').addEventListener('submit', async (e) => {
             e.preventDefault(); const btn = document.getElementById('btn-submit-checkin'); btn.disabled = true;
             const id = document.getElementById('ci-lead-id').value; const locStr = document.getElementById('ci-location').value; const outcome = document.getElementById('ci-outcome').value; const notes = document.getElementById('ci-notes').value.trim(); const photoB64 = document.getElementById('ci-photo-base64').value;
             
             const currentLead = myLeads.find(l => l.id === id);
             if(currentLead && currentLead.registered_lat && !locStr.includes("Bypass") && !locStr.includes("Acquiring")) {
-                const [curLat, curLon] = locStr.split(',').map(Number);
-                const dist = getDistanceFromLatLonInMeters(curLat, curLon, currentLead.registered_lat, currentLead.registered_lon);
+                const [curLat, curLon] = locStr.split(',').map(Number); const dist = getDistanceFromLatLonInMeters(curLat, curLon, currentLead.registered_lat, currentLead.registered_lon);
                 if(dist > 150) { showToast(`Geofence Error: You are ${Math.round(dist)}m away from the store. Move closer.`, true); btn.disabled = false; return; }
             }
 
@@ -706,11 +757,10 @@
                 let updates = { status: outcome, history: arrayUnion({ note: `Check-in: ${outcome} [GPS: ${locStr}] - ${notes}`, date: new Date().toISOString(), user: activeUserRecord ? activeUserRecord.name : 'Test Rep' }) };
                 if(photoB64) { updates.latestPhoto = photoB64; }
                 if(currentLead && !currentLead.registered_lat && !locStr.includes("Bypass") && !locStr.includes("Acquiring")) { const [lat, lon] = locStr.split(',').map(Number); updates.registered_lat = lat; updates.registered_lon = lon; }
-
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), updates); showToast("Visit Logged!");
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), updates); showToast("Visit Logged & Geoverified!");
                 document.getElementById('form-checkin').reset(); document.getElementById('ci-photo-base64').value = ""; document.querySelector('#ci-photo-label span').innerText = "Snap Store"; document.querySelector('#ci-photo-label i').className = "fa-solid fa-camera mr-2"; document.getElementById('ci-photo-label').classList.remove('border-emerald-500/50', 'bg-emerald-500/10', 'text-emerald-400');
                 switchTab('dashboard');
-            } catch(err) { showToast("Failed to log", true); } finally { btn.disabled = false; }
+            } catch(err) { showToast("Failed to log visit", true); } finally { btn.disabled = false; }
         });
 
         // --- SUPPORT SUBMIT ---
