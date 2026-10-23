@@ -3,51 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Enterprise Field Engine | Feasibility Media</title>
+    <title>Field Sales Engine | Feasibility Media</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;800;900&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <!-- Enterprise Libraries (Required for PDF & QR) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <style>
         :root { --app-height: 100vh; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #f8fafc; overflow: hidden; height: 100dvh; background-image: radial-gradient(circle at top right, rgba(245, 158, 11, 0.08) 0%, transparent 40%), radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.05) 0%, transparent 40%); }
-        .font-heading { font-family: 'Outfit', sans-serif; } .font-mono { font-family: 'JetBrains Mono', monospace; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #020617;
+            color: #f8fafc;
+            overflow: hidden;
+            height: 100dvh;
+            background-image: radial-gradient(circle at top right, rgba(245, 158, 11, 0.08) 0%, transparent 40%), radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
+        }
+        .font-heading { font-family: 'Outfit', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
         .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .glass-card { background: linear-gradient(180deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%); border: 1px solid rgba(255,255,255,0.06); border-top: 1px solid rgba(255, 255, 255, 0.12); border-radius: 1.25rem; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
+
         input, select, textarea { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; border-radius: 0.75rem; width: 100%; }
         input:focus, select:focus, textarea:focus { outline: none; border-color: #f59e0b; background: rgba(0, 0, 0, 0.7); box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2); }
-        
+
         ::-webkit-scrollbar { width: 0px; height: 0px; display: none; }
         .custom-scrollbar::-webkit-scrollbar { display: block; width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
-
-        .tab-content { display: none; padding-bottom: 120px; opacity: 0; transform: translateY(10px); transition: all 0.4s ease; }
+        
+        .tab-content { display: none; padding-bottom: 120px; opacity: 0; transform: translateY(10px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .tab-content.active { display: block; opacity: 1; transform: translateY(0); }
-        .nav-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #64748b; flex: 1; padding: 12px 0; transition: all 0.2s;}
-        .nav-btn.active { color: #f59e0b; } .nav-btn i { font-size: 1.25rem; transition: transform 0.2s; } .nav-btn.active i { transform: scale(1.2) translateY(-2px); } .nav-btn span { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-        
-        .btn-primary { background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); color: white; font-weight: 800; box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3); transition: all 0.2s; } .btn-primary:active { transform: scale(0.97); }
-        .btn-checkin { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; font-weight: 800; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3); transition: all 0.2s; } .btn-checkin:active { transform: scale(0.97); }
 
-        .collapse-section { overflow: hidden; max-height: 0; opacity: 0; transition: all 0.4s ease; margin-top: 0; } .collapse-section.open { max-height: 1200px; opacity: 1; margin-top: 1rem; overflow: visible;}
-        
-        .menu-overlay, .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 100; opacity: 0; pointer-events: none; transition: all 0.3s ease; }
-        .menu-overlay { display: flex; flex-direction: column; justify-content: flex-end; } .menu-overlay.active, .modal.active { opacity: 1; pointer-events: auto; }
+        .nav-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #64748b; flex: 1; padding: 12px 0; transition: all 0.2s;}
+        .nav-btn.active { color: #f59e0b; }
+        .nav-btn i { font-size: 1.25rem; transition: transform 0.2s; }
+        .nav-btn.active i { transform: scale(1.2) translateY(-2px); }
+        .nav-btn span { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .btn-primary { background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); color: white; font-weight: 800; box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3); transition: all 0.2s; }
+        .btn-primary:active { transform: scale(0.97); }
+        .btn-checkin { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; font-weight: 800; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3); }
+
+        .collapse-section { overflow: hidden; max-height: 0; opacity: 0; transition: all 0.4s ease; margin-top: 0; }
+        .collapse-section.open { max-height: 1000px; opacity: 1; margin-top: 1rem; }
+
+        .menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 100; opacity: 0; pointer-events: none; transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: flex-end; }
+        .menu-overlay.active { opacity: 1; pointer-events: auto; }
         .menu-sheet { transform: translateY(100%); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); background: #0f172a; border-top-left-radius: 1.5rem; border-top-right-radius: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); padding: 1.5rem; padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)); }
         .menu-overlay.active .menu-sheet { transform: translateY(0); }
-        
-        .modal { display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 150; } 
-        .modal-content { transform: scale(0.95); transition: all 0.3s ease; width: 100%; max-width: 28rem; max-height: 90vh; overflow-y: auto; } 
+
+        .modal { opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 150; }
+        .modal.active { opacity: 1; pointer-events: auto; }
+        .modal-content { transform: scale(0.95); transition: all 0.3s ease; }
         .modal.active .modal-content { transform: scale(1); }
-        
-        #sig-canvas { border: 2px dashed rgba(255,255,255,0.2); border-radius: 0.75rem; background: rgba(0,0,0,0.6); touch-action: none; width: 100%; height: 200px; cursor: crosshair; }
-        #qrcode-container { display: flex; justify-content: center; align-items: center; padding: 10px; background: white; border-radius: 0.75rem; margin-bottom: 1rem; width: fit-content; margin-left: auto; margin-right: auto;}
     </style>
 </head>
 <body class="flex flex-col w-full h-[100dvh]">
@@ -56,15 +66,26 @@
     <div id="login-screen" class="absolute inset-0 z-50 flex items-center justify-center backdrop-blur-xl bg-[#020617]/95 p-4 transition-opacity duration-300">
         <div class="glass-panel p-8 w-full max-w-sm relative overflow-hidden rounded-[2rem] shadow-2xl border border-white/10">
             <div class="text-center mb-8 relative z-10">
-                <div class="w-16 h-16 mx-auto bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center rounded-2xl text-2xl font-black shadow-lg mb-5"><i class="fa-solid fa-bolt"></i></div>
+                <div class="w-16 h-16 mx-auto bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center rounded-2xl text-2xl font-black shadow-lg mb-5">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                </div>
                 <h2 class="text-3xl font-black text-white font-heading tracking-tight">Field Ops</h2>
-                <p class="text-[10px] text-amber-400 font-bold uppercase tracking-widest mt-2 border border-amber-500/20 bg-amber-500/10 inline-block px-3 py-1 rounded-full">Enterprise Edition</p>
+                <p class="text-[10px] text-amber-400 font-bold uppercase tracking-widest mt-2 border border-amber-500/20 bg-amber-500/10 inline-block px-3 py-1 rounded-full">Secure Access</p>
             </div>
+            
             <form id="login-form" class="space-y-4 relative z-10">
-                <div class="relative"><i class="fa-solid fa-envelope absolute left-4 top-4 text-slate-500 text-sm"></i><input type="email" id="login-email" required class="w-full pl-11 pr-4 py-3.5 text-sm bg-black/50" placeholder="rep@feasibility.com"></div>
-                <div class="relative"><i class="fa-solid fa-lock absolute left-4 top-4 text-slate-500 text-sm"></i><input type="password" id="login-pwd" required class="w-full pl-11 pr-4 py-3.5 text-sm bg-black/50" placeholder="••••••••"></div>
+                <div class="relative">
+                    <i class="fa-solid fa-envelope absolute left-4 top-4 text-slate-500 text-sm"></i>
+                    <input type="email" id="login-email" required class="w-full pl-11 pr-4 py-3.5 text-sm bg-black/50" placeholder="rep@feasibility.com">
+                </div>
+                <div class="relative">
+                    <i class="fa-solid fa-lock absolute left-4 top-4 text-slate-500 text-sm"></i>
+                    <input type="password" id="login-pwd" required class="w-full pl-11 pr-4 py-3.5 text-sm bg-black/50" placeholder="••••••••">
+                </div>
                 <div id="login-error" class="hidden bg-red-500/10 text-red-400 text-xs font-bold text-center py-3 rounded-xl">Error</div>
-                <button type="submit" id="btn-login" class="btn-primary w-full py-4 rounded-xl text-sm tracking-widest uppercase flex items-center justify-center gap-3 mt-2"><span>Deploy to Field</span> <i class="fa-solid fa-arrow-right-to-bracket"></i></button>
+                <button type="submit" id="btn-login" class="btn-primary w-full py-4 rounded-xl text-sm tracking-widest uppercase flex items-center justify-center gap-3 mt-2">
+                    <span>Deploy to Field</span> <i class="fa-solid fa-bolt"></i>
+                </button>
             </form>
         </div>
     </div>
@@ -74,15 +95,22 @@
         
         <header class="flex-none flex h-16 md:h-20 border-b border-white/10 glass-panel justify-between items-center px-4 z-30 relative shadow-md">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full border-2 border-amber-500 overflow-hidden shrink-0 shadow-lg"><img id="desk-avatar" src="" class="w-full h-full object-cover"></div>
+                <div class="w-10 h-10 rounded-full border-2 border-amber-500 overflow-hidden shrink-0 shadow-lg">
+                    <img id="desk-avatar" src="" class="w-full h-full object-cover">
+                </div>
                 <div class="flex flex-col leading-tight">
                     <span id="desk-user-name" class="text-sm font-bold text-white tracking-wide">Loading...</span>
-                    <div class="flex items-center gap-1.5 mt-0.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span><span class="text-[9px] text-emerald-400 font-bold uppercase tracking-widest" id="gps-status-header">Offline Ready</span></div>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span class="text-[9px] text-emerald-400 font-bold uppercase tracking-widest" id="gps-status-header">GPS Locked</span>
+                    </div>
                 </div>
             </div>
+            
             <div class="flex items-center gap-3">
                 <div id="btn-clock" onclick="toggleAttendance()" class="bg-black/50 border border-white/10 px-3 py-2 rounded-xl flex items-center gap-2 cursor-pointer shadow-inner">
-                    <span id="duty-dot" class="w-2 h-2 rounded-full bg-slate-500"></span><i class="fa-solid fa-power-off text-xs text-slate-500" id="duty-icon-mob"></i>
+                    <span id="duty-dot" class="w-2 h-2 rounded-full bg-slate-500"></span>
+                    <i class="fa-solid fa-power-off text-xs text-slate-500" id="duty-icon-mob"></i>
                 </div>
             </div>
         </header>
@@ -96,7 +124,7 @@
             <a id="broadcast-link" href="#" target="_blank" class="hidden shrink-0 bg-white/20 px-3 py-1 rounded text-[10px] font-bold uppercase transition-colors">Open</a>
         </div>
 
-        <div class="flex-1 overflow-y-auto p-4 md:p-6 pb-28 relative scroll-smooth w-full custom-scrollbar">
+        <div class="flex-1 overflow-y-auto p-4 md:p-6 pb-28 relative scroll-smooth w-full">
             
             <!-- TAB: DASHBOARD -->
             <div id="tab-dashboard" class="tab-content active">
@@ -111,56 +139,60 @@
                         <p class="text-[8px] text-slate-500 mt-1 font-mono" id="kpi-rate-display">Rate: --%</p>
                     </div>
                 </div>
-                
-                <div class="bg-gradient-to-r from-blue-600/20 to-indigo-600/20 border border-blue-500/30 rounded-2xl p-4 flex items-center justify-between shadow-lg mb-6 cursor-pointer" onclick="generateSmartRoute()">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-400"><i class="fa-solid fa-route"></i></div>
-                        <div><h4 class="text-sm font-bold text-white">Smart Routing</h4><p class="text-[9px] text-blue-200/70 mt-0.5">Optimize today's travel path</p></div>
-                    </div>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-blue-500/50"></i>
-                </div>
 
-                <div class="flex justify-between items-center mb-4">
+                <div class="flex justify-between items-center mt-8 mb-3">
                     <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center"><i class="fa-solid fa-thumbtack mr-2 text-slate-500"></i> Active Territory</h3>
                     <button onclick="switchTab('hunt')" class="bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-1 rounded text-[10px] font-bold uppercase">Find Stores</button>
                 </div>
                 
-                <div id="my-leads-body" class="space-y-4">
-                    <div class="p-6 text-center text-slate-500 bg-black/30 rounded-xl border border-white/5"><p class="text-xs font-bold">Loading territory database...</p></div>
+                <div id="my-leads-body" class="space-y-3">
+                    <div class="p-6 text-center text-slate-500 bg-black/30 rounded-xl border border-white/5"><p class="text-xs font-bold">Loading territory...</p></div>
                 </div>
             </div>
 
             <!-- TAB: HUNT & ONBOARD -->
             <div id="tab-hunt" class="tab-content">
                 <div class="glass-card p-5 w-full border-t-2 border-amber-500">
-                    <div class="text-center mb-5"><h3 class="text-xl font-bold text-white font-heading"><i class="fa-solid fa-crosshairs text-amber-500 mr-2"></i> Area Scan</h3></div>
+                    <div class="text-center mb-5">
+                        <h3 class="text-xl font-bold text-white font-heading"><i class="fa-solid fa-crosshairs text-amber-500 mr-2"></i> Area Scan</h3>
+                        <p class="text-xs text-slate-400 mt-1">Search to prevent assigning the same client twice.</p>
+                    </div>
+
                     <div class="relative mb-6">
                         <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-amber-500"></i>
                         <input type="text" id="hunt-search" placeholder="Search Store Name..." class="w-full pl-11 pr-4 py-3.5 text-sm font-bold bg-black/60 shadow-inner" autocomplete="off">
                         <div id="hunt-status" class="absolute right-4 top-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Search</div>
                     </div>
+
                     <div id="hunt-results" class="space-y-3 mb-6 hidden"></div>
-                    <div id="btn-proceed-claim" class="hidden text-center transition-all mb-4">
-                        <button onclick="revealClaimForm()" class="btn-primary w-full py-4 rounded-xl text-sm uppercase font-bold flex justify-center items-center gap-2">Clear to Onboard <i class="fa-solid fa-arrow-down"></i></button>
+
+                    <div id="btn-proceed-claim" class="hidden text-center transition-all">
+                        <button onclick="revealClaimForm()" class="btn-primary w-full py-4 rounded-xl text-sm uppercase font-bold flex justify-center gap-2">
+                            Clear to Onboard <i class="fa-solid fa-arrow-down"></i>
+                        </button>
                     </div>
 
                     <div id="add-lead-section" class="collapse-section">
-                        <form id="form-add-lead" class="space-y-4 border border-white/10 p-5 rounded-2xl bg-black/40 shadow-inner">
-                            <h4 class="text-sm font-bold text-amber-400 border-b border-white/10 pb-3 mb-3">Register New Store</h4>
+                        <form id="form-add-lead" class="space-y-4 border border-white/10 p-4 rounded-2xl bg-black/40 shadow-inner mt-2">
                             <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Business Name *</label><input type="text" id="ld-company" required class="w-full px-4 py-3 text-sm bg-black/60 font-bold border-amber-500/30"></div>
                             <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Owner / Contact Name *</label><input type="text" id="ld-owner" required class="w-full px-4 py-3 text-sm bg-black/60"></div>
-                            <div class="grid grid-cols-2 gap-3">
-                                <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Phone No. *</label><input type="tel" id="ld-phone" required class="w-full px-4 py-3 text-sm bg-black/60 font-mono"></div>
-                                <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Est. Value (₹) *</label><input type="number" id="ld-value" required min="0" class="w-full px-4 py-3 text-sm font-mono bg-black/60 border-emerald-500/30"></div>
-                            </div>
-                            <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Primary Service Interest *</label>
+                            <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Phone No. *</label><input type="tel" id="ld-phone" required class="w-full px-4 py-3 text-sm bg-black/60 font-mono"></div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Primary Service Interest *</label>
                                 <select id="ld-service" required class="w-full px-4 py-3 text-sm bg-black/60 text-amber-300 font-bold">
-                                    <option value="">-- Select Service --</option><option value="Social Media">Social Media</option><option value="Web Development">Web Development</option><option value="Paid Ads">Paid Ads (Meta/Google)</option><option value="SEO Optimization">SEO Optimization</option><option value="Full Digital Makeover">Full Digital Makeover</option>
+                                    <option value="">-- Select Service --</option>
+                                    <option value="Social Media">Social Media Management (SMM)</option>
+                                    <option value="Web Dev">Web Development</option>
+                                    <option value="Paid Ads">Paid Ads (Meta/Google)</option>
+                                    <option value="SEO">SEO & Ranking</option>
+                                    <option value="Complete Overhaul">Complete Digital Makeover</option>
+                                    <option value="Undecided">Undecided / Exploring</option>
                                 </select>
                             </div>
-                            <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Full Address *</label><textarea id="ld-address" required rows="2" class="w-full px-4 py-3 text-sm bg-black/60 resize-none"></textarea></div>
-                            <button type="submit" id="btn-submit-lead" class="btn-checkin w-full py-4 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-2 mt-4 shadow-lg shadow-emerald-500/20">
-                                <i class="fa-solid fa-lock text-lg"></i> Lock Territory
+                            <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Physical Address / Area *</label><textarea id="ld-address" required rows="2" class="w-full px-4 py-3 text-sm bg-black/60 resize-none"></textarea></div>
+                            <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Est. Deal Value (₹) *</label><input type="number" id="ld-value" required min="0" class="w-full px-4 py-3 text-sm font-mono bg-black/60 border-emerald-500/30"></div>
+                            <button type="submit" id="btn-submit-lead" class="btn-checkin w-full py-4 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-2 mt-2">
+                                <i class="fa-solid fa-thumbtack text-lg"></i> Lock Client
                             </button>
                         </form>
                     </div>
@@ -171,18 +203,17 @@
             <div id="tab-checkin" class="tab-content">
                 <div class="glass-card p-5 w-full border-t-2 border-emerald-500">
                     <div class="text-center mb-6 border-b border-white/10 pb-4">
-                        <div class="w-14 h-14 mx-auto bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center justify-center rounded-full text-2xl mb-3"><i class="fa-solid fa-location-crosshairs"></i></div>
-                        <h3 class="text-2xl font-bold text-white font-heading">Geofenced Check-In</h3>
+                        <h3 class="text-2xl font-bold text-white font-heading">Log Client Visit</h3>
                     </div>
                     <form id="form-checkin" class="space-y-4">
                         <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Select Store from Territory *</label>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Select Client *</label>
                             <select id="ci-lead-id" required class="w-full px-4 py-3.5 text-sm font-bold bg-black/50 border-emerald-500/30">
-                                <option value="">-- Loading Stores --</option>
+                                <option value="">-- No Stores Available --</option>
                             </select>
                         </div>
                         <div class="bg-black/40 border border-white/5 p-3 rounded-xl flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-lg shrink-0 flex items-center justify-center bg-blue-600/20 text-blue-400 border border-blue-500/30 cursor-pointer" onclick="fetchGPS()">
+                            <div class="w-10 h-10 rounded-lg shrink-0 flex items-center justify-center bg-blue-600/20 text-blue-400 border border-blue-500/30" onclick="fetchGPS()">
                                 <i class="fa-solid fa-satellite-dish"></i>
                             </div>
                             <div class="flex-1">
@@ -193,11 +224,15 @@
                             <div>
                                 <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Visit Outcome *</label>
                                 <select id="ci-outcome" required class="w-full px-3 py-3 text-sm font-bold bg-black/50">
-                                    <option value="Initial Meeting">Initial Meeting</option><option value="Follow-up">Follow-up</option><option value="In Negotiation">In Negotiation</option><option value="Closed Won">Closed Won</option><option value="Rejected">Rejected</option>
+                                    <option value="Initial Meeting">Initial Meeting</option>
+                                    <option value="Follow-up">Follow-up</option>
+                                    <option value="In Negotiation">In Negotiation</option>
+                                    <option value="Closed Won">Closed Won</option>
+                                    <option value="Rejected">Rejected</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Visual Proof</label>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Visual Proof (Opt)</label>
                                 <input type="file" id="ci-photo" accept="image/*" class="hidden">
                                 <input type="hidden" id="ci-photo-base64">
                                 <label for="ci-photo" id="ci-photo-label" class="w-full h-[46px] border border-dashed border-slate-500 rounded-xl flex items-center justify-center text-slate-400 text-xs bg-black/30 cursor-pointer hover:bg-white/5 transition-colors px-2">
@@ -205,8 +240,13 @@
                                 </label>
                             </div>
                         </div>
-                        <div><label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Field Notes</label><textarea id="ci-notes" rows="3" required class="w-full px-4 py-3 text-sm resize-none bg-black/50" placeholder="Details of the discussion..."></textarea></div>
-                        <button type="submit" id="btn-submit-checkin" class="btn-checkin w-full py-4 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-3 mt-2 shadow-lg shadow-emerald-500/20"><i class="fa-solid fa-cloud-arrow-up text-lg"></i> Push Visit Data</button>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Field Notes</label>
+                            <textarea id="ci-notes" rows="3" required class="w-full px-4 py-3 text-sm resize-none bg-black/50" placeholder="Discussed pricing..."></textarea>
+                        </div>
+                        <button type="submit" id="btn-submit-checkin" class="btn-checkin w-full py-4 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-3 mt-2">
+                            <i class="fa-solid fa-cloud-arrow-up text-lg"></i> Push Visit Data
+                        </button>
                     </form>
                 </div>
             </div>
@@ -214,169 +254,169 @@
             <!-- TAB: DETAILED LEDGER -->
             <div id="tab-ledger" class="tab-content">
                 <div class="glass-card p-5 w-full border-t-2 border-emerald-500">
-                    <h3 class="text-xl font-bold text-emerald-400 font-heading mb-4 border-b border-white/10 pb-3"><i class="fa-solid fa-wallet mr-2"></i> Earnings Ledger</h3>
+                    <h3 class="text-xl font-bold text-emerald-400 font-heading mb-4 border-b border-white/10 pb-3"><i class="fa-solid fa-wallet mr-2"></i> My Earnings Ledger</h3>
                     <div class="bg-black/40 border border-white/5 p-4 rounded-xl mb-5 flex justify-between items-center shadow-inner">
-                        <div><p class="text-[10px] text-slate-400 uppercase font-bold mb-1">Total Earned</p><p class="text-lg font-mono font-bold text-white" id="ledger-total-earned">₹0</p></div>
-                        <div class="text-right"><p class="text-[10px] text-purple-400 uppercase font-bold mb-1">Pending Balance</p><p class="text-xl font-mono font-black text-purple-400" id="ledger-pending">₹0</p></div>
+                        <div>
+                            <p class="text-[10px] text-slate-400 uppercase font-bold mb-1">Total Earned</p>
+                            <p class="text-lg font-mono font-bold text-white" id="ledger-total-earned">₹0</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-[10px] text-slate-400 uppercase font-bold mb-1">Paid Out</p>
+                            <p class="text-lg font-mono font-bold text-slate-300" id="ledger-total-paid">₹0</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] text-purple-400 uppercase font-bold mb-1">Pending Clearance</p>
+                            <p class="text-xl font-mono font-black text-purple-400 bg-purple-500/10 px-2 py-1 rounded" id="ledger-pending">₹0</p>
+                        </div>
                     </div>
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Closed Won Deals Breakdown</h4>
                     <div id="ledger-deals-body" class="space-y-2"></div>
                 </div>
             </div>
-            
-            <!-- MENU TABS -->
+
+            <!-- TAB: RATES -->
             <div id="tab-rates" class="tab-content">
-                <div class="text-center mb-6"><h3 class="text-2xl font-bold text-white font-heading tracking-tight"><i class="fa-solid fa-tags text-amber-500 mr-2"></i> Agency Rate List</h3></div>
-                <div id="rate-list-body" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+                <div class="text-center mb-6">
+                    <h3 class="text-2xl font-bold text-white font-heading tracking-tight"><i class="fa-solid fa-tags text-amber-500 mr-2"></i> Agency Rate List</h3>
+                    <p class="text-xs text-slate-400 mt-1">Official pricing guidelines from HQ.</p>
+                </div>
+                <div id="rate-list-body" class="grid grid-cols-1 gap-4"></div>
             </div>
+
+            <!-- TAB: RANK -->
             <div id="tab-rank" class="tab-content">
                 <div class="glass-card p-5 w-full border-t-2 border-purple-500">
                     <div class="flex justify-between items-end mb-6 border-b border-white/10 pb-4">
-                        <div><h3 class="text-xl font-bold text-white font-heading tracking-tight"><i class="fa-solid fa-trophy text-amber-400 mr-2"></i> Leaderboard</h3></div>
-                        <div class="bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 rounded-lg text-center"><p class="text-[8px] text-purple-400 font-bold uppercase tracking-widest">Your Rank</p><p class="text-xl font-black text-white font-mono" id="my-rank-display">#--</p></div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white font-heading tracking-tight"><i class="fa-solid fa-trophy text-amber-400 mr-2"></i> Leaderboard</h3>
+                            <p class="text-[10px] text-slate-400 uppercase tracking-widest mt-1">Agency Rankings</p>
+                        </div>
+                        <div class="bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 rounded-lg text-center">
+                            <p class="text-[8px] text-purple-400 font-bold uppercase tracking-widest">Your Rank</p>
+                            <p class="text-xl font-black text-white font-mono" id="my-rank-display">#--</p>
+                        </div>
                     </div>
                     <div id="leaderboard-body" class="space-y-2"></div>
                 </div>
             </div>
+
+            <!-- TAB: DEMOS -->
             <div id="tab-demos" class="tab-content">
-                <div class="text-center mb-6"><h3 class="text-2xl font-bold text-white font-heading tracking-tight"><i class="fa-solid fa-laptop-code text-blue-500 mr-2"></i> Pitch Demos</h3></div>
+                <div class="text-center mb-6">
+                    <h3 class="text-2xl font-bold text-white font-heading tracking-tight"><i class="fa-solid fa-laptop-code text-blue-500 mr-2"></i> Pitch Demos</h3>
+                    <p class="text-xs text-slate-400 mt-1">Live agency portfolio.</p>
+                </div>
                 <div id="demo-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
             </div>
+
+            <!-- TAB: SUPPORT -->
             <div id="tab-support" class="tab-content">
                 <div class="glass-card p-5 w-full border-t-2 border-rose-500">
-                    <h3 class="text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3"><i class="fa-solid fa-headset mr-2 text-rose-400"></i> HR & Support Desk</h3>
+                    <h3 class="text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3"><i class="fa-solid fa-headset mr-2 text-rose-400"></i> Field Support & HR</h3>
                     <form id="form-support" class="space-y-4">
-                        <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Request Type *</label><select id="sup-type" required class="w-full px-4 py-3 text-sm bg-black/60 font-bold"><option value="Leave Application">Leave Application</option><option value="Technical Issue">App/Technical Issue</option><option value="Client Dispute">Client Dispute</option><option value="Other">Other</option></select></div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Request Type *</label>
+                            <select id="sup-type" required class="w-full px-4 py-3 text-sm bg-black/60 font-bold">
+                                <option value="Leave Application">Leave Application</option>
+                                <option value="Technical Issue">App/Technical Issue</option>
+                                <option value="Client Dispute">Client Dispute</option>
+                                <option value="Other Request">Other Request</option>
+                            </select>
+                        </div>
                         <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Subject *</label><input type="text" id="sup-subject" required class="w-full px-4 py-3 text-sm bg-black/60"></div>
                         <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Details *</label><textarea id="sup-details" rows="4" required class="w-full px-4 py-3 text-sm resize-none bg-black/60"></textarea></div>
                         <button type="submit" id="btn-submit-support" class="w-full bg-rose-600 hover:bg-rose-500 text-white py-3.5 rounded-xl text-sm font-bold uppercase tracking-widest mt-2"><i class="fa-solid fa-paper-plane mr-2"></i> Submit Request</button>
                     </form>
                 </div>
             </div>
+
         </div>
 
         <!-- BOTTOM NAVIGATION -->
         <nav class="flex-none fixed bottom-0 w-full glass-panel border-t border-white/10 flex justify-between items-center z-40 px-2 pb-safe pt-1 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]" style="padding-bottom: env(safe-area-inset-bottom);">
             <button onclick="switchTab('dashboard')" class="nav-btn active" id="mob-nav-dashboard"><i class="fa-solid fa-compass"></i><span>Dash</span></button>
             <button onclick="switchTab('hunt')" class="nav-btn" id="mob-nav-hunt"><i class="fa-solid fa-crosshairs"></i><span>Hunt</span></button>
+            
             <button onclick="switchTab('checkin')" class="nav-btn relative flex-col items-center justify-start h-[72px] px-2" id="mob-nav-checkin">
                 <div class="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 text-white flex items-center justify-center shadow-[0_5px_15px_rgba(16,185,129,0.5)] border-4 border-[#020617] absolute -top-5 transform transition-transform active:scale-95">
                     <i class="fa-solid fa-location-dot !text-xl !transform-none !text-white"></i>
                 </div>
                 <span class="mt-9 text-emerald-400">Log</span>
             </button>
+
             <button onclick="switchTab('ledger')" class="nav-btn" id="mob-nav-ledger"><i class="fa-solid fa-wallet"></i><span>Ledger</span></button>
             <button onclick="toggleMenu()" class="nav-btn text-slate-400" id="mob-nav-menu"><i class="fa-solid fa-bars"></i><span>Menu</span></button>
         </nav>
     </div>
 
-    <!-- MENU SLIDE UP -->
+    <!-- MODAL: MENU SLIDE UP -->
     <div id="menu-overlay" class="menu-overlay" onclick="if(event.target === this) toggleMenu()">
         <div class="menu-sheet flex flex-col gap-3">
             <div class="w-12 h-1 bg-white/20 rounded-full mx-auto mb-2"></div>
-            
             <button onclick="toggleMenu(); openLogsModal()" class="w-full bg-white/5 hover:bg-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors">
                 <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center text-lg"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                <div class="text-left"><p class="text-sm font-bold text-white">My Activity Logs</p><p class="text-[10px] text-slate-400">Historical Timeline</p></div>
+                <div class="text-left"><p class="text-sm font-bold text-white">My Activity Logs</p><p class="text-[10px] text-slate-400">History & Timeline</p></div>
             </button>
-            <div class="grid grid-cols-2 gap-3 mt-2">
-                <button onclick="toggleMenu(); switchTab('rates')" class="bg-white/5 hover:bg-white/10 p-3 rounded-xl flex flex-col items-center gap-2"><i class="fa-solid fa-tags text-amber-500 text-lg"></i><span class="text-xs font-bold text-white">Rate List</span></button>
-                <button onclick="toggleMenu(); switchTab('rank')" class="bg-white/5 hover:bg-white/10 p-3 rounded-xl flex flex-col items-center gap-2"><i class="fa-solid fa-trophy text-purple-400 text-lg"></i><span class="text-xs font-bold text-white">Leaderboard</span></button>
-                <button onclick="toggleMenu(); switchTab('demos')" class="bg-white/5 hover:bg-white/10 p-3 rounded-xl flex flex-col items-center gap-2"><i class="fa-solid fa-laptop-code text-blue-400 text-lg"></i><span class="text-xs font-bold text-white">Pitch Demos</span></button>
-                <button onclick="toggleMenu(); switchTab('support')" class="bg-white/5 hover:bg-white/10 p-3 rounded-xl flex flex-col items-center gap-2"><i class="fa-solid fa-headset text-rose-400 text-lg"></i><span class="text-xs font-bold text-white">HR Support</span></button>
-            </div>
-            <button onclick="logout()" class="w-full mt-3 p-4 flex items-center justify-center gap-2 text-rose-400 font-bold text-sm bg-rose-500/10 rounded-xl hover:bg-rose-500/20 transition-colors">
-                <i class="fa-solid fa-power-off"></i> Disconnect Shift & Sign Out
+            <button onclick="toggleMenu(); switchTab('rates')" class="w-full bg-white/5 hover:bg-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors">
+                <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-500 flex items-center justify-center text-lg"><i class="fa-solid fa-tags"></i></div>
+                <div class="text-left"><p class="text-sm font-bold text-white">Rate List</p><p class="text-[10px] text-slate-400">Official HQ Pricing</p></div>
+            </button>
+            <button onclick="toggleMenu(); switchTab('rank')" class="w-full bg-white/5 hover:bg-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors">
+                <div class="w-10 h-10 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg"><i class="fa-solid fa-trophy"></i></div>
+                <div class="text-left"><p class="text-sm font-bold text-white">Leaderboard</p><p class="text-[10px] text-slate-400">Agency Rankings</p></div>
+            </button>
+            <button onclick="toggleMenu(); switchTab('demos')" class="w-full bg-white/5 hover:bg-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors">
+                <div class="w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-lg"><i class="fa-solid fa-laptop-code"></i></div>
+                <div class="text-left"><p class="text-sm font-bold text-white">Pitch Demos</p><p class="text-[10px] text-slate-400">Live Portfolios</p></div>
+            </button>
+            <button onclick="toggleMenu(); switchTab('support')" class="w-full bg-white/5 hover:bg-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors">
+                <div class="w-10 h-10 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center text-lg"><i class="fa-solid fa-headset"></i></div>
+                <div class="text-left"><p class="text-sm font-bold text-white">HR & Support</p><p class="text-[10px] text-slate-400">Leave & Tickets</p></div>
+            </button>
+            <button onclick="logout()" class="w-full mt-2 p-4 flex items-center justify-center gap-2 text-rose-400 font-bold text-sm bg-rose-500/10 rounded-xl">
+                <i class="fa-solid fa-power-off"></i> Sign Out
             </button>
         </div>
     </div>
 
-    <!-- ENTERPRISE CLOSING TOOLKIT MODAL -->
-    <div id="modal-closing" class="modal bg-black/90 backdrop-blur-md" onclick="if(event.target === this) closeModal('modal-closing')">
-        <div class="modal-content bg-slate-900 rounded-2xl border border-amber-500/30 shadow-2xl p-6 relative flex flex-col custom-scrollbar">
-            <button onclick="closeModal('modal-closing')" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-white/5 w-8 h-8 rounded-full z-10"><i class="fa-solid fa-xmark"></i></button>
-            <h3 class="text-xl font-bold text-amber-400 mb-1"><i class="fa-solid fa-briefcase mr-2"></i> Closing Toolkit</h3>
-            <p class="text-xs text-slate-400 font-mono mb-4 border-b border-white/10 pb-4 truncate" id="close-company-name">Client Name</p>
+    <!-- MODAL: RECORD PAYMENT -->
+    <div id="modal-payment" class="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center modal p-4 z-[150]">
+        <div class="modal-content w-full max-w-sm bg-slate-900 rounded-2xl border border-white/10 shadow-2xl p-6 relative">
+            <button onclick="closeModal('modal-payment')" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-white/5 w-8 h-8 rounded-full"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-xl font-bold text-white mb-1"><i class="fa-solid fa-indian-rupee-sign text-emerald-400 mr-2"></i> Log Payment</h3>
+            <p class="text-xs text-slate-400 mb-4 pb-4 border-b border-white/10" id="pay-company-name">Client Name</p>
             
-            <input type="hidden" id="close-lead-id">
-            <input type="hidden" id="close-lead-val">
-            <input type="hidden" id="close-lead-phone">
-
-            <div class="space-y-3">
-                <button onclick="generateQuotePDF()" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors text-left group">
-                    <div class="w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-lg shrink-0 group-hover:scale-110 transition-transform"><i class="fa-solid fa-file-pdf"></i></div>
-                    <div><p class="text-sm font-bold text-white">1. Generate PDF Quote</p><p class="text-[10px] text-slate-400">Instantly build branded proposal</p></div>
-                </button>
-                <button onclick="openSignaturePad()" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors text-left group">
-                    <div class="w-10 h-10 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg shrink-0 group-hover:scale-110 transition-transform"><i class="fa-solid fa-file-signature"></i></div>
-                    <div><p class="text-sm font-bold text-white">2. Digital E-Sign MSA</p><p class="text-[10px] text-slate-400">Client signs legally on screen</p></div>
-                </button>
-                <button onclick="openPaymentQR()" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors text-left group">
-                    <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center text-lg shrink-0 group-hover:scale-110 transition-transform"><i class="fa-solid fa-qrcode"></i></div>
-                    <div><p class="text-sm font-bold text-white">3. Collect Payment (QR)</p><p class="text-[10px] text-slate-400">Scan to pay instant advance</p></div>
-                </button>
-            </div>
+            <form id="form-payment" class="space-y-4">
+                <input type="hidden" id="pay-lead-id">
+                <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Amount Collected (₹) *</label><input type="number" id="pay-amount" required min="1" class="w-full px-4 py-3 text-sm font-mono bg-black/60"></div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Payment Method *</label>
+                    <select id="pay-method" required class="w-full px-4 py-3 text-sm bg-black/60 font-bold">
+                        <option value="UPI">UPI</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Bank Transfer">Bank Transfer / NEFT</option>
+                        <option value="Cheque">Cheque</option>
+                    </select>
+                </div>
+                <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Reference ID / Txn No. (Opt)</label><input type="text" id="pay-ref" class="w-full px-4 py-3 text-sm font-mono bg-black/60"></div>
+                <button type="submit" id="btn-submit-payment" class="btn-checkin w-full py-4 rounded-xl text-sm font-bold uppercase tracking-widest mt-2">Submit Payment</button>
+            </form>
         </div>
     </div>
 
-    <!-- E-SIGNATURE MODAL -->
-    <div id="modal-esign" class="modal bg-black/95 backdrop-blur-md">
-        <div class="modal-content bg-slate-900 rounded-2xl border border-purple-500/30 shadow-2xl p-5 relative">
-            <h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-pen-nib text-purple-400 mr-2"></i> Client Signature</h3>
-            <p class="text-[10px] text-slate-400 mb-4">By signing, you agree to Feasibility Media's terms of service.</p>
-            <canvas id="sig-canvas"></canvas>
-            <div class="flex gap-2 mt-4">
-                <button onclick="clearCanvas()" class="w-1/3 bg-slate-800 text-slate-300 py-3 rounded-xl text-xs font-bold uppercase hover:bg-slate-700 transition-colors">Clear</button>
-                <button onclick="saveSignature()" class="w-2/3 bg-purple-600 text-white py-3 rounded-xl text-xs font-bold uppercase hover:bg-purple-500 transition-colors shadow-lg shadow-purple-500/30">Confirm & Save</button>
-            </div>
-            <button onclick="closeModal('modal-esign')" class="w-full mt-3 py-2 text-[10px] text-slate-500 font-bold uppercase hover:text-white">Cancel</button>
-        </div>
-    </div>
-
-    <!-- PAYMENT & QR MODAL -->
-    <div id="modal-qr" class="modal bg-black/95 backdrop-blur-md overflow-y-auto custom-scrollbar">
-        <div class="modal-content bg-slate-900 rounded-2xl border border-emerald-500/30 shadow-2xl p-5 relative flex flex-col items-center my-4">
-            <h3 class="text-lg font-bold text-white mb-1"><i class="fa-solid fa-qrcode text-emerald-400 mr-2"></i> Receive Advance</h3>
-            <p class="text-[10px] text-emerald-400 font-mono mb-4 w-full text-center" id="qr-amount">Amount: ₹0</p>
-            
-            <div id="qrcode-container"></div>
-            
-            <div class="w-full border-t border-white/10 pt-4 mt-2">
-                <h4 class="text-xs font-bold text-slate-300 mb-3">Log Transaction Details</h4>
-                <form id="form-payment" class="space-y-3 w-full text-left">
-                    <div class="flex gap-2">
-                        <div class="w-1/2">
-                            <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Method *</label>
-                            <select id="pay-method" required class="w-full px-3 py-2.5 text-xs bg-black/60 font-bold">
-                                <option value="UPI">UPI / QR</option><option value="Cash">Cash</option><option value="Bank Transfer">NEFT/RTGS</option><option value="Cheque">Cheque</option>
-                            </select>
-                        </div>
-                        <div class="w-1/2">
-                            <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Amount (₹) *</label>
-                            <input type="number" id="pay-amount" required class="w-full px-3 py-2.5 text-xs font-mono bg-black/60">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Reference ID / Txn No.</label>
-                        <input type="text" id="pay-ref" class="w-full px-3 py-2.5 text-xs font-mono bg-black/60" placeholder="Optional">
-                    </div>
-                    <button type="submit" id="btn-submit-payment" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-xl text-xs font-bold uppercase mt-2 shadow-lg shadow-emerald-500/30 transition-all">Submit & Close Deal</button>
-                </form>
-            </div>
-            <button onclick="closeModal('modal-qr')" class="w-full mt-3 py-2 text-[10px] text-slate-500 font-bold uppercase hover:text-white">Cancel</button>
-        </div>
-    </div>
-
-    <!-- MY LOGS MODAL -->
-    <div id="modal-logs" class="modal bg-black/95 backdrop-blur-md">
-        <div class="modal-content w-full max-w-lg bg-slate-900 rounded-2xl border border-white/10 shadow-2xl p-6 relative flex flex-col h-[80vh]">
+    <!-- MODAL: MY LOGS -->
+    <div id="modal-logs" class="fixed inset-0 bg-black/95 backdrop-blur-md flex items-center justify-center modal p-4 z-[150]">
+        <div class="modal-content w-full max-w-lg bg-slate-900 rounded-2xl border border-white/10 shadow-2xl p-6 relative max-h-[85vh] flex flex-col">
             <button onclick="closeModal('modal-logs')" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-white/5 w-8 h-8 rounded-full z-10"><i class="fa-solid fa-xmark"></i></button>
-            <h3 class="text-xl font-bold text-white mb-4 border-b border-white/10 pb-4"><i class="fa-solid fa-clock-rotate-left text-emerald-400 mr-2"></i> Activity Logs</h3>
-            <div class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-3" id="logs-body"></div>
+            <h3 class="text-xl font-bold text-white mb-4 border-b border-white/10 pb-4"><i class="fa-solid fa-clock-rotate-left text-emerald-400 mr-2"></i> My Activity Logs</h3>
+            <div class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-3" id="logs-body">
+                <!-- Filled by JS -->
+            </div>
         </div>
     </div>
 
     <!-- TOAST NOTIFICATION -->
-    <div id="toast" class="fixed top-4 left-4 right-4 text-white px-5 py-4 rounded-xl shadow-[0_20px_40px_rgba(0,0,0,0.8)] font-bold text-sm transform -translate-y-32 opacity-0 transition-all duration-400 z-[400] flex items-center gap-3 border border-white/10 backdrop-blur-md bg-emerald-600/95 text-center justify-center">
+    <div id="toast" class="fixed top-4 left-4 right-4 text-white px-5 py-4 rounded-xl shadow-[0_20px_40px_rgba(0,0,0,0.8)] font-bold text-sm transform -translate-y-32 opacity-0 transition-all duration-400 z-[300] flex items-center gap-3 border border-white/10 backdrop-blur-md bg-emerald-600/95 text-center justify-center">
         <i class="fa-solid fa-circle-check text-lg"></i> <span id="toast-msg">Success</span>
     </div>
 
@@ -385,50 +425,51 @@
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, getDocs, addDoc, onSnapshot, doc, updateDoc, arrayUnion, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // MATH & ALGORITHMS (Defensive Programming added)
+        // --- FUZZY MATCH LOGIC ---
+        function getEditDistance(a, b) {
+            if(a.length === 0) return b.length; if(b.length === 0) return a.length; 
+            var matrix = []; for(let i = 0; i <= b.length; i++) { matrix[i] = [i]; } for(let j = 0; j <= a.length; j++) { matrix[0][j] = j; }
+            for(let i = 1; i <= b.length; i++){
+                for(let j = 1; j <= a.length; j++){
+                    if(b.charAt(i-1) == a.charAt(j-1)) { matrix[i][j] = matrix[i-1][j-1]; } 
+                    else { matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, Math.min(matrix[i][j-1] + 1, matrix[i-1][j] + 1)); }
+                }
+            } return matrix[b.length][a.length];
+        }
         function similarity(s1, s2) {
-            if(!s1 || !s2) return 0;
             let longer = s1.toLowerCase(); let shorter = s2.toLowerCase();
             if (s1.length < s2.length) { longer = s2.toLowerCase(); shorter = s1.toLowerCase(); }
             let longerLength = longer.length; if (longerLength == 0) return 1.0;
-            var matrix = []; for(let i = 0; i <= shorter.length; i++) { matrix[i] = [i]; } for(let j = 0; j <= longer.length; j++) { matrix[0][j] = j; }
-            for(let i = 1; i <= shorter.length; i++){
-                for(let j = 1; j <= longer.length; j++){
-                    if(shorter.charAt(i-1) == longer.charAt(j-1)) { matrix[i][j] = matrix[i-1][j-1]; } 
-                    else { matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, Math.min(matrix[i][j-1] + 1, matrix[i-1][j] + 1)); }
-                }
-            }
-            return (longerLength - matrix[shorter.length][longer.length]) / parseFloat(longerLength);
+            return (longerLength - getEditDistance(longer, shorter)) / parseFloat(longerLength);
         }
 
-        function getDistanceFromLatLonInMeters(lat1, lon1, lat2, lon2) {
-            var R = 6371e3; var dLat = (lat2-lat1) * (Math.PI/180); var dLon = (lon2-lon1) * (Math.PI/180);
-            var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * (Math.PI/180)) * Math.cos(lat2 * (Math.PI/180)) * Math.sin(dLon/2) * Math.sin(dLon/2);
-            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); return R * c;
-        }
-
-        let db, auth; const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        let db, auth;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        
         let activeUserRecord = null; let userCommissionRate = 0.15; 
         let myLeads = [], allAgencyLeads = [];
         let unsubscribeLeads = null, unsubscribeUser = null, unsubscribeAttendance = null, unsubscribeNotifs = null, unsubscribeDemos = null, unsubscribeRates = null;
         let activeShiftId = null;
 
-        // UI CORE
+        // UI HELPERS
         window.switchTab = (tabId) => {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
+            
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-            const mobBtn = document.getElementById('mob-nav-' + tabId); if(mobBtn) mobBtn.classList.add('active');
+            const mobBtn = document.getElementById('mob-nav-' + tabId);
+            if(mobBtn) mobBtn.classList.add('active');
+
             if(tabId === 'hunt') { document.getElementById('hunt-search').value = ''; document.getElementById('hunt-search').dispatchEvent(new Event('input')); }
             if(tabId === 'checkin') { fetchGPS(); }
         };
 
         window.toggleMenu = () => { document.getElementById('menu-overlay').classList.toggle('active'); };
         window.closeModal = (id) => { document.getElementById(id).classList.remove('active'); };
-        
+
         window.showToast = (msg, isError=false) => {
             const toast = document.getElementById('toast'); const icon = toast.querySelector('i');
-            toast.className = `fixed top-4 left-4 right-4 text-white px-5 py-4 rounded-xl shadow-[0_20px_40px_rgba(0,0,0,0.8)] font-bold text-sm transform translate-y-0 opacity-100 transition-all duration-400 z-[400] flex items-center gap-3 border border-white/10 backdrop-blur-md justify-center ${isError ? 'bg-red-600/95' : 'bg-emerald-600/95'}`;
+            toast.className = `fixed top-4 left-4 right-4 text-white px-5 py-4 rounded-xl shadow-[0_20px_40px_rgba(0,0,0,0.8)] font-bold text-sm transform translate-y-0 opacity-100 transition-all duration-400 z-[300] flex items-center gap-3 border border-white/10 backdrop-blur-md justify-center ${isError ? 'bg-red-600/95' : 'bg-emerald-600/95'}`;
             document.getElementById('toast-msg').innerText = msg; icon.className = isError ? "fa-solid fa-circle-exclamation text-xl" : "fa-solid fa-circle-check text-xl";
             setTimeout(() => { toast.classList.replace('translate-y-0', '-translate-y-32'); toast.classList.replace('opacity-100', 'opacity-0'); }, 3000);
         };
@@ -436,11 +477,11 @@
         // AUTO GPS & CAMERA
         window.fetchGPS = () => {
             const locInput = document.getElementById('ci-location');
-            if(locInput.value !== "" && !locInput.value.includes("Locating") && !locInput.value.includes("Acquiring")) return; 
+            if(locInput.value !== "" && !locInput.value.includes("Locating")) return; 
             locInput.value = "Acquiring satellites...";
             if ("geolocation" in navigator) {
                 navigator.geolocation.getCurrentPosition((pos) => { locInput.value = `${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}`; }, 
-                (err) => { locInput.value = "23.3441° N, 85.3096° E (Bypass)"; showToast("GPS denied, using bypass", true); }, { timeout: 5000, enableHighAccuracy: true });
+                (err) => { locInput.value = "23.3441° N, 85.3096° E (Zone Fallback)"; showToast("GPS denied, using zone default", true); }, { timeout: 5000, enableHighAccuracy: true });
             } else { setTimeout(() => locInput.value = "23.3441° N, 85.3096° E", 800); }
         };
 
@@ -455,111 +496,12 @@
                     const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; let width = img.width; let height = img.height;
                     if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
                     canvas.width = width; canvas.height = height; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
-                    const dataUrl = canvas.toDataURL('image/jpeg', 0.6); document.getElementById('ci-photo-base64').value = dataUrl;
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.6); 
+                    document.getElementById('ci-photo-base64').value = dataUrl;
                     labelSpan.innerText = "Photo Attached"; icon.className = "fa-solid fa-image text-emerald-400 mr-2"; document.getElementById('ci-photo-label').classList.add('border-emerald-500/50', 'bg-emerald-500/10', 'text-emerald-400');
                 }
             };
         });
-
-        // SMART ROUTING
-        window.generateSmartRoute = () => {
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition((pos) => { 
-                    const origin = `${pos.coords.latitude},${pos.coords.longitude}`;
-                    const activeLeads = myLeads.filter(l => l.status !== 'Closed Won' && l.status !== 'Rejected' && l.address);
-                    if(activeLeads.length === 0) { showToast("No active stores to route."); return; }
-                    const waypoints = activeLeads.slice(0, 8).map(l => encodeURIComponent(l.address)).join('|');
-                    window.open(`https://www.google.com/maps/dir/?api=1&origin=${origin}&waypoints=${waypoints}&travelmode=driving`, '_blank');
-                }, () => { showToast("Need GPS for routing", true); });
-            } else { showToast("GPS not supported", true); }
-        };
-
-        // ENTERPRISE CLOSING TOOLKIT
-        window.openClosingKit = (id, company, val, phone) => {
-            document.getElementById('close-lead-id').value = id; document.getElementById('close-lead-val').value = val; document.getElementById('close-lead-phone').value = phone;
-            document.getElementById('close-company-name').innerText = company; document.getElementById('modal-closing').classList.add('active');
-        };
-
-        window.generateQuotePDF = () => {
-            const { jsPDF } = window.jspdf; const doc = new jsPDF();
-            const company = document.getElementById('close-company-name').innerText; const val = document.getElementById('close-lead-val').value;
-            
-            doc.setFontSize(22); doc.setTextColor(245, 158, 11); doc.text("Feasibility Media", 20, 20);
-            doc.setFontSize(14); doc.setTextColor(50, 50, 50); doc.text("Official Service Proposal", 20, 30);
-            doc.line(20, 35, 190, 35);
-            doc.setFontSize(12); doc.setTextColor(0, 0, 0); doc.text(`Prepared For: ${company}`, 20, 50); doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 60);
-            doc.text("Services Included in this Package:", 20, 80); doc.text("- Comprehensive Digital Marketing Strategy", 30, 90); doc.text("- Professional Web Development & Hosting", 30, 100); doc.text("- SEO Optimization & Local Ranking", 30, 110);
-            doc.setFontSize(16); doc.setTextColor(16, 185, 129); doc.text(`Total Investment Required: INR ${Number(val).toLocaleString('en-IN')}`, 20, 140);
-            doc.setFontSize(10); doc.setTextColor(100, 100, 100); doc.text("This quote is valid for 7 days. Generated automatically via Feasibility Field Engine.", 20, 280);
-            doc.save(`Proposal_${company.replace(/\s+/g, '_')}.pdf`); showToast("PDF Quote Downloaded!");
-        };
-
-        let canvas, ctx, isDrawing = false;
-        window.openSignaturePad = () => {
-            document.getElementById('modal-closing').classList.remove('active'); document.getElementById('modal-esign').classList.add('active');
-            if(!canvas) {
-                canvas = document.getElementById('sig-canvas'); ctx = canvas.getContext('2d');
-                setTimeout(() => { const rect = canvas.getBoundingClientRect(); canvas.width = rect.width; canvas.height = rect.height; ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.strokeStyle = '#fff'; }, 300); 
-                const startDraw = (e) => { isDrawing = true; ctx.beginPath(); ctx.moveTo(getX(e), getY(e)); e.preventDefault(); };
-                const draw = (e) => { if(!isDrawing) return; ctx.lineTo(getX(e), getY(e)); ctx.stroke(); e.preventDefault(); };
-                const stopDraw = () => { isDrawing = false; };
-                const getX = (e) => e.touches ? e.touches[0].clientX - canvas.getBoundingClientRect().left : e.offsetX;
-                const getY = (e) => e.touches ? e.touches[0].clientY - canvas.getBoundingClientRect().top : e.offsetY;
-                canvas.addEventListener('mousedown', startDraw); canvas.addEventListener('mousemove', draw); canvas.addEventListener('mouseup', stopDraw);
-                canvas.addEventListener('touchstart', startDraw, {passive:false}); canvas.addEventListener('touchmove', draw, {passive:false}); canvas.addEventListener('touchend', stopDraw);
-            } else { clearCanvas(); }
-        };
-
-        window.clearCanvas = () => { if(ctx) ctx.clearRect(0, 0, canvas.width, canvas.height); };
-        
-        window.saveSignature = async () => {
-            const id = document.getElementById('close-lead-id').value; const b64 = canvas.toDataURL('image/png');
-            try {
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), { history: arrayUnion({ note: `[CONTRACT SIGNED] Master Service Agreement Executed.`, date: new Date().toISOString(), user: (activeUserRecord?.name||'Rep') }) });
-                showToast("Contract Legally Bound & Saved!"); closeModal('modal-esign');
-            } catch(e) { showToast("Error saving", true); }
-        };
-
-        let qrCodeObj = null;
-        window.openPaymentQR = () => {
-            document.getElementById('modal-closing').classList.remove('active');
-            const val = document.getElementById('close-lead-val').value;
-            document.getElementById('qr-amount').innerText = `Amount: ₹${Number(val).toLocaleString('en-IN')}`; document.getElementById('pay-amount').value = val;
-            
-            const qrContainer = document.getElementById('qrcode-container'); qrContainer.innerHTML = ""; 
-            const upiString = `upi://pay?pa=feasibility@upi&pn=Feasibility+Media&am=${val}&cu=INR`;
-            qrCodeObj = new QRCode(qrContainer, { text: upiString, width: 160, height: 160, colorDark : "#000000", colorLight : "#ffffff" });
-            
-            document.getElementById('modal-qr').classList.add('active');
-        };
-
-        document.getElementById('form-payment').addEventListener('submit', async (e) => {
-            e.preventDefault(); const btn = document.getElementById('btn-submit-payment'); btn.disabled = true; btn.innerHTML = 'Processing...';
-            const id = document.getElementById('close-lead-id').value; const amt = document.getElementById('pay-amount').value; const method = document.getElementById('pay-method').value; const ref = document.getElementById('pay-ref').value;
-            try {
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), {
-                    status: 'Closed Won',
-                    history: arrayUnion({ note: `[PAYMENT] Collected ₹${amt} via ${method} ${ref ? `(Ref: ${ref})` : ''}. Deal Closed.`, date: new Date().toISOString(), user: (activeUserRecord?.name||'Rep') })
-                });
-                showToast("Payment Logged. Deal Won!"); document.getElementById('form-payment').reset(); closeModal('modal-qr'); switchTab('dashboard');
-            } catch(e) { showToast("Error", true); } finally { btn.disabled = false; btn.innerHTML = 'Submit & Close Deal'; }
-        });
-
-        // ACTIVITY LOGS
-        window.openLogsModal = () => {
-            let logs = [];
-            myLeads.forEach(l => { if(l.history) { l.history.forEach(h => { if(h && h.user === (activeUserRecord?.name||'Rep')) { logs.push({ ...h, company: l.company }); } }); } });
-            logs.sort((a,b) => new Date(b.date) - new Date(a.date));
-            document.getElementById('logs-body').innerHTML = logs.map(l => {
-                const isPay = (l.note||'').includes('[PAYMENT]'); const isSign = (l.note||'').includes('[CONTRACT SIGNED]'); const isCheckin = (l.note||'').includes('Check-in');
-                let icon = '<i class="fa-solid fa-thumbtack text-amber-500"></i>'; let borderClass = 'border-amber-500/30';
-                if(isPay) { icon = '<i class="fa-solid fa-indian-rupee-sign text-emerald-500"></i>'; borderClass = 'border-emerald-500/50 bg-emerald-900/10'; }
-                else if(isSign) { icon = '<i class="fa-solid fa-file-signature text-purple-400"></i>'; borderClass = 'border-purple-500/30 bg-purple-900/10'; }
-                else if(isCheckin) { icon = '<i class="fa-solid fa-location-dot text-blue-400"></i>'; borderClass = 'border-blue-500/30'; }
-                return `<div class="bg-black/40 p-3 rounded-xl border border-l-4 ${borderClass} flex items-start gap-3"><div class="mt-1">${icon}</div><div><p class="font-bold text-white text-sm leading-tight">${l.company||'Unknown'}</p><p class="text-[11px] text-slate-300 mt-1">${(l.note||'').replace('[PAYMENT]', '')}</p><p class="text-[9px] text-slate-500 font-mono mt-1">${new Date(l.date).toLocaleString()}</p></div></div>`;
-            }).join('') || '<p class="text-slate-500 text-center italic text-sm p-4">No activity found.</p>';
-            document.getElementById('modal-logs').classList.add('active');
-        };
 
         // INIT FIREBASE
         try {
@@ -567,10 +509,15 @@
             const app = initializeApp(fbConfig); db = getFirestore(app); auth = getAuth(app); signInAnonymously(auth).catch(() => {});
         } catch (e) { console.error(e); }
 
-        // PERSISTENT LOGIN
+        // AUTO-LOGIN CHECK
         window.onload = async () => {
-            const savedEmail = localStorage.getItem('field_email'); const savedPwd = localStorage.getItem('field_pwd');
-            if(savedEmail && savedPwd) { document.getElementById('login-email').value = savedEmail; document.getElementById('login-pwd').value = savedPwd; document.getElementById('btn-login').click(); }
+            const savedEmail = localStorage.getItem('field_email');
+            const savedPwd = localStorage.getItem('field_pwd');
+            if(savedEmail && savedPwd) {
+                document.getElementById('login-email').value = savedEmail;
+                document.getElementById('login-pwd').value = savedPwd;
+                document.getElementById('btn-login').click(); // Auto submit
+            }
         };
 
         // LOGIN SUBMIT
@@ -581,14 +528,24 @@
 
             try {
                 const snapshot = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'team_users')); let u = null;
-                snapshot.forEach(doc => { const d = doc.data(); if(d.email && d.email.toLowerCase() === email && d.password === pwd) u = { id: doc.id, ...d }; });
+                snapshot.forEach(doc => { const d = doc.data(); if(d.email.toLowerCase() === email && d.password === pwd) u = { id: doc.id, ...d }; });
 
                 if (u && u.status !== 'Suspended') {
                     activeUserRecord = u; userCommissionRate = Number(u.commission_rate) || 0.10; document.getElementById('kpi-rate-display').innerText = `Rate: ${userCommissionRate * 100}%`;
-                    localStorage.setItem('field_email', email); localStorage.setItem('field_pwd', pwd); 
-                    document.getElementById('login-screen').style.opacity = '0'; setTimeout(() => { document.getElementById('login-screen').style.display = 'none'; document.getElementById('app-screen').style.display = 'flex'; }, 300);
-                    initializeAppWorkspace(); showToast(`Active: ${u.name}`);
-                } else { document.getElementById('login-error').classList.remove('hidden'); document.getElementById('login-error').innerText = 'Invalid credentials'; btn.innerHTML = ogBtn; btn.disabled = false; }
+                    
+                    // SAVE PERSISTENT LOGIN
+                    localStorage.setItem('field_email', email);
+                    localStorage.setItem('field_pwd', pwd);
+
+                    document.getElementById('login-screen').style.opacity = '0';
+                    setTimeout(() => { document.getElementById('login-screen').style.display = 'none'; document.getElementById('app-screen').style.display = 'flex'; }, 300);
+                    
+                    initializeAppWorkspace();
+                    showToast(`Active: ${u.name}`);
+                } else {
+                    document.getElementById('login-error').classList.remove('hidden'); document.getElementById('login-error').innerText = 'Invalid credentials';
+                    btn.innerHTML = ogBtn; btn.disabled = false;
+                }
             } catch (e) { document.getElementById('login-error').innerText = "Network Error."; document.getElementById('login-error').classList.remove('hidden'); btn.innerHTML = ogBtn; btn.disabled = false; }
         });
 
@@ -596,16 +553,17 @@
             localStorage.removeItem('field_email'); localStorage.removeItem('field_pwd');
             if(unsubscribeLeads) unsubscribeLeads(); if(unsubscribeUser) unsubscribeUser(); if(unsubscribeAttendance) unsubscribeAttendance(); if(unsubscribeNotifs) unsubscribeNotifs(); if(unsubscribeDemos) unsubscribeDemos(); if(unsubscribeRates) unsubscribeRates();
             activeUserRecord = null; myLeads = []; allAgencyLeads = [];
-            document.getElementById('app-screen').style.display = 'none'; document.getElementById('login-screen').style.display = 'flex'; document.getElementById('login-screen').style.opacity = '1';
+            document.getElementById('app-screen').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'flex'; document.getElementById('login-screen').style.opacity = '1';
             document.getElementById('login-pwd').value = ""; document.getElementById('login-error').classList.add('hidden');
-            switchTab('dashboard'); toggleMenu();
+            switchTab('dashboard');
         };
 
-        // WORKSPACE INIT & LISTENERS
         function initializeAppWorkspace() {
             document.getElementById('desk-user-name').innerText = activeUserRecord.name;
             document.getElementById('desk-avatar').src = `https://ui-avatars.com/api/?name=${activeUserRecord.name.replace(/ /g, '+')}&background=0f172a&color=f59e0b`;
             
+            // Listeners...
             unsubscribeUser = onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', activeUserRecord.id), (snap) => {
                 if(!snap.exists() || snap.data().status === 'Suspended') return logout();
                 const d = snap.data(); userCommissionRate = Number(d.commission_rate) || userCommissionRate; document.getElementById('kpi-rate-display').innerText = `Rate: ${userCommissionRate * 100}%`;
@@ -616,9 +574,7 @@
                 myLeads = []; allAgencyLeads = [];
                 snap.forEach(d => { const data = {id: d.id, ...d.data()}; allAgencyLeads.push(data); if(data.rep === activeUserRecord.name) myLeads.push(data); });
                 myLeads.sort((a,b) => b.timestamp - a.timestamp); allAgencyLeads.sort((a,b) => b.timestamp - a.timestamp);
-                
-                // Safe mapping for Dropdown
-                document.getElementById('ci-lead-id').innerHTML = '<option value="">-- Select Store --</option>' + myLeads.filter(l => l.status !== 'Closed Won' && l.status !== 'Rejected').map(l => `<option value="${l.id}">${l.company || 'Unknown'}</option>`).join('');
+                document.getElementById('ci-lead-id').innerHTML = '<option value="">-- Select Store --</option>' + myLeads.map(l => `<option value="${l.id}">${l.company}</option>`).join('');
                 renderDashboardAndLedger(); renderLeaderboard();
             });
 
@@ -666,12 +622,12 @@
             statusText.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-amber-500"></i>';
 
             searchTimeout = setTimeout(() => {
-                let matches = []; allAgencyLeads.forEach(lead => { const comp = (lead.company||'').toLowerCase(); if(comp.includes(query) || similarity(query, comp) > 0.65) { matches.push(lead); } });
+                let matches = []; allAgencyLeads.forEach(lead => { const comp = lead.company.toLowerCase(); if(comp.includes(query) || similarity(query, comp) > 0.65) { matches.push(lead); } });
                 if(matches.length > 0) {
                     statusText.innerText = "Conflict"; statusText.className = "absolute right-4 top-4 text-[10px] font-bold text-red-400 uppercase"; resultsDiv.classList.remove('hidden');
                     resultsDiv.innerHTML = matches.map(m => {
-                        const badge = m.rep === (activeUserRecord?activeUserRecord.name:'') ? `<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded text-[9px] uppercase font-bold">Your Claim</span>` : `<span class="bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded text-[9px] uppercase font-bold">Claimed by ${m.rep||'Unknown'}</span>`;
-                        return `<div class="bg-black/60 border border-red-500/20 p-3 rounded-xl flex justify-between items-center"><div class="flex-1"><p class="text-sm font-bold text-white line-clamp-1">${m.company||'Unknown'}</p><p class="text-[10px] text-slate-400 mt-1 line-clamp-1"><i class="fa-solid fa-map-pin text-red-400/50"></i> ${m.address || 'Unknown'}</p></div><div class="text-right flex flex-col items-end gap-1 ml-2">${badge}</div></div>`;
+                        const badge = m.rep === (activeUserRecord?activeUserRecord.name:'') ? `<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded text-[9px] uppercase font-bold">Your Claim</span>` : `<span class="bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded text-[9px] uppercase font-bold">Claimed by ${m.rep}</span>`;
+                        return `<div class="bg-black/60 border border-red-500/20 p-3 rounded-xl flex justify-between items-center"><div class="flex-1"><p class="text-sm font-bold text-white line-clamp-1">${m.company}</p><p class="text-[10px] text-slate-400 mt-1 line-clamp-1"><i class="fa-solid fa-map-pin text-red-400/50"></i> ${m.address || 'Unknown'}</p></div><div class="text-right flex flex-col items-end gap-1 ml-2">${badge}</div></div>`;
                     }).join('');
                 } else { statusText.innerText = "Clear"; statusText.className = "absolute right-4 top-4 text-[10px] font-bold text-emerald-400 uppercase"; proceedBtn.classList.remove('hidden'); }
             }, 500); 
@@ -689,106 +645,138 @@
                 rep: activeUserRecord ? activeUserRecord.name : 'Test Rep', status: 'Newly Assigned', timestamp: Date.now(),
                 history: [{ note: `Store claimed. Intent: ${document.getElementById('ld-service').value}`, date: new Date().toISOString(), user: activeUserRecord ? activeUserRecord.name : 'Test Rep' }]
             };
-            try { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), newLead); showToast("Client Claimed Successfully!"); document.getElementById('form-add-lead').reset(); switchTab('dashboard'); addFormSection.classList.remove('open'); searchInput.value=''; } 
+            try { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), newLead); showToast("Client Claimed!"); document.getElementById('form-add-lead').reset(); switchTab('dashboard'); addFormSection.classList.remove('open'); searchInput.value=''; } 
             catch (err) { showToast("Network Error", true); } finally { btn.innerHTML = '<i class="fa-solid fa-thumbtack text-lg"></i> Lock Client'; btn.disabled = false; }
         });
 
-        // --- CHECK-IN (Geofenced) ---
+        // --- CHECK-IN SUBMIT ---
         document.getElementById('form-checkin').addEventListener('submit', async (e) => {
             e.preventDefault(); const btn = document.getElementById('btn-submit-checkin'); btn.disabled = true;
-            const id = document.getElementById('ci-lead-id').value; const locStr = document.getElementById('ci-location').value; const outcome = document.getElementById('ci-outcome').value; const notes = document.getElementById('ci-notes').value.trim(); const photoB64 = document.getElementById('ci-photo-base64').value;
-            
-            const currentLead = myLeads.find(l => l.id === id);
-            if(currentLead && currentLead.registered_lat && !locStr.includes("Bypass") && !locStr.includes("Acquiring")) {
-                const [curLat, curLon] = locStr.split(',').map(Number); const dist = getDistanceFromLatLonInMeters(curLat, curLon, currentLead.registered_lat, currentLead.registered_lon);
-                if(dist > 150) { showToast(`Geofence Error: You are ${Math.round(dist)}m away from the store. Move closer.`, true); btn.disabled = false; return; }
-            }
-
+            const id = document.getElementById('ci-lead-id').value; const loc = document.getElementById('ci-location').value; const outcome = document.getElementById('ci-outcome').value; const notes = document.getElementById('ci-notes').value.trim(); const photoB64 = document.getElementById('ci-photo-base64').value;
             try {
-                let updates = { status: outcome, history: arrayUnion({ note: `Check-in: ${outcome} [GPS: ${locStr}] - ${notes}`, date: new Date().toISOString(), user: activeUserRecord ? activeUserRecord.name : 'Test Rep' }) };
+                let updates = { status: outcome, history: arrayUnion({ note: `Check-in: ${outcome} [GPS: ${loc}] - ${notes}`, date: new Date().toISOString(), user: activeUserRecord ? activeUserRecord.name : 'Test Rep' }) };
                 if(photoB64) { updates.latestPhoto = photoB64; }
-                if(currentLead && !currentLead.registered_lat && !locStr.includes("Bypass") && !locStr.includes("Acquiring")) { const [lat, lon] = locStr.split(',').map(Number); updates.registered_lat = lat; updates.registered_lon = lon; }
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), updates); showToast("Visit Logged & Geoverified!");
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), updates); showToast("Visit Logged!");
                 document.getElementById('form-checkin').reset(); document.getElementById('ci-photo-base64').value = ""; document.querySelector('#ci-photo-label span').innerText = "Snap Store"; document.querySelector('#ci-photo-label i').className = "fa-solid fa-camera mr-2"; document.getElementById('ci-photo-label').classList.remove('border-emerald-500/50', 'bg-emerald-500/10', 'text-emerald-400');
                 switchTab('dashboard');
-            } catch(err) { showToast("Failed to log", true); } finally { btn.disabled = false; }
+            } catch(err) { showToast("Failed. File too large?", true); } finally { btn.disabled = false; }
         });
 
         // --- SUPPORT SUBMIT ---
         document.getElementById('form-support').addEventListener('submit', async (e) => {
             e.preventDefault(); const btn = document.getElementById('btn-submit-support'); btn.disabled = true;
-            try { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'support_tickets'), { rep: activeUserRecord ? activeUserRecord.name : 'Test Rep', type: document.getElementById('sup-type').value, subject: document.getElementById('sup-subject').value.trim(), details: document.getElementById('sup-details').value.trim(), status: 'Open', timestamp: Date.now() }); showToast("Request sent to HQ."); document.getElementById('form-support').reset(); switchTab('dashboard'); toggleMenu(); } 
+            try { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'support_tickets'), { rep: activeUserRecord ? activeUserRecord.name : 'Test Rep', type: document.getElementById('sup-type').value, subject: document.getElementById('sup-subject').value.trim(), details: document.getElementById('sup-details').value.trim(), status: 'Open', timestamp: Date.now() }); showToast("Request sent to HQ."); document.getElementById('form-support').reset(); switchTab('dashboard'); } 
             catch(err) { showToast("Error", true); } finally { btn.disabled = false; }
         });
 
-        // --- RENDERING DASHBOARD & LEDGER (With Safe DB Reads) ---
-        function renderDashboardAndLedger() {
+        // --- PAYMENT MODAL & LOGIC ---
+        window.openPaymentModal = (leadId, companyName) => {
+            document.getElementById('pay-lead-id').value = leadId;
+            document.getElementById('pay-company-name').innerText = companyName;
+            document.getElementById('modal-payment').classList.add('active');
+        };
+
+        document.getElementById('form-payment').addEventListener('submit', async (e) => {
+            e.preventDefault(); const btn = document.getElementById('btn-submit-payment'); btn.disabled = true;
+            const id = document.getElementById('pay-lead-id').value; const amt = document.getElementById('pay-amount').value;
+            const method = document.getElementById('pay-method').value; const ref = document.getElementById('pay-ref').value;
             try {
-                let won = 0; let visitsToday = 0; const todayStr = new Date().toISOString().split('T')[0]; const wonDeals = [];
-
-                myLeads.forEach(l => { 
-                    if(l.status === 'Closed Won') { won += (Number(l.value)||0); wonDeals.push(l); }
-                    if (l.history) { l.history.forEach(h => { if (h && h.note && h.note.includes('Check-in') && h.date && h.date.startsWith(todayStr)) visitsToday++; }); }
+                const noteStr = `[PAYMENT] Collected ₹${amt} via ${method} ${ref ? `(Ref: ${ref})` : ''}`;
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), {
+                    history: arrayUnion({ note: noteStr, date: new Date().toISOString(), user: activeUserRecord.name })
                 });
+                showToast("Payment Logged!"); document.getElementById('form-payment').reset(); closeModal('modal-payment');
+            } catch(err) { showToast("Error logging payment", true); } finally { btn.disabled = false; }
+        });
 
-                const earned = won * userCommissionRate; const paid = activeUserRecord ? (activeUserRecord.commission_paid || 0) : 0; const pending = Math.max(0, earned - paid);
+        // --- ACTIVITY LOGS MODAL ---
+        window.openLogsModal = () => {
+            let logs = [];
+            myLeads.forEach(l => {
+                if(l.history) { l.history.forEach(h => { if(h.user === activeUserRecord.name) { logs.push({ ...h, company: l.company }); } }); }
+            });
+            logs.sort((a,b) => new Date(b.date) - new Date(a.date));
+            
+            document.getElementById('logs-body').innerHTML = logs.map(l => {
+                const isPay = l.note.includes('[PAYMENT]');
+                const isCheckin = l.note.includes('Check-in');
+                let icon = '<i class="fa-solid fa-thumbtack text-amber-500"></i>';
+                let borderClass = 'border-amber-500/30';
+                if(isPay) { icon = '<i class="fa-solid fa-indian-rupee-sign text-emerald-500"></i>'; borderClass = 'border-emerald-500/50 bg-emerald-900/10'; }
+                if(isCheckin) { icon = '<i class="fa-solid fa-location-dot text-blue-400"></i>'; borderClass = 'border-blue-500/30'; }
+                
+                return `
+                <div class="bg-black/40 p-3 rounded-xl border border-l-4 ${borderClass} flex items-start gap-3">
+                    <div class="mt-1">${icon}</div>
+                    <div>
+                        <p class="font-bold text-white text-sm leading-tight">${l.company}</p>
+                        <p class="text-[11px] text-slate-300 mt-1">${l.note.replace('[PAYMENT]', '')}</p>
+                        <p class="text-[9px] text-slate-500 font-mono mt-1">${new Date(l.date).toLocaleString()}</p>
+                    </div>
+                </div>`;
+            }).join('') || '<p class="text-slate-500 text-center italic text-sm p-4">No activity found.</p>';
+            
+            document.getElementById('modal-logs').classList.add('active');
+        };
 
-                document.getElementById('kpi-won').innerText = "₹" + won.toLocaleString('en-IN'); document.getElementById('kpi-visits').innerText = visitsToday;
-                document.getElementById('ledger-total-earned').innerText = "₹" + earned.toLocaleString('en-IN'); document.getElementById('ledger-total-paid').innerText = "₹" + paid.toLocaleString('en-IN'); document.getElementById('ledger-pending').innerText = "₹" + pending.toLocaleString('en-IN');
+        // --- RENDERING DASHBOARD & LEDGER ---
+        function renderDashboardAndLedger() {
+            let won = 0; let visitsToday = 0; const todayStr = new Date().toISOString().split('T')[0]; const wonDeals = [];
 
-                document.getElementById('ledger-deals-body').innerHTML = wonDeals.map(l => {
-                    const val = Number(l.value)||0; const comm = val * userCommissionRate;
-                    return `<div class="bg-black/40 p-4 rounded-xl border border-emerald-500/20 flex justify-between items-center"><div class="flex-1"><p class="font-bold text-white text-sm line-clamp-1">${l.company||'Unknown'}</p><p class="text-[10px] text-slate-500 font-mono mt-0.5">Val: ₹${val.toLocaleString('en-IN')} • ${l.service_interest ? l.service_interest : 'Deal'}</p></div><div class="text-right text-emerald-400 font-bold font-mono">+ ₹${comm.toLocaleString('en-IN')}</div></div>`;
-                }).join('') || '<div class="p-6 text-center text-slate-500 bg-black/30 rounded-xl border border-white/5"><i class="fa-solid fa-ghost text-2xl mb-2"></i><p class="text-xs">No closed deals yet.</p></div>';
+            myLeads.forEach(l => { 
+                if(l.status === 'Closed Won') { won += (Number(l.value)||0); wonDeals.push(l); }
+                if (l.history) { l.history.forEach(h => { if (h.note.includes('Check-in') && h.date.startsWith(todayStr)) visitsToday++; }); }
+            });
 
-                const activeLeads = myLeads.filter(l => l.status !== 'Rejected');
-                document.getElementById('my-leads-body').innerHTML = activeLeads.map(l => {
-                    const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((l.address || l.company) || '')}`;
-                    
-                    return `
-                    <div class="glass-card p-4 flex justify-between items-center border-l-4 border-l-amber-500 relative">
-                        <div class="flex-1 pr-2">
-                            <p class="font-bold text-white text-sm leading-tight mb-1">${l.company || 'Unknown'}</p>
-                            <p class="text-[10px] text-slate-400 line-clamp-1 mb-2">${l.address || 'No address'}</p>
-                            <div class="flex gap-1.5 overflow-hidden">
-                                <span class="text-[9px] text-amber-400 font-mono bg-amber-500/10 px-2 py-0.5 rounded shrink-0">${l.status || 'New'}</span>
-                                ${l.service_interest ? `<span class="text-[9px] text-blue-400 font-mono bg-blue-500/10 px-2 py-0.5 rounded truncate">${l.service_interest}</span>` : ''}
-                            </div>
+            const earned = won * userCommissionRate; const paid = activeUserRecord ? (activeUserRecord.commission_paid || 0) : 0; const pending = Math.max(0, earned - paid);
+
+            document.getElementById('kpi-won').innerText = "₹" + won.toLocaleString('en-IN'); document.getElementById('kpi-visits').innerText = visitsToday;
+            document.getElementById('ledger-total-earned').innerText = "₹" + earned.toLocaleString('en-IN'); document.getElementById('ledger-total-paid').innerText = "₹" + paid.toLocaleString('en-IN'); document.getElementById('ledger-pending').innerText = "₹" + pending.toLocaleString('en-IN');
+
+            document.getElementById('ledger-deals-body').innerHTML = wonDeals.map(l => {
+                const val = Number(l.value); const comm = val * userCommissionRate;
+                return `<div class="bg-black/40 p-4 rounded-xl border border-emerald-500/20 flex justify-between items-center"><div class="flex-1"><p class="font-bold text-white text-sm line-clamp-1">${l.company}</p><p class="text-[10px] text-slate-500 font-mono mt-0.5">Val: ₹${val.toLocaleString('en-IN')} • ${l.service_interest ? l.service_interest : 'Deal'}</p></div><div class="text-right text-emerald-400 font-bold font-mono">+ ₹${comm.toLocaleString('en-IN')}</div></div>`;
+            }).join('') || '<div class="p-6 text-center text-slate-500 bg-black/30 rounded-xl border border-white/5"><i class="fa-solid fa-ghost text-2xl mb-2"></i><p class="text-xs">No closed deals yet.</p></div>';
+
+            const activeLeads = myLeads.filter(l => l.status !== 'Rejected');
+            document.getElementById('my-leads-body').innerHTML = activeLeads.map(l => {
+                const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(l.address || l.company)}`;
+                return `
+                <div class="glass-card p-4 flex justify-between items-center border-l-4 border-l-amber-500 relative">
+                    <div class="flex-1 pr-2">
+                        <p class="font-bold text-white text-sm leading-tight mb-1">${l.company}</p>
+                        <p class="text-[10px] text-slate-400 line-clamp-1 mb-2">${l.address}</p>
+                        <div class="flex gap-1.5 overflow-hidden">
+                            <span class="text-[9px] text-amber-400 font-mono bg-amber-500/10 px-2 py-0.5 rounded shrink-0">${l.status}</span>
+                            ${l.service_interest ? `<span class="text-[9px] text-blue-400 font-mono bg-blue-500/10 px-2 py-0.5 rounded truncate">${l.service_interest}</span>` : ''}
                         </div>
-                        <div class="flex flex-col gap-2 shrink-0">
-                            <div class="flex gap-2 justify-end">
-                                ${l.status !== 'Closed Won' ? `<button onclick="openClosingKit('${l.id}', '${(l.company||'').replace(/'/g,"\\'")}', ${l.value||0}, '${l.phone||''}')" class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20 active:scale-95 transition-transform" title="Close Deal"><i class="fa-solid fa-briefcase"></i></button>` : `<div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30"><i class="fa-solid fa-check"></i></div>`}
-                                <button onclick="switchTab('checkin'); setTimeout(()=>document.getElementById('ci-lead-id').value='${l.id}',100);" class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20 active:scale-95 transition-transform"><i class="fa-solid fa-location-dot"></i></button>
-                            </div>
-                            <a href="${mapsLink}" target="_blank" class="w-full text-center py-2 rounded-xl bg-white/5 border border-white/10 text-[9px] font-bold text-slate-300 uppercase tracking-wider hover:bg-white/10 active:scale-95 transition-all"><i class="fa-solid fa-map mr-1"></i> Nav</a>
+                    </div>
+                    <div class="flex flex-col gap-2 shrink-0">
+                        <div class="flex gap-2 justify-end">
+                            ${l.status === 'Closed Won' ? `<button onclick="openPaymentModal('${l.id}', '${l.company.replace(/'/g,"\\'")}')" class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20 active:scale-95 transition-transform"><i class="fa-solid fa-indian-rupee-sign"></i></button>` : ''}
+                            ${l.phone ? `<a href="https://wa.me/91${l.phone.replace(/\D/g,'')}" target="_blank" class="w-9 h-9 rounded-xl bg-green-500/10 text-green-400 flex items-center justify-center border border-green-500/20 active:scale-95 transition-transform"><i class="fa-brands fa-whatsapp text-sm"></i></a>` : ''}
+                            <button onclick="switchTab('checkin'); setTimeout(()=>document.getElementById('ci-lead-id').value='${l.id}',100);" class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20 active:scale-95 transition-transform"><i class="fa-solid fa-location-dot"></i></button>
                         </div>
-                    </div>`;
-                }).join('') || `<div class="p-6 text-center text-slate-500 bg-black/30 rounded-xl border border-white/5"><p class="text-xs font-bold">No active territory.<br>Tap "Find Stores" to scan area.</p></div>`;
-            } catch (err) {
-                console.error("Render Error:", err);
-                document.getElementById('my-leads-body').innerHTML = `<div class="p-6 text-center text-red-500 bg-black/30 rounded-xl border border-red-500/30"><p class="text-xs font-bold">Database parsing error.<br>Contact Admin.</p></div>`;
-            }
+                        <a href="${mapsLink}" target="_blank" class="w-full text-center py-2 rounded-xl bg-white/5 border border-white/10 text-[9px] font-bold text-slate-300 uppercase tracking-wider hover:bg-white/10 active:scale-95 transition-all"><i class="fa-solid fa-map mr-1"></i> Nav</a>
+                    </div>
+                </div>`;
+            }).join('') || `<div class="p-6 text-center text-slate-500 bg-black/30 rounded-xl border border-white/5"><p class="text-xs font-bold">No active territory.<br>Tap "Find Stores" to scan area.</p></div>`;
         }
 
         function renderLeaderboard() {
-            try {
-                const repStats = {};
-                allAgencyLeads.forEach(l => {
-                    const repName = l.rep || 'Unassigned';
-                    if(!repStats[repName]) repStats[repName] = { name: repName, revenue: 0, avatar: `https://ui-avatars.com/api/?name=${repName.replace(/ /g, '+')}&background=0f172a&color=fff` };
-                    if(l.status === 'Closed Won') repStats[repName].revenue += (Number(l.value)||0);
-                });
-                const ranked = Object.values(repStats).sort((a,b) => b.revenue - a.revenue);
-                const myIndex = ranked.findIndex(r => r.name === (activeUserRecord?activeUserRecord.name:''));
-                document.getElementById('my-rank-display').innerText = myIndex >= 0 ? `#${myIndex + 1}` : '#--';
+            const repStats = {};
+            allAgencyLeads.forEach(l => {
+                if(!repStats[l.rep]) repStats[l.rep] = { name: l.rep, revenue: 0, avatar: `https://ui-avatars.com/api/?name=${l.rep.replace(/ /g, '+')}&background=0f172a&color=fff` };
+                if(l.status === 'Closed Won') repStats[l.rep].revenue += (Number(l.value)||0);
+            });
+            const ranked = Object.values(repStats).sort((a,b) => b.revenue - a.revenue);
+            const myIndex = ranked.findIndex(r => r.name === (activeUserRecord?activeUserRecord.name:''));
+            document.getElementById('my-rank-display').innerText = myIndex >= 0 ? `#${myIndex + 1}` : '#--';
 
-                document.getElementById('leaderboard-body').innerHTML = ranked.map((r, index) => {
-                    const isMe = r.name === (activeUserRecord?activeUserRecord.name:''); const rankColor = index === 0 ? 'text-amber-400' : (index === 1 ? 'text-slate-300' : (index === 2 ? 'text-orange-400' : 'text-slate-500')); const bgClass = isMe ? 'bg-purple-500/10 border-purple-500/30' : 'bg-black/30 border-white/5';
-                    return `<div class="border p-3 rounded-xl flex items-center gap-3 ${bgClass}"><div class="w-6 font-black font-mono text-lg text-center ${rankColor}">${index < 3 ? `<i class="fa-solid fa-medal text-sm mb-1 block"></i>` : ''}${index + 1}</div><img src="${r.avatar}" class="w-8 h-8 rounded-full border border-white/20"><div class="flex-1"><p class="font-bold text-white text-sm ${isMe ? 'text-purple-300' : ''}">${r.name} ${isMe ? '(You)' : ''}</p></div><div class="text-right"><p class="text-base font-black text-emerald-400 font-mono">₹${r.revenue.toLocaleString('en-IN')}</p></div></div>`;
-                }).join('');
-            } catch (e) {
-                console.error("Leaderboard render error", e);
-            }
+            document.getElementById('leaderboard-body').innerHTML = ranked.map((r, index) => {
+                const isMe = r.name === (activeUserRecord?activeUserRecord.name:''); const rankColor = index === 0 ? 'text-amber-400' : (index === 1 ? 'text-slate-300' : (index === 2 ? 'text-orange-400' : 'text-slate-500')); const bgClass = isMe ? 'bg-purple-500/10 border-purple-500/30' : 'bg-black/30 border-white/5';
+                return `<div class="border p-3 rounded-xl flex items-center gap-3 ${bgClass}"><div class="w-6 font-black font-mono text-lg text-center ${rankColor}">${index < 3 ? `<i class="fa-solid fa-medal text-sm mb-1 block"></i>` : ''}${index + 1}</div><img src="${r.avatar}" class="w-8 h-8 rounded-full border border-white/20"><div class="flex-1"><p class="font-bold text-white text-sm ${isMe ? 'text-purple-300' : ''}">${r.name} ${isMe ? '(You)' : ''}</p></div><div class="text-right"><p class="text-base font-black text-emerald-400 font-mono">₹${r.revenue.toLocaleString('en-IN')}</p></div></div>`;
+            }).join('');
         }
 
     </script>
