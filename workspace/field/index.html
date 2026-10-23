@@ -1,784 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Field Sales Engine | Feasibility Media</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;800;900&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <style>
-        :root { --app-height: 100vh; }
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #020617;
-            color: #f8fafc;
-            overflow: hidden;
-            height: 100dvh;
-            background-image: radial-gradient(circle at top right, rgba(245, 158, 11, 0.08) 0%, transparent 40%), radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
-        }
-        .font-heading { font-family: 'Outfit', sans-serif; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
-
-        .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .glass-card { background: linear-gradient(180deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%); border: 1px solid rgba(255,255,255,0.06); border-top: 1px solid rgba(255, 255, 255, 0.12); border-radius: 1.25rem; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
-
-        input, select, textarea { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; border-radius: 0.75rem; width: 100%; }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: #f59e0b; background: rgba(0, 0, 0, 0.7); box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2); }
-
-        ::-webkit-scrollbar { width: 0px; height: 0px; display: none; }
-        .custom-scrollbar::-webkit-scrollbar { display: block; width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
-        
-        .tab-content { display: none; padding-bottom: 120px; opacity: 0; transform: translateY(10px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        .tab-content.active { display: block; opacity: 1; transform: translateY(0); }
-
-        .nav-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #64748b; flex: 1; padding: 12px 0; transition: all 0.2s;}
-        .nav-btn.active { color: #f59e0b; }
-        .nav-btn i { font-size: 1.25rem; transition: transform 0.2s; }
-        .nav-btn.active i { transform: scale(1.2) translateY(-2px); }
-        .nav-btn span { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-
-        .btn-primary { background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); color: white; font-weight: 800; box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3); transition: all 0.2s; }
-        .btn-primary:active { transform: scale(0.97); }
-        .btn-checkin { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; font-weight: 800; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3); }
-
-        .collapse-section { overflow: hidden; max-height: 0; opacity: 0; transition: all 0.4s ease; margin-top: 0; }
-        .collapse-section.open { max-height: 1000px; opacity: 1; margin-top: 1rem; }
-
-        .menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 100; opacity: 0; pointer-events: none; transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: flex-end; }
-        .menu-overlay.active { opacity: 1; pointer-events: auto; }
-        .menu-sheet { transform: translateY(100%); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); background: #0f172a; border-top-left-radius: 1.5rem; border-top-right-radius: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); padding: 1.5rem; padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)); }
-        .menu-overlay.active .menu-sheet { transform: translateY(0); }
-
-        .modal { opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 150; }
-        .modal.active { opacity: 1; pointer-events: auto; }
-        .modal-content { transform: scale(0.95); transition: all 0.3s ease; }
-        .modal.active .modal-content { transform: scale(1); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#E11D48">
+<title>Field Executive | Feasibility Media</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#14161A;--mute:#6B7280;--line:#E5E7EB;--bg:#F6F7F9;--card:#fff;--red:#E11D48;--green:#047857;--amber:#B45309;--top:env(safe-area-inset-top,0px);--bot:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root{--ink:#F3F4F6;--mute:#9CA3AF;--line:#2A2E36;--bg:#0E1013;--card:#171A1F;--green:#34D399;--amber:#FBBF24}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{font:500 15px/1.4 Figtree,system-ui,sans-serif;background:var(--bg);color:var(--ink);overscroll-behavior:none}
+button,input,select,textarea{font:inherit;color:inherit}
+input,select,textarea{width:100%;font-size:16px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--red);outline-offset:1px}
+label{display:block;font-size:13px;font-weight:600;color:var(--mute);margin:12px 0 5px}
+.hide{display:none!important}
+#app{display:flex;flex-direction:column;height:100dvh}
+header{padding:calc(var(--top) + 10px) 16px 10px;background:var(--card);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+header h1{font-size:17px;margin:0;font-weight:800}
+header small{color:var(--mute);font-size:12px}
+main{flex:1;overflow-y:auto;padding:14px 14px 24px;-webkit-overflow-scrolling:touch}
+nav{display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:var(--bot)}
+nav button{flex:1;min-height:56px;border:0;background:none;color:var(--mute);font-size:11px;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+nav button.on{color:var(--red)}
+svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.grid .card{margin:0}
+.k{font-size:12px;color:var(--mute);font-weight:600}
+.v{font-size:22px;font-weight:800;margin-top:2px;font-variant-numeric:tabular-nums}
+.btn{width:100%;min-height:48px;border:0;border-radius:12px;background:var(--red);color:#fff;font-weight:700;margin-top:16px}
+.btn.alt{background:none;color:var(--ink);border:1px solid var(--line);margin-top:8px}
+.btn:disabled{opacity:.55}
+.chip{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:99px;background:var(--bg);border:1px solid var(--line)}
+.row{display:flex;gap:8px;margin-top:10px}
+.row a,.row button{flex:1;min-height:44px;display:flex;align-items:center;justify-content:center;text-decoration:none;border:1px solid var(--line);border-radius:10px;background:var(--card);font-size:13px;font-weight:700;color:var(--ink)}
+.empty{text-align:center;color:var(--mute);padding:28px 12px}
+h2{font-size:15px;margin:18px 2px 8px}
+#toast{position:fixed;left:14px;right:14px;top:calc(var(--top) + 10px);padding:12px 14px;border-radius:12px;background:var(--ink);color:var(--bg);font-weight:700;z-index:99;transform:translateY(-140%);transition:transform .25s}
+#toast.show{transform:none}#toast.err{background:var(--red);color:#fff}
+#sheet{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;z-index:50}
+#sheet>div{background:var(--card);width:100%;border-radius:18px 18px 0 0;padding:16px 16px calc(16px + var(--bot));max-height:90dvh;overflow:auto}
+#login{min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding:24px;max-width:420px;margin:auto}
+#login h1{font-size:28px;margin:0 0 4px;font-weight:800}
+.err-t{color:var(--red);font-size:13px;font-weight:600;margin-top:10px;min-height:18px}
+a.link{color:var(--red);font-weight:700;font-size:13px;background:none;border:0;padding:10px 0}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
 </head>
-<body class="flex flex-col w-full h-[100dvh]">
-
-    <!-- LOGIN SCREEN -->
-    <div id="login-screen" class="absolute inset-0 z-50 flex items-center justify-center backdrop-blur-xl bg-[#020617]/95 p-4 transition-opacity duration-300">
-        <div class="glass-panel p-8 w-full max-w-sm relative overflow-hidden rounded-[2rem] shadow-2xl border border-white/10">
-            <div class="text-center mb-8 relative z-10">
-                <div class="w-16 h-16 mx-auto bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center rounded-2xl text-2xl font-black shadow-lg mb-5">
-                    <i class="fa-solid fa-map-location-dot"></i>
-                </div>
-                <h2 class="text-3xl font-black text-white font-heading tracking-tight">Field Ops</h2>
-                <p class="text-[10px] text-amber-400 font-bold uppercase tracking-widest mt-2 border border-amber-500/20 bg-amber-500/10 inline-block px-3 py-1 rounded-full">Secure Access</p>
-            </div>
-            
-            <form id="login-form" class="space-y-4 relative z-10">
-                <div class="relative">
-                    <i class="fa-solid fa-envelope absolute left-4 top-4 text-slate-500 text-sm"></i>
-                    <input type="email" id="login-email" required class="w-full pl-11 pr-4 py-3.5 text-sm bg-black/50" placeholder="rep@feasibility.com">
-                </div>
-                <div class="relative">
-                    <i class="fa-solid fa-lock absolute left-4 top-4 text-slate-500 text-sm"></i>
-                    <input type="password" id="login-pwd" required class="w-full pl-11 pr-4 py-3.5 text-sm bg-black/50" placeholder="••••••••">
-                </div>
-                <div id="login-error" class="hidden bg-red-500/10 text-red-400 text-xs font-bold text-center py-3 rounded-xl">Error</div>
-                <button type="submit" id="btn-login" class="btn-primary w-full py-4 rounded-xl text-sm tracking-widest uppercase flex items-center justify-center gap-3 mt-2">
-                    <span>Deploy to Field</span> <i class="fa-solid fa-bolt"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- MAIN APP WRAPPER -->
-    <div id="app-screen" class="w-full h-full flex-col relative" style="display: none;">
-        
-        <header class="flex-none flex h-16 md:h-20 border-b border-white/10 glass-panel justify-between items-center px-4 z-30 relative shadow-md">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full border-2 border-amber-500 overflow-hidden shrink-0 shadow-lg">
-                    <img id="desk-avatar" src="" class="w-full h-full object-cover">
-                </div>
-                <div class="flex flex-col leading-tight">
-                    <span id="desk-user-name" class="text-sm font-bold text-white tracking-wide">Loading...</span>
-                    <div class="flex items-center gap-1.5 mt-0.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span class="text-[9px] text-emerald-400 font-bold uppercase tracking-widest" id="gps-status-header">GPS Locked</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-3">
-                <div id="btn-clock" onclick="toggleAttendance()" class="bg-black/50 border border-white/10 px-3 py-2 rounded-xl flex items-center gap-2 cursor-pointer shadow-inner">
-                    <span id="duty-dot" class="w-2 h-2 rounded-full bg-slate-500"></span>
-                    <i class="fa-solid fa-power-off text-xs text-slate-500" id="duty-icon-mob"></i>
-                </div>
-            </div>
-        </header>
-
-        <!-- ADMIN BROADCAST -->
-        <div id="admin-broadcast" class="hidden flex-none bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 flex items-center justify-between shadow-md">
-            <div class="flex items-center gap-3 overflow-hidden">
-                <i class="fa-solid fa-bullhorn animate-bounce"></i>
-                <p class="text-xs font-bold truncate" id="broadcast-msg">HQ Announcement</p>
-            </div>
-            <a id="broadcast-link" href="#" target="_blank" class="hidden shrink-0 bg-white/20 px-3 py-1 rounded text-[10px] font-bold uppercase transition-colors">Open</a>
-        </div>
-
-        <div class="flex-1 overflow-y-auto p-4 md:p-6 pb-28 relative scroll-smooth w-full">
-            
-            <!-- TAB: DASHBOARD -->
-            <div id="tab-dashboard" class="tab-content active">
-                <div class="grid grid-cols-2 gap-3 mb-4">
-                    <div class="glass-card p-4 border-l-2 border-emerald-500">
-                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Gross Revenue</p>
-                        <h3 id="kpi-won" class="text-xl md:text-2xl font-black text-emerald-400 font-mono">₹0</h3>
-                    </div>
-                    <div class="glass-card p-4 border-l-2 border-amber-500">
-                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Visits Today</p>
-                        <h3 id="kpi-visits" class="text-xl font-black text-white font-mono">0</h3>
-                        <p class="text-[8px] text-slate-500 mt-1 font-mono" id="kpi-rate-display">Rate: --%</p>
-                    </div>
-                </div>
-
-                <div class="flex justify-between items-center mt-8 mb-3">
-                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center"><i class="fa-solid fa-thumbtack mr-2 text-slate-500"></i> Active Territory</h3>
-                    <button onclick="switchTab('hunt')" class="bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-1 rounded text-[10px] font-bold uppercase">Find Stores</button>
-                </div>
-                
-                <div id="my-leads-body" class="space-y-3">
-                    <div class="p-6 text-center text-slate-500 bg-black/30 rounded-xl border border-white/5"><p class="text-xs font-bold">Loading territory...</p></div>
-                </div>
-            </div>
-
-            <!-- TAB: HUNT & ONBOARD -->
-            <div id="tab-hunt" class="tab-content">
-                <div class="glass-card p-5 w-full border-t-2 border-amber-500">
-                    <div class="text-center mb-5">
-                        <h3 class="text-xl font-bold text-white font-heading"><i class="fa-solid fa-crosshairs text-amber-500 mr-2"></i> Area Scan</h3>
-                        <p class="text-xs text-slate-400 mt-1">Search to prevent assigning the same client twice.</p>
-                    </div>
-
-                    <div class="relative mb-6">
-                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-amber-500"></i>
-                        <input type="text" id="hunt-search" placeholder="Search Store Name..." class="w-full pl-11 pr-4 py-3.5 text-sm font-bold bg-black/60 shadow-inner" autocomplete="off">
-                        <div id="hunt-status" class="absolute right-4 top-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Search</div>
-                    </div>
-
-                    <div id="hunt-results" class="space-y-3 mb-6 hidden"></div>
-
-                    <div id="btn-proceed-claim" class="hidden text-center transition-all">
-                        <button onclick="revealClaimForm()" class="btn-primary w-full py-4 rounded-xl text-sm uppercase font-bold flex justify-center gap-2">
-                            Clear to Onboard <i class="fa-solid fa-arrow-down"></i>
-                        </button>
-                    </div>
-
-                    <div id="add-lead-section" class="collapse-section">
-                        <form id="form-add-lead" class="space-y-4 border border-white/10 p-4 rounded-2xl bg-black/40 shadow-inner mt-2">
-                            <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Business Name *</label><input type="text" id="ld-company" required class="w-full px-4 py-3 text-sm bg-black/60 font-bold border-amber-500/30"></div>
-                            <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Owner / Contact Name *</label><input type="text" id="ld-owner" required class="w-full px-4 py-3 text-sm bg-black/60"></div>
-                            <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Phone No. *</label><input type="tel" id="ld-phone" required class="w-full px-4 py-3 text-sm bg-black/60 font-mono"></div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Primary Service Interest *</label>
-                                <select id="ld-service" required class="w-full px-4 py-3 text-sm bg-black/60 text-amber-300 font-bold">
-                                    <option value="">-- Select Service --</option>
-                                    <option value="Social Media">Social Media Management (SMM)</option>
-                                    <option value="Web Dev">Web Development</option>
-                                    <option value="Paid Ads">Paid Ads (Meta/Google)</option>
-                                    <option value="SEO">SEO & Ranking</option>
-                                    <option value="Complete Overhaul">Complete Digital Makeover</option>
-                                    <option value="Undecided">Undecided / Exploring</option>
-                                </select>
-                            </div>
-                            <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Physical Address / Area *</label><textarea id="ld-address" required rows="2" class="w-full px-4 py-3 text-sm bg-black/60 resize-none"></textarea></div>
-                            <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Est. Deal Value (₹) *</label><input type="number" id="ld-value" required min="0" class="w-full px-4 py-3 text-sm font-mono bg-black/60 border-emerald-500/30"></div>
-                            <button type="submit" id="btn-submit-lead" class="btn-checkin w-full py-4 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-2 mt-2">
-                                <i class="fa-solid fa-thumbtack text-lg"></i> Lock Client
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB: CHECK-IN -->
-            <div id="tab-checkin" class="tab-content">
-                <div class="glass-card p-5 w-full border-t-2 border-emerald-500">
-                    <div class="text-center mb-6 border-b border-white/10 pb-4">
-                        <h3 class="text-2xl font-bold text-white font-heading">Log Client Visit</h3>
-                    </div>
-                    <form id="form-checkin" class="space-y-4">
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Select Client *</label>
-                            <select id="ci-lead-id" required class="w-full px-4 py-3.5 text-sm font-bold bg-black/50 border-emerald-500/30">
-                                <option value="">-- No Stores Available --</option>
-                            </select>
-                        </div>
-                        <div class="bg-black/40 border border-white/5 p-3 rounded-xl flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-lg shrink-0 flex items-center justify-center bg-blue-600/20 text-blue-400 border border-blue-500/30" onclick="fetchGPS()">
-                                <i class="fa-solid fa-satellite-dish"></i>
-                            </div>
-                            <div class="flex-1">
-                                <input type="text" id="ci-location" readonly required placeholder="Tap satellite for GPS..." class="w-full bg-transparent border-none p-0 text-xs font-mono text-slate-300 focus:ring-0">
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Visit Outcome *</label>
-                                <select id="ci-outcome" required class="w-full px-3 py-3 text-sm font-bold bg-black/50">
-                                    <option value="Initial Meeting">Initial Meeting</option>
-                                    <option value="Follow-up">Follow-up</option>
-                                    <option value="In Negotiation">In Negotiation</option>
-                                    <option value="Closed Won">Closed Won</option>
-                                    <option value="Rejected">Rejected</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Visual Proof (Opt)</label>
-                                <input type="file" id="ci-photo" accept="image/*" class="hidden">
-                                <input type="hidden" id="ci-photo-base64">
-                                <label for="ci-photo" id="ci-photo-label" class="w-full h-[46px] border border-dashed border-slate-500 rounded-xl flex items-center justify-center text-slate-400 text-xs bg-black/30 cursor-pointer hover:bg-white/5 transition-colors px-2">
-                                    <i class="fa-solid fa-camera mr-2"></i> <span>Snap Store</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Field Notes</label>
-                            <textarea id="ci-notes" rows="3" required class="w-full px-4 py-3 text-sm resize-none bg-black/50" placeholder="Discussed pricing..."></textarea>
-                        </div>
-                        <button type="submit" id="btn-submit-checkin" class="btn-checkin w-full py-4 rounded-xl text-sm uppercase tracking-widest flex items-center justify-center gap-3 mt-2">
-                            <i class="fa-solid fa-cloud-arrow-up text-lg"></i> Push Visit Data
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- TAB: DETAILED LEDGER -->
-            <div id="tab-ledger" class="tab-content">
-                <div class="glass-card p-5 w-full border-t-2 border-emerald-500">
-                    <h3 class="text-xl font-bold text-emerald-400 font-heading mb-4 border-b border-white/10 pb-3"><i class="fa-solid fa-wallet mr-2"></i> My Earnings Ledger</h3>
-                    <div class="bg-black/40 border border-white/5 p-4 rounded-xl mb-5 flex justify-between items-center shadow-inner">
-                        <div>
-                            <p class="text-[10px] text-slate-400 uppercase font-bold mb-1">Total Earned</p>
-                            <p class="text-lg font-mono font-bold text-white" id="ledger-total-earned">₹0</p>
-                        </div>
-                        <div class="text-center">
-                            <p class="text-[10px] text-slate-400 uppercase font-bold mb-1">Paid Out</p>
-                            <p class="text-lg font-mono font-bold text-slate-300" id="ledger-total-paid">₹0</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-[10px] text-purple-400 uppercase font-bold mb-1">Pending Clearance</p>
-                            <p class="text-xl font-mono font-black text-purple-400 bg-purple-500/10 px-2 py-1 rounded" id="ledger-pending">₹0</p>
-                        </div>
-                    </div>
-                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Closed Won Deals Breakdown</h4>
-                    <div id="ledger-deals-body" class="space-y-2"></div>
-                </div>
-            </div>
-
-            <!-- TAB: RATES -->
-            <div id="tab-rates" class="tab-content">
-                <div class="text-center mb-6">
-                    <h3 class="text-2xl font-bold text-white font-heading tracking-tight"><i class="fa-solid fa-tags text-amber-500 mr-2"></i> Agency Rate List</h3>
-                    <p class="text-xs text-slate-400 mt-1">Official pricing guidelines from HQ.</p>
-                </div>
-                <div id="rate-list-body" class="grid grid-cols-1 gap-4"></div>
-            </div>
-
-            <!-- TAB: RANK -->
-            <div id="tab-rank" class="tab-content">
-                <div class="glass-card p-5 w-full border-t-2 border-purple-500">
-                    <div class="flex justify-between items-end mb-6 border-b border-white/10 pb-4">
-                        <div>
-                            <h3 class="text-xl font-bold text-white font-heading tracking-tight"><i class="fa-solid fa-trophy text-amber-400 mr-2"></i> Leaderboard</h3>
-                            <p class="text-[10px] text-slate-400 uppercase tracking-widest mt-1">Agency Rankings</p>
-                        </div>
-                        <div class="bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 rounded-lg text-center">
-                            <p class="text-[8px] text-purple-400 font-bold uppercase tracking-widest">Your Rank</p>
-                            <p class="text-xl font-black text-white font-mono" id="my-rank-display">#--</p>
-                        </div>
-                    </div>
-                    <div id="leaderboard-body" class="space-y-2"></div>
-                </div>
-            </div>
-
-            <!-- TAB: DEMOS -->
-            <div id="tab-demos" class="tab-content">
-                <div class="text-center mb-6">
-                    <h3 class="text-2xl font-bold text-white font-heading tracking-tight"><i class="fa-solid fa-laptop-code text-blue-500 mr-2"></i> Pitch Demos</h3>
-                    <p class="text-xs text-slate-400 mt-1">Live agency portfolio.</p>
-                </div>
-                <div id="demo-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
-            </div>
-
-            <!-- TAB: SUPPORT -->
-            <div id="tab-support" class="tab-content">
-                <div class="glass-card p-5 w-full border-t-2 border-rose-500">
-                    <h3 class="text-lg font-bold text-white font-heading mb-4 border-b border-white/10 pb-3"><i class="fa-solid fa-headset mr-2 text-rose-400"></i> Field Support & HR</h3>
-                    <form id="form-support" class="space-y-4">
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Request Type *</label>
-                            <select id="sup-type" required class="w-full px-4 py-3 text-sm bg-black/60 font-bold">
-                                <option value="Leave Application">Leave Application</option>
-                                <option value="Technical Issue">App/Technical Issue</option>
-                                <option value="Client Dispute">Client Dispute</option>
-                                <option value="Other Request">Other Request</option>
-                            </select>
-                        </div>
-                        <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Subject *</label><input type="text" id="sup-subject" required class="w-full px-4 py-3 text-sm bg-black/60"></div>
-                        <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Details *</label><textarea id="sup-details" rows="4" required class="w-full px-4 py-3 text-sm resize-none bg-black/60"></textarea></div>
-                        <button type="submit" id="btn-submit-support" class="w-full bg-rose-600 hover:bg-rose-500 text-white py-3.5 rounded-xl text-sm font-bold uppercase tracking-widest mt-2"><i class="fa-solid fa-paper-plane mr-2"></i> Submit Request</button>
-                    </form>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- BOTTOM NAVIGATION -->
-        <nav class="flex-none fixed bottom-0 w-full glass-panel border-t border-white/10 flex justify-between items-center z-40 px-2 pb-safe pt-1 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]" style="padding-bottom: env(safe-area-inset-bottom);">
-            <button onclick="switchTab('dashboard')" class="nav-btn active" id="mob-nav-dashboard"><i class="fa-solid fa-compass"></i><span>Dash</span></button>
-            <button onclick="switchTab('hunt')" class="nav-btn" id="mob-nav-hunt"><i class="fa-solid fa-crosshairs"></i><span>Hunt</span></button>
-            
-            <button onclick="switchTab('checkin')" class="nav-btn relative flex-col items-center justify-start h-[72px] px-2" id="mob-nav-checkin">
-                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 text-white flex items-center justify-center shadow-[0_5px_15px_rgba(16,185,129,0.5)] border-4 border-[#020617] absolute -top-5 transform transition-transform active:scale-95">
-                    <i class="fa-solid fa-location-dot !text-xl !transform-none !text-white"></i>
-                </div>
-                <span class="mt-9 text-emerald-400">Log</span>
-            </button>
-
-            <button onclick="switchTab('ledger')" class="nav-btn" id="mob-nav-ledger"><i class="fa-solid fa-wallet"></i><span>Ledger</span></button>
-            <button onclick="toggleMenu()" class="nav-btn text-slate-400" id="mob-nav-menu"><i class="fa-solid fa-bars"></i><span>Menu</span></button>
-        </nav>
-    </div>
-
-    <!-- MODAL: MENU SLIDE UP -->
-    <div id="menu-overlay" class="menu-overlay" onclick="if(event.target === this) toggleMenu()">
-        <div class="menu-sheet flex flex-col gap-3">
-            <div class="w-12 h-1 bg-white/20 rounded-full mx-auto mb-2"></div>
-            <button onclick="toggleMenu(); openLogsModal()" class="w-full bg-white/5 hover:bg-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors">
-                <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center text-lg"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                <div class="text-left"><p class="text-sm font-bold text-white">My Activity Logs</p><p class="text-[10px] text-slate-400">History & Timeline</p></div>
-            </button>
-            <button onclick="toggleMenu(); switchTab('rates')" class="w-full bg-white/5 hover:bg-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors">
-                <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-500 flex items-center justify-center text-lg"><i class="fa-solid fa-tags"></i></div>
-                <div class="text-left"><p class="text-sm font-bold text-white">Rate List</p><p class="text-[10px] text-slate-400">Official HQ Pricing</p></div>
-            </button>
-            <button onclick="toggleMenu(); switchTab('rank')" class="w-full bg-white/5 hover:bg-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors">
-                <div class="w-10 h-10 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg"><i class="fa-solid fa-trophy"></i></div>
-                <div class="text-left"><p class="text-sm font-bold text-white">Leaderboard</p><p class="text-[10px] text-slate-400">Agency Rankings</p></div>
-            </button>
-            <button onclick="toggleMenu(); switchTab('demos')" class="w-full bg-white/5 hover:bg-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors">
-                <div class="w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-lg"><i class="fa-solid fa-laptop-code"></i></div>
-                <div class="text-left"><p class="text-sm font-bold text-white">Pitch Demos</p><p class="text-[10px] text-slate-400">Live Portfolios</p></div>
-            </button>
-            <button onclick="toggleMenu(); switchTab('support')" class="w-full bg-white/5 hover:bg-white/10 p-4 rounded-xl flex items-center gap-4 transition-colors">
-                <div class="w-10 h-10 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center text-lg"><i class="fa-solid fa-headset"></i></div>
-                <div class="text-left"><p class="text-sm font-bold text-white">HR & Support</p><p class="text-[10px] text-slate-400">Leave & Tickets</p></div>
-            </button>
-            <button onclick="logout()" class="w-full mt-2 p-4 flex items-center justify-center gap-2 text-rose-400 font-bold text-sm bg-rose-500/10 rounded-xl">
-                <i class="fa-solid fa-power-off"></i> Sign Out
-            </button>
-        </div>
-    </div>
-
-    <!-- MODAL: RECORD PAYMENT -->
-    <div id="modal-payment" class="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center modal p-4 z-[150]">
-        <div class="modal-content w-full max-w-sm bg-slate-900 rounded-2xl border border-white/10 shadow-2xl p-6 relative">
-            <button onclick="closeModal('modal-payment')" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-white/5 w-8 h-8 rounded-full"><i class="fa-solid fa-xmark"></i></button>
-            <h3 class="text-xl font-bold text-white mb-1"><i class="fa-solid fa-indian-rupee-sign text-emerald-400 mr-2"></i> Log Payment</h3>
-            <p class="text-xs text-slate-400 mb-4 pb-4 border-b border-white/10" id="pay-company-name">Client Name</p>
-            
-            <form id="form-payment" class="space-y-4">
-                <input type="hidden" id="pay-lead-id">
-                <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Amount Collected (₹) *</label><input type="number" id="pay-amount" required min="1" class="w-full px-4 py-3 text-sm font-mono bg-black/60"></div>
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Payment Method *</label>
-                    <select id="pay-method" required class="w-full px-4 py-3 text-sm bg-black/60 font-bold">
-                        <option value="UPI">UPI</option>
-                        <option value="Cash">Cash</option>
-                        <option value="Bank Transfer">Bank Transfer / NEFT</option>
-                        <option value="Cheque">Cheque</option>
-                    </select>
-                </div>
-                <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Reference ID / Txn No. (Opt)</label><input type="text" id="pay-ref" class="w-full px-4 py-3 text-sm font-mono bg-black/60"></div>
-                <button type="submit" id="btn-submit-payment" class="btn-checkin w-full py-4 rounded-xl text-sm font-bold uppercase tracking-widest mt-2">Submit Payment</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL: MY LOGS -->
-    <div id="modal-logs" class="fixed inset-0 bg-black/95 backdrop-blur-md flex items-center justify-center modal p-4 z-[150]">
-        <div class="modal-content w-full max-w-lg bg-slate-900 rounded-2xl border border-white/10 shadow-2xl p-6 relative max-h-[85vh] flex flex-col">
-            <button onclick="closeModal('modal-logs')" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-white/5 w-8 h-8 rounded-full z-10"><i class="fa-solid fa-xmark"></i></button>
-            <h3 class="text-xl font-bold text-white mb-4 border-b border-white/10 pb-4"><i class="fa-solid fa-clock-rotate-left text-emerald-400 mr-2"></i> My Activity Logs</h3>
-            <div class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-3" id="logs-body">
-                <!-- Filled by JS -->
-            </div>
-        </div>
-    </div>
-
-    <!-- TOAST NOTIFICATION -->
-    <div id="toast" class="fixed top-4 left-4 right-4 text-white px-5 py-4 rounded-xl shadow-[0_20px_40px_rgba(0,0,0,0.8)] font-bold text-sm transform -translate-y-32 opacity-0 transition-all duration-400 z-[300] flex items-center gap-3 border border-white/10 backdrop-blur-md bg-emerald-600/95 text-center justify-center">
-        <i class="fa-solid fa-circle-check text-lg"></i> <span id="toast-msg">Success</span>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, getDocs, addDoc, onSnapshot, doc, updateDoc, arrayUnion, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // --- FUZZY MATCH LOGIC ---
-        function getEditDistance(a, b) {
-            if(a.length === 0) return b.length; if(b.length === 0) return a.length; 
-            var matrix = []; for(let i = 0; i <= b.length; i++) { matrix[i] = [i]; } for(let j = 0; j <= a.length; j++) { matrix[0][j] = j; }
-            for(let i = 1; i <= b.length; i++){
-                for(let j = 1; j <= a.length; j++){
-                    if(b.charAt(i-1) == a.charAt(j-1)) { matrix[i][j] = matrix[i-1][j-1]; } 
-                    else { matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, Math.min(matrix[i][j-1] + 1, matrix[i-1][j] + 1)); }
-                }
-            } return matrix[b.length][a.length];
-        }
-        function similarity(s1, s2) {
-            let longer = s1.toLowerCase(); let shorter = s2.toLowerCase();
-            if (s1.length < s2.length) { longer = s2.toLowerCase(); shorter = s1.toLowerCase(); }
-            let longerLength = longer.length; if (longerLength == 0) return 1.0;
-            return (longerLength - getEditDistance(longer, shorter)) / parseFloat(longerLength);
-        }
-
-        let db, auth;
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        
-        let activeUserRecord = null; let userCommissionRate = 0.15; 
-        let myLeads = [], allAgencyLeads = [];
-        let unsubscribeLeads = null, unsubscribeUser = null, unsubscribeAttendance = null, unsubscribeNotifs = null, unsubscribeDemos = null, unsubscribeRates = null;
-        let activeShiftId = null;
-
-        // UI HELPERS
-        window.switchTab = (tabId) => {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('tab-' + tabId).classList.add('active');
-            
-            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-            const mobBtn = document.getElementById('mob-nav-' + tabId);
-            if(mobBtn) mobBtn.classList.add('active');
-
-            if(tabId === 'hunt') { document.getElementById('hunt-search').value = ''; document.getElementById('hunt-search').dispatchEvent(new Event('input')); }
-            if(tabId === 'checkin') { fetchGPS(); }
-        };
-
-        window.toggleMenu = () => { document.getElementById('menu-overlay').classList.toggle('active'); };
-        window.closeModal = (id) => { document.getElementById(id).classList.remove('active'); };
-
-        window.showToast = (msg, isError=false) => {
-            const toast = document.getElementById('toast'); const icon = toast.querySelector('i');
-            toast.className = `fixed top-4 left-4 right-4 text-white px-5 py-4 rounded-xl shadow-[0_20px_40px_rgba(0,0,0,0.8)] font-bold text-sm transform translate-y-0 opacity-100 transition-all duration-400 z-[300] flex items-center gap-3 border border-white/10 backdrop-blur-md justify-center ${isError ? 'bg-red-600/95' : 'bg-emerald-600/95'}`;
-            document.getElementById('toast-msg').innerText = msg; icon.className = isError ? "fa-solid fa-circle-exclamation text-xl" : "fa-solid fa-circle-check text-xl";
-            setTimeout(() => { toast.classList.replace('translate-y-0', '-translate-y-32'); toast.classList.replace('opacity-100', 'opacity-0'); }, 3000);
-        };
-
-        // AUTO GPS & CAMERA
-        window.fetchGPS = () => {
-            const locInput = document.getElementById('ci-location');
-            if(locInput.value !== "" && !locInput.value.includes("Locating")) return; 
-            locInput.value = "Acquiring satellites...";
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition((pos) => { locInput.value = `${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}`; }, 
-                (err) => { locInput.value = "23.3441° N, 85.3096° E (Zone Fallback)"; showToast("GPS denied, using zone default", true); }, { timeout: 5000, enableHighAccuracy: true });
-            } else { setTimeout(() => locInput.value = "23.3441° N, 85.3096° E", 800); }
-        };
-
-        document.getElementById('ci-photo').addEventListener('change', function(e) {
-            const file = e.target.files[0]; const labelSpan = document.querySelector('#ci-photo-label span'); const icon = document.querySelector('#ci-photo-label i');
-            if(!file) { document.getElementById('ci-photo-base64').value = ""; labelSpan.innerText = "Snap Store"; icon.className = "fa-solid fa-camera mr-2"; return; }
-            labelSpan.innerText = "Compressing...";
-            const reader = new FileReader(); reader.readAsDataURL(file);
-            reader.onload = function(event) {
-                const img = new Image(); img.src = event.target.result;
-                img.onload = function() {
-                    const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; let width = img.width; let height = img.height;
-                    if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-                    canvas.width = width; canvas.height = height; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
-                    const dataUrl = canvas.toDataURL('image/jpeg', 0.6); 
-                    document.getElementById('ci-photo-base64').value = dataUrl;
-                    labelSpan.innerText = "Photo Attached"; icon.className = "fa-solid fa-image text-emerald-400 mr-2"; document.getElementById('ci-photo-label').classList.add('border-emerald-500/50', 'bg-emerald-500/10', 'text-emerald-400');
-                }
-            };
-        });
-
-        // INIT FIREBASE
-        try {
-            const fbConfig = { apiKey: "AIzaSyAAgcIprurHXdo9tztkqVzLsIzJCWhqWwc", authDomain: "feasibility-44ca4.firebaseapp.com", databaseURL: "https://feasibility-44ca4-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "feasibility-44ca4", storageBucket: "feasibility-44ca4.firebasestorage.app" };
-            const app = initializeApp(fbConfig); db = getFirestore(app); auth = getAuth(app); signInAnonymously(auth).catch(() => {});
-        } catch (e) { console.error(e); }
-
-        // AUTO-LOGIN CHECK
-        window.onload = async () => {
-            const savedEmail = localStorage.getItem('field_email');
-            const savedPwd = localStorage.getItem('field_pwd');
-            if(savedEmail && savedPwd) {
-                document.getElementById('login-email').value = savedEmail;
-                document.getElementById('login-pwd').value = savedPwd;
-                document.getElementById('btn-login').click(); // Auto submit
-            }
-        };
-
-        // LOGIN SUBMIT
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault(); const btn = document.getElementById('btn-login'); const ogBtn = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-lg"></i>'; btn.disabled = true;
-            const email = document.getElementById('login-email').value.trim().toLowerCase(); const pwd = document.getElementById('login-pwd').value.trim();
-
-            try {
-                const snapshot = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'team_users')); let u = null;
-                snapshot.forEach(doc => { const d = doc.data(); if(d.email.toLowerCase() === email && d.password === pwd) u = { id: doc.id, ...d }; });
-
-                if (u && u.status !== 'Suspended') {
-                    activeUserRecord = u; userCommissionRate = Number(u.commission_rate) || 0.10; document.getElementById('kpi-rate-display').innerText = `Rate: ${userCommissionRate * 100}%`;
-                    
-                    // SAVE PERSISTENT LOGIN
-                    localStorage.setItem('field_email', email);
-                    localStorage.setItem('field_pwd', pwd);
-
-                    document.getElementById('login-screen').style.opacity = '0';
-                    setTimeout(() => { document.getElementById('login-screen').style.display = 'none'; document.getElementById('app-screen').style.display = 'flex'; }, 300);
-                    
-                    initializeAppWorkspace();
-                    showToast(`Active: ${u.name}`);
-                } else {
-                    document.getElementById('login-error').classList.remove('hidden'); document.getElementById('login-error').innerText = 'Invalid credentials';
-                    btn.innerHTML = ogBtn; btn.disabled = false;
-                }
-            } catch (e) { document.getElementById('login-error').innerText = "Network Error."; document.getElementById('login-error').classList.remove('hidden'); btn.innerHTML = ogBtn; btn.disabled = false; }
-        });
-
-        window.logout = () => {
-            localStorage.removeItem('field_email'); localStorage.removeItem('field_pwd');
-            if(unsubscribeLeads) unsubscribeLeads(); if(unsubscribeUser) unsubscribeUser(); if(unsubscribeAttendance) unsubscribeAttendance(); if(unsubscribeNotifs) unsubscribeNotifs(); if(unsubscribeDemos) unsubscribeDemos(); if(unsubscribeRates) unsubscribeRates();
-            activeUserRecord = null; myLeads = []; allAgencyLeads = [];
-            document.getElementById('app-screen').style.display = 'none';
-            document.getElementById('login-screen').style.display = 'flex'; document.getElementById('login-screen').style.opacity = '1';
-            document.getElementById('login-pwd').value = ""; document.getElementById('login-error').classList.add('hidden');
-            switchTab('dashboard');
-        };
-
-        function initializeAppWorkspace() {
-            document.getElementById('desk-user-name').innerText = activeUserRecord.name;
-            document.getElementById('desk-avatar').src = `https://ui-avatars.com/api/?name=${activeUserRecord.name.replace(/ /g, '+')}&background=0f172a&color=f59e0b`;
-            
-            // Listeners...
-            unsubscribeUser = onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', activeUserRecord.id), (snap) => {
-                if(!snap.exists() || snap.data().status === 'Suspended') return logout();
-                const d = snap.data(); userCommissionRate = Number(d.commission_rate) || userCommissionRate; document.getElementById('kpi-rate-display').innerText = `Rate: ${userCommissionRate * 100}%`;
-                renderDashboardAndLedger();
-            });
-
-            unsubscribeLeads = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), (snap) => {
-                myLeads = []; allAgencyLeads = [];
-                snap.forEach(d => { const data = {id: d.id, ...d.data()}; allAgencyLeads.push(data); if(data.rep === activeUserRecord.name) myLeads.push(data); });
-                myLeads.sort((a,b) => b.timestamp - a.timestamp); allAgencyLeads.sort((a,b) => b.timestamp - a.timestamp);
-                document.getElementById('ci-lead-id').innerHTML = '<option value="">-- Select Store --</option>' + myLeads.map(l => `<option value="${l.id}">${l.company}</option>`).join('');
-                renderDashboardAndLedger(); renderLeaderboard();
-            });
-
-            unsubscribeAttendance = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'attendance_logs'), (snap) => {
-                let activeShift = null; snap.forEach(d => { const data = { id: d.id, ...d.data() }; if(data.rep === activeUserRecord.name && data.status === 'Active') { activeShift = data; } });
-                const btn = document.getElementById('btn-clock'); const dot = document.getElementById('duty-dot'); const iconMob = document.getElementById('duty-icon-mob');
-                if(activeShift) { activeShiftId = activeShift.id; btn.classList.add('bg-amber-500/20', 'border-amber-500/50'); btn.classList.remove('bg-black/50', 'border-white/10'); dot.className = "w-2 h-2 rounded-full bg-amber-500 pulse-dot"; iconMob.classList.replace('text-slate-500', 'text-amber-400'); } 
-                else { activeShiftId = null; btn.classList.remove('bg-amber-500/20', 'border-amber-500/50'); btn.classList.add('bg-black/50', 'border-white/10'); dot.className = "w-2 h-2 rounded-full bg-slate-500"; iconMob.classList.replace('text-amber-400', 'text-slate-500'); }
-            });
-
-            const notifQuery = query(collection(db, 'artifacts', appId, 'public', 'data', 'notifications'), orderBy('timestamp', 'desc'), limit(1));
-            unsubscribeNotifs = onSnapshot(notifQuery, (snap) => {
-                const banner = document.getElementById('admin-broadcast');
-                if(snap.empty) { banner.classList.add('hidden'); return; }
-                const notif = snap.docs[0].data();
-                if(notif.target === 'All' || notif.target === activeUserRecord.name) { banner.classList.remove('hidden'); document.getElementById('broadcast-msg').innerText = notif.message; if(notif.url) { document.getElementById('broadcast-link').href = notif.url; document.getElementById('broadcast-link').classList.remove('hidden'); } else { document.getElementById('broadcast-link').classList.add('hidden'); } } else { banner.classList.add('hidden'); }
-            });
-
-            unsubscribeDemos = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'demo_showcase'), (snap) => {
-                let demos = []; snap.forEach(d => demos.push(d.data()));
-                document.getElementById('demo-grid').innerHTML = demos.map(d => `<div class="glass-card overflow-hidden group p-4 border-l-4 border-l-blue-500"><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-white text-base">${d.title}</h4><span class="bg-blue-500/20 text-blue-400 text-[9px] font-bold uppercase px-2 py-0.5 rounded">${d.category||'Web'}</span></div><p class="text-[10px] text-slate-400 mt-1 mb-4 line-clamp-2">${d.desc||'Live Portfolio Link'}</p><a href="${d.url}" target="_blank" class="block text-center bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg text-xs font-bold transition-colors">Open Live Link</a></div>`).join('') || '<p class="text-slate-500 text-center text-sm col-span-full py-10">No demos published by HQ yet.</p>';
-            });
-
-            unsubscribeRates = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'agency_rates'), (snap) => {
-                let rates = []; snap.forEach(d => rates.push(d.data()));
-                document.getElementById('rate-list-body').innerHTML = rates.map(r => `<div class="glass-card p-4 border-t-2 border-amber-500"><h4 class="font-bold text-white text-sm mb-1">${r.service}</h4><p class="text-xl font-black text-amber-400 font-mono mb-2">${r.price}</p><p class="text-[10px] text-slate-400">${r.details}</p></div>`).join('') || '<div class="glass-card p-4 border-dashed border-2 border-slate-600 text-center col-span-full"><p class="text-slate-400 text-sm">No official rate lists published by admin.</p></div>';
-            });
-        }
-
-        window.toggleAttendance = async () => {
-            if(!activeUserRecord) return;
-            try {
-                if(!activeShiftId) { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'attendance_logs'), { rep: activeUserRecord.name, clockIn: Date.now(), status: 'Active' }); showToast("Shift Started"); } 
-                else { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'attendance_logs', activeShiftId), { clockOut: Date.now(), status: 'Completed' }); showToast("Shift Ended"); }
-            } catch(e) {}
-        };
-
-        // --- HUNT & CLAIM ---
-        const searchInput = document.getElementById('hunt-search'); const resultsDiv = document.getElementById('hunt-results'); const addFormSection = document.getElementById('add-lead-section'); const proceedBtn = document.getElementById('btn-proceed-claim'); const statusText = document.getElementById('hunt-status'); let searchTimeout = null;
-
-        searchInput.addEventListener('input', (e) => {
-            clearTimeout(searchTimeout); const query = e.target.value.trim().toLowerCase();
-            resultsDiv.classList.add('hidden'); proceedBtn.classList.add('hidden'); addFormSection.classList.remove('open'); 
-            if(query.length < 3) { statusText.innerText = "Search"; statusText.className = "absolute right-4 top-4 text-[10px] font-bold text-slate-500 uppercase"; return; }
-            statusText.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-amber-500"></i>';
-
-            searchTimeout = setTimeout(() => {
-                let matches = []; allAgencyLeads.forEach(lead => { const comp = lead.company.toLowerCase(); if(comp.includes(query) || similarity(query, comp) > 0.65) { matches.push(lead); } });
-                if(matches.length > 0) {
-                    statusText.innerText = "Conflict"; statusText.className = "absolute right-4 top-4 text-[10px] font-bold text-red-400 uppercase"; resultsDiv.classList.remove('hidden');
-                    resultsDiv.innerHTML = matches.map(m => {
-                        const badge = m.rep === (activeUserRecord?activeUserRecord.name:'') ? `<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded text-[9px] uppercase font-bold">Your Claim</span>` : `<span class="bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded text-[9px] uppercase font-bold">Claimed by ${m.rep}</span>`;
-                        return `<div class="bg-black/60 border border-red-500/20 p-3 rounded-xl flex justify-between items-center"><div class="flex-1"><p class="text-sm font-bold text-white line-clamp-1">${m.company}</p><p class="text-[10px] text-slate-400 mt-1 line-clamp-1"><i class="fa-solid fa-map-pin text-red-400/50"></i> ${m.address || 'Unknown'}</p></div><div class="text-right flex flex-col items-end gap-1 ml-2">${badge}</div></div>`;
-                    }).join('');
-                } else { statusText.innerText = "Clear"; statusText.className = "absolute right-4 top-4 text-[10px] font-bold text-emerald-400 uppercase"; proceedBtn.classList.remove('hidden'); }
-            }, 500); 
-        });
-
-        window.revealClaimForm = () => { proceedBtn.classList.add('hidden'); addFormSection.classList.add('open'); document.getElementById('ld-company').value = searchInput.value; document.getElementById('ld-owner').focus(); };
-
-        // --- SUBMIT CLAIM ---
-        document.getElementById('form-add-lead').addEventListener('submit', async (e) => {
-            e.preventDefault(); const btn = document.getElementById('btn-submit-lead'); btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing'; btn.disabled = true;
-            const newLead = {
-                company: document.getElementById('ld-company').value.trim(), owner: document.getElementById('ld-owner').value.trim(),
-                address: document.getElementById('ld-address').value.trim(), phone: document.getElementById('ld-phone').value.trim(), 
-                service_interest: document.getElementById('ld-service').value, value: Number(document.getElementById('ld-value').value),
-                rep: activeUserRecord ? activeUserRecord.name : 'Test Rep', status: 'Newly Assigned', timestamp: Date.now(),
-                history: [{ note: `Store claimed. Intent: ${document.getElementById('ld-service').value}`, date: new Date().toISOString(), user: activeUserRecord ? activeUserRecord.name : 'Test Rep' }]
-            };
-            try { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'sales_leads'), newLead); showToast("Client Claimed!"); document.getElementById('form-add-lead').reset(); switchTab('dashboard'); addFormSection.classList.remove('open'); searchInput.value=''; } 
-            catch (err) { showToast("Network Error", true); } finally { btn.innerHTML = '<i class="fa-solid fa-thumbtack text-lg"></i> Lock Client'; btn.disabled = false; }
-        });
-
-        // --- CHECK-IN SUBMIT ---
-        document.getElementById('form-checkin').addEventListener('submit', async (e) => {
-            e.preventDefault(); const btn = document.getElementById('btn-submit-checkin'); btn.disabled = true;
-            const id = document.getElementById('ci-lead-id').value; const loc = document.getElementById('ci-location').value; const outcome = document.getElementById('ci-outcome').value; const notes = document.getElementById('ci-notes').value.trim(); const photoB64 = document.getElementById('ci-photo-base64').value;
-            try {
-                let updates = { status: outcome, history: arrayUnion({ note: `Check-in: ${outcome} [GPS: ${loc}] - ${notes}`, date: new Date().toISOString(), user: activeUserRecord ? activeUserRecord.name : 'Test Rep' }) };
-                if(photoB64) { updates.latestPhoto = photoB64; }
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), updates); showToast("Visit Logged!");
-                document.getElementById('form-checkin').reset(); document.getElementById('ci-photo-base64').value = ""; document.querySelector('#ci-photo-label span').innerText = "Snap Store"; document.querySelector('#ci-photo-label i').className = "fa-solid fa-camera mr-2"; document.getElementById('ci-photo-label').classList.remove('border-emerald-500/50', 'bg-emerald-500/10', 'text-emerald-400');
-                switchTab('dashboard');
-            } catch(err) { showToast("Failed. File too large?", true); } finally { btn.disabled = false; }
-        });
-
-        // --- SUPPORT SUBMIT ---
-        document.getElementById('form-support').addEventListener('submit', async (e) => {
-            e.preventDefault(); const btn = document.getElementById('btn-submit-support'); btn.disabled = true;
-            try { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'support_tickets'), { rep: activeUserRecord ? activeUserRecord.name : 'Test Rep', type: document.getElementById('sup-type').value, subject: document.getElementById('sup-subject').value.trim(), details: document.getElementById('sup-details').value.trim(), status: 'Open', timestamp: Date.now() }); showToast("Request sent to HQ."); document.getElementById('form-support').reset(); switchTab('dashboard'); } 
-            catch(err) { showToast("Error", true); } finally { btn.disabled = false; }
-        });
-
-        // --- PAYMENT MODAL & LOGIC ---
-        window.openPaymentModal = (leadId, companyName) => {
-            document.getElementById('pay-lead-id').value = leadId;
-            document.getElementById('pay-company-name').innerText = companyName;
-            document.getElementById('modal-payment').classList.add('active');
-        };
-
-        document.getElementById('form-payment').addEventListener('submit', async (e) => {
-            e.preventDefault(); const btn = document.getElementById('btn-submit-payment'); btn.disabled = true;
-            const id = document.getElementById('pay-lead-id').value; const amt = document.getElementById('pay-amount').value;
-            const method = document.getElementById('pay-method').value; const ref = document.getElementById('pay-ref').value;
-            try {
-                const noteStr = `[PAYMENT] Collected ₹${amt} via ${method} ${ref ? `(Ref: ${ref})` : ''}`;
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'sales_leads', id), {
-                    history: arrayUnion({ note: noteStr, date: new Date().toISOString(), user: activeUserRecord.name })
-                });
-                showToast("Payment Logged!"); document.getElementById('form-payment').reset(); closeModal('modal-payment');
-            } catch(err) { showToast("Error logging payment", true); } finally { btn.disabled = false; }
-        });
-
-        // --- ACTIVITY LOGS MODAL ---
-        window.openLogsModal = () => {
-            let logs = [];
-            myLeads.forEach(l => {
-                if(l.history) { l.history.forEach(h => { if(h.user === activeUserRecord.name) { logs.push({ ...h, company: l.company }); } }); }
-            });
-            logs.sort((a,b) => new Date(b.date) - new Date(a.date));
-            
-            document.getElementById('logs-body').innerHTML = logs.map(l => {
-                const isPay = l.note.includes('[PAYMENT]');
-                const isCheckin = l.note.includes('Check-in');
-                let icon = '<i class="fa-solid fa-thumbtack text-amber-500"></i>';
-                let borderClass = 'border-amber-500/30';
-                if(isPay) { icon = '<i class="fa-solid fa-indian-rupee-sign text-emerald-500"></i>'; borderClass = 'border-emerald-500/50 bg-emerald-900/10'; }
-                if(isCheckin) { icon = '<i class="fa-solid fa-location-dot text-blue-400"></i>'; borderClass = 'border-blue-500/30'; }
-                
-                return `
-                <div class="bg-black/40 p-3 rounded-xl border border-l-4 ${borderClass} flex items-start gap-3">
-                    <div class="mt-1">${icon}</div>
-                    <div>
-                        <p class="font-bold text-white text-sm leading-tight">${l.company}</p>
-                        <p class="text-[11px] text-slate-300 mt-1">${l.note.replace('[PAYMENT]', '')}</p>
-                        <p class="text-[9px] text-slate-500 font-mono mt-1">${new Date(l.date).toLocaleString()}</p>
-                    </div>
-                </div>`;
-            }).join('') || '<p class="text-slate-500 text-center italic text-sm p-4">No activity found.</p>';
-            
-            document.getElementById('modal-logs').classList.add('active');
-        };
-
-        // --- RENDERING DASHBOARD & LEDGER ---
-        function renderDashboardAndLedger() {
-            let won = 0; let visitsToday = 0; const todayStr = new Date().toISOString().split('T')[0]; const wonDeals = [];
-
-            myLeads.forEach(l => { 
-                if(l.status === 'Closed Won') { won += (Number(l.value)||0); wonDeals.push(l); }
-                if (l.history) { l.history.forEach(h => { if (h.note.includes('Check-in') && h.date.startsWith(todayStr)) visitsToday++; }); }
-            });
-
-            const earned = won * userCommissionRate; const paid = activeUserRecord ? (activeUserRecord.commission_paid || 0) : 0; const pending = Math.max(0, earned - paid);
-
-            document.getElementById('kpi-won').innerText = "₹" + won.toLocaleString('en-IN'); document.getElementById('kpi-visits').innerText = visitsToday;
-            document.getElementById('ledger-total-earned').innerText = "₹" + earned.toLocaleString('en-IN'); document.getElementById('ledger-total-paid').innerText = "₹" + paid.toLocaleString('en-IN'); document.getElementById('ledger-pending').innerText = "₹" + pending.toLocaleString('en-IN');
-
-            document.getElementById('ledger-deals-body').innerHTML = wonDeals.map(l => {
-                const val = Number(l.value); const comm = val * userCommissionRate;
-                return `<div class="bg-black/40 p-4 rounded-xl border border-emerald-500/20 flex justify-between items-center"><div class="flex-1"><p class="font-bold text-white text-sm line-clamp-1">${l.company}</p><p class="text-[10px] text-slate-500 font-mono mt-0.5">Val: ₹${val.toLocaleString('en-IN')} • ${l.service_interest ? l.service_interest : 'Deal'}</p></div><div class="text-right text-emerald-400 font-bold font-mono">+ ₹${comm.toLocaleString('en-IN')}</div></div>`;
-            }).join('') || '<div class="p-6 text-center text-slate-500 bg-black/30 rounded-xl border border-white/5"><i class="fa-solid fa-ghost text-2xl mb-2"></i><p class="text-xs">No closed deals yet.</p></div>';
-
-            const activeLeads = myLeads.filter(l => l.status !== 'Rejected');
-            document.getElementById('my-leads-body').innerHTML = activeLeads.map(l => {
-                const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(l.address || l.company)}`;
-                return `
-                <div class="glass-card p-4 flex justify-between items-center border-l-4 border-l-amber-500 relative">
-                    <div class="flex-1 pr-2">
-                        <p class="font-bold text-white text-sm leading-tight mb-1">${l.company}</p>
-                        <p class="text-[10px] text-slate-400 line-clamp-1 mb-2">${l.address}</p>
-                        <div class="flex gap-1.5 overflow-hidden">
-                            <span class="text-[9px] text-amber-400 font-mono bg-amber-500/10 px-2 py-0.5 rounded shrink-0">${l.status}</span>
-                            ${l.service_interest ? `<span class="text-[9px] text-blue-400 font-mono bg-blue-500/10 px-2 py-0.5 rounded truncate">${l.service_interest}</span>` : ''}
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-2 shrink-0">
-                        <div class="flex gap-2 justify-end">
-                            ${l.status === 'Closed Won' ? `<button onclick="openPaymentModal('${l.id}', '${l.company.replace(/'/g,"\\'")}')" class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20 active:scale-95 transition-transform"><i class="fa-solid fa-indian-rupee-sign"></i></button>` : ''}
-                            ${l.phone ? `<a href="https://wa.me/91${l.phone.replace(/\D/g,'')}" target="_blank" class="w-9 h-9 rounded-xl bg-green-500/10 text-green-400 flex items-center justify-center border border-green-500/20 active:scale-95 transition-transform"><i class="fa-brands fa-whatsapp text-sm"></i></a>` : ''}
-                            <button onclick="switchTab('checkin'); setTimeout(()=>document.getElementById('ci-lead-id').value='${l.id}',100);" class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20 active:scale-95 transition-transform"><i class="fa-solid fa-location-dot"></i></button>
-                        </div>
-                        <a href="${mapsLink}" target="_blank" class="w-full text-center py-2 rounded-xl bg-white/5 border border-white/10 text-[9px] font-bold text-slate-300 uppercase tracking-wider hover:bg-white/10 active:scale-95 transition-all"><i class="fa-solid fa-map mr-1"></i> Nav</a>
-                    </div>
-                </div>`;
-            }).join('') || `<div class="p-6 text-center text-slate-500 bg-black/30 rounded-xl border border-white/5"><p class="text-xs font-bold">No active territory.<br>Tap "Find Stores" to scan area.</p></div>`;
-        }
-
-        function renderLeaderboard() {
-            const repStats = {};
-            allAgencyLeads.forEach(l => {
-                if(!repStats[l.rep]) repStats[l.rep] = { name: l.rep, revenue: 0, avatar: `https://ui-avatars.com/api/?name=${l.rep.replace(/ /g, '+')}&background=0f172a&color=fff` };
-                if(l.status === 'Closed Won') repStats[l.rep].revenue += (Number(l.value)||0);
-            });
-            const ranked = Object.values(repStats).sort((a,b) => b.revenue - a.revenue);
-            const myIndex = ranked.findIndex(r => r.name === (activeUserRecord?activeUserRecord.name:''));
-            document.getElementById('my-rank-display').innerText = myIndex >= 0 ? `#${myIndex + 1}` : '#--';
-
-            document.getElementById('leaderboard-body').innerHTML = ranked.map((r, index) => {
-                const isMe = r.name === (activeUserRecord?activeUserRecord.name:''); const rankColor = index === 0 ? 'text-amber-400' : (index === 1 ? 'text-slate-300' : (index === 2 ? 'text-orange-400' : 'text-slate-500')); const bgClass = isMe ? 'bg-purple-500/10 border-purple-500/30' : 'bg-black/30 border-white/5';
-                return `<div class="border p-3 rounded-xl flex items-center gap-3 ${bgClass}"><div class="w-6 font-black font-mono text-lg text-center ${rankColor}">${index < 3 ? `<i class="fa-solid fa-medal text-sm mb-1 block"></i>` : ''}${index + 1}</div><img src="${r.avatar}" class="w-8 h-8 rounded-full border border-white/20"><div class="flex-1"><p class="font-bold text-white text-sm ${isMe ? 'text-purple-300' : ''}">${r.name} ${isMe ? '(You)' : ''}</p></div><div class="text-right"><p class="text-base font-black text-emerald-400 font-mono">₹${r.revenue.toLocaleString('en-IN')}</p></div></div>`;
-            }).join('');
-        }
-
-    </script>
+<body>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<section id="login" class="hide">
+  <h1>Field Executive</h1>
+  <div class="k">Feasibility Media. Sign in with your work email.</div>
+  <form id="lf" autocomplete="on">
+    <label for="em">Email</label><input id="em" type="email" autocomplete="username" required inputmode="email">
+    <label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required>
+    <div id="le" class="err-t" role="alert"></div>
+    <button class="btn" id="lb">Sign in</button>
+  </form>
+  <button class="link a" id="fp" type="button" style="text-align:left">Forgot password?</button>
+</section>
+
+<div id="app" class="hide">
+  <header><div><h1 id="hn">—</h1><small id="hs">Executive</small></div><div id="duty" class="chip"></div></header>
+  <main id="m">
+    <section id="v-home">
+      <div class="grid">
+        <div class="card"><div class="k">Visits today</div><div class="v" id="k1">0</div></div>
+        <div class="card"><div class="k">Open pipeline</div><div class="v" id="k2">₹0</div></div>
+        <div class="card"><div class="k">Deals won</div><div class="v" id="k3">₹0</div></div>
+        <div class="card"><div class="k">Payments awaiting check</div><div class="v" id="k4">0</div></div>
+      </div>
+      <div id="bc" class="card hide"></div>
+      <h2>Today's follow-ups</h2><div id="fu"></div>
+    </section>
+
+    <section id="v-leads" class="hide">
+      <input id="q" type="search" placeholder="Search my stores" aria-label="Search my stores">
+      <div id="ll" style="margin-top:10px"></div>
+    </section>
+
+    <section id="v-add" class="hide">
+      <div class="card">
+        <strong>Add a store</strong>
+        <div class="k">We check the phone number so two executives never claim the same store.</div>
+        <form id="af">
+          <label for="a1">Business name</label><input id="a1" required maxlength="80">
+          <label for="a2">Owner / contact</label><input id="a2" required maxlength="60">
+          <label for="a3">Phone (10 digits)</label><input id="a3" type="tel" inputmode="numeric" required maxlength="14">
+          <label for="a4">Service interest</label>
+          <select id="a4" required><option value="">Choose…</option><option>Social Media</option><option>Web Development</option><option>Paid Ads</option><option>SEO</option><option>Complete Digital Makeover</option><option>Undecided</option></select>
+          <label for="a5">Address / area</label><textarea id="a5" rows="2" required maxlength="200"></textarea>
+          <label for="a6">Estimated deal value (₹)</label><input id="a6" type="number" inputmode="numeric" min="0" max="10000000" required>
+          <div id="ae" class="err-t" role="alert"></div>
+          <button class="btn" id="ab">Claim store</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="v-visit" class="hide">
+      <div class="card">
+        <strong>Log a visit</strong>
+        <form id="vf">
+          <label for="v1">Store</label><select id="v1" required></select>
+          <label for="v2">Outcome</label>
+          <select id="v2"><option>Initial Meeting</option><option>Follow-up</option><option>In Negotiation</option><option>Deal Closed (needs approval)</option><option>Rejected</option></select>
+          <label for="v3">Notes</label><textarea id="v3" rows="3" required maxlength="500"></textarea>
+          <label for="v4">Follow-up date (optional)</label><input id="v4" type="date">
+          <label>Location</label>
+          <button type="button" class="btn alt" id="gp" style="margin-top:0">Capture my location</button>
+          <div class="k" id="gs" style="margin-top:6px">Not captured. Visit is saved without a location.</div>
+          <button class="btn" id="vb">Save visit</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="v-earn" class="hide">
+      <div class="grid">
+        <div class="card"><div class="k">Earned (on verified payments)</div><div class="v" id="e1">₹0</div></div>
+        <div class="card"><div class="k">Paid out</div><div class="v" id="e2">₹0</div></div>
+      </div>
+      <div class="card"><div class="k">Ready to be paid</div><div class="v" id="e3">₹0</div><div class="k" id="e4" style="margin-top:6px"></div></div>
+      <h2>My payment reports</h2><div id="pl"></div>
+    </section>
+
+    <section id="v-more" class="hide">
+      <h2>Rate list</h2><div id="rl"></div>
+      <h2>Contact head office</h2>
+      <div class="card"><form id="sf">
+        <label for="s1">Topic</label><select id="s1"><option>Leave application</option><option>App problem</option><option>Client dispute</option><option>Other</option></select>
+        <label for="s2">Subject</label><input id="s2" required maxlength="100">
+        <label for="s3">Details</label><textarea id="s3" rows="3" required maxlength="800"></textarea>
+        <button class="btn">Send request</button></form></div>
+      <button class="btn alt" id="so">Sign out</button>
+    </section>
+  </main>
+  <nav aria-label="Main">
+    <button data-t="home" class="on"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</button>
+    <button data-t="leads"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Stores</button>
+    <button data-t="add"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>Add</button>
+    <button data-t="visit"><svg viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Visit</button>
+    <button data-t="earn"><svg viewBox="0 0 24 24"><path d="M6 4h12M6 9h12M9 4c6 0 6 9 0 9l7 7"/></svg>Earnings</button>
+    <button data-t="more"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>More</button>
+  </nav>
+</div>
+<div id="sheet" class="hide" role="dialog" aria-modal="true"><div id="sb"></div></div>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import {getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut,sendPasswordResetEmail} from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import {getFirestore,collection,doc,query,where,limit,getDocs,onSnapshot,addDoc,updateDoc,runTransaction,serverTimestamp} from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+const fb=initializeApp({apiKey:"AIzaSyAAgcIprurHXdo9tztkqVzLsIzJCWhqWwc",authDomain:"feasibility-44ca4.firebaseapp.com",projectId:"feasibility-44ca4",storageBucket:"feasibility-44ca4.firebasestorage.app",appId:"1:166006393145:web:6bb64d5ee1a0578a7200e8"});
+const auth=getAuth(fb),db=getFirestore(fb);
+const APP='default-app-id'; // keep identical to your existing data path
+const C=n=>collection(db,'artifacts',APP,'public','data',n);
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const inr=n=>'₹'+Math.round(Number(n)||0).toLocaleString('en-IN');
+const phone10=s=>String(s).replace(/\D/g,'').slice(-10);
+const today=()=>new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Kolkata'});
+let me=null,leads=[],visits=[],claims=[],unsubs=[],geo=null;
+
+function toast(t,err){const e=$('#toast');e.textContent=t;e.className='show'+(err?' err':'');clearTimeout(toast.t);toast.t=setTimeout(()=>e.className='',3200)}
+async function busy(btn,fn){const o=btn.textContent;btn.disabled=true;btn.textContent='Please wait…';try{await fn()}finally{btn.disabled=false;btn.textContent=o}}
+function tab(t){document.querySelectorAll('main>section').forEach(s=>s.classList.toggle('hide',s.id!=='v-'+t));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$('#m').scrollTo(0,0)}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>tab(b.dataset.t));
+
+// ---------- AUTH ----------
+onAuthStateChanged(auth,async u=>{
+  unsubs.forEach(f=>f());unsubs=[];me=null;
+  if(!u){$('#app').classList.add('hide');$('#login').classList.remove('hide');return}
+  try{
+    const s=await getDocs(query(C('team_users'),where('email','==',u.email.toLowerCase()),limit(1)));
+    const d=s.docs[0];
+    if(!d||d.data().status==='Suspended'){await signOut(auth);$('#le').textContent=d?'This account is suspended. Contact head office.':'No executive profile found for this email.';return}
+    me={uid:u.uid,id:d.id,...d.data()};
+  }catch(e){await signOut(auth);$('#le').textContent='Could not load your profile. Check your connection.';return}
+  $('#login').classList.add('hide');$('#app').classList.remove('hide');
+  $('#hn').textContent=me.name||'Executive';$('#hs').textContent='Commission rate '+Math.round((Number(me.commission_rate)||0)*100)+'%';
+  listen();
+});
+$('#lf').onsubmit=e=>{e.preventDefault();$('#le').textContent='';busy($('#lb'),async()=>{
+  try{await signInWithEmailAndPassword(auth,$('#em').value.trim(),$('#pw').value)}
+  catch(x){$('#le').textContent=['auth/too-many-requests'].includes(x.code)?'Too many attempts. Try again later.':'Email or password is incorrect.'}})};
+$('#fp').onclick=async()=>{const m=$('#em').value.trim();if(!m)return $('#le').textContent='Enter your email above first.';
+  try{await sendPasswordResetEmail(auth,m)}catch(e){} toast('If that email is registered, a reset link is on its way.')};
+$('#so').onclick=()=>signOut(auth);
+
+// ---------- DATA ----------
+function listen(){
+  const mine=where('ownerUid','==',me.uid);
+  unsubs.push(onSnapshot(query(C('sales_leads'),mine),s=>{leads=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));render()},()=>toast('Could not load stores',1)));
+  unsubs.push(onSnapshot(query(C('visits'),mine),s=>{visits=s.docs.map(d=>({id:d.id,...d.data()}));render()}));
+  unsubs.push(onSnapshot(query(C('payment_claims'),mine),s=>{claims=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.ts?.seconds||0)-(a.ts?.seconds||0));render()}));
+  unsubs.push(onSnapshot(C('agency_rates'),s=>{$('#rl').innerHTML=s.docs.map(d=>d.data()).map(r=>`<div class="card"><strong>${esc(r.service)}</strong><div class="v">${esc(r.price)}</div><div class="k">${esc(r.details)}</div></div>`).join('')||'<div class="empty">Head office has not published rates yet.</div>'}));
+  unsubs.push(onSnapshot(query(C('notifications'),where('target','in',['All',me.name]),limit(1)),s=>{const b=$('#bc'),n=s.docs[0]?.data();b.classList.toggle('hide',!n);if(n)b.textContent='📢 '+n.message}, ()=>{}));
+}
+const isWon=l=>l.status==='Closed Won';
+function render(){
+  const t=today(),vt=visits.filter(v=>(v.day||'')===t).length;
+  const open=leads.filter(l=>!isWon(l)&&l.status!=='Rejected').reduce((a,l)=>a+(+l.value||0),0);
+  const won=leads.filter(isWon).reduce((a,l)=>a+(+l.value||0),0);
+  const pend=claims.filter(c=>c.status==='Pending Verification').length;
+  $('#k1').textContent=vt;$('#k2').textContent=inr(open);$('#k3').textContent=inr(won);$('#k4').textContent=pend;
+  // follow-ups
+  const due=visits.filter(v=>v.followUp&&v.followUp<=t).sort((a,b)=>a.followUp.localeCompare(b.followUp));
+  const seen=new Set(),fu=due.filter(v=>!seen.has(v.leadId)&&seen.add(v.leadId));
+  $('#fu').innerHTML=fu.map(v=>{const l=leads.find(x=>x.id===v.leadId);return l?`<div class="card"><strong>${esc(l.company)}</strong><div class="k">${v.followUp<t?'Overdue since ':'Due '}${esc(v.followUp)}</div></div>`:''}).join('')||'<div class="empty">Nothing due. Log a visit and set a follow-up date to see it here.</div>';
+  // leads
+  const q=$('#q').value.trim().toLowerCase();
+  const list=leads.filter(l=>!q||(l.company||'').toLowerCase().includes(q)||(l.phone||'').includes(q));
+  $('#ll').innerHTML=list.map(l=>{const p=phone10(l.phone||'');
+    return `<div class="card"><div style="display:flex;justify-content:space-between;gap:8px"><strong>${esc(l.company)}</strong><span class="chip">${esc(l.status)}</span></div>
+    <div class="k">${esc(l.owner)} · ${esc(l.service_interest||'')}</div><div class="k">${esc(l.address)}</div><div class="k">Est. ${inr(l.value)}</div>
+    <div class="row">${p.length===10?`<a href="tel:+91${p}">Call</a><a href="https://wa.me/91${p}" target="_blank" rel="noopener">WhatsApp</a>`:''}
+    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(l.address||l.company)}" target="_blank" rel="noopener">Navigate</a></div>
+    <div class="row"><button data-v="${l.id}">Log visit</button>${isWon(l)?`<button data-p="${l.id}">Report payment</button>`:''}</div></div>`}).join('')||'<div class="empty">No stores yet. Tap Add to claim your first one.</div>';
+  $('#v1').innerHTML=leads.filter(l=>l.status!=='Rejected').map(l=>`<option value="${l.id}">${esc(l.company)}</option>`).join('')||'<option value="">No stores yet</option>';
+  // earnings: only verified payments count
+  const ver=claims.filter(c=>c.status==='Verified').reduce((a,c)=>a+(+c.amount||0),0);
+  const earned=Math.round(ver*(Number(me.commission_rate)||0)),paid=Math.round(Number(me.commission_paid)||0);
+  $('#e1').textContent=inr(earned);$('#e2').textContent=inr(paid);$('#e3').textContent=inr(Math.max(0,earned-paid));
+  $('#e4').textContent='Counted only after head office verifies the client payment. Final amounts are set by head office.';
+  $('#pl').innerHTML=claims.map(c=>{const l=leads.find(x=>x.id===c.leadId);return `<div class="card"><div style="display:flex;justify-content:space-between"><strong>${inr(c.amount)}</strong><span class="chip">${esc(c.status)}</span></div><div class="k">${esc(l?.company||'')} · ${esc(c.method)}${c.ref?' · '+esc(c.ref):''}</div></div>`}).join('')||'<div class="empty">No payment reports yet.</div>';
+  const on=visits.length&&0;$('#duty').textContent=vt+' visits today';
+}
+$('#q').oninput=render;
+$('#ll').onclick=e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.v){tab('visit');$('#v1').value=b.dataset.v}
+  if(b.dataset.p)paySheet(b.dataset.p)};
+
+// ---------- ADD STORE (atomic duplicate guard on phone) ----------
+$('#af').onsubmit=e=>{e.preventDefault();$('#ae').textContent='';busy($('#ab'),async()=>{
+  const p=phone10($('#a3').value);if(p.length!==10)return $('#ae').textContent='Enter a valid 10-digit phone number.';
+  const data={company:$('#a1').value.trim(),owner:$('#a2').value.trim(),phone:p,service_interest:$('#a4').value,address:$('#a5').value.trim(),value:Math.max(0,Math.round(+$('#a6').value||0)),
+    rep:me.name,ownerUid:me.uid,status:'Newly Assigned',timestamp:Date.now()};
+  try{
+    const key=doc(C('lead_keys'),p),lead=doc(C('sales_leads'));
+    await runTransaction(db,async tx=>{const k=await tx.get(key);
+      if(k.exists())throw {dup:k.data().rep||'another executive'};
+      tx.set(key,{ownerUid:me.uid,rep:me.name,company:data.company,ts:serverTimestamp()});tx.set(lead,data)});
+    toast('Store claimed');e.target.reset();tab('leads');
+  }catch(x){$('#ae').textContent=x.dup?`This number is already claimed by ${x.dup}. Ask head office to reassign it.`:'Could not save. Check your connection and try again.'}
+})};
+
+// ---------- VISIT ----------
+$('#gp').onclick=()=>{const s=$('#gs');if(!navigator.geolocation)return s.textContent='Location is not available on this device.';s.textContent='Getting location…';
+  navigator.geolocation.getCurrentPosition(p=>{geo={lat:+p.coords.latitude.toFixed(5),lng:+p.coords.longitude.toFixed(5),acc:Math.round(p.coords.accuracy)};s.textContent=`Captured (±${geo.acc} m)`},
+  ()=>{geo=null;s.textContent='Permission denied or unavailable. Visit will be saved without a location.'},{enableHighAccuracy:true,timeout:10000})};
+$('#vf').onsubmit=e=>{e.preventDefault();busy($('#vb'),async()=>{
+  const id=$('#v1').value;if(!id)return toast('Pick a store first',1);
+  const out=$('#v2').value,fuv=$('#v4').value;
+  try{
+    await addDoc(C('visits'),{leadId:id,ownerUid:me.uid,rep:me.name,outcome:out,notes:$('#v3').value.trim(),followUp:fuv||null,geo,day:today(),ts:serverTimestamp()});
+    const st=out.startsWith('Deal Closed')?'Won - Pending Approval':out;
+    await updateDoc(doc(C('sales_leads'),id),{status:st});
+    toast('Visit saved');e.target.reset();geo=null;$('#gs').textContent='Not captured. Visit is saved without a location.';tab('home');
+  }catch(x){toast('Could not save the visit',1)}
+})};
+
+// ---------- PAYMENT REPORT (never counts as money until verified) ----------
+function paySheet(id){const l=leads.find(x=>x.id===id);$('#sb').innerHTML=`<strong>Report payment: ${esc(l.company)}</strong>
+  <div class="k">This is a report for head office to check against the bank. It is not counted until verified.</div>
+  <form id="pf"><label for="p1">Amount received (₹)</label><input id="p1" type="number" inputmode="numeric" min="1" required>
+  <label for="p2">Method</label><select id="p2"><option>UPI</option><option>Cash</option><option>Bank Transfer</option><option>Cheque</option></select>
+  <label for="p3">Transaction reference (UPI/bank)</label><input id="p3" maxlength="40">
+  <button class="btn" id="pb">Send for verification</button><button type="button" class="btn alt" id="pc">Cancel</button></form>`;
+  $('#sheet').classList.remove('hide');$('#pc').onclick=()=>$('#sheet').classList.add('hide');
+  $('#pf').onsubmit=e=>{e.preventDefault();busy($('#pb'),async()=>{
+    const amt=Math.round(+$('#p1').value);if(!(amt>0))return;
+    if($('#p2').value!=='Cash'&&!$('#p3').value.trim())return toast('Add the transaction reference',1);
+    try{await addDoc(C('payment_claims'),{leadId:id,ownerUid:me.uid,rep:me.name,amount:amt,method:$('#p2').value,ref:$('#p3').value.trim(),status:'Pending Verification',ts:serverTimestamp()});
+      toast('Sent for verification');$('#sheet').classList.add('hide');tab('earn')}catch(x){toast('Could not send',1)}})}}
+$('#sheet').onclick=e=>{if(e.target.id==='sheet')e.target.classList.add('hide')};
+
+// ---------- SUPPORT ----------
+$('#sf').onsubmit=e=>{e.preventDefault();const b=e.target.querySelector('button');busy(b,async()=>{
+  try{await addDoc(C('support_tickets'),{ownerUid:me.uid,rep:me.name,type:$('#s1').value,subject:$('#s2').value.trim(),details:$('#s3').value.trim(),status:'Open',timestamp:Date.now()});toast('Sent to head office');e.target.reset()}catch(x){toast('Could not send',1)}})};
+</script>
 </body>
 </html>
