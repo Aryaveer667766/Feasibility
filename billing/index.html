@@ -2,6 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Feasibility Media · Billing</title>
+<meta name="theme-color" content="#0a0a0a"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f1f1ee;--pn:#fff;--tx:#111;--mu:#6b6b6b;--ln:#dcdcd8;--ac:#cc3a4b;--ok:#1f9d57}
@@ -58,26 +59,45 @@ h2{font-size:11.5px;font-weight:600;color:var(--mu);margin:16px 0 6px;text-trans
 .bar2{height:12px;background:#c8374a;flex:none}
 .seal{position:absolute;width:150px;height:150px;transform:rotate(-14deg);pointer-events:none}
 dialog{border:1px solid var(--ln);border-radius:12px;background:var(--pn);color:var(--tx);max-width:420px;width:92%}dialog::backdrop{background:rgba(0,0,0,.5)}
+#lg{position:fixed;inset:0;z-index:50;background:#0a0a0a;color:#fff;display:grid;place-items:center;padding:20px}#lg[hidden]{display:none}#lg form{width:100%;max-width:360px;display:grid;gap:10px}#lg svg{height:46px;width:auto;margin-bottom:6px}#lg h1{margin:0 0 4px;font-size:24px}#lg input{background:#161616;border-color:#333;color:#fff;font-size:16px;padding:12px}#lg p{margin:0;font-size:13px;color:#e07a86;min-height:18px}#lg small{color:#999}.sy{font-size:11px;color:#9a9a9a;white-space:nowrap}
+button{touch-action:manipulation}#pdfm,.mnav{display:none}
+@media(max-width:800px){input,select,textarea{font-size:16px;padding:10px 11px}button{min-height:42px}.top{flex-wrap:nowrap;overflow-x:auto;gap:8px;-webkit-overflow-scrolling:touch}.top button,.top b{flex:none;white-space:nowrap}.top b{margin-right:4px}.grid{padding:10px 10px 90px}.grid[data-v=list] #ed,.grid[data-v=list] #pv,.grid[data-v=ed] aside,.grid[data-v=ed] #pv,.grid[data-v=pv] aside,.grid[data-v=pv] #ed{display:none}.it{grid-template-columns:1fr 62px 90px 42px}.pay{grid-template-columns:112px 1fr 84px 42px}.it .x,.pay .x{height:42px}.r3{grid-template-columns:1fr}#pdfm{display:block;width:100%;margin-bottom:10px;min-height:46px}.mnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:9;background:#0a0a0a;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));gap:8px;border-top:1px solid #333}.mnav button{flex:1;border-color:#444;color:#fff}.mnav button.on{background:var(--ac);border-color:var(--ac)}.li{padding:12px 8px}.bar button{flex:1 1 45%}#fit{-webkit-overflow-scrolling:touch}}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute"><symbol id="f" viewBox="264 195 605 622"><path fill="currentColor" d="M264 195H818V350H558L437 470V817H264Z"/><rect x="489" y="489" width="242" height="138" fill="currentColor"/><circle cx="817" cy="765" r="52" fill="#cc3a4b"/></symbol></svg>
 <div class="top"><b><svg viewBox="264 195 605 622"><use href="#f"/></svg>Feasibility Media · Billing</b>
-<button class="p" data-new="quotation">+ Quotation</button><button class="p" data-new="invoice">+ Invoice</button><button class="p" data-new="receipt">+ Receipt</button><button id="bk">Backup</button><button id="rs">Restore</button><button id="st">Settings</button><input type="file" id="rf" accept=".json" hidden></div>
-<div class="grid">
+<button class="p" data-new="quotation">+ Quotation</button><button class="p" data-new="invoice">+ Invoice</button><button class="p" data-new="receipt">+ Receipt</button><button id="bk">Backup</button><button id="rs">Restore</button><button id="st">Settings</button><button id="so">Sign out</button><span class="sy" id="who"></span><span class="sy" id="sy"></span><input type="file" id="rf" accept=".json" hidden></div>
+<div class="grid" data-v="list">
 <aside class="pn"><div class="sm" id="sum"></div><h2>Documents</h2><input id="q" placeholder="Search by number or client"><div id="list" style="margin-top:8px"></div></aside>
 <section class="pn" id="ed"></section>
-<section id="pv"><div id="fit"><div id="sheet"></div></div></section>
+<section id="pv"><button class="p" id="pdfm">Download PDF</button><div id="fit"><div id="sheet"></div></div></section>
 </div>
+<div id="lg"><form id="lf"><svg viewBox="264 195 605 622" style="color:#fff"><use href="#f"/></svg><h1>Feasibility Media Billing</h1><small>Sign in with your admin account</small><input id="le" type="email" placeholder="Email" autocomplete="username" required><input id="lp" type="password" placeholder="Password" autocomplete="current-password" required><button class="p" type="submit" id="lb">Sign in</button><p id="lm"></p></form></div>
+<nav class="mnav"><button data-v="list" class="on">Documents</button><button data-v="ed">Edit</button><button data-v="pv">Preview</button></nav>
 <dialog id="dlg"><h2>Business settings</h2><div id="sf"></div><div class="bar"><button class="p" id="ss">Save</button><button id="sx">Close</button></div></dialog>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {getDatabase,ref,set,remove,update,onValue,runTransaction} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+const FB={apiKey:"AIzaSyAZ_c3EaDxSZ6RrNrwQjR_TauJHrPfk_lk",authDomain:"designsnap-f3309.firebaseapp.com",databaseURL:"https://designsnap-f3309-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"designsnap-f3309",storageBucket:"designsnap-f3309.firebasestorage.app",messagingSenderId:"741888249963",appId:"1:741888249963:web:9540c9f68d6f0d5da9a12e"};
+const app=initializeApp(FB),auth=getAuth(app),rdb=getDatabase(app);
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const TY={quotation:{t:'Quotation',ab:'QUO',n:'QUOTATION NO.',d:'QUOTATION DATE'},invoice:{t:'Invoice',ab:'INV',n:'INVOICE NO.',d:'INVOICE DATE'},receipt:{t:'Receipt',ab:'RCT',n:'RECEIPT NO.',d:'RECEIPT DATE'}};
 const MO=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DEF={s:{name:'Feasibility Media',tag:'DIGITAL · SOCIAL · INFLUENCE',web:'www.feasibilitymedia.in',phone:'+91 94313 66776',addr:'',pan:'',gstin:'',bank:'',signer:'Aryaveer Mishra, Founder and CEO',pre:'FM'},clients:[],docs:[],seq:{quotation:7,invoice:147,receipt:0}};
-let DB;try{DB=Object.assign({},DEF,JSON.parse(localStorage.getItem('fm-billing-v2')||'{}'));DB.s=Object.assign({},DEF.s,DB.s)}catch(e){DB=JSON.parse(JSON.stringify(DEF))}
+let DB=JSON.parse(JSON.stringify(DEF)),UID=null;
 let cur=null,SEAL='',delArm=null;
-const save=()=>{try{localStorage.setItem('fm-billing-v2',JSON.stringify(DB))}catch(e){}};
+const BP='billing',tm={},pend=new Set(),clean=v=>JSON.parse(JSON.stringify(v));
+const sync=t=>{const e=$('#sy');if(e)e.textContent=t};
+const cache=()=>{try{localStorage.setItem('fm-bill-cache',JSON.stringify(DB))}catch(e){}};
+const cloud=(p,v)=>UID?set(ref(rdb,`${BP}/${p}`),clean(v)).catch(e=>sync('Sync error: '+(e.code||e.message))):Promise.resolve();
+const cloudDel=p=>UID?remove(ref(rdb,`${BP}/${p}`)).catch(()=>0):0;
+function save(){cache();if(cur&&UID){const d=cur;d.updated=Date.now();pend.add(d.id);clearTimeout(tm[d.id]);sync('Saving…');tm[d.id]=setTimeout(()=>cloud('docs/'+d.id,d).then(()=>{pend.delete(d.id);sync('Synced')}),350)}}
+const arr=x=>Array.isArray(x)?x.filter(Boolean):x?Object.values(x):[];
+const norm=d=>{d.client=Object.assign({name:'',addr:'',gstin:'',phone:''},d.client);d.items=arr(d.items);if(!d.items.length)d.items=[{t:'',d:'',q:1,r:0}];d.items.forEach(i=>{i.t=i.t||'';i.d=i.d||''});d.pays=arr(d.pays);d.disc=Object.assign({u:'%',v:0},d.disc);d.gst=Object.assign({on:false,rate:18,inter:false,incl:false},d.gst);d.tds=Object.assign({on:false,rate:2},d.tds);d.notes=d.notes||'';d.title=d.title||'';d.ref=d.ref||'';d.months=d.months||12;d.sched=d.sched||'full';return d};
+const cid=n=>(n||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'client';
+const tree=()=>({settings:DB.s,seq:DB.seq,clients:Object.fromEntries(DB.clients.map(c=>[c.id||cid(c.name),Object.assign({},c,{id:c.id||cid(c.name)})])),docs:Object.fromEntries(DB.docs.map(d=>[d.id,d]))});
 const today=()=>new Date().toISOString().slice(0,10),pd=s=>{const[a,b,c]=(s||'').split('-').map(Number);return a?new Date(a,b-1,c):null};
 const addD=(s,n)=>{const d=pd(s)||new Date();d.setDate(d.getDate()+n);return d.toLocaleDateString('en-CA')};
 const addM=(s,n)=>{const d=pd(s)||new Date();d.setMonth(d.getMonth()+n);return d.toLocaleDateString('en-CA')};
@@ -86,9 +106,11 @@ const num=n=>(+n||0).toLocaleString('en-IN',{maximumFractionDigits:2}),rs=n=>'�
 const O='One Two Three Four Five Six Seven Eight Nine Ten Eleven Twelve Thirteen Fourteen Fifteen Sixteen Seventeen Eighteen Nineteen'.split(' '),TN='_ _ Twenty Thirty Forty Fifty Sixty Seventy Eighty Ninety'.split(' ');
 const two=n=>n<20?(n?O[n-1]:''):TN[Math.floor(n/10)]+(n%10?' '+O[n%10-1]:''),three=n=>(n>=100?O[Math.floor(n/100)-1]+' hundred'+(n%100?' ':''):'')+two(n%100);
 function words(n){n=Math.round(+n||0);if(n<=0)return 'Zero rupees only';let o=[];for(const[v,l]of[[1e7,'crore'],[1e5,'lakh'],[1e3,'thousand']]){const q=Math.floor(n/v);if(q){o.push(two(q)+' '+l);n%=v}}if(n)o.push(three(n));const s=o.join(' ').toLowerCase();return s[0].toUpperCase()+s.slice(1)+' rupees only'}
-function nextNo(t){DB.seq[t]=(DB.seq[t]||0)+1;return `${DB.s.pre}-${TY[t].ab}-${new Date().getFullYear()}-${String(DB.seq[t]).padStart(4,'0')}`}
+async function nextNo(t){let n;const loc=()=>(DB.seq[t]=(DB.seq[t]||DEF.seq[t])+1);
+ if(UID){try{const r=await Promise.race([runTransaction(ref(rdb,`${BP}/seq/${t}`),c=>(c??DEF.seq[t])+1),new Promise((_,j)=>setTimeout(j,2500))]);n=r.snapshot.val()}catch(e){n=loc()}}else n=loc();
+ DB.seq[t]=n;return `${DB.s.pre}-${TY[t].ab}-${new Date().getFullYear()}-${String(n).padStart(4,'0')}`}
 const NOTE={quotation:'Work starts after the advance is received. Prices are valid until the date shown.',invoice:'Please pay only into the account shown on this invoice. Work follows the agreed scope.',receipt:'Received with thanks. This receipt confirms the payments listed above.'};
-function mk(t,from){const d={id:'d'+Date.now()+Math.floor(Math.random()*999),type:t,no:nextNo(t),date:today(),due:addD(today(),7),valid:addD(today(),14),client:{name:'',addr:'',gstin:'',phone:''},title:'',items:[{t:'',d:'',q:1,r:0}],disc:{u:'%',v:0},gst:{on:false,rate:18,inter:false,incl:false},tds:{on:false,rate:2},pays:[],sched:'full',months:12,notes:NOTE[t],seal:t!='quotation',ref:''};
+async function mk(t,from){const no=await nextNo(t);const d={id:'d'+Date.now()+Math.floor(Math.random()*999),type:t,no,created:Date.now(),date:today(),due:addD(today(),7),valid:addD(today(),14),client:{name:'',addr:'',gstin:'',phone:''},title:'',items:[{t:'',d:'',q:1,r:0}],disc:{u:'%',v:0},gst:{on:false,rate:18,inter:false,incl:false},tds:{on:false,rate:2},pays:[],sched:'full',months:12,notes:NOTE[t],seal:t!='quotation',ref:''};
  if(from){Object.assign(d,JSON.parse(JSON.stringify({client:from.client,title:from.title,items:from.items,disc:from.disc,gst:from.gst,tds:from.tds,sched:from.sched,months:from.months})));d.ref=from.no;if(t=='receipt')d.pays=JSON.parse(JSON.stringify(from.pays))}
  DB.docs.unshift(d);return d}
 function calc(d){const sub=d.items.reduce((a,i)=>a+(+i.q||0)*(+i.r||0),0),dis=d.disc.u=='%'?sub*(+d.disc.v||0)/100:Math.min(+d.disc.v||0,sub),tv=Math.max(sub-dis,0);
@@ -124,7 +146,7 @@ function sheet(d){const s=DB.s,c=calc(d),t=TY[d.type],rc=d.type=='receipt',q=d.t
 ${d.notes.trim()||s.bank?`<div class="nt">${d.notes.trim()?`<b>NOTES AND TERMS</b>${esc(d.notes)}`:''}${s.bank?`<br><br><b>PAYMENT DETAILS</b>${esc(s.bank)}`:''}${s.pan?`<br><br>PAN ${esc(s.pan)}`:''}${s.gstin?` · GSTIN ${esc(s.gstin)}`:''}</div>`:''}
 ${q||rc?'':''}<div class="sg"><div>For ${esc(s.name)}, authorised signatory<br>${esc(s.signer)}</div></div></div>
 <div class="ft"><div><h3>Thank you for choosing ${esc(s.name)}.</h3><p>Website development · Social media management · Influencer marketing</p></div><div style="text-align:right"><a>${esc(s.web)}</a>${s.phone?`<p>WhatsApp ${esc(s.phone)}</p>`:''}</div></div><div class="bar2"></div>`+(d.seal&&SEAL?`<img class="seal" src="${SEAL}" style="right:70px;bottom:130px">`:'')}
-function fit(){const f=$('#fit'),s=$('#sheet'),k=Math.min(1,f.clientWidth/924);s.style.transform=`scale(${k})`;f.style.height=s.offsetHeight*k+'px'}
+let ZOOM=0;function fit(){const f=$('#fit'),s=$('#sheet'),k=ZOOM?1:Math.min(1,f.clientWidth/924);f.style.overflowX=ZOOM?'auto':'hidden';s.style.transform=`scale(${k})`;f.style.height=s.offsetHeight*k+'px'}
 function preview(){if(!cur)return;$('#sheet').innerHTML=sheet(cur);fit()}
 /* list */
 function list(){const q=($('#q').value||'').toLowerCase();const inv=DB.docs.filter(d=>d.type=='invoice').map(d=>calc(d));const out=inv.reduce((a,c)=>a+Math.max(c.bal,0),0),m=today().slice(0,7);
@@ -148,34 +170,59 @@ function editor(){if(!cur){$('#ed').innerHTML='<h2>Welcome</h2><p>Create a quota
  <h2>Notes and terms</h2><textarea data-k="notes"></textarea><label class="ck"><input type="checkbox" data-k="seal"> Add Feasibility Media stamp</label>
  <div class="bar">${d.type=='quotation'?'<button class="k" id="cv" data-t="invoice">Convert to invoice</button>':d.type=='invoice'?'<button class="k" id="cv" data-t="receipt">Make receipt</button>':''}<button class="p" id="pdf">Download PDF</button><button id="dp">Duplicate</button><button id="dl">${delArm==d.id?'Sure? Delete':'Delete'}</button></div><div class="msg" id="msg"></div>`;
  $('#ed').querySelectorAll('[data-k]').forEach(e=>{const v=get(d,e.dataset.k);e.type=='checkbox'?e.checked=!!v:e.value=v??''})}
-const get=(o,p)=>p.split('.').reduce((a,k)=>a?.[k],o),set=(o,p,v)=>{const ks=p.split('.'),l=ks.pop();ks.reduce((a,k)=>a[k],o)[l]=v};
+const get=(o,p)=>p.split('.').reduce((a,k)=>a?.[k],o),setProp=(o,p,v)=>{const ks=p.split('.'),l=ks.pop();ks.reduce((a,k)=>a[k],o)[l]=v};
 function all(full){list();if(full)editor();preview();save()}
-function open(id){cur=DB.docs.find(d=>d.id==id)||null;delArm=null;all(true)}
+function open(id){cur=DB.docs.find(d=>d.id==id)||null;delArm=null;all(true);if(matchMedia('(max-width:800px)').matches)setView('ed')}
 document.addEventListener('input',e=>{const t=e.target,x=t.dataset;if(t.id=='q'){list();return}if(!cur)return;
- if(x.k){let v=t.type=='checkbox'?t.checked:t.value;if(['true','false'].includes(v)&&/inter|incl/.test(x.k))v=v=='true';if(t.type=='number')v=+v;set(cur,x.k,v);const rr=/gst\.on|tds\.on|sched|gst\.rate/.test(x.k);all(rr&&t.type!='number'&&t.type!='text')}
+ if(x.k){let v=t.type=='checkbox'?t.checked:t.value;if(['true','false'].includes(v)&&/inter|incl/.test(x.k))v=v=='true';if(t.type=='number')v=+v;setProp(cur,x.k,v);const rr=/gst\.on|tds\.on|sched|gst\.rate/.test(x.k);all(rr&&t.type!='number'&&t.type!='text')}
  else if(x.i!=null){cur.items[x.i][x.f]=['q','r'].includes(x.f)?+t.value:t.value;list();preview();save()}else if(x.p!=null){cur.pays[x.p][x.f]=x.f=='a'?+t.value:t.value;list();preview();save()}});
 document.addEventListener('change',e=>{if(e.target.id=='cs'&&cur&&e.target.value!==''){cur.client=Object.assign({},DB.clients[+e.target.value]);all(true)}if(e.target.dataset.k&&/gst\.on|tds\.on|sched|inter|incl/.test(e.target.dataset.k))all(true)});
 document.addEventListener('click',async e=>{const b=e.target.closest('button,.li');if(!b)return;const D=b.dataset,id=b.id;
- if(D.new){cur=mk(D.new);all(true);return}if(D.o){open(D.o);return}
+ if(D.new){cur=await mk(D.new);all(true);if(isM())setView('ed');return}if(D.o){open(D.o);return}
  if(id=='bk'){await dlFile('feasibility-billing-backup.json',new Blob([JSON.stringify(DB)],{type:'application/json'}));return}
- if(id=='rs'){$('#rf').click();return}if(id=='st'){sf();$('#dlg').showModal();return}if(id=='sx'){$('#dlg').close();return}
- if(id=='ss'){document.querySelectorAll('#sf [data-s]').forEach(i=>DB.s[i.dataset.s]=i.value);save();$('#dlg').close();all(true);return}
+ if(id=='rs'){$('#rf').click();return}if(id=='so'){signOut(auth);return}if(id=='st'){sf();$('#dlg').showModal();return}if(id=='sx'){$('#dlg').close();return}
+ if(id=='ss'){document.querySelectorAll('#sf [data-s]').forEach(i=>DB.s[i.dataset.s]=i.value);cloud('settings',DB.s);cache();$('#dlg').close();all(true);return}
  if(!cur)return;const d=cur;
  if(D.xi!=null){d.items.splice(D.xi,1);if(!d.items.length)d.items.push({t:'',d:'',q:1,r:0});all(true)}
  else if(D.xp!=null){d.pays.splice(D.xp,1);all(true)}else if(id=='ai'){d.items.push({t:'',d:'',q:1,r:0});all(true)}
  else if(id=='ap'){d.pays.push({d:today(),a:0,m:'',n:''});all(true)}
  else if(id=='rb'){d.pays.push({d:today(),a:calc(d).bal,m:'',n:'Payment received'});all(true)}
- else if(id=='sc'){if(d.client.name){const i=DB.clients.findIndex(x=>x.name==d.client.name);i>=0?DB.clients[i]=Object.assign({},d.client):DB.clients.push(Object.assign({},d.client));save();editor();$('#msg').textContent='Client saved.'}}
- else if(id=='cv'){cur=mk(D.t,d);all(true)}else if(id=='dp'){const n=JSON.parse(JSON.stringify(d));n.id='d'+Date.now();n.no=nextNo(d.type);n.date=today();n.pays=d.type=='quotation'?[]:[];DB.docs.unshift(n);cur=n;all(true)}
- else if(id=='dl'){if(delArm==d.id){DB.docs=DB.docs.filter(x=>x.id!=d.id);cur=null;delArm=null;all(true)}else{delArm=d.id;$('#dl').textContent='Sure? Delete'}}
- else if(id=='pdf')pdf()});
+ else if(id=='sc'){if(d.client.name){const k=cid(d.client.name),c2=Object.assign({},d.client,{id:k}),i=DB.clients.findIndex(x=>x.id==k||x.name==d.client.name);i>=0?DB.clients[i]=c2:DB.clients.push(c2);cloud('clients/'+k,c2);cache();editor();$('#msg').textContent='Client saved.'}}
+ else if(id=='cv'){cur=await mk(D.t,d);all(true)}else if(id=='dp'){const n=JSON.parse(JSON.stringify(d));n.id='d'+Date.now();n.no=await nextNo(d.type);n.created=Date.now();n.date=today();n.pays=d.type=='quotation'?[]:[];DB.docs.unshift(n);cur=n;all(true)}
+ else if(id=='dl'){if(delArm==d.id){cloudDel('docs/'+d.id);DB.docs=DB.docs.filter(x=>x.id!=d.id);cur=null;delArm=null;all(true)}else{delArm=d.id;$('#dl').textContent='Sure? Delete'}}
+ else if(id=='pdf'||id=='pdfm')pdf()});
 function sf(){const L={name:'Business name',tag:'Tagline',web:'Website',phone:'WhatsApp / phone',addr:'Address (optional)',pan:'PAN (optional)',gstin:'GSTIN (optional)',bank:'Bank / UPI details',signer:'Signatory',pre:'Number prefix'};$('#sf').innerHTML=Object.keys(L).map(k=>`<label>${L[k]}</label><input data-s="${k}" value="${esc(DB.s[k])}">`).join('')}
-async function dlFile(name,blob){let dl=null;try{dl=await claude.use('downloads')}catch(e){}if(dl)await dl.save({filename:name,data:blob});else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click()}}
-$('#rf').addEventListener('change',async e=>{try{const j=JSON.parse(await e.target.files[0].text());if(j.docs){DB=Object.assign({},DEF,j);DB.s=Object.assign({},DEF.s,j.s);cur=null;all(true)}}catch(x){}e.target.value=''});
-async function pdf(){const m=$('#msg');m.textContent='Building PDF…';try{await document.fonts.ready;const el=$('#sheet');
- const cv=await html2canvas(el,{scale:2,backgroundColor:'#fff',width:924,height:el.offsetHeight,onclone:x=>{x.querySelector('#fit').style.cssText='height:auto;overflow:visible';x.querySelector('#sheet').style.cssText+=';transform:none;box-shadow:none'}});
+async function dlFile(name,blob){let dl=null;try{dl=await claude.use('downloads')}catch(e){}if(dl)return dl.save({filename:name,data:blob});
+ const f=new File([blob],name,{type:blob.type||'application/pdf'});if(isM()&&navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:name});return}catch(e){if(e.name=='AbortError')return}}
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),5000)}
+$('#rf').addEventListener('change',async e=>{try{const j=JSON.parse(await e.target.files[0].text());if(j.docs){DB=Object.assign({},DEF,j);DB.s=Object.assign({},DEF.s,j.s);DB.docs=DB.docs.map(norm);cur=null;all(true);if(UID)update(ref(rdb,BP),clean(tree()))}}catch(x){}e.target.value=''});
+async function pdf(){const m=$('#msg')||{},prevV=$('.grid').dataset.v,pb=$('#pdfm');m.textContent='Building PDF…';if(pb)pb.textContent='Building PDF…';try{if(isM()&&prevV!='pv'){setView('pv');await new Promise(r=>setTimeout(r,80))}await document.fonts.ready;const el=$('#sheet');
+ const cv=await html2canvas(el,{scale:innerWidth<800?1.6:2,backgroundColor:'#fff',width:924,height:el.offsetHeight,onclone:x=>{x.querySelector('#fit').style.cssText='height:auto;overflow:visible';x.querySelector('#sheet').style.cssText+=';transform:none;box-shadow:none'}});
  const w=210,h=w*cv.height/cv.width,p=new jspdf.jsPDF({unit:'mm',format:[w,h],compress:true});p.addImage(cv.toDataURL('image/jpeg',.95),'JPEG',0,0,w,h);
- await dlFile(`${cur.no}-${cur.client.name||'client'}`.replace(/[^\w\-]+/g,'_')+'.pdf',p.output('blob'));m.textContent='Done.'}catch(e){m.textContent=e&&e.code=='declined'?'Download cancelled.':'Could not save: '+(e.message||e)}}
+ await dlFile(`${cur.no}-${cur.client.name||'client'}`.replace(/[^\w\-]+/g,'_')+'.pdf',p.output('blob'));m.textContent='Done.'}catch(e){m.textContent=e&&e.code=='declined'?'Download cancelled.':'Could not save: '+(e.message||e)}if(prevV!=$('.grid').dataset.v)setView(prevV);if(pb)pb.textContent='Download PDF'}
 addEventListener('resize',fit);
-mkSeal().then(()=>{if(!DB.docs.length){/* start empty */}cur=DB.docs[0]||null;all(true)});
+const isM=()=>matchMedia('(max-width:800px)').matches;
+function setView(v){$('.grid').dataset.v=v;document.querySelectorAll('.mnav button').forEach(b=>b.classList.toggle('on',b.dataset.v==v));if(v=='pv')requestAnimationFrame(fit);scrollTo(0,0)}
+$('.mnav').addEventListener('click',e=>{const b=e.target.closest('button');if(b)setView(b.dataset.v)});
+$('#sheet').addEventListener('click',()=>{if(isM()){ZOOM=!ZOOM;fit()}});
+mkSeal();
+function apply(v,first){DB.s=Object.assign({},DEF.s,v.settings||{});DB.clients=Object.values(v.clients||{});DB.seq=Object.assign({},DEF.seq,v.seq||{});
+ let docs=Object.values(v.docs||{}).map(norm).sort((a,b)=>(b.created||0)-(a.created||0));
+ pend.forEach(id=>{const l=DB.docs.find(d=>d.id==id);if(l){const i=docs.findIndex(d=>d.id==id);i<0?docs.unshift(l):docs[i]=l}});
+ const ae=document.activeElement,busy=cur&&$('#ed').contains(ae)&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName);
+ if(cur&&busy){const i=docs.findIndex(d=>d.id==cur.id);i<0?docs.unshift(cur):docs[i]=cur}
+ const before=cur?JSON.stringify(cur):'';DB.docs=docs;if(cur)cur=docs.find(d=>d.id==cur.id)||null;else if(first&&!isM())cur=docs[0]||null;
+ list();if(!busy&&(first||(cur?JSON.stringify(cur):'')!==before))editor();preview();cache();sync('Synced')}
+let unsub=null;
+onAuthStateChanged(auth,u=>{if(unsub){unsub();unsub=null}
+ if(!u){UID=null;$('#lg').hidden=false;$('#who').textContent='';return}
+ UID=u.uid;$('#lg').hidden=true;$('#who').textContent=u.email;
+ try{const c=JSON.parse(localStorage.getItem('fm-bill-cache')||'null');if(c&&c.docs){DB=Object.assign({},DEF,c);DB.s=Object.assign({},DEF.s,c.s);DB.docs=DB.docs.map(norm);cur=DB.docs[0]||null;all(true)}}catch(e){}
+ sync('Syncing…');let first=true;
+ unsub=onValue(ref(rdb,BP),snap=>{const v=snap.val()||{};
+  if(first&&!v.docs&&DB.docs.length){update(ref(rdb,BP),clean(tree())).catch(()=>0)}
+  apply(v,first);first=false},e=>sync('Cannot read: '+(e.code||e.message)))});
+$('#lf').addEventListener('submit',async e=>{e.preventDefault();const m=$('#lm'),b=$('#lb');m.textContent='';b.disabled=true;
+ try{await signInWithEmailAndPassword(auth,$('#le').value.trim(),$('#lp').value)}catch(x){const M={'auth/invalid-credential':'Wrong email or password.','auth/wrong-password':'Wrong email or password.','auth/user-not-found':'No account with this email.','auth/network-request-failed':'No internet connection.','auth/operation-not-allowed':'Email and password sign-in is not enabled in Firebase Authentication.','auth/too-many-requests':'Too many tries. Wait a minute and try again.','auth/unauthorized-domain':'This website address is not in Firebase Authorized domains.'};m.textContent=M[x.code]||('Could not sign in: '+x.code)}
+ b.disabled=false});
 </script></body></html>
