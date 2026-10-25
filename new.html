@@ -229,7 +229,6 @@
             <div class="flex-1 overflow-y-auto p-3 md:p-8 custom-scrollbar">
                 
                 <div id="tab-dashboard" class="tab-content active space-y-4 md:space-y-6">
-                    <!-- NEW: BROADCAST BANNER NOTIFICATION -->
                     <div id="broadcast-banner" class="hidden bg-gradient-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/30 p-4 rounded-xl flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <i class="fa-solid fa-bullhorn text-purple-400 animate-bounce text-lg"></i>
@@ -368,7 +367,7 @@
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 border-b border-white/10 pb-4">
                             <div>
                                 <h3 class="text-xl md:text-2xl font-bold text-emerald-400 font-heading"><i class="fa-solid fa-file-invoice-dollar mr-2"></i> My Earnings Ledger</h3>
-                                <p class="text-xs text-slate-400 mt-1">Detailed breakdown of your commissions from Closed Won deals.</p>
+                                <p class="text-xs text-slate-400 mt-1" id="ledger-commission-rate-display">Detailed breakdown of your commissions from Closed Won deals.</p>
                             </div>
                             <div class="bg-black/30 px-4 py-2 rounded-lg border border-white/5 mt-4 md:mt-0 text-right">
                                 <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Total Disbursed (All Time)</p>
@@ -381,7 +380,7 @@
                                 <div class="hidden lg:grid ledger-grid px-5 py-3 border-b border-white/10 bg-black/20 text-[10px] font-bold text-slate-400 uppercase tracking-wider rounded-t-xl">
                                     <div>Deal / Company</div>
                                     <div>Contract Value</div>
-                                    <div>Commission (Est. 10%)</div>
+                                    <div id="ledger-comm-header">Commission</div>
                                 </div>
                                 <div id="ledger-deals-body" class="flex flex-col custom-scrollbar overflow-y-auto max-h-[400px]">
                                     </div>
@@ -408,19 +407,16 @@
                     </div>
                 </div>
 
-                <!-- UPDATED RESOURCES TAB -->
                 <div id="tab-resources" class="tab-content">
                     <div class="glass-card p-4 md:p-6 w-full min-h-[500px]">
                         <h3 class="text-xl md:text-2xl font-bold text-yellow-400 font-heading mb-2"><i class="fa-solid fa-book-open-reader mr-2"></i> The Sales Playbook</h3>
                         <p class="text-xs text-slate-400 mb-6 border-b border-white/10 pb-4">Standard operating procedures, scripts, and links to help you close more deals.</p>
                         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6" id="sops-grid"></div>
 
-                        <!-- NEW: DEMOS GRID -->
                         <h3 class="text-lg md:text-xl font-bold text-blue-400 font-heading mb-2 mt-10"><i class="fa-solid fa-laptop-code mr-2"></i> Pitch Demos</h3>
                         <p class="text-xs text-slate-400 mb-4 border-b border-white/10 pb-4">Live portfolio links to show prospects during meetings.</p>
                         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6" id="demos-grid"></div>
 
-                        <!-- NEW: PRICING / RATES GRID -->
                         <h3 class="text-lg md:text-xl font-bold text-emerald-400 font-heading mb-2 mt-10"><i class="fa-solid fa-tags mr-2"></i> Agency Rate List & Pricing</h3>
                         <p class="text-xs text-slate-400 mb-4 border-b border-white/10 pb-4">Official HQ pricing guidelines for all standard packages.</p>
                         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 mb-4" id="rates-grid"></div>
@@ -629,6 +625,11 @@
             document.getElementById('ld-rep').value = activeUserRecord.name;
             document.getElementById('ld-status').innerHTML = LEAD_STATUSES.map(s => `<option value="${s}">${s}</option>`).join('');
 
+            // UPDATE LEDGER HEADER WITH DYNAMIC RATE
+            const dynRate = (Number(activeUserRecord.commission_rate) || 0) * 100;
+            document.getElementById('ledger-commission-rate-display').innerText = `Detailed breakdown of your commissions based on your assigned HQ rate (${dynRate}%).`;
+            document.getElementById('ledger-comm-header').innerText = `Commission (Est. ${dynRate}%)`;
+
             // Financial Ledger Subscription
             unsubscribeUser = onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'team_users', activeUserRecord.id), (snap) => {
                 if(!snap.exists() || snap.data().status === 'Suspended') return logout();
@@ -675,7 +676,7 @@
                 renderPlaybook();
             });
 
-            // NEW: Notifications / Broadcasts Subscription
+            // Notifications / Broadcasts Subscription
             unsubscribeNotifs = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'notifications'), (snap) => {
                 allNotifs = []; snap.forEach(d => allNotifs.push(d.data()));
                 allNotifs.sort((a,b) => b.timestamp - a.timestamp);
@@ -692,7 +693,7 @@
                 } else { banner.classList.add('hidden'); }
             });
 
-            // NEW: Demos Subscription
+            // Demos Subscription
             unsubscribeDemos = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'demo_showcase'), (snap) => {
                 allDemos = []; snap.forEach(d => allDemos.push(d.data()));
                 document.getElementById('demos-grid').innerHTML = allDemos.map(d => `
@@ -708,7 +709,7 @@
                 `).join('') || '<p class="text-slate-500 text-sm col-span-full">No demos published by HQ yet.</p>';
             });
 
-            // NEW: Rates Subscription
+            // Rates Subscription
             unsubscribeRates = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'agency_rates'), (snap) => {
                 allRates = []; snap.forEach(d => allRates.push(d.data()));
                 document.getElementById('rates-grid').innerHTML = allRates.map(r => `
@@ -818,20 +819,21 @@
         // --- DASHBOARD ---
         function renderDashboard() {
             let pipe=0, won=0, projComm=0;
+            const dynRate = Number(activeUserRecord.commission_rate) || 0;
             
             myLeads.forEach(l => {
                 const v = Number(l.value)||0;
                 if(l.status === 'Closed Won') won+=v; 
                 else if(l.status !== 'Closed Lost') {
                     pipe+=v;
-                    // Projector Feature: Calculate 10% of late stage deals
-                    if(l.status === 'Proposal Sent' || l.status === 'In Negotiation') projComm += (v * 0.10);
+                    // Projector Feature uses dynamic user rate
+                    if(l.status === 'Proposal Sent' || l.status === 'In Negotiation') projComm += (v * dynRate);
                 }
             });
 
             document.getElementById('kpi-pipeline').innerText = "₹" + pipe.toLocaleString('en-IN');
             document.getElementById('kpi-won').innerText = "₹" + won.toLocaleString('en-IN');
-            document.getElementById('kpi-projected').innerText = "₹" + projComm.toLocaleString('en-IN'); // Motivation feature
+            document.getElementById('kpi-projected').innerText = "₹" + projComm.toLocaleString('en-IN'); 
 
             // Priority Tasks
             const todayStr = new Date().toISOString().split('T')[0];
@@ -867,9 +869,11 @@
         // --- LEDGER ---
         function renderLedger() {
             const wonDeals = myLeads.filter(l => l.status === 'Closed Won');
+            const dynRate = Number(activeUserRecord.commission_rate) || 0;
+            
             document.getElementById('ledger-deals-body').innerHTML = wonDeals.map(l => {
                 const val = Number(l.value) || 0;
-                const estComm = val * 0.10; // Assumed 10% standard commission for rep ledger calculation
+                const estComm = val * dynRate; // Calculates using specific user rate
                 return `
                 <div class="responsive-grid ledger-grid hover:bg-white/5 group border-l-2 border-emerald-500/50">
                     <div>
