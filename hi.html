@@ -170,11 +170,11 @@ function editor(){if(!cur){$('#ed').innerHTML='<h2>Welcome</h2><p>Create a quota
  <h2>Notes and terms</h2><textarea data-k="notes"></textarea><label class="ck"><input type="checkbox" data-k="seal"> Add Feasibility Media stamp</label>
  <div class="bar">${d.type=='quotation'?'<button class="k" id="cv" data-t="invoice">Convert to invoice</button>':d.type=='invoice'?'<button class="k" id="cv" data-t="receipt">Make receipt</button>':''}<button class="p" id="pdf">Download PDF</button><button id="dp">Duplicate</button><button id="dl">${delArm==d.id?'Sure? Delete':'Delete'}</button></div><div class="msg" id="msg"></div>`;
  $('#ed').querySelectorAll('[data-k]').forEach(e=>{const v=get(d,e.dataset.k);e.type=='checkbox'?e.checked=!!v:e.value=v??''})}
-const get=(o,p)=>p.split('.').reduce((a,k)=>a?.[k],o),set=(o,p,v)=>{const ks=p.split('.'),l=ks.pop();ks.reduce((a,k)=>a[k],o)[l]=v};
+const get=(o,p)=>p.split('.').reduce((a,k)=>a?.[k],o),setProp=(o,p,v)=>{const ks=p.split('.'),l=ks.pop();ks.reduce((a,k)=>a[k],o)[l]=v};
 function all(full){list();if(full)editor();preview();save()}
 function open(id){cur=DB.docs.find(d=>d.id==id)||null;delArm=null;all(true);if(matchMedia('(max-width:800px)').matches)setView('ed')}
 document.addEventListener('input',e=>{const t=e.target,x=t.dataset;if(t.id=='q'){list();return}if(!cur)return;
- if(x.k){let v=t.type=='checkbox'?t.checked:t.value;if(['true','false'].includes(v)&&/inter|incl/.test(x.k))v=v=='true';if(t.type=='number')v=+v;set(cur,x.k,v);const rr=/gst\.on|tds\.on|sched|gst\.rate/.test(x.k);all(rr&&t.type!='number'&&t.type!='text')}
+ if(x.k){let v=t.type=='checkbox'?t.checked:t.value;if(['true','false'].includes(v)&&/inter|incl/.test(x.k))v=v=='true';if(t.type=='number')v=+v;setProp(cur,x.k,v);const rr=/gst\.on|tds\.on|sched|gst\.rate/.test(x.k);all(rr&&t.type!='number'&&t.type!='text')}
  else if(x.i!=null){cur.items[x.i][x.f]=['q','r'].includes(x.f)?+t.value:t.value;list();preview();save()}else if(x.p!=null){cur.pays[x.p][x.f]=x.f=='a'?+t.value:t.value;list();preview();save()}});
 document.addEventListener('change',e=>{if(e.target.id=='cs'&&cur&&e.target.value!==''){cur.client=Object.assign({},DB.clients[+e.target.value]);all(true)}if(e.target.dataset.k&&/gst\.on|tds\.on|sched|inter|incl/.test(e.target.dataset.k))all(true)});
 document.addEventListener('click',async e=>{const b=e.target.closest('button,.li');if(!b)return;const D=b.dataset,id=b.id;
