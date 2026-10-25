@@ -229,6 +229,18 @@
             <div class="flex-1 overflow-y-auto p-3 md:p-8 custom-scrollbar">
                 
                 <div id="tab-dashboard" class="tab-content active space-y-4 md:space-y-6">
+                    <!-- NEW: BROADCAST BANNER NOTIFICATION -->
+                    <div id="broadcast-banner" class="hidden bg-gradient-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/30 p-4 rounded-xl flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-bullhorn text-purple-400 animate-bounce text-lg"></i>
+                            <div>
+                                <p class="text-[10px] text-purple-400 font-bold uppercase tracking-widest mb-0.5">Latest HQ Dispatch</p>
+                                <p class="text-sm font-bold text-white" id="broadcast-msg-text">Message goes here</p>
+                            </div>
+                        </div>
+                        <a href="#" id="broadcast-link-btn" target="_blank" class="hidden bg-purple-500 hover:bg-purple-400 text-white text-[10px] font-bold uppercase px-3 py-1.5 rounded-lg transition-colors ml-2 shrink-0">Open Link</a>
+                    </div>
+
                     <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 md:gap-6">
                         <div class="glass-card p-4 md:p-6 border-t-4 border-t-purple-500 relative overflow-hidden group">
                             <div class="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-purple-500/10 text-5xl md:text-7xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-chart-line"></i></div>
@@ -396,13 +408,22 @@
                     </div>
                 </div>
 
+                <!-- UPDATED RESOURCES TAB -->
                 <div id="tab-resources" class="tab-content">
                     <div class="glass-card p-4 md:p-6 w-full min-h-[500px]">
                         <h3 class="text-xl md:text-2xl font-bold text-yellow-400 font-heading mb-2"><i class="fa-solid fa-book-open-reader mr-2"></i> The Sales Playbook</h3>
                         <p class="text-xs text-slate-400 mb-6 border-b border-white/10 pb-4">Standard operating procedures, scripts, and links to help you close more deals.</p>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6" id="sops-grid">
-                            </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6" id="sops-grid"></div>
+
+                        <!-- NEW: DEMOS GRID -->
+                        <h3 class="text-lg md:text-xl font-bold text-blue-400 font-heading mb-2 mt-10"><i class="fa-solid fa-laptop-code mr-2"></i> Pitch Demos</h3>
+                        <p class="text-xs text-slate-400 mb-4 border-b border-white/10 pb-4">Live portfolio links to show prospects during meetings.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6" id="demos-grid"></div>
+
+                        <!-- NEW: PRICING / RATES GRID -->
+                        <h3 class="text-lg md:text-xl font-bold text-emerald-400 font-heading mb-2 mt-10"><i class="fa-solid fa-tags mr-2"></i> Agency Rate List & Pricing</h3>
+                        <p class="text-xs text-slate-400 mb-4 border-b border-white/10 pb-4">Official HQ pricing guidelines for all standard packages.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 mb-4" id="rates-grid"></div>
                     </div>
                 </div>
 
@@ -491,12 +512,14 @@
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         let activeUserRecord = null;
         let myLeads = [], allAgencyLeads = [], myTickets = [], agencySOPs = [];
+        let allNotifs = [], allDemos = [], allRates = [];
+        
         let unsubscribeLeads = null, unsubscribeUser = null, unsubscribeTickets = null, unsubscribeSOPs = null;
+        let unsubscribeAttendance = null, unsubscribeNotifs = null, unsubscribeDemos = null, unsubscribeRates = null;
         
         // Attendance State Variables
         let activeShiftId = null;
         let shiftStartTime = null;
-        let unsubscribeAttendance = null;
 
         // UI HELPERS
         window.toggleSidebar = () => {
@@ -590,6 +613,9 @@
             if(unsubscribeTickets) unsubscribeTickets(); 
             if(unsubscribeSOPs) unsubscribeSOPs();
             if(unsubscribeAttendance) unsubscribeAttendance();
+            if(unsubscribeNotifs) unsubscribeNotifs();
+            if(unsubscribeDemos) unsubscribeDemos();
+            if(unsubscribeRates) unsubscribeRates();
 
             activeUserRecord = null; myLeads = []; myTickets = []; allAgencyLeads = [];
             document.getElementById('app-screen').classList.add('hidden'); document.getElementById('app-screen').classList.remove('flex');
@@ -649,12 +675,56 @@
                 renderPlaybook();
             });
 
+            // NEW: Notifications / Broadcasts Subscription
+            unsubscribeNotifs = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'notifications'), (snap) => {
+                allNotifs = []; snap.forEach(d => allNotifs.push(d.data()));
+                allNotifs.sort((a,b) => b.timestamp - a.timestamp);
+                const banner = document.getElementById('broadcast-banner');
+                if(allNotifs.length > 0) {
+                    const latest = allNotifs[0];
+                    if(latest.target === 'All' || latest.target === activeUserRecord.name) {
+                        banner.classList.remove('hidden');
+                        document.getElementById('broadcast-msg-text').innerText = latest.message;
+                        const linkBtn = document.getElementById('broadcast-link-btn');
+                        if(latest.url) { linkBtn.href = latest.url; linkBtn.classList.remove('hidden'); }
+                        else { linkBtn.classList.add('hidden'); }
+                    } else { banner.classList.add('hidden'); }
+                } else { banner.classList.add('hidden'); }
+            });
+
+            // NEW: Demos Subscription
+            unsubscribeDemos = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'demo_showcase'), (snap) => {
+                allDemos = []; snap.forEach(d => allDemos.push(d.data()));
+                document.getElementById('demos-grid').innerHTML = allDemos.map(d => `
+                    <div class="glass-card p-5 border-l-2 border-blue-500 relative group flex flex-col h-full">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-bold text-white text-sm">${d.title}</h4>
+                            <span class="bg-blue-500/20 text-blue-400 text-[9px] font-bold uppercase px-2 py-0.5 rounded">${d.category||'General'}</span>
+                        </div>
+                        <div class="mt-auto pt-4">
+                            <a href="${d.url}" target="_blank" class="block text-center bg-white/5 hover:bg-blue-600 text-white py-2 rounded-lg text-xs font-bold transition-colors border border-white/10 hover:border-blue-500"><i class="fa-solid fa-external-link-alt mr-2"></i> Launch Demo</a>
+                        </div>
+                    </div>
+                `).join('') || '<p class="text-slate-500 text-sm col-span-full">No demos published by HQ yet.</p>';
+            });
+
+            // NEW: Rates Subscription
+            unsubscribeRates = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'agency_rates'), (snap) => {
+                allRates = []; snap.forEach(d => allRates.push(d.data()));
+                document.getElementById('rates-grid').innerHTML = allRates.map(r => `
+                    <div class="glass-card p-5 border-t-2 border-emerald-500 flex flex-col h-full">
+                        <h4 class="font-bold text-white text-sm mb-1">${r.service}</h4>
+                        <p class="text-2xl font-black text-emerald-400 font-mono mb-2">${r.price}</p>
+                        <p class="text-[10px] text-slate-400 mt-auto pt-2 border-t border-white/5">${r.details}</p>
+                    </div>
+                `).join('') || '<p class="text-slate-500 text-sm col-span-full">No pricing published by HQ yet.</p>';
+            });
+
             // Attendance Tracker Subscription
             unsubscribeAttendance = onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'attendance_logs'), (snap) => {
                 let activeShift = null;
                 snap.forEach(d => {
                     const data = { id: d.id, ...d.data() };
-                    // Find if the current user has an ongoing shift
                     if(data.rep === activeUserRecord.name && data.status === 'Active') {
                         activeShift = data;
                     }
@@ -664,7 +734,6 @@
                 const icon = document.getElementById('clock-icon');
                 const text = document.getElementById('clock-text');
                 
-                // New UI Elements
                 const statusCard = document.getElementById('duty-status-card');
                 const dutyDot = document.getElementById('duty-dot');
                 const dutyText = document.getElementById('duty-text');
@@ -672,11 +741,9 @@
                 const dutyTime = document.getElementById('duty-time');
 
                 if(activeShift) {
-                    // Shift is active: Switch to cinematic "On Duty" state
                     activeShiftId = activeShift.id;
                     shiftStartTime = activeShift.clockIn;
                     
-                    // Format the time cleanly (e.g., "09:30 AM")
                     const startTimeStr = new Date(shiftStartTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                     
                     statusCard.className = "bg-emerald-900/10 border border-emerald-500/30 rounded-xl p-3 flex flex-col gap-1 transition-all duration-300 shadow-[0_0_15px_rgba(16,185,129,0.1)]";
@@ -694,7 +761,6 @@
                     text.innerText = "Terminate Shift";
                     
                 } else {
-                    // No active shift: Switch to neutral "Off Duty" state
                     activeShiftId = null;
                     shiftStartTime = null;
                     
@@ -826,7 +892,7 @@
                     <p class="text-xs text-slate-400 font-mono mb-3">${s.desc}</p>
                     ${s.url ? `<a href="${s.url}" target="_blank" class="text-[10px] uppercase tracking-wider font-bold text-yellow-400 hover:text-yellow-300">Access Resource &rarr;</a>` : ''}
                 </div>
-            `).join('') || '<p class="text-slate-500 col-span-full">No playbook items uploaded by Operations yet.</p>';
+            `).join('') || '<p class="text-slate-500 col-span-full text-sm">No playbook items uploaded by Operations yet.</p>';
         }
 
         // --- DATA TABLE ---
