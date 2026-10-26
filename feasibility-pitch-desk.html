@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<title>Feasibility Media · Order Desk</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);--bg:#eaeded;--pn:#fff;--tx:#0f1111;--mu:#565959;--ln:#d5d9d9;--r:#cc3a4b;--ok:#007600;--pr:#b12704;--lk:#007185;--y:#ffd814}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:#0a0a0a;-webkit-text-size-adjust:100%}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f1111;--pn:#191c1c;--tx:#f0f2f2;--mu:#a6acac;--ln:#363b3b;--ok:#4cc474;--pr:#ff8a65;--lk:#5cc8e0}}
+:root[data-theme=dark]{--bg:#0f1111;--pn:#191c1c;--tx:#f0f2f2;--mu:#a6acac;--ln:#363b3b;--ok:#4cc474;--pr:#ff8a65;--lk:#5cc8e0}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--tx);font:400 14px/1.45 Poppins,system-ui,sans-serif;min-height:100vh}
+button,input,select{font:inherit;color:inherit}
+input,select{width:100%;background:var(--pn);border:1px solid #888c8c;border-radius:8px;padding:11px 12px;font-size:16px}
+input:focus,select:focus{outline:2px solid #e77600;border-color:#e77600}
+:focus-visible{outline:2px solid #e77600;outline-offset:2px}
+button{cursor:pointer;touch-action:manipulation;border:1px solid var(--ln);background:var(--pn);border-radius:20px;padding:9px 16px;min-height:42px}
+button.y{background:var(--y);border-color:#fcd200;color:#0f1111;font-weight:600;border-radius:20px}button.y:active{background:#f7ca00}button.y.on{background:#fff8d1;color:#0f1111;font-weight:500}
+button.k{background:#0f1111;border-color:#0f1111;color:#fff}button:disabled{opacity:.5}
+label{display:block;font-size:12.5px;color:var(--mu);margin:10px 0 4px;font-weight:500}
+h2{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin:20px 0 8px}h3{margin:0}
+a{color:var(--lk);cursor:pointer;text-decoration:none}
+.hd{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:#0a0a0a;color:#fff}
+.h1{display:flex;align-items:center;gap:6px;padding:9px 12px 4px}.lg{display:flex;align-items:center;gap:9px;color:#fff;font-weight:700;font-size:15px;margin-right:auto;cursor:pointer}.lg svg{height:26px;width:auto}
+.hi{display:flex;gap:2px}.hi button{background:transparent;border:0;color:#fff;padding:4px 8px;min-height:44px;border-radius:8px;display:flex;flex-direction:column;align-items:center;font-size:18px;line-height:1.1;position:relative}.hi small{font-size:10px;color:#ccc}
+#cb{position:absolute;top:0;right:2px;background:#ffd814;color:#0f1111;border-radius:99px;font:700 11px/1 Poppins;padding:3px 6px;font-style:normal}#cb[hidden]{display:none}
+.h2{position:relative;padding:4px 12px 8px}.h2 input{border:0;border-radius:8px;padding:11px 44px 11px 14px;background:#fff;color:#0f1111}.h2 span{position:absolute;right:12px;top:4px;bottom:8px;width:44px;display:grid;place-items:center;background:#febd69;border-radius:0 8px 8px 0}.h2[hidden]{display:none}
+.h3{background:#1d1d1d;padding:8px 14px;font-size:13px;color:#e8e8e8;cursor:pointer}.h3 u{color:#7ad7f0;margin-left:4px}
+.view{max-width:640px;margin:0 auto;padding:12px 12px 140px}.view[hidden]{display:none}
+.cd{background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:14px;margin-bottom:12px}
+.em{text-align:center;padding:30px 14px}.em p{color:var(--mu)}
+.rs{font-size:13px;color:var(--mu);margin:2px 2px 10px}
+.pc{display:flex;gap:12px;background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:12px;margin-bottom:10px}
+.pi{flex:none;width:96px;height:96px;border-radius:8px;display:grid;place-items:center;font-size:42px;background:linear-gradient(135deg,#1a1a1a,#3a1219 60%,#cc3a4b)}.pi.sm{width:64px;height:64px;font-size:28px}
+.pb{flex:1;min-width:0}.pt{font-weight:600;line-height:1.3;font-size:14.5px}.pd{color:var(--mu);font-size:12.5px;margin:3px 0}
+.pp{margin-top:4px}.pp .cu{font-size:13px;vertical-align:5px;font-weight:500}.pp .pv{font-size:22px;font-weight:500}.pp small{color:var(--mu)}
+.av{color:var(--ok);font-size:12.5px;font-weight:500}.pa{margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pa .y{padding:8px 18px;min-height:38px;font-size:13.5px}
+.stp2{display:inline-flex;align-items:center;border:2px solid #fcd200;border-radius:20px;background:var(--pn);overflow:hidden}.stp2 button{border:0;border-radius:0;min-height:36px;width:40px;padding:0;background:transparent;font-size:17px}.stp2 span{min-width:28px;text-align:center;font-weight:600}.ql{color:var(--mu)}
+.ch{font-size:20px;font-weight:500;padding-bottom:8px;border-bottom:1px solid var(--ln);margin-bottom:6px}
+.ci{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--ln);align-items:flex-start}.ci:last-of-type{border:0}.ip{font-weight:700;white-space:nowrap}.dl{font-size:12.5px;margin-left:4px}
+.sub{text-align:right;font-size:17px;padding-top:10px}.sub b{font-weight:700}
+.cp .ct,.sh{font-weight:600;font-size:16px;margin-bottom:8px}.sh b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#0f1111;color:#fff;font-size:12px;margin-right:6px}.sh a{float:right;font-size:13px;font-weight:400}.sh2{font-weight:600;margin:14px 0 4px;font-size:13.5px}
+.cc{display:grid;grid-template-columns:1fr auto;gap:8px}.cc input{text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.er{color:#c40000;font-size:13px;margin-top:6px;min-height:4px}
+.ap2{display:flex;gap:10px;align-items:flex-start;background:rgba(0,118,0,.08);border:1px solid var(--ok);border-radius:8px;padding:10px}.ap2 a{margin-left:auto;font-size:13px}.ap2 small{color:var(--mu)}.tk{width:22px;height:22px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.row{display:flex;justify-content:space-between;gap:12px;padding:4px 0;font-size:14px}.row span{color:var(--mu)}.row.t{border-top:1px solid var(--ln);margin-top:6px;padding-top:10px;font-size:18px;font-weight:700;color:var(--pr)}.row.t span{color:var(--pr)}.sv2{color:var(--ok)}
+.sav{margin-top:10px;background:rgba(0,118,0,.1);color:var(--ok);font-weight:600;padding:9px 12px;border-radius:8px;font-size:13.5px}
+.stpr{display:flex;align-items:center;gap:8px;margin:2px 2px 12px;font-size:12.5px;color:var(--mu)}.stpr span.on{color:var(--tx);font-weight:600}.stpr i{flex:1;height:2px;background:var(--ln)}
+.ad{line-height:1.5}.rd{display:flex;gap:10px;align-items:flex-start;border:1px solid #e77600;background:rgba(231,118,0,.07);border-radius:8px;padding:10px}.rd small{display:block;color:var(--mu)}.dot{width:18px;height:18px;border-radius:50%;border:5px solid #e77600;flex:none;margin-top:2px}
+.sw{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 2px}.sw button,.md button{min-height:38px;padding:6px 14px;font-size:13px}.sw button.on,.md button.on{background:#0f1111;color:#fff;border-color:#0f1111}
+.md{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}.md input{width:90px;flex:none;padding:8px 10px}
+.pay{text-align:center}.pay .to{color:var(--mu);font-size:13px}.amt-l{margin-top:10px;font-size:13px;color:var(--mu)}.amt{font-size:40px;font-weight:600;letter-spacing:-.02em;line-height:1.15}
+.qrw{margin:14px auto;width:min(290px,100%);background:#fff;border-radius:14px;padding:14px;border:1px solid var(--ln);box-shadow:0 2px 10px rgba(0,0,0,.1)}
+#qr{display:grid;place-items:center;min-height:220px}#qr img,#qr canvas{width:100%!important;height:auto!important;display:block}
+.vpa{font-weight:600;word-break:break-all;margin:4px 0 8px}.bt{display:grid;gap:10px;margin-top:10px}
+.tick{width:84px;height:84px;border-radius:50%;background:var(--ok);margin:4px auto 8px;display:grid;place-items:center;font-size:44px;color:#fff;animation:pp .5s cubic-bezier(.2,1.5,.4,1)}@keyframes pp{from{transform:scale(0)}}.ok2{color:var(--ok);font-weight:600;font-size:22px;margin:4px 0}
+.od{padding:0;overflow:hidden}.oh{display:flex;gap:16px;justify-content:space-between;background:rgba(127,127,127,.12);padding:10px 14px;font-size:12.5px;flex-wrap:wrap}.oh small{color:var(--mu);font-size:11px}.ob{padding:12px 14px}.stt{font-weight:600}.stt.paid{color:var(--ok)}.stt.pending{color:#c45500}
+.sm{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}.sm div{background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:10px}.sm small{color:var(--mu);font-size:11px;display:block}.sm b{font-size:16px}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--pn);color:var(--tx);padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--ln);box-shadow:0 -4px 16px rgba(0,0,0,.08)}.bar[hidden]{display:none}
+.bi{max-width:640px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}.bi small{color:var(--mu);display:block;font-size:12px}.bi b{font-size:20px;color:var(--pr);font-weight:700}.bi .y{padding:10px 22px}
+.ed{display:grid;grid-template-columns:1fr 96px 100px 40px;gap:8px;margin-bottom:8px}.ed button{padding:0;min-height:44px;border-radius:8px}
+.cl{padding:12px 0;border-bottom:1px solid var(--ln);display:grid;grid-template-columns:1fr auto;gap:4px 8px}.cl b{letter-spacing:.05em}.cl small{color:var(--mu);grid-column:1/2}.cl div{display:flex;gap:6px;align-items:center}.cl button{min-height:34px;padding:4px 12px;font-size:12.5px}
+.tg{width:46px;height:28px;border-radius:99px;background:var(--ln);position:relative;border:0;padding:0;min-height:0}.tg:after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .2s}.tg.on{background:var(--ok)}.tg.on:after{transform:translateX(18px)}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ap{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}.ap label{display:flex;gap:6px;align-items:center;margin:0;font-size:13px;color:var(--tx);border:1px solid var(--ln);border-radius:99px;padding:5px 10px}.ap input{width:auto}
+#burst{position:fixed;inset:0;z-index:100;background:radial-gradient(circle at 50% 42%,#2a0a10,#0a0a0a 70%);display:grid;place-items:center;overflow:hidden;animation:fi .25s}#burst[hidden]{display:none}@keyframes fi{from{opacity:0}}
+#burst canvas{position:absolute;inset:0;width:100%;height:100%}
+.rays{position:absolute;width:140vmax;height:140vmax;left:50%;top:42%;margin:-70vmax;background:repeating-conic-gradient(rgba(204,58,75,.28) 0 9deg,transparent 9deg 18deg);-webkit-mask:radial-gradient(circle,#000 0,transparent 55%);mask:radial-gradient(circle,#000 0,transparent 55%);animation:sp 14s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+.bc{position:relative;text-align:center;color:#fff;padding:24px;max-width:420px;animation:pop .6s cubic-bezier(.2,1.4,.4,1)}@keyframes pop{from{transform:scale(.4);opacity:0}}
+.bc small{letter-spacing:.3em;font-size:12px;color:#ffb3bd;font-weight:600}.bc .big{font-size:clamp(46px,15vw,76px);font-weight:700;letter-spacing:-.04em;line-height:1;margin:12px 0 8px;background:linear-gradient(135deg,#fff,#ffd0d6 50%,#ff9b6b);-webkit-background-clip:text;background-clip:text;color:transparent}
+.bc h3{margin:0 0 6px;font-size:22px}.bc p{margin:0 0 22px;color:#cfcfcf}.bc .sv2{display:inline-block;color:#6df0a6;font-weight:600;margin-bottom:18px}.bc button{min-width:180px}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#111;color:#fff;padding:10px 16px;border-radius:99px;font-size:13px;z-index:200;max-width:90%;text-align:center}
+dialog{border:1px solid var(--ln);border-radius:14px;background:var(--pn);color:var(--tx);width:min(94%,440px);padding:16px}dialog::backdrop{background:rgba(0,0,0,.6)}
+@media(prefers-reduced-motion:reduce){.rays,.bc,.tick{animation:none}}
+@media(min-width:700px){.view{padding-top:18px}}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><symbol id="f" viewBox="264 195 605 622"><path fill="currentColor" d="M264 195H818V350H558L437 470V817H264Z"/><rect x="489" y="489" width="242" height="138" fill="currentColor"/><circle cx="817" cy="765" r="52" fill="#cc3a4b"/></symbol></svg>
+<header class="hd"><div class="h1"><a class="lg" id="hm"><svg viewBox="264 195 605 622"><use href="#f"/></svg>Feasibility Media</a><div class="hi"><button id="bh" aria-label="Orders">📦<small>Orders</small></button><button id="bs" aria-label="Settings">⚙️<small>Settings</small></button><button id="bc" aria-label="Cart">🛒<i id="cb" hidden>0</i><small>Cart</small></button></div></div>
+<div class="h2" id="srch"><input id="q" type="search" placeholder="Search services" autocomplete="off"><span>🔍</span></div><div class="h3" id="st2"></div></header>
+<main><section class="view" id="v-shop"></section><section class="view" id="v-cart" hidden></section><section class="view" id="v-chk" hidden></section><section class="view" id="v-pay" hidden></section><section class="view" id="v-done" hidden></section><section class="view" id="v-hist" hidden></section><section class="view" id="v-set" hidden></section></main>
+<div class="bar" id="bar"><div class="bi"><div id="bt"></div><button class="y" id="go">View cart</button></div></div>
+<div id="burst" hidden><div class="rays"></div><canvas id="bcv"></canvas><div class="bc"><small id="b1"></small><div class="big" id="b2"></div><h3 id="b3"></h3><p id="b4"></p><div class="sv2" id="b5"></div><br><button class="y" id="bx">Continue</button></div></div>
+<dialog id="cdg"></dialog><dialog id="cl"></dialog><dialog id="pdg"><form method="dialog" id="pf"><h2 style="margin-top:0">Settings PIN</h2><input id="pi" type="password" inputmode="numeric" autocomplete="off" placeholder="Enter PIN"><div class="er" id="pe"></div><div class="md"><button type="button" id="pc">Cancel</button><button class="y" type="submit">Open</button></div></form></dialog>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js';document.head.appendChild(s)"></script>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const num=n=>(+n||0).toLocaleString('en-IN',{maximumFractionDigits:2}),rs=n=>'₹'+num(n),today=()=>new Date().toLocaleDateString('en-CA');
+const UL={once:'one-time',month:'per month',unit:'each'};
+const DEF={biz:{name:'Feasibility Media',wa:'919431366776'},gst:{on:false,rate:18},adv:50,pin:'',seq:0,
+ upi:[{id:'u1',vpa:'gpay-12203657286@okbizaxis',label:'Primary'},{id:'u2',vpa:'Givemethebucks@axl',label:'Alternate'}],upiA:'u1',
+ services:[{id:'web',name:'Website development',rate:3000,unit:'once',desc:'Fast, mobile-friendly website with contact and WhatsApp buttons',ic:'🌐'},{id:'smm',name:'Social media management',rate:4999,unit:'month',desc:'Content calendar, posts and reels, captions and a monthly report',ic:'📱'},{id:'ads',name:'Meta ads (Facebook and Instagram)',rate:3000,unit:'month',desc:'Ad creatives, targeting, set-up and optimisation',ic:'📣'},{id:'brand',name:'Branding and design',rate:2500,unit:'once',desc:'Logo, brand colours, posters and social media templates',ic:'🎨'},{id:'inf',name:'Influencer marketing',rate:12500,unit:'unit',desc:'Creators visit and promote your business (per campaign)',ic:'🤝'},{id:'res',name:'Market research and strategy',rate:4000,unit:'once',desc:'Competitor and audience research with a growth plan',ic:'📊'},{id:'pr',name:'PR and campaigns',rate:6000,unit:'once',desc:'Launch, festival and sale campaigns with media outreach',ic:'📰'},{id:'vid',name:'Photo and video production',rate:3500,unit:'unit',desc:'Professional shoot and edited reels (per shoot)',ic:'🎬'}],
+ coupons:[{id:'c1',code:'WELCOME10',title:'Welcome offer',msg:'10% off your first project with Feasibility Media',type:'pct',value:10,cap:0,min:2000,until:'',limit:0,apply:'all',on:true},
+  {id:'c2',code:'LAUNCH20',title:'Launch special',msg:'20% off for new shops, up to ₹2,000',type:'pct',value:20,cap:2000,min:5000,until:'2026-12-31',limit:0,apply:'all',on:true},
+  {id:'c3',code:'FLAT500',title:'Flat savings',msg:'₹500 off on any package',type:'flat',value:500,cap:0,min:3000,until:'',limit:0,apply:'all',on:true},
+  {id:'c4',code:'FREELOGO',title:'Free logo design',msg:'A free logo design with your website',type:'free',value:0,free:'brand',cap:0,min:3000,until:'',limit:0,apply:['web'],on:true}],deals:[]};
+let DB;try{DB=Object.assign({},DEF,JSON.parse(localStorage.getItem('fm-pitch-v1')||'{}'))}catch(e){DB=JSON.parse(JSON.stringify(DEF))}
+const save=()=>{try{localStorage.setItem('fm-pitch-v1',JSON.stringify(DB))}catch(e){}};
+let P={c:{shop:'',owner:'',phone:'',city:''},sel:{},code:'',mode:'full',pct:50},cur=null,unlocked=false,CE='',V='shop';
+const svc=id=>DB.services.find(s=>s.id==id),upi=()=>DB.upi.find(u=>u.id==DB.upiA)||DB.upi[0];
+function toast(t){const e=document.createElement('div');e.className='toast';e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),2600)}
+/* logic */
+const lines=()=>Object.entries(P.sel).map(([id,q])=>{const s=svc(id);return s?{id,name:s.name,unit:s.unit,rate:s.rate,q,amt:s.rate*q}:null}).filter(Boolean);
+function evalC(code){const c=DB.coupons.find(x=>x.code.toUpperCase()==String(code).trim().toUpperCase());if(!c||!c.on)return{err:'This code is not valid.'};
+ const L=lines(),sub=L.reduce((a,l)=>a+l.amt,0);if(!L.length)return{err:'Select at least one service first.'};
+ if(c.until&&c.until<today())return{err:'This offer has expired.'};
+ if(c.limit&&DB.deals.filter(d=>d.code==c.code&&d.status=='paid').length>=c.limit)return{err:'This offer has been fully claimed.'};
+ const el=c.apply=='all'?L:L.filter(l=>c.apply.includes(l.id));if(!el.length)return{err:'This code does not apply to the selected services.'};
+ if(sub<(c.min||0))return{err:`Add ${rs(c.min-sub)} more to use this code.`};
+ const es=el.reduce((a,l)=>a+l.amt,0);let disc=0,free=null;
+ if(c.type=='pct'){disc=Math.round(es*c.value/100);if(c.cap)disc=Math.min(disc,c.cap)}else if(c.type=='flat')disc=Math.min(c.value,es);else{free=svc(c.free)}
+ return{c,disc,free,save:free?free.rate:disc}}
+function tot(){const L=lines(),sub=L.reduce((a,l)=>a+l.amt,0),r=P.code?evalC(P.code):null,disc=r&&!r.err?r.disc:0,taxable=sub-disc,gst=DB.gst.on?Math.round(taxable*DB.gst.rate/100):0,total=taxable+gst,pct=P.mode=='full'?100:P.mode=='adv'?DB.adv:Math.min(100,Math.max(1,+P.pct||50)),now=P.mode=='full'?total:Math.round(total*pct/100);
+ return{L,sub,r,disc,gst,total,now,bal:total-now,pct}}
+
+/* storefront */
+const IC='🛍️',sIc=s=>s.ic||(DEF.services.find(d=>d.id==s.id)||{}).ic||IC,sDesc=s=>s.desc??((DEF.services.find(d=>d.id==s.id)||{}).desc||''),cnt=()=>Object.keys(P.sel).length,pl=n=>n==1?'':'s';
+const VS=['shop','cart','chk','pay','done','hist','set'];
+function show(v){V=v;VS.forEach(x=>$('#v-'+x).hidden=x!=v);$('#srch').hidden=v!='shop';$('#bar').hidden=!['shop','cart','chk'].includes(v);head();bar();scrollTo(0,0)}
+function head(){const b=$('#cb');b.textContent=cnt();b.hidden=!cnt();$('#st2').innerHTML=P.c.shop?`📍 Order for <b>${esc(P.c.shop)}</b> <u>change</u>`:'📍 Add customer details'}
+function bar(){const t=tot(),n=cnt();let h,b;if(V=='shop'){h=`<small>${n} item${pl(n)} in cart</small><b>${rs(t.total)}</b>`;b='View cart'}else if(V=='cart'){h=`<small>Subtotal (${n} item${pl(n)})</small><b>${rs(t.total)}</b>`;b='Proceed to checkout'}else{h=`<small>Order total</small><b>${rs(t.total)}</b>`;b='Place your order'}
+ $('#bt').innerHTML=h;$('#go').textContent=b;$('#go').disabled=!n}
+const stepper=s=>{const n=P.sel[s.id];if(s.unit=='once')return `<button class="y on" data-m="${s.id}" data-d="-1">✓ Added · Remove</button>`;return `<div class="stp2"><button data-m="${s.id}" data-d="-1" aria-label="Less">${n==1?'🗑':'−'}</button><span>${n}</span><button data-m="${s.id}" data-d="1" aria-label="More">+</button></div><small class="ql">${s.unit=='month'?'months':'quantity'}</small>`};
+const price=s=>`<div class="pp"><span class="cu">₹</span><span class="pv">${num(s.rate)}</span> <small>${UL[s.unit]}</small></div>`;
+function rShop(){const q=($('#q').value||'').toLowerCase(),L=DB.services.filter(s=>!q||(s.name+' '+sDesc(s)).toLowerCase().includes(q));
+ $('#v-shop').innerHTML=`<div class="rs">${L.length} service${pl(L.length)}${q?` for “${esc(q)}”`:''}</div>`+(L.map(s=>`<div class="pc"><div class="pi">${sIc(s)}</div><div class="pb"><div class="pt">${esc(s.name)}</div><div class="pd">${esc(sDesc(s))}</div>${price(s)}<div class="av">Available</div><div class="pa">${P.sel[s.id]!=null?stepper(s):`<button class="y" data-add="${s.id}">Add to cart</button>`}</div></div></div>`).join('')||'<div class="cd em">No services found.</div>')}
+function couponBox(){const t=tot();return `<div class="cp"><div class="ct">Apply a coupon</div>${t.r&&!t.r.err?`<div class="ap2"><span class="tk">✓</span><div><b>${esc(t.r.c.code)}</b> applied<br><small>${esc(t.r.c.title)} · ${t.r.free?'Free: '+esc(t.r.free.name):'You save '+rs(t.disc)}</small></div><a data-rc>Remove</a></div>`:`<div class="cc"><input class="cin" placeholder="Enter coupon code" autocapitalize="characters" autocomplete="off"><button class="k cap">Apply</button></div>`}<div class="er">${esc(CE)}</div></div>`}
+const itemRows=(L,ed)=>L.map(l=>{const s=svc(l.id)||{};return `<div class="ci"><div class="pi sm">${sIc(s)}</div><div class="pb"><div class="pt">${esc(l.name)}</div><div class="av">Available</div>${ed?(s.unit=='once'?'':`<div class="pa">${stepper(s)}</div>`)+`<a class="dl" data-del="${l.id}">Delete</a>`:`<div class="pd">${l.unit!='once'?'Qty: '+l.q+' · ':''}${rs(l.rate)} ${UL[l.unit]}</div>`}</div><div class="ip">${rs(l.amt)}</div></div>`}).join('');
+function sumRows(t){return `<div class="row"><span>Items (${t.L.length}):</span><b>${rs(t.sub)}</b></div>${t.r&&t.r.free?`<div class="row"><span>Free: ${esc(t.r.free.name)}</span><b class="sv2">FREE</b></div>`:''}${t.disc?`<div class="row"><span>Coupon discount:</span><b class="sv2">− ${rs(t.disc)}</b></div>`:''}${t.gst?`<div class="row"><span>GST (${DB.gst.rate}%):</span><b>${rs(t.gst)}</b></div>`:''}<div class="row t"><span>Order Total:</span><span>${rs(t.total)}</span></div>${t.bal?`<div class="row"><span>Paying now (${t.pct}%):</span><b>${rs(t.now)}</b></div><div class="row"><span>Balance later:</span><b>${rs(t.bal)}</b></div>`:''}${t.disc||(t.r&&t.r.free)?`<div class="sav">🎉 You saved ${t.r.free&&!t.disc?'a free '+esc(t.r.free.name):rs(t.disc)} on this order</div>`:''}`}
+function rCart(keep){if(!keep)show('cart');const t=tot();$('#v-cart').innerHTML=!t.L.length?`<div class="cd em"><h3>Your cart is empty</h3><p>Add services to start an order.</p><button class="y" data-go="shop">Browse services</button></div>`:`<div class="cd"><h3 class="ch">Shopping Cart</h3>${itemRows(t.L,true)}<div class="sub">Subtotal (${t.L.length} item${pl(t.L.length)}): <b>${rs(t.sub)}</b></div></div><div class="cd">${couponBox()}</div><div class="cd os">${sumRows(t)}</div>`}
+function rChk(keep){if(!keep)show('chk');const t=tot(),c=P.c;
+ $('#v-chk').innerHTML=`<div class="stpr"><span class="on">1 Details</span><i></i><span class="on">2 Review</span><i></i><span>3 Pay</span></div>
+ <div class="cd"><div class="sh"><b>1</b> Customer details <a data-cl>Change</a></div>${c.shop?`<div class="ad"><b>${esc(c.owner||c.shop)}</b><br>${esc(c.shop)}${c.city?', '+esc(c.city):''}<br>Phone: ${esc(c.phone)}</div>`:'<div class="ad"><a data-cl>+ Add customer details</a></div>'}</div>
+ <div class="cd"><div class="sh"><b>2</b> Payment method</div><div class="rd"><span class="dot"></span><div><b>Pay with UPI (scan QR)</b><small>GPay, PhonePe, Paytm, BHIM or any UPI app</small></div></div><div class="sw">${DB.upi.map(u=>`<button data-ua="${u.id}" class="${u.id==DB.upiA?'on':''}">${esc(u.label||'UPI')}</button>`).join('')}</div><div class="sh2">Payment plan</div><div class="md"><button data-md="full" class="${P.mode=='full'?'on':''}">Pay in full</button><button data-md="adv" class="${P.mode=='adv'?'on':''}">${DB.adv}% advance</button><button data-md="cus" class="${P.mode=='cus'?'on':''}">Custom %</button>${P.mode=='cus'?`<input id="cu" type="number" inputmode="numeric" min="1" max="100" value="${P.pct}">`:''}</div></div>
+ <div class="cd"><div class="sh"><b>3</b> Review items</div>${itemRows(t.L,false)}</div><div class="cd">${couponBox()}</div><div class="cd os"><div class="sh">Order Summary</div>${sumRows(t)}</div>`}
+/* client dialog */
+let after2=null;function askClient(next){after2=next||null;const c=P.c;$('#cl').innerHTML=`<form id="clf"><h2 style="margin-top:0">Customer details</h2><label>Shop or business name *</label><input name="shop" value="${esc(c.shop)}" required><div class="r2"><div><label>Owner name</label><input name="owner" value="${esc(c.owner)}"></div><div><label>Phone / WhatsApp *</label><input name="phone" type="tel" inputmode="tel" value="${esc(c.phone)}" required></div></div><label>City or area</label><input name="city" value="${esc(c.city)}"><div class="md" style="margin-top:16px"><button type="button" id="clx">Cancel</button><button class="y" type="submit">Save and continue</button></div></form>`;$('#cl').showModal();$('#clx').onclick=()=>$('#cl').close();
+ $('#clf').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);P.c={shop:String(f.get('shop')).trim(),owner:String(f.get('owner')).trim(),phone:String(f.get('phone')).trim(),city:String(f.get('city')).trim()};$('#cl').close();head();if(V=='chk')rChk(1);if(after2){const fn=after2;after2=null;fn()}}}
+/* actions */
+function refresh(){V=='shop'?rShop():V=='cart'?rCart(1):V=='chk'?rChk(1):0;head();bar()}
+function after(){if(P.code){const r=evalC(P.code);if(r.err){P.code='';CE=r.err+' Coupon removed.'}}refresh()}
+function applyCode(v){v=v.trim();if(!v)return;CE='';const r=evalC(v);if(r.err){CE=r.err;navigator.vibrate&&navigator.vibrate(60);refresh();return}
+ const was=P.code;P.code=r.c.code;refresh();if(was!=P.code)burst({top:'COUPON APPLIED',big:r.free?'FREE':rs(r.disc),title:r.c.title,msg:r.c.msg||'',sub:r.free?`${r.free.name}, worth ${rs(r.free.rate)}`:`${r.c.code} · you save ${rs(r.disc)}`})}
+function placeOrder(){const t=tot();if(!t.L.length)return;if(!P.c.shop||!P.c.phone){askClient(placeOrder);return}
+ DB.seq++;const d={id:'d'+Date.now(),no:'FM-'+String(DB.seq).padStart(4,'0'),ts:Date.now(),c:Object.assign({},P.c),L:t.L,code:t.r&&!t.r.err?t.r.c.code:'',codeTitle:t.r&&!t.r.err?t.r.c.title:'',free:t.r&&t.r.free?t.r.free.name:'',disc:t.disc,gst:t.gst,sub:t.sub,total:t.total,now:t.now,bal:t.bal,status:'pending',upi:upi().id};DB.deals.unshift(d);save();rPay(d)}
+document.addEventListener('click',e=>{const t=e.target,b=t.closest('[data-add],[data-m],[data-del],[data-rc],[data-go],[data-cl],[data-ua],[data-md],.cap,#go,#bc,#hm,#st2');if(!b||!document.body.contains(b))return;const D=b.dataset;
+ if(D.add){P.sel[D.add]=1;after();return}
+ if(D.m){const n=(P.sel[D.m]||1)+ +D.d;if(n<1)delete P.sel[D.m];else P.sel[D.m]=Math.min(36,n);after();return}
+ if(D.del!=null){delete P.sel[D.del];after();return}
+ if(D.rc!=null){P.code='';CE='';after();return}
+ if(D.go){show(D.go);if(D.go=='shop')rShop();return}
+ if(D.cl!=null||b.id=='st2'){askClient();return}
+ if(D.ua){DB.upiA=D.ua;save();rChk(1);return}
+ if(D.md){P.mode=D.md;rChk(1);bar();return}
+ if(b.classList.contains('cap')){applyCode(b.closest('.cp').querySelector('.cin').value);return}
+ if(b.id=='go'){V=='shop'?rCart():V=='cart'?rChk():placeOrder();return}
+ if(b.id=='bc'){rCart();return}if(b.id=='hm'){show('shop');rShop()}});
+document.addEventListener('keydown',e=>{if(e.key=='Enter'&&e.target.classList.contains('cin')){e.preventDefault();applyCode(e.target.value)}});
+document.addEventListener('input',e=>{if(e.target.id=='cu'){P.pct=Math.min(100,Math.max(1,+e.target.value||1));bar()}if(e.target.id=='q')rShop()});
+/* payment */
+function link(d,amt){const u=DB.upi.find(x=>x.id==d.upi)||upi();return `upi://pay?pa=${u.vpa}&pn=${encodeURIComponent(DB.biz.name)}&am=${(+amt).toFixed(2)}&cu=INR&tn=${encodeURIComponent(DB.biz.name+' '+d.no)}`}
+
+function rPay(d){cur=d;show('pay');const u=DB.upi.find(x=>x.id==d.upi)||upi();
+ $('#v-pay').innerHTML=`<div class="stpr"><span class="on">1 Details</span><i></i><span class="on">2 Review</span><i></i><span class="on">3 Pay</span></div><div class="cd pay"><div class="to">Order ${esc(d.no)} · ${esc(d.c.shop)}</div><div class="amt-l">Amount to pay</div><div class="amt">${rs(d.now)}</div>${d.bal?`<div class="to">Balance later: ${rs(d.bal)}</div>`:''}<div class="qrw"><div id="qr"></div></div><div class="to">Scan with any UPI app</div><div class="sw">${DB.upi.map(x=>`<button data-u="${x.id}" class="${x.id==d.upi?'on':''}">${esc(x.label||'UPI')}</button>`).join('')}</div><div class="vpa">${esc(u.vpa)}</div><div class="bt"><a id="ol" href="${link(d,d.now)}" style="text-decoration:none"><button class="y" style="width:100%">Pay with a UPI app</button></a><button id="cp2">Copy UPI ID</button></div></div><div class="cd os"><div class="sh">Order Summary</div>${d.L.map(l=>`<div class="row"><span>${esc(l.name)}${l.unit!='once'?' × '+l.q:''}</span><b>${rs(l.amt)}</b></div>`).join('')}${d.free?`<div class="row"><span>Free: ${esc(d.free)}</span><b class="sv2">FREE</b></div>`:''}${d.disc?`<div class="row"><span>Coupon ${esc(d.code)}</span><b class="sv2">− ${rs(d.disc)}</b></div>`:''}${d.gst?`<div class="row"><span>GST</span><b>${rs(d.gst)}</b></div>`:''}<div class="row t"><span>Order Total:</span><span>${rs(d.total)}</span></div></div><div class="cd"><button class="y" id="rv" style="width:100%">I have paid · Confirm order</button><button id="bk2" style="width:100%;margin-top:8px">Back to order</button></div>`;qr(link(d,d.now))}
+function qr(t){const el=$('#qr');if(!el)return;el.innerHTML='';try{new QRCode(el,{text:t,width:300,height:300,colorDark:'#0a0a0a',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M})}catch(e){el.innerHTML='<small>QR could not load. Use the UPI ID or the button below.</small>'}}
+function wa(d){const p=String(d.c.phone).replace(/\D/g,''),n=p.length==10?'91'+p:p;const t=`Hi ${d.c.owner||d.c.shop}, thank you for choosing ${DB.biz.name}!\n\nReceipt ${d.no}\n${d.L.map(l=>`• ${l.name}${l.unit!='once'?' × '+l.q:''}: ${rs(l.amt)}`).join('\n')}${d.disc?`\nCoupon ${d.code}: − ${rs(d.disc)}`:''}\nTotal: ${rs(d.total)}\nPaid: ${rs(d.now)}${d.bal?`\nBalance: ${rs(d.bal)}`:''}`;return `https://wa.me/${n}?text=${encodeURIComponent(t)}`}
+
+function rDone(d){cur=d;show('done');$('#v-done').innerHTML=`<div class="cd pay"><div class="tick">✓</div><h3 class="ok2">Order placed, thank you!</h3><div class="to">Order ${esc(d.no)} · ${new Date(d.paidAt||d.ts).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</div><div class="amt" style="font-size:34px">${rs(d.now)} paid</div>${d.bal?`<div class="to">Balance later: ${rs(d.bal)}</div>`:''}</div><div class="cd os"><div class="sh">Order details</div><div class="row"><span>${esc(d.c.shop)}</span><span>${esc(d.c.phone)}</span></div>${d.L.map(l=>`<div class="row"><span>${esc(l.name)}${l.unit!='once'?' × '+l.q:''}</span><b>${rs(l.amt)}</b></div>`).join('')}${d.disc?`<div class="row"><span>Coupon ${esc(d.code)}</span><b class="sv2">− ${rs(d.disc)}</b></div>`:''}<div class="row t"><span>Order Total:</span><span>${rs(d.total)}</span></div></div><div class="cd"><a href="${wa(d)}" target="_blank" rel="noopener" style="text-decoration:none"><button class="y" style="width:100%">Send receipt on WhatsApp</button></a><button id="nw" style="width:100%;margin-top:8px">Start a new order</button></div>`}
+$('#v-pay').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!cur)return;const d=cur;
+ if(b.dataset.u){d.upi=b.dataset.u;DB.upiA=b.dataset.u;save();rPay(d)}
+ else if(b.id=='cp2'){const v=(DB.upi.find(x=>x.id==d.upi)||upi()).vpa;navigator.clipboard?navigator.clipboard.writeText(v).then(()=>toast('UPI ID copied'),()=>toast(v)):toast(v)}
+ else if(b.id=='bk2'){rChk()}
+ else if(b.id=='rv'){if(b.dataset.sure){d.status='paid';d.paidAt=Date.now();save();rDone(d);burst({top:'PAYMENT RECEIVED',big:rs(d.now),title:'Order placed!',msg:`${d.c.shop} is now a Feasibility Media client.`,sub:d.code?`Coupon ${d.code} used`:''})}else{b.dataset.sure=1;b.textContent='Tap again to confirm the money is in your UPI app';setTimeout(()=>{if(b.isConnected){delete b.dataset.sure;b.textContent='I have paid · Confirm order'}},4500)}}});
+$('#v-done').addEventListener('click',e=>{if(e.target.id=='nw'){P={c:{shop:'',owner:'',phone:'',city:''},sel:{},code:'',mode:'full',pct:50};CE='';show('shop');rShop()}});
+/* burst */
+let raf=0;function burst(o){const b=$('#burst'),cv=$('#bcv');$('#b1').textContent=o.top;$('#b3').textContent=o.title;$('#b4').textContent=o.msg;$('#b5').textContent=o.sub;$('#b2').textContent=o.big;b.hidden=false;navigator.vibrate&&navigator.vibrate([40,40,90]);
+ const m=/^₹([\d,]+)$/.exec(o.big);if(m&&!matchMedia('(prefers-reduced-motion:reduce)').matches){const v=+m[1].replace(/,/g,''),t0=performance.now();(function f(n){const p=Math.min(1,(n-t0)/900);$('#b2').textContent='₹'+num(Math.round(v*(1-Math.pow(1-p,3))));if(p<1&&!b.hidden)requestAnimationFrame(f)})(t0)}
+ if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const W=cv.width=innerWidth*devicePixelRatio,H=cv.height=innerHeight*devicePixelRatio,x=cv.getContext('2d'),C=['#cc3a4b','#ffffff','#ff6a2b','#f5c542','#ffb3bd'],ps=[];
+ for(let i=0;i<170;i++){const a=Math.random()*7,s=(6+Math.random()*16)*devicePixelRatio;ps.push({x:W/2,y:H*.42,vx:Math.cos(a)*s,vy:Math.sin(a)*s-6*devicePixelRatio,w:(5+Math.random()*7)*devicePixelRatio,h:(3+Math.random()*5)*devicePixelRatio,r:Math.random()*7,vr:(Math.random()-.5)*.4,c:C[i%5]})}
+ cancelAnimationFrame(raf);let n=0;(function f(){x.clearRect(0,0,W,H);ps.forEach(p=>{p.vx*=.985;p.vy=p.vy*.985+.38*devicePixelRatio;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.w/2,-p.h/2,p.w,p.h);x.restore()});if(++n<200&&!b.hidden)raf=requestAnimationFrame(f);else x.clearRect(0,0,W,H)})()}
+$('#bx').addEventListener('click',()=>{$('#burst').hidden=true;cancelAnimationFrame(raf)});
+
+/* orders */
+function hist(){show('hist');const D=DB.deals,pd=D.filter(d=>d.status=='paid'),pn=D.filter(d=>d.status!='paid');
+ $('#v-hist').innerHTML=`<h3 class="ch" style="margin:4px 0 10px">Your Orders</h3><div class="sm"><div><small>Received</small><b>${rs(pd.reduce((a,d)=>a+d.now,0))}</b></div><div><small>Pending</small><b>${rs(pn.reduce((a,d)=>a+d.now,0))}</b></div><div><small>Coupons used</small><b>${pd.filter(d=>d.code).length}</b></div></div>`+(D.map(d=>`<div class="cd od"><div class="oh"><div><small>ORDER PLACED</small><br>${new Date(d.ts).toLocaleDateString('en-IN',{dateStyle:'medium'})}</div><div><small>TOTAL</small><br>${rs(d.total)}</div><div><small>ORDER # ${esc(d.no)}</small><br><span class="stt ${d.status}">${d.status=='paid'?'Paid':'Payment pending'}</span></div></div><div class="ob"><b>${esc(d.c.shop)}</b>${d.L.map(l=>`<div class="pd">${esc(l.name)}${l.unit!='once'?' × '+l.q:''}</div>`).join('')}${d.code?`<div class="sv2" style="font-size:13px">Coupon ${esc(d.code)} · saved ${rs(d.disc)}</div>`:''}<div style="margin-top:10px">${d.status=='paid'?`<a href="${wa(d)}" target="_blank" rel="noopener" style="text-decoration:none"><button class="y">Send receipt</button></a>`:`<button class="y" data-pay="${d.id}">Pay now</button>`}</div></div></div>`).join('')||'<div class="cd em">No orders yet.</div>')}
+$('#v-hist').addEventListener('click',e=>{const b=e.target.closest('[data-pay]');if(b)rPay(DB.deals.find(d=>d.id==b.dataset.pay))});
+$('#bh').addEventListener('click',hist);
+/* settings */
+function openSet(){if(DB.pin&&!unlocked){$('#pi').value='';$('#pe').textContent='';$('#pdg').showModal();return}setv()}
+$('#bs').addEventListener('click',openSet);$('#pc').addEventListener('click',()=>$('#pdg').close());
+$('#pf').addEventListener('submit',e=>{if($('#pi').value==DB.pin){unlocked=true;setTimeout(setv,0)}else{e.preventDefault();$('#pe').textContent='Wrong PIN.'}});
+const cs=c=>(c.type=='pct'?`${c.value}% off${c.cap?' (max '+rs(c.cap)+')':''}`:c.type=='flat'?`${rs(c.value)} off`:`Free ${svc(c.free)?.name||'service'}`)+(c.min?` · min ${rs(c.min)}`:'')+(c.until?` · until ${c.until}`:'')+(c.limit?` · limit ${c.limit}`:'');
+function setv(){show('set');const used=c=>DB.deals.filter(d=>d.code==c.code&&d.status=='paid').length;
+ $('#v-set').innerHTML=`<h2>Services and rates</h2><div class="cd">${DB.services.map(s=>`<div class="ed"><input data-sv="${s.id}" data-f="name" value="${esc(s.name)}"><input data-sv="${s.id}" data-f="rate" type="number" inputmode="numeric" value="${s.rate}"><select data-sv="${s.id}" data-f="unit"><option value="once"${s.unit=='once'?' selected':''}>one-time</option><option value="month"${s.unit=='month'?' selected':''}>per month</option><option value="unit"${s.unit=='unit'?' selected':''}>each</option></select><button data-xs="${s.id}" aria-label="Delete">×</button><input data-sv="${s.id}" data-f="desc" value="${esc(sDesc(s))}" placeholder="Short description shown on the card" style="grid-column:1/-1"></div>`).join('')}<button id="as">+ Add service</button></div>
+ <h2>Coupons</h2><div class="cd">${DB.coupons.map(c=>`<div class="cl"><div><b>${esc(c.code)}</b> <small>· used ${used(c)}</small></div><div><button class="tg${c.on?' on':''}" data-tc="${c.id}" aria-label="On or off"></button><button data-ec="${c.id}">Edit</button><button data-xc="${c.id}">×</button></div><small>${esc(c.title)} · ${esc(cs(c))}</small></div>`).join('')}<button id="ac" style="margin-top:10px">+ New coupon</button></div>
+ <h2>Payment (UPI)</h2><div class="cd">${DB.upi.map(u=>`<div class="ed" style="grid-template-columns:1fr 1fr 40px"><input data-up="${u.id}" data-f="label" value="${esc(u.label)}" placeholder="Label"><input data-up="${u.id}" data-f="vpa" value="${esc(u.vpa)}" placeholder="name@bank"><button data-xu="${u.id}" aria-label="Delete">×</button></div><label class="ap" style="border:0;padding:0;margin:-2px 0 10px"><span style="display:flex;gap:6px;align-items:center;color:var(--tx);font-size:13px"><input type="radio" name="ua" data-ua="${u.id}" ${DB.upiA==u.id?'checked':''} style="width:auto"> Use this for the QR</span></label>`).join('')}<button id="au">+ Add UPI ID</button></div>
+ <h2>General</h2><div class="cd"><label style="margin-top:0">Business name (shown on payment)</label><input data-g="biz.name" value="${esc(DB.biz.name)}"><label>Advance percentage</label><input data-g="adv" type="number" inputmode="numeric" value="${DB.adv}"><label>Settings PIN (optional, keeps rates and coupons private)</label><input data-g="pin" type="password" inputmode="numeric" value="${esc(DB.pin)}" placeholder="No PIN"><div class="row"><span>Add GST</span><button class="tg${DB.gst.on?' on':''}" id="tgst" aria-label="GST"></button></div>${DB.gst.on?`<label>GST rate %</label><input data-g="gst.rate" type="number" value="${DB.gst.rate}">`:''}</div>
+ <div class="bt"><button id="bk">Backup data</button><button id="sb" class="p">Done</button></div>`}
+const setp=(o,p,v)=>{const k=p.split('.'),l=k.pop();k.reduce((a,x)=>a[x],o)[l]=v};
+$('#v-set').addEventListener('input',e=>{const t=e.target,x=t.dataset;if(x.sv){svc(x.sv)[x.f]=x.f=='rate'?+t.value:t.value}else if(x.up){DB.upi.find(u=>u.id==x.up)[x.f]=t.value.trim()}else if(x.g){setp(DB,x.g,t.type=='number'?+t.value:t.value)}else if(x.ua){DB.upiA=x.ua}save()});
+$('#v-set').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;const x=b.dataset;
+ if(b.id=='sb'){show('shop');rShop();return}
+ if(x.xs){DB.services=DB.services.filter(s=>s.id!=x.xs);delete P.sel[x.xs]}else if(b.id=='as'){DB.services.push({id:'s'+Date.now(),name:'New service',rate:0,unit:'once'})}
+ else if(x.xu){if(DB.upi.length>1){DB.upi=DB.upi.filter(u=>u.id!=x.xu);if(DB.upiA==x.xu)DB.upiA=DB.upi[0].id}}else if(b.id=='au'){DB.upi.push({id:'u'+Date.now(),vpa:'',label:'UPI'})}
+ else if(x.tc){const c=DB.coupons.find(c=>c.id==x.tc);c.on=!c.on}else if(x.xc){DB.coupons=DB.coupons.filter(c=>c.id!=x.xc)}else if(x.ec||b.id=='ac'){cdlg(x.ec)}
+ else if(b.id=='tgst'){DB.gst.on=!DB.gst.on}else if(b.id=='bk'){let dl=null;try{dl=await claude.use('downloads')}catch(er){}const bl=new Blob([JSON.stringify(DB)],{type:'application/json'});if(dl)await dl.save({filename:'pitch-desk-backup.json',data:bl});else toast('Backup is not available here');return}else return;
+ save();setv()});
+function cdlg(id){const c=id?DB.coupons.find(x=>x.id==id):{id:'c'+Date.now(),code:'',title:'',msg:'',type:'pct',value:10,cap:0,min:0,until:'',limit:0,apply:'all',on:true,free:DB.services[0]?.id},isNew=!id;
+ $('#cdg').innerHTML=`<form id="cf"><h2 style="margin-top:0">${isNew?'New':'Edit'} coupon</h2><label>Code</label><input name="code" value="${esc(c.code)}" style="text-transform:uppercase" required><label>Offer title (shown in the burst)</label><input name="title" value="${esc(c.title)}"><label>Message</label><input name="msg" value="${esc(c.msg)}"><div class="r2"><div><label>Type</label><select name="type"><option value="pct"${c.type=='pct'?' selected':''}>Percent off</option><option value="flat"${c.type=='flat'?' selected':''}>Flat ₹ off</option><option value="free"${c.type=='free'?' selected':''}>Free service</option></select></div><div><label>Value</label><input name="value" type="number" inputmode="numeric" value="${c.value}"></div></div><div class="r2"><div><label>Free service</label><select name="free">${DB.services.map(s=>`<option value="${s.id}"${c.free==s.id?' selected':''}>${esc(s.name)}</option>`).join('')}</select></div><div><label>Max discount ₹ (percent)</label><input name="cap" type="number" inputmode="numeric" value="${c.cap||''}"></div></div><div class="r2"><div><label>Minimum order ₹</label><input name="min" type="number" inputmode="numeric" value="${c.min||''}"></div><div><label>Valid until</label><input name="until" type="date" value="${c.until||''}"></div></div><label>Usage limit (blank = unlimited)</label><input name="limit" type="number" inputmode="numeric" value="${c.limit||''}"><label>Applies to</label><div class="ap"><label><input type="checkbox" name="all" ${c.apply=='all'?'checked':''}> All services</label>${DB.services.map(s=>`<label><input type="checkbox" name="ap" value="${s.id}" ${c.apply!='all'&&c.apply.includes(s.id)?'checked':''}> ${esc(s.name)}</label>`).join('')}</div><div class="md" style="margin-top:16px"><button type="button" id="cx">Cancel</button><button class="p" type="submit">Save</button></div></form>`;
+ $('#cdg').showModal();$('#cx').onclick=()=>$('#cdg').close();
+ $('#cf').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),g=k=>f.get(k),code=String(g('code')).trim().toUpperCase();if(DB.coupons.some(x=>x.code==code&&x.id!=c.id)){toast('That code already exists');return}
+  Object.assign(c,{code,title:g('title'),msg:g('msg'),type:g('type'),value:+g('value')||0,free:g('free'),cap:+g('cap')||0,min:+g('min')||0,until:g('until')||'',limit:+g('limit')||0,apply:f.get('all')?'all':f.getAll('ap')});if(c.apply!='all'&&!c.apply.length)c.apply='all';
+  if(isNew)DB.coupons.push(c);save();$('#cdg').close();setv()}}
+
+show('shop');rShop();
+
+</script></body></html>
