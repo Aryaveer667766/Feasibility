@@ -261,7 +261,7 @@
         <nav class="pill-nav rounded-full p-1.5 flex items-center justify-between w-full max-w-4xl">
             <!-- Logo -->
             <a href="#" class="flex items-center gap-3 pl-3 pr-4 group">
-                <div class="w-9 h-9 bg-white text-black flex items-center justify-center rounded-full text-base font-black group-hover:rotate-12 transition-transform duration-500 shadow-[0_0_15px_rgba(255,255,255,0.3)]">F</div>
+                <img src="logo.png" alt="Feasibility Media Logo" class="w-9 h-9 object-contain group-hover:rotate-12 transition-transform duration-500">
                 <span class="font-heading font-bold tracking-tight text-white text-base sm:text-lg hidden sm:block">Feasibility</span>
             </a>
             
@@ -269,15 +269,13 @@
             <ul class="hidden md:flex items-center space-x-1">
                 <li><a href="#about" class="px-5 py-2.5 rounded-full text-sm font-medium text-brand-muted hover:text-white hover:bg-white/10 transition-all">DNA</a></li>
                 <li><a href="#why-us" class="px-5 py-2.5 rounded-full text-sm font-medium text-brand-muted hover:text-white hover:bg-white/10 transition-all">System</a></li>
-                <li><a href="#divisions" class="px-5 py-2.5 rounded-full text-sm font-medium text-brand-muted hover:text-white hover:bg-white/10 transition-all">Divisions</a></li>
-                <li><a href="#pricing" class="px-5 py-2.5 rounded-full text-sm font-medium text-brand-muted hover:text-white hover:bg-white/10 transition-all">Pricing</a></li>
             </ul>
             
             <!-- CTA & Mobile Nav Toggle -->
             <div class="flex items-center gap-2 pl-4">
-                <a href="#contact" class="primary-btn px-6 py-3 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest">
-                    Start Project
-                </a>
+                <button onclick="openQuoteModal()" class="primary-btn px-6 py-3 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest">
+                    Get Quote
+                </button>
                 <button id="mobile-menu-button" class="md:hidden w-11 h-11 flex items-center justify-center rounded-full bg-white/5 text-white border border-white/10 hover:bg-white/10 transition-colors">
                    <i class="fa-solid fa-bars"></i>
                 </button>
@@ -288,8 +286,6 @@
         <div id="mobile-menu" class="hidden absolute top-20 left-4 right-4 bg-brand-dark/95 backdrop-blur-3xl border border-white/10 rounded-3xl shadow-2xl p-4 flex flex-col gap-2">
             <a href="#about" class="px-4 py-4 rounded-2xl font-medium text-zinc-300 hover:bg-white/10 transition-colors">Our DNA</a>
             <a href="#why-us" class="px-4 py-4 rounded-2xl font-medium text-zinc-300 hover:bg-white/10 transition-colors">The System</a>
-            <a href="#divisions" class="px-4 py-4 rounded-2xl font-medium text-zinc-300 hover:bg-white/10 transition-colors">Divisions</a>
-            <a href="#pricing" class="px-4 py-4 rounded-2xl font-medium text-zinc-300 hover:bg-white/10 transition-colors">Pricing</a>
         </div>
     </header>
 
@@ -320,9 +316,9 @@
                 </p>
                 
                 <div class="flex flex-col sm:flex-row gap-5 justify-center items-center w-full px-4 sm:px-0">
-                    <a href="#contact" class="w-full sm:w-auto primary-btn py-4 px-10 rounded-full text-xs sm:text-sm font-bold tracking-widest uppercase flex items-center justify-center gap-3">
-                        Get Your Roadmap <i class="fa-solid fa-arrow-right"></i>
-                    </a>
+                    <button onclick="openQuoteModal()" class="w-full sm:w-auto primary-btn py-4 px-10 rounded-full text-xs sm:text-sm font-bold tracking-widest uppercase flex items-center justify-center gap-3">
+                        Get Quote <i class="fa-solid fa-arrow-right"></i>
+                    </button>
                     <a href="#about" class="w-full sm:w-auto bg-white/5 border border-white/10 text-white font-bold py-4 px-10 rounded-full text-xs sm:text-sm tracking-widest uppercase hover:bg-white/10 hover:border-white/30 transition-all flex items-center justify-center backdrop-blur-sm">
                         Explore Infrastructure
                     </a>
@@ -521,129 +517,135 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
                     <div class="bento-card p-10 group reveal hover:bg-white/[0.03]">
-                        <i class="fa-solid fa-photo-film text-3xl text-zinc-600 group-hover:text-brand-purple transition-colors mb-8 block"></i>
-                        <h3 class="text-xl font-bold text-white mb-3 font-heading">Production</h3>
-                        <p class="text-sm text-zinc-400 leading-relaxed">Long-form editing, shorts repurposing, and motion graphics.</p>
+                        <i class="fa-brands fa-meta text-3xl text-zinc-600 group-hover:text-brand-purple transition-colors mb-8 block"></i>
+                        <h3 class="text-xl font-bold text-white mb-3 font-heading">Meta Ads</h3>
+                        <p class="text-sm text-zinc-400 leading-relaxed">Laser-targeted campaigns on Facebook and Instagram for maximum ROI.</p>
                     </div>
                     <div class="bento-card p-10 group reveal delay-[50ms] hover:bg-white/[0.03]">
-                        <i class="fa-solid fa-pen-nib text-3xl text-zinc-600 group-hover:text-brand-rose transition-colors mb-8 block"></i>
-                        <h3 class="text-xl font-bold text-white mb-3 font-heading">Design</h3>
-                        <p class="text-sm text-zinc-400 leading-relaxed">High-CTR thumbnails, ad creatives, and brand identity kits.</p>
+                        <i class="fa-brands fa-google text-3xl text-zinc-600 group-hover:text-brand-rose transition-colors mb-8 block"></i>
+                        <h3 class="text-xl font-bold text-white mb-3 font-heading">Google Ads</h3>
+                        <p class="text-sm text-zinc-400 leading-relaxed">High-intent search and display network ads to capture ready-to-buy traffic.</p>
                     </div>
                     <div class="bento-card p-10 group reveal delay-[100ms] hover:bg-white/[0.03]">
-                        <i class="fa-solid fa-bullseye text-3xl text-zinc-600 group-hover:text-brand-emerald transition-colors mb-8 block"></i>
-                        <h3 class="text-xl font-bold text-white mb-3 font-heading">Acquisition</h3>
-                        <p class="text-sm text-zinc-400 leading-relaxed">Meta & Google Ads management. DABA campaigns for max ROI.</p>
+                        <i class="fa-solid fa-mobile-screen text-3xl text-zinc-600 group-hover:text-brand-emerald transition-colors mb-8 block"></i>
+                        <h3 class="text-xl font-bold text-white mb-3 font-heading">Social Media Management</h3>
+                        <p class="text-sm text-zinc-400 leading-relaxed">End-to-end content creation, scheduling, and community engagement.</p>
                     </div>
                     <div class="bento-card p-10 group reveal delay-[150ms] hover:bg-white/[0.03]">
-                        <i class="fa-solid fa-chess-knight text-3xl text-zinc-600 group-hover:text-brand-cyan transition-colors mb-8 block"></i>
-                        <h3 class="text-xl font-bold text-white mb-3 font-heading">Strategy</h3>
-                        <p class="text-sm text-zinc-400 leading-relaxed">Monthly content matrices, SEO, and analytics reporting.</p>
+                        <i class="fa-solid fa-code text-3xl text-zinc-600 group-hover:text-brand-cyan transition-colors mb-8 block"></i>
+                        <h3 class="text-xl font-bold text-white mb-3 font-heading">Web Development</h3>
+                        <p class="text-sm text-zinc-400 leading-relaxed">High-converting, lightning-fast websites and landing pages built to scale.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- DIVISIONS -->
-        <section id="divisions" class="py-32 sm:py-40 bg-brand-panel border-y border-white/5 relative z-10 px-4">
-            <div class="container mx-auto max-w-6xl">
-                <div class="text-center mb-20 sm:mb-28 reveal">
-                    <h2 class="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 font-heading tracking-tight text-gradient-mesh">Choose Your Domain.</h2>
-                    <p class="text-brand-muted max-w-2xl mx-auto text-lg sm:text-xl font-light text-balance">Dedicated backend infrastructure tailored for your industry.</p>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 max-w-5xl mx-auto">
-                    
-                    <!-- Creator Hub -->
-                    <a href="creator.html" class="bento-card p-10 sm:p-12 flex flex-col group reveal border-b-4 border-b-transparent hover:border-b-brand-rose">
-                        <h3 class="text-3xl sm:text-4xl font-black text-white mb-3 font-heading group-hover:text-brand-rose transition-colors">Creator Hub</h3>
-                        <p class="text-xs sm:text-sm text-zinc-500 font-mono uppercase tracking-widest mb-8">Vloggers & Influencers</p>
-                        <p class="text-zinc-400 text-base sm:text-lg mb-10 flex-grow leading-relaxed">Viral editing, thumbnail engineering, and audience retention strategy to maximize your reach and ad revenue.</p>
-                        <div class="flex items-center text-sm font-bold text-white uppercase tracking-wider mt-auto">
-                            Explore Hub <i class="fa-solid fa-arrow-right ml-3 group-hover:translate-x-2 transition-transform text-brand-rose"></i>
-                        </div>
-                    </a>
-
-                    <!-- Gaming -->
-                    <a href="gaming.html" class="bento-card p-10 sm:p-12 flex flex-col group reveal border-b-4 border-b-transparent hover:border-b-brand-emerald delay-[100ms]">
-                        <h3 class="text-3xl sm:text-4xl font-black text-white mb-3 font-heading group-hover:text-brand-emerald transition-colors">Gaming</h3>
-                        <p class="text-xs sm:text-sm text-zinc-500 font-mono uppercase tracking-widest mb-8">Streamers & Esports</p>
-                        <p class="text-zinc-400 text-base sm:text-lg mb-10 flex-grow leading-relaxed">High-octane editing, sound design, and meme integration. Turn raw gameplay VODs into a lasting digital legacy.</p>
-                        <div class="flex items-center text-sm font-bold text-white uppercase tracking-wider mt-auto">
-                            Enter Lobby <i class="fa-solid fa-arrow-right ml-3 group-hover:translate-x-2 transition-transform text-brand-emerald"></i>
-                        </div>
-                    </a>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- PRICING -->
-        <section id="pricing" class="py-32 sm:py-40 relative z-10 px-4">
+        <!-- TESTIMONIALS -->
+        <section id="testimonials" class="py-32 sm:py-40 relative z-10 px-4 border-y border-white/5 bg-black/60 backdrop-blur-xl">
             <div class="container mx-auto max-w-7xl">
-                <div class="text-center mb-20 sm:mb-28 reveal">
+                <div class="text-center mb-20 sm:mb-24 reveal">
+                    <h2 class="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 font-heading tracking-tight text-gradient-mesh text-balance">Client Results.</h2>
+                    <p class="text-brand-muted text-lg sm:text-xl max-w-2xl mx-auto font-light text-balance">Real stories from brands that scaled with our infrastructure.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <!-- Video Card 1 -->
+                    <div class="bento-card p-4 reveal flex flex-col group h-[500px] relative overflow-hidden">
+                        <div class="absolute inset-0 bg-zinc-900 rounded-2xl overflow-hidden m-4">
+                            <!-- Placeholder for vertical video (aspect 9:16) -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
+                            <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&q=80&w=800&h=1422" alt="Client 1" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700">
+                            
+                            <div class="absolute inset-0 z-20 flex items-center justify-center">
+                                <button class="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center text-white hover:bg-white hover:text-black transition-colors shadow-xl group-hover:scale-110">
+                                    <i class="fa-solid fa-play text-xl ml-1"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="absolute bottom-6 left-6 right-6 z-20">
+                                <h4 class="text-xl font-bold text-white mb-1">E-Commerce Brand</h4>
+                                <p class="text-sm text-zinc-300">Scaled 4x in 90 days</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Video Card 2 -->
+                    <div class="bento-card p-4 reveal delay-[50ms] flex flex-col group h-[500px] relative overflow-hidden">
+                        <div class="absolute inset-0 bg-zinc-900 rounded-2xl overflow-hidden m-4">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
+                            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=800&h=1422" alt="Client 2" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700">
+                            
+                            <div class="absolute inset-0 z-20 flex items-center justify-center">
+                                <button class="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center text-white hover:bg-brand-emerald hover:border-brand-emerald transition-colors shadow-xl group-hover:scale-110">
+                                    <i class="fa-solid fa-play text-xl ml-1"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="absolute bottom-6 left-6 right-6 z-20">
+                                <h4 class="text-xl font-bold text-white mb-1">Tech Startup</h4>
+                                <p class="text-sm text-zinc-300">Generated 10k+ Leads</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Video Card 3 -->
+                    <div class="bento-card p-4 reveal delay-[100ms] flex flex-col group h-[500px] relative overflow-hidden sm:col-span-2 lg:col-span-1 sm:max-w-md sm:mx-auto lg:max-w-none w-full">
+                        <div class="absolute inset-0 bg-zinc-900 rounded-2xl overflow-hidden m-4">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
+                            <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800&h=1422" alt="Client 3" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700">
+                            
+                            <div class="absolute inset-0 z-20 flex items-center justify-center">
+                                <button class="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center text-white hover:bg-brand-purple hover:border-brand-purple transition-colors shadow-xl group-hover:scale-110">
+                                    <i class="fa-solid fa-play text-xl ml-1"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="absolute bottom-6 left-6 right-6 z-20">
+                                <h4 class="text-xl font-bold text-white mb-1">Content Creator</h4>
+                                <p class="text-sm text-zinc-300">5M+ Views in 30 Days</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCALE WITHOUT LIMITS (What We Offer) -->
+        <section id="pricing" class="py-32 sm:py-40 relative z-10 px-4 border-y border-white/5 bg-brand-panel">
+            <div class="container mx-auto max-w-7xl">
+                <div class="text-center mb-16 sm:mb-20 reveal">
                     <h2 class="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 font-heading tracking-tight text-gradient-mesh text-balance">Scale Without Limits.</h2>
-                    <p class="text-brand-muted text-lg sm:text-xl font-light text-balance">Standardized infrastructure pricing for Brands & Creators. No hidden fees. No lock-ins.</p>
+                    <p class="text-brand-muted text-lg sm:text-xl font-light text-balance">Comprehensive growth infrastructure for forward-thinking brands.</p>
                 </div>
                 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10 items-center">
-                    <!-- Starter -->
-                    <div class="bento-card p-10 sm:p-12 reveal hover:bg-white/[0.02]">
-                        <h3 class="text-2xl sm:text-3xl font-bold text-white mb-2 font-heading">Starter</h3>
-                        <p class="text-xs sm:text-sm text-zinc-500 mb-8 font-mono uppercase tracking-widest">Professional Baseline</p>
-                        <div class="mb-10 pb-10 border-b border-white/5">
-                             <span class="price-cut">₹7,500</span><br>
-                             <span class="text-5xl sm:text-6xl font-black text-white font-heading">₹4,999</span><span class="text-zinc-500 text-base font-mono">/mo</span>
-                        </div>
-                        <ul class="space-y-5 text-base text-zinc-300 mb-10">
-                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-zinc-600 mt-1"></i> 8 Posts & 2 Reels</li>
-                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-zinc-600 mt-1"></i> SEO Captions & Tags</li>
-                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-zinc-600 mt-1"></i> Monthly Calendar</li>
-                        </ul>
-                        <button data-plan="Starter Plan" class="w-full py-4 sm:py-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white font-bold transition-colors text-sm uppercase tracking-wide">Select Plan</button>
+                <div class="max-w-4xl mx-auto bento-card p-10 sm:p-16 reveal border-t-4 border-t-brand-purple shadow-[0_0_50px_rgba(139,92,246,0.15)]">
+                    <div class="text-center mb-12">
+                        <h3 class="text-3xl sm:text-4xl font-bold text-white mb-3 font-heading">Complete Growth System</h3>
+                        <p class="text-sm sm:text-base text-brand-purple font-mono uppercase tracking-widest">Everything you need to dominate your market</p>
                     </div>
-
-                    <!-- Growth (Highlighted) -->
-                    <div class="bento-card p-10 sm:p-12 reveal bg-brand-panel lg:-translate-y-6 shadow-[0_0_50px_rgba(139,92,246,0.15)] border-t-4 border-t-brand-purple delay-[50ms]">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-3xl sm:text-4xl font-bold text-white font-heading">Growth</h3>
-                            <span class="bg-white text-black text-[10px] sm:text-xs px-3 py-1.5 rounded-full font-bold uppercase tracking-widest shadow-lg">Popular</span>
-                        </div>
-                        <p class="text-xs sm:text-sm text-brand-purple mb-8 font-mono uppercase tracking-widest">Market Capture</p>
-                        <div class="mb-10 pb-10 border-b border-white/10">
-                             <span class="price-cut">₹15,000</span><br>
-                             <span class="text-6xl sm:text-7xl font-black text-white font-heading">₹9,999</span><span class="text-zinc-400 text-base font-mono">/mo</span>
-                        </div>
-                        <ul class="space-y-5 text-base sm:text-lg text-zinc-200 mb-10">
-                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-brand-purple mt-1"></i> <span class="font-bold">12 Posts & 6 Viral Reels</span></li>
-                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-brand-purple mt-1"></i> <span class="font-bold">Ad Setup Included</span></li>
-                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Community Management</li>
-                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Monthly Strategy Call</li>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-12">
+                        <ul class="space-y-5 text-base sm:text-lg text-zinc-300">
+                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-brand-emerald mt-1"></i> <span class="font-bold text-white">Meta & Google Ads Management</span></li>
+                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-brand-emerald mt-1"></i> <span class="font-bold text-white">End-to-End Social Media</span></li>
+                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-brand-emerald mt-1"></i> High-Converting Web Development</li>
                         </ul>
-                        <button data-plan="Growth Plan" class="primary-btn w-full py-4 sm:py-5 rounded-xl font-bold transition-all text-sm uppercase tracking-wide shadow-[0_0_25px_rgba(255,255,255,0.2)]">Get A Callback</button>
+                        <ul class="space-y-5 text-base sm:text-lg text-zinc-300">
+                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-brand-emerald mt-1"></i> Viral Content Production</li>
+                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-brand-emerald mt-1"></i> Community Management</li>
+                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-brand-emerald mt-1"></i> Monthly Strategy & Analytics</li>
+                        </ul>
                     </div>
-
-                    <!-- Pro -->
-                    <div class="bento-card p-10 sm:p-12 reveal hover:bg-white/[0.02] delay-[100ms]">
-                        <h3 class="text-2xl sm:text-3xl font-bold text-white mb-2 font-heading">Enterprise</h3>
-                        <p class="text-xs sm:text-sm text-zinc-500 mb-8 font-mono uppercase tracking-widest">Total Dominance</p>
-                        <div class="mb-10 pb-10 border-b border-white/5">
-                             <span class="price-cut">₹28,000</span><br>
-                             <span class="text-5xl sm:text-6xl font-black text-white font-heading">₹18,999</span><span class="text-zinc-500 text-base font-mono">/mo</span>
-                        </div>
-                        <ul class="space-y-5 text-base text-zinc-300 mb-10">
-                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-zinc-600 mt-1"></i> 20 Posts & 10 Reels</li>
-                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-zinc-600 mt-1"></i> Ads Scaling & A/B</li>
-                            <li class="flex items-start gap-4"><i class="fa-solid fa-check text-zinc-600 mt-1"></i> UGC Coordination</li>
-                        </ul>
-                        <button data-plan="Enterprise Pro" class="w-full py-3 sm:py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white font-bold transition-colors text-sm uppercase tracking-wide">Consult Team</button>
+                    
+                    <div class="flex justify-center">
+                        <button onclick="openQuoteModal()" class="primary-btn w-full md:w-auto px-12 py-5 rounded-xl font-bold transition-all text-sm uppercase tracking-widest shadow-[0_0_25px_rgba(255,255,255,0.2)]">Get A Quote</button>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- CONTACT / LEAD GEN -->
-        <section id="contact" class="py-32 sm:py-40 relative overflow-hidden bg-brand-panel border-t border-white/5 z-10 px-4">
+        <section id="contact" class="py-32 sm:py-40 relative overflow-hidden bg-black z-10 px-4">
              <div class="container mx-auto max-w-7xl">
                  <div class="bento-card p-8 sm:p-12 md:p-20 flex flex-col md:flex-row gap-12 md:gap-20 reveal border border-white/10 bg-black/60 shadow-[0_0_50px_rgba(0,0,0,0.5)] backdrop-blur-3xl">
                     
@@ -669,7 +671,7 @@
                             <input type="tel" name="phone" placeholder="WhatsApp Number" class="w-full bg-white/5 border border-white/10 rounded-xl p-5 text-white placeholder-zinc-600 focus:outline-none focus:border-white focus:bg-white/10 transition-all font-mono text-sm shadow-inner" required>
                             <textarea name="message" placeholder="Project details / Goals" rows="4" class="w-full bg-white/5 border border-white/10 rounded-xl p-5 text-white placeholder-zinc-600 focus:outline-none focus:border-white focus:bg-white/10 transition-all resize-none font-mono text-sm shadow-inner"></textarea>
                             <button type="submit" id="contact-submit-btn" class="primary-btn w-full font-bold py-5 rounded-xl mt-4 text-sm uppercase tracking-widest shadow-lg">
-                                Request Analysis
+                                Send Message
                             </button>
                         </form>
                     </div>
@@ -682,7 +684,7 @@
     <footer class="bg-black border-t border-white/10 py-16 sm:py-20 relative z-10 px-4">
         <div class="container mx-auto max-w-7xl text-center">
             <a href="#" class="text-2xl sm:text-3xl font-bold tracking-tight text-white flex items-center justify-center gap-3 sm:gap-4 mb-10 sm:mb-12 font-heading">
-                <span class="w-10 h-10 sm:w-12 sm:h-12 bg-white text-black flex items-center justify-center rounded-full text-base sm:text-lg font-black shadow-[0_0_15px_rgba(255,255,255,0.2)]">F</span>
+                <img src="logo.png" alt="Feasibility Media Logo" class="w-10 h-10 sm:w-12 sm:h-12 object-contain">
                 Feasibility
             </a>
             
@@ -702,18 +704,32 @@
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <!-- Pricing Modal -->
-    <div id="phone-modal" class="hidden fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 modal">
-        <div id="modal-content" class="bg-brand-panel border border-white/10 rounded-3xl sm:rounded-[40px] p-8 sm:p-12 max-w-md w-full relative shadow-2xl">
-            <div class="flex justify-between items-start mb-10 sm:mb-12">
-                <h3 class="text-3xl sm:text-4xl font-black text-white font-heading tracking-tight">Lock In Price</h3>
-                <button onclick="closeModal()" aria-label="Close Modal" class="text-zinc-600 hover:text-white text-3xl sm:text-4xl leading-none transition-colors">&times;</button>
+    <!-- Quote Modal -->
+    <div id="quote-modal" class="hidden fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 modal">
+        <div id="quote-modal-content" class="bg-brand-panel border border-white/10 rounded-3xl sm:rounded-[40px] p-8 sm:p-12 max-w-md w-full relative shadow-2xl overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-start mb-8 sm:mb-10">
+                <h3 class="text-3xl sm:text-4xl font-black text-white font-heading tracking-tight">Get a Quote</h3>
+                <button onclick="closeQuoteModal()" aria-label="Close Modal" class="text-zinc-600 hover:text-white text-3xl sm:text-4xl leading-none transition-colors">&times;</button>
             </div>
-            <form id="phone-form" action="https://formspree.io/f/mandalko" method="POST" class="space-y-5 sm:space-y-6">
-                <input type="hidden" id="plan-input" name="plan">
-                <input type="text" name="name" placeholder="Your Name" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-5 sm:p-6 text-white focus:outline-none focus:border-white transition-colors font-mono text-sm shadow-inner">
-                <input type="tel" name="phone" placeholder="Phone Number" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-5 sm:p-6 text-white focus:outline-none focus:border-white transition-colors font-mono text-sm shadow-inner">
-                <button type="submit" id="phone-submit-button" class="primary-btn w-full font-bold py-5 sm:py-6 rounded-2xl mt-6 sm:mt-8 text-sm uppercase tracking-widest shadow-xl">
+            <form id="quote-form" action="https://formspree.io/f/mandalko" method="POST" class="space-y-4 sm:space-y-5">
+                <input type="text" name="name" placeholder="Your Name" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-5 text-white focus:outline-none focus:border-white transition-colors font-mono text-sm shadow-inner">
+                <input type="text" name="business" placeholder="Business Name" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-5 text-white focus:outline-none focus:border-white transition-colors font-mono text-sm shadow-inner">
+                <input type="tel" name="phone" placeholder="Phone Number" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-5 text-white focus:outline-none focus:border-white transition-colors font-mono text-sm shadow-inner">
+                
+                <div class="relative">
+                    <select name="service" required class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-5 text-white focus:outline-none focus:border-white transition-colors font-mono text-sm shadow-inner appearance-none cursor-pointer">
+                        <option value="" disabled selected class="bg-brand-panel text-zinc-500">What service are you looking for?</option>
+                        <option value="Meta Ads" class="bg-brand-panel text-white">Meta Ads</option>
+                        <option value="Google Ads" class="bg-brand-panel text-white">Google Ads</option>
+                        <option value="Social Media Management" class="bg-brand-panel text-white">Social Media Management</option>
+                        <option value="Web Development" class="bg-brand-panel text-white">Web Development</option>
+                        <option value="All of the above" class="bg-brand-panel text-white">All of the above</option>
+                        <option value="Not sure yet" class="bg-brand-panel text-white">I'm still searching / Not sure</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none"></i>
+                </div>
+
+                <button type="submit" id="quote-submit-button" class="primary-btn w-full font-bold py-5 rounded-2xl mt-4 text-sm uppercase tracking-widest shadow-xl">
                     Request Callback
                 </button>
             </form>
@@ -819,23 +835,16 @@
             document.getElementById('mobile-menu').classList.toggle('hidden');
         });
 
-        // Modal Logic
-        const phoneModal = document.getElementById('phone-modal');
-        function openModal(planName) {
-            document.getElementById('plan-input').value = planName;
-            phoneModal.classList.remove('hidden');
-            setTimeout(() => phoneModal.classList.add('active'), 10);
+        // Quote Modal Logic
+        const quoteModal = document.getElementById('quote-modal');
+        function openQuoteModal() {
+            quoteModal.classList.remove('hidden');
+            setTimeout(() => quoteModal.classList.add('active'), 10);
         }
-        function closeModal() {
-            phoneModal.classList.remove('active');
-            setTimeout(() => phoneModal.classList.add('hidden'), 300);
+        function closeQuoteModal() {
+            quoteModal.classList.remove('active');
+            setTimeout(() => quoteModal.classList.add('hidden'), 300);
         }
-        document.querySelectorAll('[data-plan]').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                openModal(e.target.dataset.plan);
-            });
-        });
 
         // Success Modal Logic
         const successModal = document.getElementById('success-modal');
@@ -865,7 +874,7 @@
                     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
                 }).then(res => {
                     if (res.ok) {
-                        if(formId === 'phone-form') closeModal();
+                        if(formId === 'quote-form') closeQuoteModal();
                         openSuccessModal();
                         form.reset();
                     } else alert("Error. Please verify connection.");
@@ -878,7 +887,7 @@
         };
         
         handleForm('contact-form', 'contact-submit-btn');
-        handleForm('phone-form', 'phone-submit-button');
+        handleForm('quote-form', 'quote-submit-button');
 
     </script>
 </body>
