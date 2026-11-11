@@ -2,27 +2,24 @@
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Feasibility Media — Performance Creative & Growth Partner for Brands</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feasibility Media | Growth Infrastructure for Scaling Brands</title>
     
-    <!-- Meta & OpenGraph -->
+    <!-- SEO & Metadata -->
     <link rel="canonical" href="https://feasibilitymedia.in/">
-    <meta name="robots" content="index, follow, max-image-preview:large">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='230 170 660 660'><rect x='230' y='170' width='660' height='660' rx='110' fill='%23000000'/><path fill='white' d='M264 194H817V350H557L437 470V817H264Z'/><rect fill='white' x='489' y='488' width='242' height='139'/><circle fill='%23cd374b' cx='817' cy='765' r='52'/></svg>">
-    <meta name="description" content="Feasibility Media is the premier creative and paid performance partner for ambitious brands. High-converting video ads, paid media scaling, and conversion websites.">
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
+    <meta name="description" content="Feasibility Media partners with ambitious brands and businesses to scale revenue through performance video ads, high-ROAS paid media, and creative strategy.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='230 170 660 660'><rect x='230' y='170' width='660' height='660' rx='110' fill='%2309090b'/><path fill='white' d='M264 194H817V350H557L437 470V817H264Z'/><rect fill='white' x='489' y='488' width='242' height='139'/><circle fill='%23cd374b' cx='817' cy='765' r='52'/></svg>">
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- FontAwesome 6 -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- Tailwind Config -->
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -30,38 +27,17 @@
                     fontFamily: {
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
                         display: ['"Space Grotesk"', 'sans-serif'],
-                        mono: ['"JetBrains Mono"', 'monospace'],
                     },
                     colors: {
                         brand: {
-                            pitch: '#030305',
-                            dark: '#08080c',
-                            card: '#0f0f14',
-                            border: 'rgba(255, 255, 255, 0.08)',
-                            red: '#cd374b',
-                            redGlow: '#ff2247',
-                            redMuted: 'rgba(205, 55, 75, 0.15)',
-                            text: '#f4f4f7',
-                            muted: '#8e8e99'
-                        }
-                    },
-                    animation: {
-                        'marquee': 'marquee 45s linear infinite',
-                        'float': 'float 5s ease-in-out infinite',
-                        'glow-pulse': 'glowPulse 3.5s ease-in-out infinite alternate',
-                    },
-                    keyframes: {
-                        marquee: {
-                            '0%': { transform: 'translateX(0%)' },
-                            '100%': { transform: 'translateX(-50%)' }
-                        },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-7px)' }
-                        },
-                        glowPulse: {
-                            '0%': { opacity: '0.25', transform: 'scale(0.96)' },
-                            '100%': { opacity: '0.6', transform: 'scale(1.04)' }
+                            base: '#070709',       /* Eye-pleasing deep matte black */
+                            surface: '#0f0f13',    /* Soft dark card surface */
+                            surfaceHover: '#16161c',
+                            border: '#1f1f26',     /* Subtle non-irritating border */
+                            red: '#cd374b',        /* Feasibility Crimson Red */
+                            redHover: '#e03e54',
+                            text: '#f3f4f6',       /* Clean soft white text */
+                            muted: '#9ca3af',      /* Restful secondary text */
                         }
                     }
                 }
@@ -70,761 +46,796 @@
     </script>
 
     <style>
-        html, body {
-            background-color: #030305;
-            color: #f4f4f7;
+        /* Smooth, eye-pleasing theme without harsh contrast */
+        body {
+            background-color: #070709;
+            color: #f3f4f6;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
-            scroll-behavior: smooth;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Ambient Crimson Light */
-        .crimson-nebula {
-            position: absolute; pointer-events: none; z-index: 0;
-            width: 750px; height: 750px;
-            background: radial-gradient(circle at center, rgba(205, 55, 75, 0.18) 0%, rgba(205, 55, 75, 0.04) 50%, transparent 70%);
-            filter: blur(100px); border-radius: 50%;
+        /* Subtle ambient illumination - calm, warm, zero eye strain */
+        .ambient-glow {
+            position: absolute;
+            width: 500px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(205, 55, 75, 0.08) 0%, rgba(7, 7, 9, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(40px);
         }
 
-        /* Subtle Cinema Grid */
-        .linear-grid {
-            position: absolute; inset: 0; pointer-events: none; z-index: 0;
-            background-image: 
-                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 56px 56px;
-            mask-image: radial-gradient(ellipse at center, black 35%, transparent 80%);
-            -webkit-mask-image: radial-gradient(ellipse at center, black 35%, transparent 80%);
-        }
-
-        /* Headline Gradient */
-        .text-gradient {
-            background: linear-gradient(135deg, #ffffff 30%, #ff4d6a 75%, #cd374b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Hero Typography Sizing */
-        .hero-title {
-            font-size: clamp(2.8rem, 7.5vw, 6.2rem);
-            line-height: 1.04;
-            letter-spacing: -0.035em;
-        }
-
-        /* Vertical Word Roller */
-        .word-roller-viewport {
-            display: inline-block;
+        /* The Vertical Rolling Slot Effect */
+        .roller-wrapper {
+            display: block;
             vertical-align: bottom;
             overflow: hidden;
-            height: 1.15em;
-            text-align: center;
+            height: 1.22em;
+            position: relative;
         }
         @media (min-width: 640px) {
-            .word-roller-viewport {
-                text-align: left;
+            .roller-wrapper {
+                display: inline-block;
             }
         }
 
-        /* Glass Cards */
-        .agency-card {
-            background: rgba(15, 15, 20, 0.65);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-        }
-        .agency-card:hover {
-            border-color: rgba(205, 55, 75, 0.5);
-            transform: translateY(-4px);
-            box-shadow: 0 25px 50px -15px rgba(0,0,0,0.8), 0 0 30px rgba(205, 55, 75, 0.12);
+        .roller-inner {
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Buttons */
-        .primary-btn {
-            background: #cd374b;
-            color: #ffffff;
-            font-weight: 700;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 25px rgba(205, 55, 75, 0.4);
-        }
-        .primary-btn:hover {
-            background: #e11d48;
-            transform: translateY(-2px);
-            box-shadow: 0 0 35px rgba(255, 34, 71, 0.6);
+        .roller-item {
+            height: 1.22em;
+            line-height: 1.22em;
+            white-space: nowrap;
+            color: #cd374b;
+            display: block;
+            text-align: center;
         }
 
-        .secondary-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: #ffffff;
-            transition: all 0.3s ease;
+        /* Smooth marquee ticker */
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
-        .secondary-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.25);
-            transform: translateY(-2px);
+        .animate-ticker {
+            display: flex;
+            width: max-content;
+            animation: ticker 28s linear infinite;
         }
-
-        /* Scroll Reveal */
-        .reveal {
-            opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .animate-ticker:hover {
+            animation-play-state: paused;
         }
 
-        /* Modal Transitions */
-        .modal { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
-        .modal.active { opacity: 1; pointer-events: auto; }
-        .modal-box { transform: scale(0.96) translateY(8px); transition: all 0.3s ease; }
-        .modal.active .modal-box { transform: scale(1) translateY(0); }
+        /* Focus rings */
+        input:focus, button:focus {
+            outline: none;
+        }
     </style>
 </head>
-<body class="relative selection:bg-brand-red selection:text-white font-sans">
+<body class="selection:bg-brand-red selection:text-white">
 
-    <!-- Feasibility Vector Logo Symbol -->
-    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-        <symbol id="fm-logo" viewBox="230 170 660 660">
-            <path fill="#ffffff" d="M264 194H817V350H557L437 470V817H264Z"/>
-            <rect fill="#ffffff" x="489" y="488" width="242" height="139"/>
-            <circle fill="#cd374b" cx="817" cy="765" r="52"/>
-        </symbol>
-    </svg>
-
-    <!-- Top Crimson Ambient Lights -->
-    <div class="crimson-nebula -top-40 left-1/2 -translate-x-1/2"></div>
-    <div class="crimson-nebula top-[35%] right-[-10%] opacity-40"></div>
-
-    <!-- TOP DESK BAR -->
-    <div class="fixed top-0 left-0 right-0 z-50 bg-black/85 backdrop-blur-md border-b border-white/5 py-2 px-4 text-xs">
-        <div class="max-w-6xl mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-2 text-zinc-300">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span class="font-medium text-white">Sales & Strategy Desk Online</span>
-                <span class="text-zinc-600 hidden sm:inline">|</span>
-                <span class="text-zinc-400 hidden sm:inline">Guaranteed 5-Min Callback</span>
-            </div>
-            <button onclick="openCallbackModal()" class="text-brand-red hover:text-white font-bold transition-colors flex items-center gap-1.5 uppercase text-[11px] tracking-wider">
-                <i class="fa-solid fa-phone text-[10px] animate-bounce"></i>
-                <span>Get a 5-Min Call</span>
-            </button>
+    <!-- Top Announcement Bar (Clean B2B focus) -->
+    <div class="bg-brand-surface border-b border-brand-border py-2 px-4 text-center text-xs sm:text-sm text-brand-muted relative z-40">
+        <div class="max-w-7xl mx-auto flex items-center justify-center gap-2">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-brand-red/10 text-brand-red border border-brand-red/20">
+                Q2 Growth Sprints
+            </span>
+            <span class="text-zinc-300">Accepting 4 new brand partnerships this month.</span>
+            <a href="#contact" class="text-white hover:text-brand-red font-medium underline underline-offset-4 transition-colors hidden sm:inline">Apply now &rarr;</a>
         </div>
     </div>
 
-    <!-- FLOATING GLASS HEADER -->
-    <header class="fixed top-12 left-0 right-0 z-40 px-4">
-        <nav class="max-w-5xl mx-auto bg-brand-pitch/85 border border-white/10 backdrop-blur-2xl px-5 py-3 rounded-full flex items-center justify-between shadow-2xl">
-            <!-- Brand -->
-            <a href="#" class="flex items-center gap-3 group" aria-label="Feasibility Media">
-                <div class="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center p-1.5 group-hover:border-brand-red/50 transition-colors">
-                    <svg class="w-full h-full transform group-hover:scale-105 transition-transform" role="img" aria-label="Feasibility logo">
-                        <use href="#fm-logo"/>
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-50 bg-[#070709]/90 backdrop-blur-md border-b border-brand-border/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-zinc-950 border border-zinc-800 flex items-center justify-center p-1.5 shadow-sm group-hover:border-zinc-700 transition-colors">
+                    <svg id="fm-logo" viewBox="230 170 660 660" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="230" y="170" width="660" height="660" rx="110" fill="#09090b"/>
+                        <path fill="#ffffff" d="M264 194H817V350H557L437 470V817H264Z"/>
+                        <rect fill="#ffffff" x="489" y="488" width="242" height="139"/>
+                        <circle fill="#cd374b" cx="817" cy="765" r="52"/>
                     </svg>
                 </div>
-                <div class="flex items-center gap-1">
-                    <span class="font-display font-bold text-white text-base tracking-tight">Feasibility</span>
-                    <span class="w-1.5 h-1.5 rounded-full bg-brand-red"></span>
+                <div>
+                    <span class="text-lg font-bold tracking-tight text-white font-display block leading-none">FEASIBILITY</span>
+                    <span class="text-[10px] tracking-widest text-brand-muted uppercase font-semibold">Media Group</span>
                 </div>
             </a>
 
-            <!-- Nav Links -->
-            <div class="hidden md:flex items-center gap-6 text-xs font-semibold text-zinc-400">
+            <!-- Desktop Nav Items -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-300">
                 <a href="#services" class="hover:text-white transition-colors">Services</a>
-                <a href="#why-us" class="hover:text-white transition-colors">The Difference</a>
-                <a href="#results" class="hover:text-white transition-colors">Results</a>
-                <a href="#contact" class="hover:text-white transition-colors">Contact</a>
-            </div>
+                <a href="#comparison" class="hover:text-white transition-colors">The Difference</a>
+                <a href="#results" class="hover:text-white transition-colors">Case Studies</a>
+                <a href="#about" class="hover:text-white transition-colors">DNA</a>
+                <a href="portfolio.html" class="hover:text-white transition-colors flex items-center gap-1.5">
+                    <span>Work</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-zinc-500"></i>
+                </a>
+            </nav>
 
-            <!-- Header Action -->
-            <div class="flex items-center gap-3">
-                <a href="https://wa.me/919431366776" target="_blank" class="hidden sm:flex items-center gap-1.5 text-xs text-zinc-300 hover:text-white py-2 px-3 rounded-full hover:bg-white/5 transition-colors">
+            <!-- Actions (Contact Sales & WhatsApp) -->
+            <div class="hidden sm:flex items-center gap-3">
+                <a href="https://wa.me/919431366776" target="_blank" rel="noopener noreferrer" 
+                   class="px-3.5 py-2 rounded-lg text-xs font-semibold text-zinc-300 bg-brand-surface border border-brand-border hover:border-zinc-600 hover:text-white transition-colors flex items-center gap-2">
                     <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i>
                     <span>WhatsApp</span>
                 </a>
-                <button onclick="openCallbackModal()" class="primary-btn px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2">
-                    <i class="fa-solid fa-phone text-[10px]"></i>
-                    <span>Contact Sales</span>
+                <button onclick="openModal()" 
+                   class="px-4 py-2 rounded-lg text-xs font-bold text-white bg-brand-red hover:bg-brand-redHover transition-colors shadow-sm">
+                    Contact Sales
                 </button>
             </div>
-        </nav>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="mobileMenuBtn" aria-label="Toggle Navigation Menu" class="md:hidden text-zinc-400 hover:text-white p-2 text-xl focus:outline-none">
+                <i class="fa-solid fa-bars" id="menuIcon"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-brand-surface border-b border-brand-border px-6 py-6 space-y-4">
+            <nav class="flex flex-col space-y-3 text-base font-medium text-zinc-300">
+                <a href="#services" class="mobile-nav-link hover:text-white py-1">Services</a>
+                <a href="#comparison" class="mobile-nav-link hover:text-white py-1">The Difference</a>
+                <a href="#results" class="mobile-nav-link hover:text-white py-1">Case Studies</a>
+                <a href="#about" class="mobile-nav-link hover:text-white py-1">DNA</a>
+                <a href="portfolio.html" class="mobile-nav-link hover:text-white py-1 flex items-center justify-between">
+                    <span>Work</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs text-zinc-500"></i>
+                </a>
+            </nav>
+            <div class="pt-4 border-t border-brand-border flex flex-col gap-3">
+                <button onclick="openModal(); closeMobileMenu();" class="w-full py-3 rounded-lg text-sm font-bold text-white bg-brand-red hover:bg-brand-redHover text-center transition-colors">
+                    Contact Sales
+                </button>
+                <a href="https://wa.me/919431366776" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 rounded-lg text-sm font-semibold text-zinc-300 bg-zinc-900 border border-brand-border text-center flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-emerald-400"></i>
+                    <span>Chat on WhatsApp</span>
+                </a>
+            </div>
+        </div>
     </header>
 
-    <main class="relative z-10 pt-28 sm:pt-36">
+    <main>
+        <!-- HERO SECTION: Clean, High Impact, Mobile-Optimized -->
+        <section class="relative pt-12 sm:pt-20 lg:pt-24 pb-16 sm:pb-24 overflow-hidden">
+            <!-- Subtle ambient lighting -->
+            <div class="ambient-glow top-0 left-1/2 -translate-x-1/2"></div>
 
-        <!-- THE ULTIMATE HERO SECTION -->
-        <section class="min-h-[92vh] flex flex-col justify-center items-center text-center px-4 relative overflow-hidden pb-20">
-            <div class="linear-grid"></div>
-
-            <div class="max-w-5xl mx-auto w-full relative z-10">
-                
-                <!-- Pill Badge -->
-                <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-brand-red/30 bg-brand-redMuted text-xs font-semibold text-white mb-8 animate-float shadow-xl">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                <!-- Eyebrow Pill -->
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-surface border border-brand-border text-xs sm:text-sm font-medium text-zinc-300 mb-6 sm:mb-8">
                     <span class="w-2 h-2 rounded-full bg-brand-red animate-pulse"></span>
-                    <span>Performance Growth Infrastructure for Ambitious Brands</span>
-                    <span class="text-brand-red font-mono font-bold hidden sm:inline">[ ₹12 CR+ GENERATED ]</span>
+                    <span>Growth Infrastructure for Brands & Businesses</span>
                 </div>
 
-                <!-- Master Rolling Headline -->
-                <h1 class="hero-title font-display font-black uppercase mb-8 max-w-5xl mx-auto text-white">
-                    <span>We Scale Brands</span> <br>
-                    <span class="text-zinc-400 font-bold">With </span>
-                    <span class="word-roller-viewport">
-                        <span id="word-rotator" class="inline-flex flex-col text-left">
-                            <span class="text-gradient h-[1.15em] flex items-center whitespace-nowrap">Performance Video Ads.</span>
-                            <span class="text-gradient h-[1.15em] flex items-center whitespace-nowrap">High-ROAS Paid Ads.</span>
-                            <span class="text-gradient h-[1.15em] flex items-center whitespace-nowrap">Viral Video Creatives.</span>
-                            <span class="text-gradient h-[1.15em] flex items-center whitespace-nowrap">Shopify & Funnel Stores.</span>
-                            <span class="text-gradient h-[1.15em] flex items-center whitespace-nowrap">Creator Sponsorships.</span>
-                            <!-- Clone for infinite seamless loop -->
-                            <span class="text-gradient h-[1.15em] flex items-center whitespace-nowrap">Performance Video Ads.</span>
+                <!-- Main Headline with Vertical Slot Roller -->
+                <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white font-display leading-[1.18] sm:leading-[1.15] max-w-5xl mx-auto mb-6">
+                    We scale brands with<br class="hidden sm:inline">
+                    <span class="roller-wrapper mt-1 sm:mt-0">
+                        <span id="rollerInner" class="roller-inner">
+                            <span class="roller-item">Performance Video Ads</span>
+                            <span class="roller-item">High-ROAS Paid Ads</span>
+                            <span class="roller-item">Conversion Creative</span>
+                            <span class="roller-item">Omnichannel Growth</span>
                         </span>
                     </span>
                 </h1>
 
-                <!-- Crisp Value Proposition -->
-                <p class="text-base sm:text-xl text-zinc-300 max-w-2xl mx-auto leading-relaxed font-light mb-10 text-balance">
-                    Stop wasting ad spend on uninspired creatives. We build high-converting direct-response video ads, manage paid acquisition, and engineer brand revenue under one roof.
+                <!-- Crisp Value Prop Subtext -->
+                <p class="text-base sm:text-lg md:text-xl text-brand-muted max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
+                    Stop gambling on disconnected freelancers. We engineer high-converting video creative, manage media spend, and build consistent customer acquisition pipelines for ambitious brands.
                 </p>
 
-                <!-- Integrated Fast-Action Strip (Instant Input + Direct Buttons) -->
-                <div class="max-w-xl mx-auto mb-14 px-2">
-                    <form id="hero-fast-call-form" action="https://formspree.io/f/mandalko" method="POST" class="flex flex-col sm:flex-row items-center gap-2 p-1.5 rounded-2xl sm:rounded-full bg-black/60 border border-white/15 backdrop-blur-xl shadow-[0_10px_35px_rgba(0,0,0,0.8)] focus-within:border-brand-red transition-all">
-                        <input type="hidden" name="source" value="Hero Fast-Action Input">
-                        <div class="flex items-center gap-2 pl-4 pr-2 py-2 w-full text-left">
-                            <i class="fa-solid fa-phone text-zinc-500 text-xs"></i>
-                            <input type="tel" name="phone" required placeholder="Enter phone for 5-min callback..." class="bg-transparent text-white placeholder-zinc-500 text-xs sm:text-sm focus:outline-none w-full font-sans">
+                <!-- HERO QUICK 5-MINUTE CALLBACK BOX (EXCLUSIVE TO HERO) -->
+                <div class="max-w-xl mx-auto bg-brand-surface border border-brand-border rounded-2xl p-4 sm:p-5 shadow-xl mb-6 text-left">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs sm:text-sm font-semibold text-white flex items-center gap-1.5">
+                            <i class="fa-solid fa-bolt text-brand-red"></i>
+                            Get a 5-minute callback from our growth strategists
+                        </span>
+                        <span class="text-[11px] text-zinc-400 hidden sm:inline">Mon–Sat: Instant</span>
+                    </div>
+
+                    <form id="heroCallbackForm" action="https://formspree.io/f/mandalko" method="POST" class="flex flex-col sm:flex-row gap-2.5">
+                        <input type="hidden" name="source" value="Hero 5-Minute Callback">
+                        <div class="relative flex-grow">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-500">
+                                <i class="fa-solid fa-phone text-xs"></i>
+                            </div>
+                            <input type="tel" name="phone" required placeholder="Enter your direct phone number..." 
+                                   class="w-full pl-9 pr-4 py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-sm text-white placeholder-zinc-500 focus:border-brand-red focus:ring-1 focus:ring-brand-red transition-all">
                         </div>
-                        <button type="submit" id="hero-fast-btn" class="primary-btn w-full sm:w-auto whitespace-nowrap px-6 py-3.5 rounded-xl sm:rounded-full text-xs uppercase tracking-wider font-bold flex items-center justify-center gap-2">
-                            <span>Call Me In 5 Min</span>
-                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        <button type="submit" 
+                                class="px-5 py-3 rounded-xl bg-brand-red hover:bg-brand-redHover text-white text-sm font-bold transition-colors flex items-center justify-center gap-2 whitespace-nowrap shadow-md">
+                            <span>Get 5-Min Call</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
                         </button>
                     </form>
 
-                    <!-- Alternative Direct Actions -->
-                    <div class="flex items-center justify-center gap-6 mt-4 text-xs text-zinc-400">
-                        <button onclick="openCallbackModal()" class="hover:text-white transition-colors flex items-center gap-1.5 underline decoration-zinc-700 underline-offset-4">
-                            <i class="fa-solid fa-calendar-check text-brand-red"></i> Book Full Strategy Call
-                        </button>
-                        <span>·</span>
-                        <a href="https://wa.me/919431366776?text=Hi%20Feasibility%20Media,%20we%20want%20to%20scale%20our%20brand." target="_blank" class="hover:text-white transition-colors flex items-center gap-1.5">
-                            <i class="fa-brands fa-whatsapp text-emerald-400"></i> WhatsApp Us
-                        </a>
-                    </div>
+                    <div id="heroFormStatus" class="hidden text-xs mt-2.5 text-center sm:text-left"></div>
+                    <p class="text-[11px] text-zinc-500 mt-2.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-lock text-[10px]"></i>
+                        <span>Zero sales spam. Direct senior strategist callback.</span>
+                    </p>
                 </div>
 
-                <!-- Proof Badges -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto text-left">
-                    <div class="agency-card p-6 rounded-2xl border-l-2 border-l-brand-red">
-                        <div class="text-[11px] font-mono text-zinc-500 uppercase tracking-wider">SALES DRIVEN</div>
-                        <div class="text-3xl font-extrabold text-white font-display mt-1">₹12 Cr<span class="text-brand-red">+</span></div>
-                        <div class="text-xs text-zinc-400 mt-1">Direct Brand Revenue</div>
-                    </div>
-
-                    <div class="agency-card p-6 rounded-2xl border-l-2 border-l-brand-red">
-                        <div class="text-[11px] font-mono text-zinc-500 uppercase tracking-wider">IMPRESSIONS</div>
-                        <div class="text-3xl font-extrabold text-white font-display mt-1">320M<span class="text-brand-red">+</span></div>
-                        <div class="text-xs text-zinc-400 mt-1">Organic & Paid Views</div>
-                    </div>
-
-                    <div class="agency-card p-6 rounded-2xl border-l-2 border-l-brand-red">
-                        <div class="text-[11px] font-mono text-zinc-500 uppercase tracking-wider">TURNAROUND</div>
-                        <div class="text-3xl font-extrabold text-white font-display mt-1">24-48<span class="text-brand-red">h</span></div>
-                        <div class="text-xs text-zinc-400 mt-1">Sprint Delivery SLA</div>
-                    </div>
-
-                    <div class="agency-card p-6 rounded-2xl border-l-2 border-l-brand-red">
-                        <div class="text-[11px] font-mono text-zinc-500 uppercase tracking-wider">RETENTION</div>
-                        <div class="text-3xl font-extrabold text-white font-display mt-1">94.8<span class="text-brand-red">%</span></div>
-                        <div class="text-xs text-zinc-400 mt-1">Month-over-Month</div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- BRAND LOGO REEL -->
-        <section class="py-12 border-y border-white/5 bg-brand-dark/40 relative overflow-hidden">
-            <div class="max-w-6xl mx-auto px-4 mb-6 text-center">
-                <span class="text-xs font-semibold text-zinc-500 uppercase tracking-widest">
-                    Creative & Acquisition Infrastructure Trusted by Market Leaders
-                </span>
-            </div>
-
-            <div class="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]">
-                <div class="flex w-max animate-marquee hover:[animation-play-state:paused] items-center gap-16 py-2 px-8 text-zinc-500">
-                    <span class="text-2xl hover:text-white transition-colors"><i class="fa-brands fa-apple text-3xl"></i></span>
-                    <span class="font-black tracking-widest text-lg font-sans hover:text-white transition-colors">SAMSUNG</span>
-                    <span class="text-2xl hover:text-white transition-colors"><i class="fa-brands fa-amazon"></i></span>
-                    <span class="text-xl font-bold hover:text-white transition-colors"><i class="fa-brands fa-google mr-1"></i> Google</span>
-                    <span class="text-xl font-bold hover:text-white transition-colors"><i class="fa-brands fa-meta mr-1"></i> Meta</span>
-                    <span class="text-xl font-bold hover:text-white transition-colors"><i class="fa-brands fa-spotify mr-1"></i> Spotify</span>
-                    <span class="text-xl font-bold hover:text-white transition-colors"><i class="fa-brands fa-shopify mr-1"></i> Shopify</span>
-                    <span class="font-bold uppercase tracking-wider hover:text-white transition-colors">XIAOMI</span>
-                    <span class="font-black text-2xl lowercase hover:text-white transition-colors">boAt</span>
-                    <span class="font-bold font-display hover:text-white transition-colors">Bewakoof<span class="text-brand-red">.</span></span>
-                    <span class="font-black tracking-widest uppercase hover:text-white transition-colors">LENSKART</span>
-                    <span class="font-bold hover:text-white transition-colors">The Souled Store</span>
-                    <span class="font-bold hover:text-white transition-colors">PhysicsWallah</span>
-                    <span class="font-bold hover:text-white transition-colors">unacademy</span>
-                    <span class="font-black tracking-widest uppercase italic hover:text-white transition-colors">LAYERS</span>
-
-                    <!-- Loop Clone -->
-                    <span class="text-2xl hover:text-white transition-colors"><i class="fa-brands fa-apple text-3xl"></i></span>
-                    <span class="font-black tracking-widest text-lg font-sans hover:text-white transition-colors">SAMSUNG</span>
-                    <span class="text-2xl hover:text-white transition-colors"><i class="fa-brands fa-amazon"></i></span>
-                    <span class="text-xl font-bold hover:text-white transition-colors"><i class="fa-brands fa-google mr-1"></i> Google</span>
-                    <span class="text-xl font-bold hover:text-white transition-colors"><i class="fa-brands fa-meta mr-1"></i> Meta</span>
-                    <span class="text-xl font-bold hover:text-white transition-colors"><i class="fa-brands fa-spotify mr-1"></i> Spotify</span>
-                    <span class="text-xl font-bold hover:text-white transition-colors"><i class="fa-brands fa-shopify mr-1"></i> Shopify</span>
-                    <span class="font-bold uppercase tracking-wider hover:text-white transition-colors">XIAOMI</span>
-                    <span class="font-black text-2xl lowercase hover:text-white transition-colors">boAt</span>
-                    <span class="font-bold font-display hover:text-white transition-colors">Bewakoof<span class="text-brand-red">.</span></span>
-                    <span class="font-black tracking-widest uppercase hover:text-white transition-colors">LENSKART</span>
-                    <span class="font-bold hover:text-white transition-colors">The Souled Store</span>
-                    <span class="font-bold hover:text-white transition-colors">PhysicsWallah</span>
-                    <span class="font-bold hover:text-white transition-colors">unacademy</span>
-                    <span class="font-black tracking-widest uppercase italic hover:text-white transition-colors">LAYERS</span>
+                <!-- Secondary Actions & Social Proof Badge -->
+                <div class="flex flex-wrap items-center justify-center gap-4 text-xs sm:text-sm text-zinc-400">
+                    <span class="flex items-center gap-1.5">
+                        <i class="fa-solid fa-check text-brand-red"></i>
+                        No long-term lock-in
+                    </span>
+                    <span class="hidden sm:inline text-zinc-600">•</span>
+                    <span class="flex items-center gap-1.5">
+                        <i class="fa-solid fa-check text-brand-red"></i>
+                        Full creative ownership
+                    </span>
+                    <span class="hidden sm:inline text-zinc-600">•</span>
+                    <span class="flex items-center gap-1.5">
+                        <i class="fa-solid fa-check text-brand-red"></i>
+                        Direct Slack channel
+                    </span>
                 </div>
             </div>
         </section>
 
-        <!-- SERVICES -->
-        <section id="services" class="py-24 sm:py-32 px-4 relative">
-            <div class="max-w-6xl mx-auto">
-                <div class="text-center max-w-2xl mx-auto mb-16 reveal">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-red mb-2 block">Our Capabilities</span>
-                    <h2 class="text-3xl sm:text-5xl font-black text-white font-display tracking-tight">The Brand Growth Engine</h2>
-                    <p class="text-zinc-400 text-sm sm:text-base mt-3">We handle the full creative and acquisition funnel to scale your customer base.</p>
-                </div>
+        <!-- CLIENT LOGO TICKER: Clean, Muted, Restful -->
+        <section class="border-y border-brand-border bg-[#0a0a0e] py-8 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 text-center mb-5">
+                <p class="text-xs font-semibold text-zinc-400 tracking-wider uppercase">
+                    Trusted by modern DTC brands, scaling e-commerce & venture-backed companies
+                </p>
+            </div>
+            
+            <div class="relative w-full overflow-hidden flex items-center">
+                <!-- Fade edges -->
+                <div class="absolute left-0 inset-y-0 w-16 sm:w-24 bg-gradient-to-r from-[#0a0a0e] to-transparent z-10 pointer-events-none"></div>
+                <div class="absolute right-0 inset-y-0 w-16 sm:w-24 bg-gradient-to-l from-[#0a0a0e] to-transparent z-10 pointer-events-none"></div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="agency-card p-8 rounded-3xl group reveal">
-                        <div class="w-12 h-12 rounded-2xl bg-brand-redMuted border border-brand-red/30 flex items-center justify-center text-brand-red text-xl mb-6 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-photo-film"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2 font-display">Performance Video Ads</h3>
-                        <p class="text-zinc-400 text-sm leading-relaxed mb-6 font-light">
-                            Direct-response video creatives, UGC, and 3D product animations built to stop thumbs and lower acquisition costs on Meta and TikTok.
-                        </p>
-                        <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs text-zinc-400 font-mono">
-                            <span>Direct Response · UGC</span>
-                            <span class="text-brand-red"><i class="fa-solid fa-arrow-right"></i></span>
-                        </div>
-                    </div>
+                <div class="animate-ticker flex items-center gap-12 sm:gap-16 text-zinc-400 text-sm sm:text-base font-semibold">
+                    <span class="flex items-center gap-2"><i class="fa-brands fa-shopify text-lg"></i> LUMEN LABS</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-gem text-lg"></i> VALO APPAREL</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-cube text-lg"></i> NEXUS NUTRITION</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-bolt text-lg"></i> KINETIC BIKES</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-feather text-lg"></i> AURA SKINCARE</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-circle-nodes text-lg"></i> ORBIT SAAS</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-shield-halved text-lg"></i> ARCTIC OUTDOORS</span>
 
-                    <div class="agency-card p-8 rounded-3xl group reveal">
-                        <div class="w-12 h-12 rounded-2xl bg-brand-redMuted border border-brand-red/30 flex items-center justify-center text-brand-red text-xl mb-6 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-bullseye"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2 font-display">Paid Ad Scaling</h3>
-                        <p class="text-zinc-400 text-sm leading-relaxed mb-6 font-light">
-                            Google, Meta, and TikTok ad management focused on real commercial ROAS. We optimize campaigns daily to scale revenue predictably.
-                        </p>
-                        <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs text-zinc-400 font-mono">
-                            <span>Meta · Google PMax</span>
-                            <span class="text-brand-red"><i class="fa-solid fa-arrow-right"></i></span>
-                        </div>
-                    </div>
-
-                    <div class="agency-card p-8 rounded-3xl group reveal">
-                        <div class="w-12 h-12 rounded-2xl bg-brand-redMuted border border-brand-red/30 flex items-center justify-center text-brand-red text-xl mb-6 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-laptop-code"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2 font-display">Web & Shopify Stores</h3>
-                        <p class="text-zinc-400 text-sm leading-relaxed mb-6 font-light">
-                            Fast, conversion-engineered Shopify stores, custom landing pages, and funnel architecture that turn casual clicks into buyers.
-                        </p>
-                        <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs text-zinc-400 font-mono">
-                            <span>Shopify Plus · Landing Pages</span>
-                            <span class="text-brand-red"><i class="fa-solid fa-arrow-right"></i></span>
-                        </div>
-                    </div>
-
-                    <div class="agency-card p-8 rounded-3xl group reveal">
-                        <div class="w-12 h-12 rounded-2xl bg-brand-redMuted border border-brand-red/30 flex items-center justify-center text-brand-red text-xl mb-6 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-pen-nib"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2 font-display">Design & Ad Packaging</h3>
-                        <p class="text-zinc-400 text-sm leading-relaxed mb-6 font-light">
-                            High-CTR static display ads, brand guidelines, product packaging, and investor sales decks that establish instant market authority.
-                        </p>
-                        <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs text-zinc-400 font-mono">
-                            <span>Static Creatives · Brand Assets</span>
-                            <span class="text-brand-red"><i class="fa-solid fa-arrow-right"></i></span>
-                        </div>
-                    </div>
-
-                    <div class="agency-card p-8 rounded-3xl group reveal">
-                        <div class="w-12 h-12 rounded-2xl bg-brand-redMuted border border-brand-red/30 flex items-center justify-center text-brand-red text-xl mb-6 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-users"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2 font-display">Influencer Partnerships</h3>
-                        <p class="text-zinc-400 text-sm leading-relaxed mb-6 font-light">
-                            Direct sponsorship management and creator whitelisting across YouTube, Instagram, and LinkedIn with zero intermediary waste.
-                        </p>
-                        <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs text-zinc-400 font-mono">
-                            <span>Sponsorships · Whitelisting</span>
-                            <span class="text-brand-red"><i class="fa-solid fa-arrow-right"></i></span>
-                        </div>
-                    </div>
-
-                    <div class="agency-card p-8 rounded-3xl group reveal">
-                        <div class="w-12 h-12 rounded-2xl bg-brand-redMuted border border-brand-red/30 flex items-center justify-center text-brand-red text-xl mb-6 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-chart-line"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2 font-display">Testing & Analytics</h3>
-                        <p class="text-zinc-400 text-sm leading-relaxed mb-6 font-light">
-                            Weekly creative testing matrices, competitor ad intelligence, conversion rate audits, and clear pipeline revenue reporting.
-                        </p>
-                        <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs text-zinc-400 font-mono">
-                            <span>Weekly Sprints · Analytics</span>
-                            <span class="text-brand-red"><i class="fa-solid fa-arrow-right"></i></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-14 text-center reveal">
-                    <button onclick="openCallbackModal()" class="primary-btn px-8 py-4 rounded-full text-xs uppercase font-bold tracking-wider inline-flex items-center gap-2">
-                        <span>Get a Custom Plan for Your Brand</span>
-                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                    </button>
+                    <!-- Duplicate for infinite ticker loop -->
+                    <span class="flex items-center gap-2"><i class="fa-brands fa-shopify text-lg"></i> LUMEN LABS</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-gem text-lg"></i> VALO APPAREL</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-cube text-lg"></i> NEXUS NUTRITION</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-bolt text-lg"></i> KINETIC BIKES</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-feather text-lg"></i> AURA SKINCARE</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-circle-nodes text-lg"></i> ORBIT SAAS</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-shield-halved text-lg"></i> ARCTIC OUTDOORS</span>
                 </div>
             </div>
         </section>
 
-        <!-- THE DIFFERENCE -->
-        <section id="why-us" class="py-24 sm:py-32 px-4 bg-brand-dark/30 border-y border-white/5 relative">
-            <div class="max-w-6xl mx-auto">
-                <div class="text-center max-w-xl mx-auto mb-16 reveal">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-brand-red mb-2 block">The Difference</span>
-                    <h2 class="text-3xl sm:text-5xl font-black text-white font-display tracking-tight">The Old Way vs Feasibility</h2>
-                    <p class="text-zinc-400 text-sm sm:text-base mt-2">Why high-growth brands choose a unified creative team over scattered freelancers.</p>
-                </div>
+        <!-- THE DIFFERENCE: Freelancers vs Feasibility Media -->
+        <section id="comparison" class="py-16 sm:py-24 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+                <span class="text-xs font-bold text-brand-red uppercase tracking-wider">The Difference</span>
+                <h2 class="text-2xl sm:text-4xl font-bold font-display text-white mt-2 mb-4">
+                    Why scaling brands ditch the freelancer roulette
+                </h2>
+                <p class="text-sm sm:text-base text-brand-muted">
+                    Hiring individual editors, media buyers, and copywriters leads to fragmented messaging and burning ad budgets. Feasibility gives you a unified growth engine.
+                </p>
+            </div>
 
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="agency-card p-8 sm:p-10 rounded-3xl bg-zinc-950/40 reveal">
-                        <div class="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-500 text-lg mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+                <!-- Freelancers Card -->
+                <div class="bg-brand-surface/70 border border-brand-border rounded-2xl p-6 sm:p-8">
+                    <div class="flex items-center justify-between pb-4 border-b border-brand-border mb-6">
+                        <div>
+                            <h3 class="text-lg font-bold text-zinc-300">The Freelancer Maze</h3>
+                            <p class="text-xs text-zinc-400 mt-0.5">High stress, low accountability</p>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-red-950/40 border border-red-800/40 flex items-center justify-center text-red-400">
                             <i class="fa-solid fa-xmark"></i>
                         </div>
-                        <h3 class="text-2xl font-bold text-zinc-400 mb-6 font-display">The Fragmented Freelancer Trap</h3>
-                        <ul class="space-y-4 text-sm text-zinc-400">
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-xmark text-zinc-600 mt-1"></i>
-                                Juggling 5 different contractors who don't talk to each other.
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-xmark text-zinc-600 mt-1"></i>
-                                Ad creatives exhaust after two weeks, causing customer acquisition costs to spike.
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-xmark text-zinc-600 mt-1"></i>
-                                Slow 2-week turnarounds that stall your campaign momentum.
-                            </li>
-                        </ul>
                     </div>
 
-                    <div class="agency-card p-8 sm:p-10 rounded-3xl border border-brand-red/40 bg-brand-card/90 shadow-[0_0_40px_rgba(205,55,75,0.08)] reveal">
-                        <div class="w-10 h-10 rounded-xl bg-brand-redMuted border border-brand-red/30 flex items-center justify-center text-brand-red text-lg mb-6">
+                    <ul class="space-y-4 text-sm text-zinc-400">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-xmark text-red-500/80 mt-1 shrink-0 text-sm"></i>
+                            <span><strong>No ROAS accountability:</strong> Editors make flashy reels without understanding CPA or CAC.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-xmark text-red-500/80 mt-1 shrink-0 text-sm"></i>
+                            <span><strong>Constant hand-holding:</strong> You waste 15+ hours weekly writing briefs and chasing delivery dates.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-xmark text-red-500/80 mt-1 shrink-0 text-sm"></i>
+                            <span><strong>Disconnected feedback loop:</strong> The media buyer blames the creative; the editor blames the algorithm.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-xmark text-red-500/80 mt-1 shrink-0 text-sm"></i>
+                            <span><strong>Creative fatigue:</strong> Unable to produce 10+ iterations per week to sustain high spend.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Feasibility Card -->
+                <div class="bg-brand-surface border border-brand-red/30 rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+                    <div class="absolute -right-16 -top-16 w-36 h-36 bg-brand-red/10 rounded-full blur-2xl pointer-events-none"></div>
+
+                    <div class="flex items-center justify-between pb-4 border-b border-brand-border mb-6">
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Feasibility Infrastructure</h3>
+                            <p class="text-xs text-brand-red font-medium mt-0.5">End-to-end commercial growth</p>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-brand-red/20 border border-brand-red/40 flex items-center justify-center text-brand-red">
                             <i class="fa-solid fa-check"></i>
                         </div>
-                        <h3 class="text-2xl font-bold text-white mb-6 font-display">The Feasibility Growth Engine</h3>
-                        <ul class="space-y-4 text-sm text-zinc-200">
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-check text-brand-red mt-1"></i>
-                                <span><strong class="text-white">One Unified Team:</strong> Creative direction, video editors, and media buyers working under one synchronized roof.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-check text-brand-red mt-1"></i>
-                                <span><strong class="text-white">Guaranteed 24-48h Sprints:</strong> Fresh high-converting creative batches delivered weekly.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fa-solid fa-check text-brand-red mt-1"></i>
-                                <span><strong class="text-white">No Lock-in Contracts:</strong> Monthly performance agreements. Cancel anytime with zero friction.</span>
-                            </li>
-                        </ul>
-
-                        <div class="mt-8 pt-6 border-t border-white/10 flex items-center justify-between">
-                            <span class="text-xs text-zinc-400 font-mono">Ready to scale?</span>
-                            <button onclick="openCallbackModal()" class="text-xs font-bold text-brand-red hover:text-white uppercase tracking-wider flex items-center gap-1.5 transition-colors">
-                                <span>Speak With Sales</span>
-                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                            </button>
-                        </div>
                     </div>
+
+                    <ul class="space-y-4 text-sm text-zinc-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-check text-brand-red mt-1 shrink-0 text-sm"></i>
+                            <span><strong>Direct commercial focus:</strong> Every hook, script, and edit is engineered strictly to convert traffic into revenue.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-check text-brand-red mt-1 shrink-0 text-sm"></i>
+                            <span><strong>Synchronized creative + media buying:</strong> Rapid testing framework with weekly iteration sprints.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-check text-brand-red mt-1 shrink-0 text-sm"></i>
+                            <span><strong>Dedicated growth squad:</strong> Creative director, motion designer, and media strategist in one private Slack.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-check text-brand-red mt-1 shrink-0 text-sm"></i>
+                            <span><strong>Fast 48-hour turnarounds:</strong> Continuous stream of fresh ad creative to defeat fatigue and scale spend.</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </section>
 
-        <!-- STATS -->
-        <section id="results" class="py-20 px-4 border-b border-white/5 bg-black/60 relative">
-            <div class="max-w-5xl mx-auto text-center reveal">
-                <span class="text-xs font-semibold text-brand-red uppercase tracking-widest mb-3 block">Our Commitment</span>
-                <h2 class="text-3xl sm:text-4xl font-black text-white font-display tracking-tight mb-4">Built for Measurable Brand Revenue</h2>
-                <p class="text-zinc-400 text-sm sm:text-base leading-relaxed font-light max-w-2xl mx-auto mb-10">
-                    We judge our success by one metric: commercial growth for our partners. Every video asset, ad campaign, and website is measured by pipeline revenue and customer acquisition.
-                </p>
-                
-                <div class="inline-flex flex-wrap items-center justify-center gap-8 text-xs font-mono text-zinc-400">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-brand-red"></i> 100% Satisfaction Guarantee</span>
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-brand-red"></i> 24-48h Sprint SLA</span>
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-brand-red"></i> No Long-term Lock-ins</span>
+        <!-- SERVICES SECTION: Clean Grid -->
+        <section id="services" class="py-16 sm:py-24 bg-[#0a0a0d] border-t border-brand-border">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-14">
+                    <span class="text-xs font-bold text-brand-red uppercase tracking-wider">Core Capabilities</span>
+                    <h2 class="text-2xl sm:text-4xl font-bold font-display text-white mt-2 mb-4">
+                        Everything your brand needs to scale acquisition
+                    </h2>
+                    <p class="text-sm sm:text-base text-brand-muted">
+                        We don't offer bloated menus. We focus on the high-leverage pillars that directly produce profit.
+                    </p>
                 </div>
-            </div>
-        </section>
 
-        <!-- CONTACT SALES FORM SECTION -->
-        <section id="contact" class="py-24 sm:py-32 relative px-4">
-            <div class="max-w-3xl mx-auto">
-                <div class="agency-card p-8 sm:p-14 rounded-3xl reveal border border-brand-red/40 bg-brand-card/95 shadow-[0_0_60px_rgba(205,55,75,0.12)]">
-                    
-                    <div class="text-center mb-10">
-                        <span class="w-2.5 h-2.5 rounded-full bg-brand-red inline-block mb-3 animate-pulse"></span>
-                        <h2 class="text-3xl sm:text-5xl font-black text-white mb-3 font-display tracking-tight">Scale Your Brand's Growth</h2>
-                        <p class="text-zinc-400 text-sm sm:text-base font-light max-w-lg mx-auto">
-                            Fill in your details below. Our growth team will call you back within <strong class="text-white">5 minutes</strong> to analyze your brand goals.
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Service 1 -->
+                    <div class="bg-brand-surface border border-brand-border hover:border-zinc-700 rounded-xl p-6 transition-colors">
+                        <div class="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-brand-red text-base mb-5">
+                            <i class="fa-solid fa-video"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Performance Video Ads</h3>
+                        <p class="text-xs sm:text-sm text-brand-muted leading-relaxed">
+                            High-converting TikTok, Meta Reels, and YouTube Shorts. Hook testing, 3D product motion, and direct-response editing.
                         </p>
                     </div>
 
-                    <form id="sales-form" action="https://formspree.io/f/mandalko" method="POST" class="space-y-4">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <input type="text" name="name" placeholder="Your Name" required class="w-full bg-black/60 border border-white/10 rounded-xl p-4 text-white text-sm focus:outline-none focus:border-brand-red transition-colors placeholder-zinc-600">
-                            <input type="text" name="brand" placeholder="Company / Brand Name" required class="w-full bg-black/60 border border-white/10 rounded-xl p-4 text-white text-sm focus:outline-none focus:border-brand-red transition-colors placeholder-zinc-600">
+                    <!-- Service 2 -->
+                    <div class="bg-brand-surface border border-brand-border hover:border-zinc-700 rounded-xl p-6 transition-colors">
+                        <div class="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-brand-red text-base mb-5">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Paid Media Buying</h3>
+                        <p class="text-xs sm:text-sm text-brand-muted leading-relaxed">
+                            Meta and Google Ads management backed by rigorous attribution. We eliminate wasted spend and scale winning campaigns.
+                        </p>
+                    </div>
+
+                    <!-- Service 3 -->
+                    <div class="bg-brand-surface border border-brand-border hover:border-zinc-700 rounded-xl p-6 transition-colors">
+                        <div class="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-brand-red text-base mb-5">
+                            <i class="fa-solid fa-vial-circle-check"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Creative Strategy & Testing</h3>
+                        <p class="text-xs sm:text-sm text-brand-muted leading-relaxed">
+                            Weekly creative iterations based on hold rates, click-through data, and conversion drop-offs to keep ROAS elevated.
+                        </p>
+                    </div>
+
+                    <!-- Service 4 -->
+                    <div class="bg-brand-surface border border-brand-border hover:border-zinc-700 rounded-xl p-6 transition-colors">
+                        <div class="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-brand-red text-base mb-5">
+                            <i class="fa-solid fa-laptop-code"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Landing Pages & CRO</h3>
+                        <p class="text-xs sm:text-sm text-brand-muted leading-relaxed">
+                            Fast, mobile-optimized landing pages and advertorials that turn expensive clicks into paying customers.
+                        </p>
+                    </div>
+
+                    <!-- Service 5 -->
+                    <div class="bg-brand-surface border border-brand-border hover:border-zinc-700 rounded-xl p-6 transition-colors">
+                        <div class="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-brand-red text-base mb-5">
+                            <i class="fa-solid fa-arrows-split-up-and-left"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Omnichannel Scaling</h3>
+                        <p class="text-xs sm:text-sm text-brand-muted leading-relaxed">
+                            Diversify beyond single-channel vulnerability. Harmonize Meta, TikTok, Google Search, and YouTube for durable growth.
+                        </p>
+                    </div>
+
+                    <!-- Service 6 -->
+                    <div class="bg-brand-surface border border-brand-border hover:border-zinc-700 rounded-xl p-6 transition-colors">
+                        <div class="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-brand-red text-base mb-5">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Brand Identity & Visuals</h3>
+                        <p class="text-xs sm:text-sm text-brand-muted leading-relaxed">
+                            High-end graphic design, 3D packaging renders, and social assets that build customer trust and raise perceived brand value.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESULTS / NUMBERS SECTION -->
+        <section id="results" class="py-16 sm:py-24 border-t border-brand-border">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-center">
+                    <div class="bg-brand-surface border border-brand-border rounded-xl p-6">
+                        <div class="text-3xl sm:text-5xl font-bold font-display text-white mb-1">4.2x</div>
+                        <p class="text-xs sm:text-sm text-brand-muted font-medium">Average Blended ROAS</p>
+                    </div>
+                    <div class="bg-brand-surface border border-brand-border rounded-xl p-6">
+                        <div class="text-3xl sm:text-5xl font-bold font-display text-white mb-1">$12M+</div>
+                        <p class="text-xs sm:text-sm text-brand-muted font-medium">Ad Spend Deployed</p>
+                    </div>
+                    <div class="bg-brand-surface border border-brand-border rounded-xl p-6">
+                        <div class="text-3xl sm:text-5xl font-bold font-display text-white mb-1">38%</div>
+                        <p class="text-xs sm:text-sm text-brand-muted font-medium">Average CAC Reduction</p>
+                    </div>
+                    <div class="bg-brand-surface border border-brand-border rounded-xl p-6">
+                        <div class="text-3xl sm:text-5xl font-bold font-display text-brand-red mb-1">48h</div>
+                        <p class="text-xs sm:text-sm text-brand-muted font-medium">Creative Turnaround</p>
+                    </div>
+                </div>
+
+                <!-- Recent Case Highlight -->
+                <div class="mt-12 bg-brand-surface border border-brand-border rounded-2xl p-6 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div class="max-w-xl">
+                        <span class="text-xs font-bold text-brand-red uppercase tracking-wider">Case Study Snapshot</span>
+                        <h3 class="text-xl sm:text-2xl font-bold text-white font-display mt-2 mb-3">
+                            Scaling an organic wellness brand from $40k to $210k/mo
+                        </h3>
+                        <p class="text-xs sm:text-sm text-brand-muted leading-relaxed">
+                            By restructuring their Meta account around direct-response founder stories and high-hook comparison videos, we lowered customer acquisition cost by 42% while profitably quadrupling monthly ad spend.
+                        </p>
+                    </div>
+                    <div class="shrink-0 flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+                        <a href="portfolio.html" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-zinc-900 border border-zinc-700 hover:border-zinc-500 text-white text-xs sm:text-sm font-semibold text-center transition-colors">
+                            View All Case Studies
+                        </a>
+                        <button onclick="openModal()" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-brand-red hover:bg-brand-redHover text-white text-xs sm:text-sm font-bold text-center transition-colors">
+                            Contact Sales
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT / DNA SECTION -->
+        <section id="about" class="py-16 sm:py-20 bg-[#0a0a0d] border-t border-brand-border">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <span class="text-xs font-bold text-brand-red uppercase tracking-wider">Our DNA</span>
+                <h2 class="text-2xl sm:text-3xl font-bold font-display text-white mt-2 mb-4">
+                    Built for operators who value output over vanity
+                </h2>
+                <p class="text-sm sm:text-base text-brand-muted leading-relaxed mb-8">
+                    Feasibility Media was founded to eliminate agency fluff. We do not do 60-page PDF reports that say nothing. We do not hold hour-long meetings about color theory. We engineer video ads and paid acquisition strategies that reliably put revenue on your balance sheet.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
+                    <div class="bg-brand-surface border border-brand-border p-4 rounded-xl">
+                        <div class="text-brand-red font-bold text-sm mb-1">01. Direct Response First</div>
+                        <p class="text-xs text-zinc-400">Every creative asset exists to generate sales, not to win artistic awards.</p>
+                    </div>
+                    <div class="bg-brand-surface border border-brand-border p-4 rounded-xl">
+                        <div class="text-brand-red font-bold text-sm mb-1">02. Data Over Opinions</div>
+                        <p class="text-xs text-zinc-400">We iterate on what your customers actually click and buy, not gut feelings.</p>
+                    </div>
+                    <div class="bg-brand-surface border border-brand-border p-4 rounded-xl">
+                        <div class="text-brand-red font-bold text-sm mb-1">03. Skin in the Game</div>
+                        <p class="text-xs text-zinc-400">Our retention is tied directly to your business profitability and growth.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT SALES SECTION -->
+        <section id="contact" class="py-16 sm:py-24 border-t border-brand-border">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-10">
+                    <span class="text-xs font-bold text-brand-red uppercase tracking-wider">Start Scaling</span>
+                    <h2 class="text-2xl sm:text-4xl font-bold font-display text-white mt-2 mb-3">
+                        Speak With Our Growth Team
+                    </h2>
+                    <p class="text-sm text-brand-muted">
+                        Tell us about your brand and monthly targets. We'll review your current creative and ad setup to see if we're a mutual fit.
+                    </p>
+                </div>
+
+                <div class="bg-brand-surface border border-brand-border rounded-2xl p-6 sm:p-10 shadow-xl">
+                    <form id="contactSalesForm" action="https://formspree.io/f/mandalko" method="POST" class="space-y-5">
+                        <input type="hidden" name="source" value="Contact Sales Main Form">
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-2">Your Name</label>
+                                <input type="text" name="name" required placeholder="Alex Turner"
+                                       class="w-full px-4 py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-sm text-white placeholder-zinc-500 focus:border-brand-red focus:ring-1 focus:ring-brand-red transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-2">Work Email</label>
+                                <input type="email" name="email" required placeholder="alex@brand.com"
+                                       class="w-full px-4 py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-sm text-white placeholder-zinc-500 focus:border-brand-red focus:ring-1 focus:ring-brand-red transition-all">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-2">Phone / WhatsApp</label>
+                                <input type="tel" name="phone" required placeholder="+1 (555) 000-0000"
+                                       class="w-full px-4 py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-sm text-white placeholder-zinc-500 focus:border-brand-red focus:ring-1 focus:ring-brand-red transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-2">Brand Website / Store</label>
+                                <input type="url" name="website" placeholder="https://yourbrand.com"
+                                       class="w-full px-4 py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-sm text-white placeholder-zinc-500 focus:border-brand-red focus:ring-1 focus:ring-brand-red transition-all">
+                            </div>
                         </div>
 
                         <div>
-                            <input type="tel" name="phone" id="sales-phone" placeholder="Phone Number (for 5-min call)" required class="w-full bg-black/60 border border-white/10 rounded-xl p-4 text-white text-sm focus:outline-none focus:border-brand-red transition-colors placeholder-zinc-600">
+                            <label class="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-2">Current Monthly Ad Spend</label>
+                            <select name="monthly_spend" class="w-full px-4 py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-sm text-white focus:border-brand-red focus:ring-1 focus:ring-brand-red transition-all">
+                                <option value="Under $5k/mo">Under $5k / month</option>
+                                <option value="$5k-$15k/mo" selected>$5k – $15k / month</option>
+                                <option value="$15k-$50k/mo">$15k – $50k / month</option>
+                                <option value="$50k+/mo">$50k+ / month</option>
+                            </select>
                         </div>
 
-                        <select name="service" class="w-full bg-black/60 border border-white/10 rounded-xl p-4 text-zinc-300 text-sm focus:outline-none focus:border-brand-red transition-colors">
-                            <option value="Performance Video Ads">Performance Video Ads (Reels & Direct Response)</option>
-                            <option value="Paid Ads Scaling">Paid Ads Management (Meta & Google)</option>
-                            <option value="Web & Shopify Development">Web & Shopify Development</option>
-                            <option value="Full Brand Growth Engine" selected>Full Brand Growth Package</option>
-                        </select>
-
-                        <textarea name="details" placeholder="Tell us about your brand goals or current monthly ad spend (optional)" rows="3" class="w-full bg-black/60 border border-white/10 rounded-xl p-4 text-white text-sm focus:outline-none focus:border-brand-red transition-colors resize-none placeholder-zinc-600"></textarea>
-
-                        <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                            <button type="submit" id="sales-submit-btn" class="w-full sm:flex-1 primary-btn font-bold py-4 rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-phone-volume"></i>
-                                <span>Request 5-Min Callback</span>
-                            </button>
-
-                            <button type="button" onclick="sendWhatsAppDirect()" class="w-full sm:w-auto secondary-btn py-4 px-6 rounded-xl text-xs font-semibold flex items-center justify-center gap-2">
-                                <i class="fa-brands fa-whatsapp text-emerald-400 text-base"></i>
-                                <span>WhatsApp Direct</span>
-                            </button>
+                        <div>
+                            <label class="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-2">Primary Bottleneck</label>
+                            <textarea name="notes" rows="3" placeholder="E.g., High creative fatigue, need better hook rates, looking to scale past $30k/mo..."
+                                      class="w-full px-4 py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-sm text-white placeholder-zinc-500 focus:border-brand-red focus:ring-1 focus:ring-brand-red transition-all resize-none"></textarea>
                         </div>
+
+                        <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-brand-red hover:bg-brand-redHover text-white text-sm font-bold transition-colors shadow-md">
+                                Submit Consultation Request
+                            </button>
+                            <a href="https://wa.me/919431366776" target="_blank" rel="noopener noreferrer" class="text-xs text-zinc-400 hover:text-white flex items-center gap-2">
+                                <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i>
+                                <span>Prefer quick chat? Message us on WhatsApp</span>
+                            </a>
+                        </div>
+
+                        <div id="contactFormStatus" class="hidden text-xs text-center pt-2"></div>
                     </form>
                 </div>
             </div>
         </section>
-
     </main>
 
-    <!-- FOOTER -->
-    <footer class="bg-black border-t border-white/10 py-16 relative z-10 px-4">
-        <div class="container mx-auto max-w-6xl text-center">
-            <a href="#" class="text-2xl font-bold tracking-tight text-white inline-flex items-center justify-center gap-3 mb-8 font-display" aria-label="Feasibility Media">
-                <svg class="w-9 h-9" role="img" aria-label="Feasibility logo"><use href="#fm-logo"/></svg>
-                <span>Feasibility<span class="text-brand-red">.</span></span>
-            </a>
-            
-            <!-- All exact original footer links preserved -->
-            <div class="flex flex-wrap justify-center gap-6 sm:gap-10 text-xs sm:text-sm text-zinc-400 mb-10 font-medium tracking-wide">
-                <a href="#about" class="hover:text-white transition-colors">DNA</a>
-                <a href="portfolio.html" class="hover:text-white transition-colors">Work</a>
-                <a href="careers" class="hover:text-white transition-colors">Careers</a>
-                <a href="https://wa.me/919431366776" target="_blank" class="hover:text-white transition-colors">Contact</a>
+    <!-- FOOTER: Preserves ALL required links (DNA, Work, Careers, Contact) -->
+    <footer class="border-t border-brand-border bg-[#050507] py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8 pb-8 border-b border-brand-border">
+                <!-- Footer Brand Info -->
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center p-1">
+                        <svg viewBox="230 170 660 660" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="230" y="170" width="660" height="660" rx="110" fill="#09090b"/>
+                            <path fill="#ffffff" d="M264 194H817V350H557L437 470V817H264Z"/>
+                            <rect fill="#ffffff" x="489" y="488" width="242" height="139"/>
+                            <circle fill="#cd374b" cx="817" cy="765" r="52"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="text-sm font-bold tracking-tight text-white font-display block">FEASIBILITY MEDIA</span>
+                        <span class="text-[10px] text-zinc-400">Growth Infrastructure for Brands</span>
+                    </div>
+                </div>
+
+                <!-- REQUIRED FOOTER LINKS: DNA (#about), Work (portfolio.html), Careers (careers), Contact (wa.me) -->
+                <nav class="flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm font-medium text-zinc-400">
+                    <a href="#about" class="hover:text-white transition-colors">DNA</a>
+                    <a href="portfolio.html" class="hover:text-white transition-colors">Work</a>
+                    <a href="careers" class="hover:text-white transition-colors">Careers</a>
+                    <a href="https://wa.me/919431366776" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Contact</a>
+                </nav>
             </div>
-            
-            <p class="text-[11px] text-zinc-600 font-mono tracking-wider">&copy; 2026 FEASIBILITY MEDIA GROUP. ALL RIGHTS RESERVED.</p>
+
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-400">
+                <p>&copy; 2026 Feasibility Media Group. All rights reserved.</p>
+                <div class="flex items-center gap-4">
+                    <a href="https://wa.me/919431366776" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300">
+                        <i class="fa-brands fa-whatsapp text-sm"></i>
+                    </a>
+                    <a href="https://instagram.com/feasibilitymedia" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300">
+                        <i class="fa-brands fa-instagram text-sm"></i>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300">
+                        <i class="fa-brands fa-linkedin text-sm"></i>
+                    </a>
+                </div>
+            </div>
         </div>
     </footer>
-    
-    <!-- Floating Minimalist WhatsApp Button -->
-    <a href="https://wa.me/919431366776?text=Hi%20Feasibility%20Media,%20we%20want%20to%20grow%20our%20brand." target="_blank" aria-label="Chat on WhatsApp" class="fixed bottom-6 right-6 z-50 bg-white text-black hover:bg-brand-red hover:text-white w-14 h-14 rounded-full shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:scale-105 transition-all flex items-center justify-center text-2xl">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
 
-    <!-- 5-MINUTE CALLBACK MODAL -->
-    <div id="callback-modal" class="hidden fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 modal">
-        <div class="agency-card border border-brand-red/30 rounded-3xl p-8 sm:p-10 max-w-md w-full relative shadow-2xl modal-box bg-brand-card">
-            <button onclick="closeCallbackModal()" aria-label="Close" class="absolute top-5 right-5 text-zinc-500 hover:text-white text-2xl transition-colors">
-                <i class="fa-solid fa-xmark"></i>
+    <!-- SALES CONTACT MODAL -->
+    <div id="salesModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="bg-brand-surface border border-brand-border rounded-2xl max-w-md w-full p-6 relative shadow-2xl">
+            <!-- Close button -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-zinc-400 hover:text-white focus:outline-none">
+                <i class="fa-solid fa-xmark text-lg"></i>
             </button>
 
-            <div class="w-14 h-14 bg-brand-redMuted border border-brand-red/30 rounded-2xl flex items-center justify-center mb-5 text-brand-red text-2xl shadow-[0_0_20px_rgba(205,55,75,0.2)]">
-                <i class="fa-solid fa-phone-volume animate-pulse"></i>
+            <div class="mb-5">
+                <span class="text-xs font-bold text-brand-red uppercase tracking-wider">Contact Sales</span>
+                <h3 class="text-xl font-bold font-display text-white mt-1">Book a Strategy Consultation</h3>
+                <p class="text-xs text-brand-muted mt-1">Enter your details and our brand growth director will reach out promptly.</p>
             </div>
-            
-            <h3 class="text-2xl sm:text-3xl font-bold text-white font-display mb-1.5">Speak With Sales</h3>
-            <p class="text-zinc-400 text-xs sm:text-sm mb-6 leading-relaxed font-light">
-                Enter your phone number. A brand strategist will call you back in <strong class="text-white">less than 5 minutes</strong>.
-            </p>
 
-            <form id="modal-form" action="https://formspree.io/f/mandalko" method="POST" class="space-y-4">
-                <input type="hidden" name="source" value="5-Minute Callback Modal">
-                
+            <form id="modalSalesForm" action="https://formspree.io/f/mandalko" method="POST" class="space-y-4">
+                <input type="hidden" name="source" value="Sales Modal Popup">
                 <div>
-                    <input type="text" name="name" required placeholder="Your Name" class="w-full bg-black/70 border border-white/10 rounded-xl p-3.5 text-white text-sm focus:outline-none focus:border-brand-red transition-colors placeholder-zinc-600">
+                    <label class="block text-xs font-medium text-zinc-300 mb-1.5">Full Name</label>
+                    <input type="text" name="name" required placeholder="Alex Turner"
+                           class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-sm text-white placeholder-zinc-500 focus:border-brand-red focus:ring-1 focus:ring-brand-red transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-zinc-300 mb-1.5">Phone Number</label>
+                    <input type="tel" name="phone" required placeholder="+1 (555) 000-0000"
+                           class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-sm text-white placeholder-zinc-500 focus:border-brand-red focus:ring-1 focus:ring-brand-red transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-zinc-300 mb-1.5">Brand Website / Business Name</label>
+                    <input type="text" name="brand" placeholder="e.g. Acme Apparel"
+                           class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-sm text-white placeholder-zinc-500 focus:border-brand-red focus:ring-1 focus:ring-brand-red transition-all">
                 </div>
 
-                <div>
-                    <input type="text" name="brand" required placeholder="Brand / Company Name" class="w-full bg-black/70 border border-white/10 rounded-xl p-3.5 text-white text-sm focus:outline-none focus:border-brand-red transition-colors placeholder-zinc-600">
-                </div>
-
-                <div>
-                    <input type="tel" name="phone" id="modal-phone" required placeholder="Phone Number (e.g. +91 98765 43210)" class="w-full bg-black/70 border border-white/10 rounded-xl p-3.5 text-white text-sm focus:outline-none focus:border-brand-red transition-colors placeholder-zinc-600">
-                </div>
-
-                <button type="submit" id="modal-btn" class="w-full primary-btn font-bold py-4 rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 mt-4">
-                    <i class="fa-solid fa-phone"></i>
-                    <span>Call Me in 5 Minutes</span>
+                <button type="submit" class="w-full py-3 rounded-xl bg-brand-red hover:bg-brand-redHover text-white text-sm font-bold transition-colors shadow-md mt-2">
+                    Request Consultation
                 </button>
+                <div id="modalFormStatus" class="hidden text-xs text-center mt-2"></div>
             </form>
-
-            <div class="mt-4 text-center">
-                <span class="text-xs text-zinc-500">Prefer text?</span>
-                <a href="https://wa.me/919431366776" target="_blank" class="text-xs text-brand-red hover:underline font-semibold ml-1">Message on WhatsApp</a>
-            </div>
         </div>
     </div>
 
-    <!-- SUCCESS CONFIRMATION MODAL -->
-    <div id="success-modal" class="hidden fixed inset-0 z-[110] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 modal">
-        <div class="agency-card border border-brand-red/30 rounded-3xl p-8 sm:p-10 max-w-sm w-full relative shadow-2xl text-center modal-box bg-brand-card">
-            <div class="w-16 h-16 bg-brand-redMuted border border-brand-red/30 rounded-full flex items-center justify-center mx-auto mb-5 text-brand-red text-2xl shadow-[0_0_30px_rgba(205,55,75,0.25)]">
-                <i class="fa-solid fa-headset animate-bounce"></i>
-            </div>
-            
-            <h3 class="text-2xl font-bold text-white font-display mb-2">Request Received</h3>
-            <p class="text-zinc-400 text-sm mb-6 leading-relaxed font-light">
-                Our sales team has received your request. Expect a phone call on your number <strong class="text-white font-mono" id="confirm-phone-label">shortly</strong> within ~5 minutes.
-            </p>
-            
-            <button onclick="closeSuccessModal()" class="primary-btn w-full font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider">
-                Got It
-            </button>
-        </div>
-    </div>
-
-    <!-- JAVASCRIPT -->
+    <!-- SCRIPTS -->
     <script>
-        // Smooth Vertical Word Roller Animation
-        const rotator = document.getElementById('word-rotator');
-        if (rotator) {
-            const items = rotator.children;
-            const totalItems = items.length;
-            let currentIndex = 0;
+        // 1. Vertical Roller Animation
+        const rollerInner = document.getElementById('rollerInner');
+        const totalItems = 4;
+        let currentIndex = 0;
 
-            setInterval(() => {
-                currentIndex++;
-                rotator.style.transition = 'transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)';
-                rotator.style.transform = `translateY(-${currentIndex * (100 / totalItems)}%)`;
-
-                if (currentIndex === totalItems - 1) {
-                    setTimeout(() => {
-                        rotator.style.transition = 'none';
-                        currentIndex = 0;
-                        rotator.style.transform = 'translateY(0%)';
-                    }, 750);
-                }
-            }, 2600);
-        }
-
-        // Scroll Reveal
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    revealObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.12 });
-        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-        // 5-Min Callback Modal Controls
-        const callbackModal = document.getElementById('callback-modal');
-        function openCallbackModal() {
-            callbackModal.classList.remove('hidden');
-            setTimeout(() => callbackModal.classList.add('active'), 10);
-        }
-        function closeCallbackModal() {
-            callbackModal.classList.remove('active');
-            setTimeout(() => callbackModal.classList.add('hidden'), 300);
-        }
-
-        // Success Modal Controls
-        const successModal = document.getElementById('success-modal');
-        function openSuccessModal(phoneValue) {
-            if (phoneValue) {
-                const phoneLabel = document.getElementById('confirm-phone-label');
-                if (phoneLabel) phoneLabel.innerText = phoneValue;
+        function advanceRoller() {
+            currentIndex = (currentIndex + 1) % totalItems;
+            if (rollerInner) {
+                rollerInner.style.transform = `translateY(-${currentIndex * 1.22}em)`;
             }
-            successModal.classList.remove('hidden');
-            setTimeout(() => successModal.classList.add('active'), 10);
         }
-        function closeSuccessModal() {
-            successModal.classList.remove('active');
-            setTimeout(() => successModal.classList.add('hidden'), 300);
-        }
+        setInterval(advanceRoller, 2600);
 
-        // WhatsApp Direct Share
-        function sendWhatsAppDirect() {
-            const form = document.getElementById('sales-form');
-            const name = form.elements['name'] ? form.elements['name'].value : '';
-            const brand = form.elements['brand'] ? form.elements['brand'].value : '';
-            const phone = form.elements['phone'] ? form.elements['phone'].value : '';
-            const service = form.elements['service'] ? form.elements['service'].value : '';
-            const details = form.elements['details'] ? form.elements['details'].value : '';
+        // 2. Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuIcon = document.getElementById('menuIcon');
 
-            const text = encodeURIComponent(
-                `Hi Feasibility Media,\n\nName: ${name || 'Not provided'}\nBrand: ${brand || 'Not provided'}\nPhone: ${phone || 'Not provided'}\nService: ${service}\nDetails: ${details || 'Looking to scale our brand growth'}`
-            );
-            window.open(`https://wa.me/919431366776?text=${text}`, '_blank');
+        function toggleMobileMenu() {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-xmark');
+            } else {
+                closeMobileMenu();
+            }
         }
 
-        // Formspree Integration for forms
-        function handleFormSubmit(formId, btnId, isModal) {
-            const form = document.getElementById(formId);
-            if (!form) return;
+        function closeMobileMenu() {
+            mobileMenu.classList.add('hidden');
+            menuIcon.classList.remove('fa-xmark');
+            menuIcon.classList.add('fa-bars');
+        }
 
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const btn = document.getElementById(btnId);
-                const originalText = btn.innerHTML;
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Connecting...';
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        }
 
-                const formData = new FormData(form);
-                const phone = formData.get('phone') || '';
+        // Close mobile menu on clicking any navigation link
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
 
-                fetch(form.action, {
-                    method: 'POST',
-                    body: JSON.stringify(Object.fromEntries(formData.entries())),
-                    headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
-                }).then(res => {
-                    if (res.ok) {
-                        if (isModal) closeCallbackModal();
-                        openSuccessModal(phone);
-                        form.reset();
-                    } else alert("Something went wrong. Please connect via WhatsApp directly.");
-                }).catch(() => alert("Network error. Please message us on WhatsApp."))
-                .finally(() => {
-                    btn.disabled = false;
-                    btn.innerHTML = originalText;
-                });
+        // 3. Modal Control
+        const salesModal = document.getElementById('salesModal');
+
+        function openModal() {
+            if (salesModal) salesModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            if (salesModal) salesModal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Close on background click
+        if (salesModal) {
+            salesModal.addEventListener('click', (e) => {
+                if (e.target === salesModal) closeModal();
             });
         }
 
-        handleFormSubmit('hero-fast-call-form', 'hero-fast-btn', false);
-        handleFormSubmit('sales-form', 'sales-submit-btn', false);
-        handleFormSubmit('modal-form', 'modal-btn', true);
+        // Close on Escape key
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // 4. Formspree AJAX handlers
+        function handleFormSubmit(formId, statusId, successMsg) {
+            const form = document.getElementById(formId);
+            const status = document.getElementById(statusId);
+            if (!form || !status) return;
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const btn = form.querySelector('button[type="submit"]');
+                const origText = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+                status.classList.add('hidden');
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: new FormData(form),
+                        headers: { 'Accept': 'application/json' }
+                    });
+
+                    if (response.ok) {
+                        status.className = 'text-xs text-emerald-400 block text-center pt-2 font-medium';
+                        status.textContent = successMsg;
+                        form.reset();
+                        btn.innerHTML = '<i class="fa-solid fa-check"></i> Submitted';
+                        setTimeout(() => {
+                            btn.innerHTML = origText;
+                            btn.disabled = false;
+                        }, 4000);
+                    } else {
+                        throw new Error('Submission failed');
+                    }
+                } catch (err) {
+                    status.className = 'text-xs text-red-400 block text-center pt-2 font-medium';
+                    status.textContent = 'Oops! Please try again or WhatsApp us directly.';
+                    btn.innerHTML = origText;
+                    btn.disabled = false;
+                }
+            });
+        }
+
+        handleFormSubmit('heroCallbackForm', 'heroFormStatus', 'Callback confirmed! Expect a call in a few minutes.');
+        handleFormSubmit('contactSalesForm', 'contactFormStatus', 'Thank you! Our growth team will get in touch shortly.');
+        handleFormSubmit('modalSalesForm', 'modalFormStatus', 'Request received! We will connect with you soon.');
     </script>
 </body>
 </html>
